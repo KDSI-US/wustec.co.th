@@ -1,0 +1,75 @@
+# Config and Htaccess Files
+/public/.htaccess
+/public/config.php
+/public/admin/config.php
+
+# Image Cache Files
+/public/image/*
+/public/image/cache/*
+!/public/image/cache/index.html
+
+# Catalog Image Files
+/public/image/catalog/*
+!/public/image/catalog/index.html
+
+# Backup Files
+storage/backup/*
+/storage/backup/*
+/public/system/storage/backup/*
+!storage/backup/index.html
+!/storage/backup/index.html
+!/public/system/storage/backup/index.html
+
+# System Cache Files
+storage/cache/*
+/storage/cache/*
+/public/system/storage/cache/*
+!storage/cache/index.html
+!/storage/cache/index.html
+!/public/system/storage/cache/index.html
+
+# Download Files
+storage/download/*
+/storage/download/*
+/public/system/storage/download/*
+!storage/download/index.html
+!/storage/download/index.html
+!/public/system/storage/download/index.html
+
+# Log Files
+storage/logs/*
+/storage/logs/*
+/public/system/storage/logs/*
+!storage/logs/index.html
+!/storage/logs/index.html
+!/public/system/storage/logs/index.html
+
+# Marketplace Files
+# /public/system/storage/marketplace/*
+# !/public/system/storage/marketplace/index.html
+
+# Session Files
+storage/session/*
+/storage/session/*
+/public/system/storage/session/*
+!storage/session/index.html
+!/storage/session/index.html
+!/public/system/storage/session/index.html
+
+# Upload Files
+/public/system/storage/public/*
+!/public/system/storage/public/index.html
+
+# If you want to ignore install file use following lines [on development mode]
+# /public/install/*
+
+# IDE Project filescd  xampp
+
+/.idea
+/public/.idea
+
+public/tests/
+/public/tests/
+
+# Visual Studio Code Files
+.vscode/*
