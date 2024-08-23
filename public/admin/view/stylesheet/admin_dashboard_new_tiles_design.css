@@ -1,0 +1,19 @@
+.tile-heading {
+  background-color: #dfe4ea;
+  color: #57606f;
+  border-radius: 7px 7px 0 0;
+}
+.tile-body {
+  background-color: #dfe4ea;
+  color: #57606f;
+}
+.tile-footer {
+  background-color: #dfe4ea;
+  color: #57606f;
+  border-radius: 0 0 7px 7px;
+}
+span.radback {
+  background-color: #ffffff;
+  padding: 3px 15px;
+  border-radius: 7px;
+}

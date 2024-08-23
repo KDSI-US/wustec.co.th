@@ -1,0 +1,157 @@
+<!DOCTYPE html>{{ git_hidden_tag }}
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+
+			{% if gallerympmetas %}
+				{% for gallerympmeta in gallerympmetas %}
+					<meta {{ gallerympmeta.attribute }}="{{ gallerympmeta.attribute_value }}" content="{{ gallerympmeta.content }}" />
+				{% endfor %}
+			{% endif %}
+			
+			{% if mpmetas %}
+			{% for mpmeta in mpmetas %}
+			<meta {{ mpmeta.attribute }}="{{ mpmeta.attribute_value }}" content="{{ mpmeta.content }}" />
+			{% endfor %}
+			{% endif %}
+			
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+
+<link href="catalog/view/javascript/wblog/css/style.css" rel="stylesheet" type="text/css" />
+				
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
+<link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
+<link href='catalog/view/theme/default/stylesheet/style_dhltrack.css' rel='stylesheet' type='text/css'>
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/wishlist_toggle_button.js" type="text/javascript"></script>
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+
+			{% if at_css %}
+<style type="text/css">
+{{ at_css }}
+</style>
+			{% endif %}
+			{% if at_custom_head %}
+{{ at_custom_head }}
+			{% endif %}
+			
+
+<link href="/catalog/view/stylesheet/back_to_top.css" rel="stylesheet" />
+<a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top<span></span></a>
+			
+
+{% if lang=='ar' %}
+<link href="catalog/view/theme/default/stylesheet/bootstrap-rtl.css" rel="stylesheet">
+<link href="catalog/view/theme/default/stylesheet/bootstrap-rtl.min.css" rel="stylesheet">
+<link href="catalog/view/theme/default/stylesheet/rtl.css" rel="stylesheet">
+{% endif %}
+			
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/default/stylesheet/custom_css_file.css" />
+</head>
+
+<style>
+.affix {
+	background-color: #fff;
+	z-index: 999;
+	top: 0;
+	width: 100%;
+	border-bottom: 1px solid rgb(221, 221, 221);
+	padding: 20px 0 0 0px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+	transition: 0.3s linear;
+}
+</style>
+			
+<body>
+
+			{% if topbar %}
+<style type="text/css">
+#topbar {margin-bottom: 0;padding: 5px 0;background-color: #ffe376;border: 1px solid #ffe376;border-radius: 0;}
+#topbar .container {color: #131010;}
+#topbar .close {background-color: #b89305;color: #fff;padding: 0 5px;border-radius: 3px;}
+</style>
+			<div id="topbar" class="alert" role="alert">
+				<div class="container">
+					{{ topbar_message }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			</div>
+			{% endif %}
+			
+<nav id="top">
+  <div class="container">{{ currency }}
+    {{ language }}
+    <div id="top-links" class="nav pull-right">
+      <ul class="list-inline">
+        <li><a href="{{ contact }}"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md">{{ telephone }}</span></li>
+        <li class="dropdown"><a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_account }}</span> <span class="caret"></span></a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            {% if logged %}
+            <li><a href="{{ account }}">{{ text_account }}</a></li>
+            <li><a href="{{ order }}">{{ text_order }}</a></li>
+            <li><a href="{{ transaction }}">{{ text_transaction }}</a></li>
+            <li><a href="{{ download }}">{{ text_download }}</a></li>
+            <li><a href="{{ logout }}">{{ text_logout }}</a></li>
+            {% else %}
+            <li><a href="{{ register }}">{{ text_register }}</a></li>
+            <li><a href="{{ login }}">{{ text_login }}</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        <li><a href="{{ wishlist }}" id="wishlist-total" title="{{ text_wishlist }}"><i class="fa {% if product.wishlist is defined %} {% set wishlist = product.wishlist %} {% elseif wishlist is not defined %} {% set wishlist = false %} {% endif %} {{ (wishlist ? 'fa-heart ' : 'fa-heart-o') }}"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_wishlist }}</span></a></li>
+        <li><a href="{{ shopping_cart }}" title="{{ text_shopping_cart }}"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_shopping_cart }}</span></a></li>
+
+			{% if ticketsetting_status is not empty %}
+			<li><a href="{{ mpsupport }}" title="{{ menu_support }}"><i class="fa fa-life-ring"></i> <span class="hidden-xs hidden-sm hidden-md">{{ menu_support }}</span></a></li>
+			{% endif %}
+			
+        <li><a href="{{ checkout }}" title="{{ text_checkout }}"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_checkout }}</span></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header data-spy="affix" data-offset-top="205">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <div id="logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>{% else %}
+          <h1><a href="{{ home }}">{{ name }}</a></h1>
+          {% endif %}</div>
+      </div>
+      <div class="col-sm-5">{{ search }}</div>
+      <div class="col-sm-3">{{ cart }}</div>
+    </div>
+  </div>
+</header>
+{{ menu }}

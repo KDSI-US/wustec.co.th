@@ -1,0 +1,785 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-como_pl" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        {% if module_id %}
+        <a id="button-copy" data-toggle="tooltip" title="{{ button_copy }}" class="btn btn-default"><i class="fa fa-copy"></i></a>
+        <a id="button-delete" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-warning"><i class="fa fa-trash-o"></i></a>
+        {% endif %}
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+
+            <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-como_pl" class="form-horizontal">
+              <div class="form-group required">
+                <label class="col-sm-4 control-label" for="input-name">{{ entry_name }}</label>
+                <div class="col-sm-8">
+                    <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control module_name" />
+                    {% if error_name %}
+                    <div class="text-danger">{{ error_name }}</div>
+                    {% endif %}
+                    <div class="form-text">{{ entry_name_help }}</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-8">
+                    <select id="input-status" name="status" class="form-control">
+                        <option value="1"{% if status %} selected="selected"{% endif %}>{{ text_enabled }}</option>
+                        <option value="0"{% if not status %} selected="selected"{% endif %}>{{ text_disabled }}</option>
+                    </select>
+                </div>
+              </div>
+              <div class="tab-pane">
+                <ul class="nav nav-tabs" id="formcontent">
+                    <li><a href="#tab_sender" data-toggle="tab">{{ tab_sender }}</a></li>
+                    <li><a href="#tab_recipient" data-toggle="tab">{{ tab_recipient }}</a></li>
+                    <li><a href="#tab_label" data-toggle="tab">{{ tab_label }}</a></li>
+                    <li><a href="#tab_button" data-toggle="tab">{{ tab_button }}</a></li>
+                    <li><a href="#tab_help" data-toggle="tab">{{ tab_help }}</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <div class="tab-pane" id="tab_sender">
+                      <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_sender_help }}</div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-sender">{{ entry_sender }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="sender" value="{{ sender }}" placeholder="{{ entry_sender }}" id="input-sender" class="form-control" />
+                          <div class="form-text">{{ help_sender }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-senderformat">{{ entry_senderformat }}</label>
+                        <div class="col-sm-8">
+                          <textarea name="senderformat" rows="5" placeholder="{{ entry_senderformat }}" id="input-senderformat" class="form-control">{{ senderformat }}</textarea>
+                          <div class="form-text">{{ help_senderformat }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-senderaddress">{{ entry_senderaddress }}</label>
+                        <div class="col-sm-8">
+                          <textarea name="senderaddress" rows="5" placeholder="{{ entry_senderaddress }}" id="input-senderaddress" class="form-control">{{ senderaddress }}</textarea>
+                          <div class="form-text">{{ help_senderaddress }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-sendercity">{{ entry_sendercity }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="sendercity" value="{{ sendercity }}" placeholder="{{ entry_sendercity }}" id="input-sendercity" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-senderpostcode">{{ entry_senderpostcode }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="senderpostcode" value="{{ senderpostcode }}" placeholder="{{ entry_senderpostcode }}" id="input-senderpostcode" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-senderregion">{{ entry_senderregion }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="senderregion" value="{{ senderregion }}" placeholder="{{ entry_senderregion }}" id="input-senderregion" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-sendercountry">{{ entry_sendercountry }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="sendercountry" value="{{ sendercountry }}" placeholder="{{ entry_sendercountry }}" id="input-sendercountry" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-sendertelephone">{{ entry_sendertelephone }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="sendertelephone" value="{{ sendertelephone }}" placeholder="{{ entry_sendertelephone }}" id="input-sendertelephone" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-senderlogo">{{ entry_senderlogo }}</label>
+                        <div class="col-sm-8"><a href="" id="thumb-senderlogo" data-toggle="image" class="img-thumbnail"><img src="{{ senderlogo_thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                          <input type="hidden" name="senderlogo" value="{{ senderlogo }}" id="input-senderlogo" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab_recipient">
+                      <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_recipient_help }}</div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-addressformat">{{ entry_addressformat }}</label>
+                        <div class="col-sm-8">
+                          <textarea name="addressformat" rows="5" placeholder="{{ entry_addressformat }}" id="input-addressformat" class="form-control">{{ addressformat }}</textarea>
+                          <div class="form-text">{{ help_addressformat }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-addressformat_usefromorder">{{ entry_addressformat_usefromorder }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="addressformat_usefromorder" value="1"{% if addressformat_usefromorder %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="addressformat_usefromorder" value="0"{% if not addressformat_usefromorder %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-showorderphone">{{ entry_showorderphone }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="showorderphone" value="1"{% if showorderphone %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="showorderphone" value="0"{% if not showorderphone %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-orderformat">{{ entry_orderformat }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="orderformat" value="{{ orderformat }}" placeholder="{{ entry_orderformat }}" id="input-orderformat" class="form-control" />
+                          <div class="form-text">{{ help_orderformat }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-showorderbarcode">{{ entry_showorderbarcode }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="showorderbarcode" value="1"{% if showorderbarcode %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="showorderbarcode" value="0"{% if not showorderbarcode %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-orderbarcode_height">{{ entry_orderbarcode_height }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="orderbarcode_height" value="{{ orderbarcode_height }}" placeholder="{{ entry_orderbarcode_height }}" id="input-orderbarcode_height" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-orderbarcode_width">{{ entry_orderbarcode_width }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="orderbarcode_width" value="{{ orderbarcode_width }}" placeholder="{{ entry_orderbarcode_width }}" id="input-orderbarcode_width" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-orderbarcode_type">{{ entry_orderbarcode_type }}</label>
+                        <div class="col-sm-8">
+                          <select name="orderbarcode_type" id="input-orderbarcode_type" class="form-control">
+                            <option value=""{% if not orderbarcode_type %} selected="selected"{% endif %}>{{ text_none }}</option>
+                            {% if orderbarcode_type is defined %}
+                            <option value="EAN13"{% if orderbarcode_type == 'EAN13' %} selected="selected"{% endif %}>{{ 'EAN 13' }}</option>
+                            <option value="EAN8"{% if orderbarcode_type == 'EAN8' %} selected="selected"{% endif %}>{{ 'EAN 8' }}</option>
+                            <option value="UPCA"{% if orderbarcode_type == 'UPCA' %} selected="selected"{% endif %}>{{ 'UPC-A' }}</option>
+                            <option value="UPCE"{% if orderbarcode_type == 'UPCE' %} selected="selected"{% endif %}>{{ 'UPC-E' }}</option>
+                            <option value="C128A"{% if orderbarcode_type == 'C128A' %} selected="selected"{% endif %}>{{ 'CODE 128 A' }}</option>
+                            <option value="C128B"{% if orderbarcode_type == 'C128B' %} selected="selected"{% endif %}>{{ 'CODE 128 B' }}</option>
+                            <option value="C128C"{% if orderbarcode_type == 'C128C' %} selected="selected"{% endif %}>{{ 'CODE 128 C' }}</option>
+                            <option value="C39"{% if orderbarcode_type == 'C39' %} selected="selected"{% endif %}>{{ 'CODE 39' }}</option>
+                            {# <option value="C39+"{% if orderbarcode_type == 'C39+' %} selected="selected"{% endif %}>{{ 'CODE 39 with checksum' }}</option> #}
+                            <option value="C39E"{% if orderbarcode_type == 'C39E' %} selected="selected"{% endif %}>{{ 'CODE 39 EXTENDED' }}</option>
+                            {# <option value="C39E+"{% if orderbarcode_type == 'C39E+' %} selected="selected"{% endif %}>{{ 'CODE 39 EXTENDED + CHECKSUM' }}</option> #}
+                            {% endif %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab_label">
+                      <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_label_settings }}</div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-labelbox_unit">{{ entry_labelbox_unit }}</label>
+                        <div class="col-sm-8">
+                          <select name="labelbox_unit" id="input-labelbox_unit" class="form-control">
+                            <option value="px"{% if labelbox_unit == 'px' %} selected="selected"{% endif %}>{{ entry_labelbox_unit_px }}</option>
+                            <option value="mm"{% if labelbox_unit == 'mm' %} selected="selected"{% endif %}>{{ entry_labelbox_unit_mm }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-labelbox_width">{{ entry_labelbox_width }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="labelbox_width" value="{{ labelbox_width }}" placeholder="{{ entry_labelbox_width }}" id="input-labelbox_width" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-labelbox_height">{{ entry_labelbox_height }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="labelbox_height" value="{{ labelbox_height }}" placeholder="{{ entry_labelbox_height }}" id="input-labelbox_height" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-labelbox_rotate">{{ entry_labelbox_rotate }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="labelbox_rotate" value="{{ labelbox_rotate }}" placeholder="{{ entry_labelbox_rotate }}" id="input-labelbox_height" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-margin_left">{{ entry_margin_left }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="margin_left" value="{{ margin_left }}" placeholder="{{ entry_margin_left }}" id="input-margin_left" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-margin_top">{{ entry_margin_top }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="margin_top" value="{{ margin_top }}" placeholder="{{ entry_margin_top }}" id="input-margin_top" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-distance_x">{{ entry_distance_x }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="distance_x" value="{{ distance_x }}" placeholder="{{ entry_distance_x }}" id="input-distance_x" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-distance_y">{{ entry_distance_y }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="distance_y" value="{{ distance_y }}" placeholder="{{ entry_distance_y }}" id="input-distance_y" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-labelsperpage">{{ entry_labelsperpage }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" min="0" name="labelsperpage" value="{{ labelsperpage }}" placeholder="{{ entry_labelsperpage }}" id="input-labelsperpage" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-logo_height">{{ entry_logo_height }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="logo_height" value="{{ logo_height }}" placeholder="{{ entry_logo_height }}" id="input-logo_height" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-qrcode_size">{{ entry_qrcode_size }}</label>
+                        <div class="col-sm-8">
+                          <input type="number" name="qrcode_size" value="{{ qrcode_size }}" placeholder="{{ entry_qrcode_size }}" id="input-qrcode_size" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-showqrcodeaddress">{{ entry_showqrcodeaddress }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="showqrcodeaddress" value="1"{% if showqrcodeaddress %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="showqrcodeaddress" value="0"{% if not showqrcodeaddress %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-showqrcodephone">{{ entry_showqrcodephone }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="showqrcodephone" value="1"{% if showqrcodephone %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="showqrcodephone" value="0"{% if not showqrcodephone %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-showqrcodeorder">{{ entry_showqrcodeorder }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="showqrcodeorder" value="1"{% if showqrcodeorder %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="showqrcodeorder" value="0"{% if not showqrcodeorder %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <fieldset>
+                          <legend>{{ entry_design }}</legend>
+                          <div class="form-group">
+                            <label class="col-sm-4 control-label" for="input-stylesheet">{{ entry_stylesheet }}<br />
+                            <button type="button" onclick="comoTemplateCopy(event, this, 'input-stylesheet', '{{ stylesheet }}');" data-toggle="tooltip" title="{{ button_copy }}" class="btn btn-success btn-xs"><i class="fa fa-copy"></i></button> 
+                            <button type="button" onclick="comoTemplateDelete(event, this, 'input-stylesheet', '{{ stylesheet }}');" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button> 
+                            <button type="button" onclick="comoTemplateRename(event, this, 'input-stylesheet', '{{ stylesheet }}');" data-toggle="tooltip" title="{{ button_rename }}" class="btn btn-warning btn-xs"><i class="fa fa-i-cursor"></i></button> 
+                            <button type="button" onclick="comoTemplateEdit(event, this, 'input-stylesheet');" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button> 
+                            <br /><div class="alert alert-info" style="font-size: smaller;"><i class="fa fa-info-circle"></i> {{ entry_stylesheet_help1 }}</div>
+                            </label>
+                            <div class="col-sm-8">
+                                <select id="input-stylesheet" name="stylesheet" class="form-control" {% if stylesheets_default|length > 0 %}size="{{ stylesheets_default|length }}"{% endif %}>
+                                  {% for stylesheet_default in stylesheets_default %}
+                                    <option value="{{ stylesheet_default }}"{% if stylesheet_default == stylesheet %} selected="selected"{% endif %}>{{ stylesheet_default }}</option>
+                                  {% endfor %} 
+                                </select>
+                                <div class="form-text">{{ entry_stylesheet_help }}</div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-4 control-label" for="input-label_template" data-value-selected={{ label_template_default }}"">{{ entry_template }}<br />
+                            <button type="button" onclick="comoTemplateCopy(event, this, 'input-label_template', '{{ label_template }}');" data-toggle="tooltip" title="{{ button_copy }}" class="btn btn-success btn-xs"><i class="fa fa-copy"></i></button> 
+                            <button type="button" onclick="comoTemplateDelete(event, this, 'input-label_template', '{{ label_template }}');" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button> 
+                            <button type="button" onclick="comoTemplateRename(event, this, 'input-label_template', '{{ label_template }}');" data-toggle="tooltip" title="{{ button_rename }}" class="btn btn-warning btn-xs"><i class="fa fa-i-cursor"></i></button> 
+                            <button type="button" onclick="comoTemplateEdit(event, this, 'input-label_template');" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button> 
+                            <br /><div class="alert alert-info" style="font-size: smaller;"><i class="fa fa-info-circle"></i> {{ entry_template_help1 }}</div>
+                            </label>
+                            <div class="col-sm-8">
+                                <select id="input-label_template" name="label_template" class="form-control" {% if label_templates|length > 0 %}size="{{ label_templates|length }}"{% endif %}>
+                                  {% for label_template_default in label_templates %}
+                                    <option value="{{ label_template_default }}"{% if label_template_default == label_template %} selected="selected"{% endif %}>{{ label_template_default }}</option>
+                                  {% endfor %}
+                                </select>
+                                <div class="form-text">{{ entry_template_help }}</div>
+                            </div>
+                          </div>
+                      </fieldset>
+                    </div>
+<script>
+    function comoTemplateEdit(e, el, idSelect) {
+        e.preventDefault();
+        $('.tooltip').remove();
+        $(el).prop('disabled', true);
+        var elSelect = $('#' + idSelect);
+        var nameOld = elSelect.val();
+        var ext = nameOld.split('.').pop();
+        $.ajax({
+            url: 'index.php?route=extension/module/como_shippinglabels/ajaxTemplateGet&user_token=' + getURLVar('user_token'),
+            type: 'post',
+            dataType: 'json',
+            data: 'template=' + nameOld,
+            beforeSend: function () {
+                $(el).prepend('<span id="ajaxbusy-tmp"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+            },
+            complete: function () {
+                $('#ajaxbusy-tmp').remove();
+            },
+            success: function(json) {
+                if (json['error']) {
+                    comoAlert(json['error'], title, 'red', 'fa-exclamation-triangle ');
+                } else {
+                    var idEditDiv = idSelect + '_cm';
+                    elSelect.parent().append('' + 
+                            '<div id="' + idEditDiv + '" style="display: none; margin: 10px;">' +
+                                '<textarea rows="10"></textarea>' +
+                                '<div class="pull-right">' +
+                                    '<button type="button" class="btn btn-default" onclick="closeEditFile(this);"><i class="fa fa-close"></i> {{ button_close }}</button>' +
+                                    '<button type="button" class="btn btn-primary" onclick="saveFileContent(this);"><i class="fa fa-floppy-o"></i> {{ button_save }}</button>' +
+                  +              '</div>' +
+                            '</div>');
+                    var editDiv = $('#' + idEditDiv);
+                    var codeTexarea = editDiv.children('textarea');
+                    codeTexarea.text(json['content']);
+                    codeTexarea.data('template', nameOld);
+                    editDiv.show();
+					// Initialize codemirrror
+					comoCodemirror = CodeMirror.fromTextArea(codeTexarea[0], {
+						mode: (ext == 'css' ? 'text/css' : 'text/html'),
+						height: '500px',
+						lineNumbers: true,
+						autofocus: true,
+						theme: 'monokai'
+					});
+                    $(el).prop('disabled', false);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                comoAlert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText, '', 'red', 'fa-exclamation-triangle ');
+                $(el).prop('disabled', false);
+            }
+        });
+    }
+    function closeEditFile(button) {
+        comoCodemirror.toTextArea();
+        $(button).parent().parent().remove();
+    }
+    function saveFileContent(button) {
+        var content = comoCodemirror.getValue();
+        var codeTexarea = $(button).parent().parent().children('textarea');
+        $.ajax({  
+            url: 'index.php?route=extension/module/como_shippinglabels/ajaxTemplateSave&user_token=' + getURLVar('user_token'),
+            type: 'post',		
+            dataType: 'json',
+            data: 'template=' + codeTexarea.data('template') + '&content=' + encodeURIComponent(content),
+            beforeSend: function () {
+                $(button).append('<span id="ajaxbusy-tmp"> <i class="fa fa-cog fa-lg fa-spin"></i></span>');
+            },
+            complete: function () {
+                $('#ajaxbusy-tmp').remove();
+            },
+            success: function(json) {
+                if (json['error']) {
+                    var altContent = json['error'];
+                    var altTitle = $(button).text();
+                    comoAlert(altContent, altTitle, 'red', 'fa-warning');
+                } else {
+                    comoCodemirror.toTextArea();
+                    $(button).parent().parent().remove();
+                    var altContent = json['success'];
+                    var altTitle = $(button).text();
+                    comoAlert(altContent, altTitle, 'green', 'fa-check');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                comoAlert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText, '', 'red', 'fa-exclamation-triangle ');
+            }
+        });
+    }
+
+    function comoTemplateRename(e, el, idSelect, nameSaved) {
+        e.preventDefault();
+        $('.tooltip').remove();
+        $(el).prop('disabled', true);
+        var elSelect = $('#' + idSelect);
+        var nameOld = elSelect.val();
+        var ext = nameOld.split('.').pop();
+        if (ext == 'css') {
+            var preffix = '{{ stylesheets_preffix }}';
+        } else {
+            var preffix = '{{ templates_preffix }}';
+        }
+        var suffixOld = nameOld.slice(0, -1 * (ext.length + 1)); // just file name without vextension
+        suffixOld = suffixOld.slice(preffix.length);
+        if ($.confirm) {
+            var title = $(el).attr('data-original-title');
+            var content = '{{ text_template_renameprompt }}<br /><br />' + preffix + 
+                '<form action="" class="form_suffix">' +
+                '<div class="form-group">' +
+                //'<label>{{ text_newsuffix }}</label>' +
+                '<input type="text" value="' + suffixOld + '" placeholder="{{ text_newsuffix }}" class="name form-control" required />' +
+                '</div>' +
+                '</form>' +
+                '.' + ext;
+            $.confirm({ icon: 'fa fa-warning', type: 'orange', typeAnimated: true, title: title, content: content, escapeKey: 'cancel', backgroundDismiss: false,
+                buttons: {
+                    confirm: { text: '{{ text_yes }}', btnClass: 'btn-red', action: function () {
+                        var suffixNew = this.$content.find('.name').val();
+                        if(suffixNew == suffixOld){
+                            $.alert('{{ error_samename }}');
+                            return false;
+                        }
+                        var nameNew = preffix + suffixNew + '.' + ext;
+                        $.ajax({
+                            url: 'index.php?route=extension/module/como_shippinglabels/ajaxTemplateRename&user_token=' + getURLVar('user_token'),
+                            type: 'post',
+                            dataType: 'json',
+                            data: 'template=' + nameOld + '&nameNew=' + nameNew,
+                            beforeSend: function () {
+                                $(el).prepend('<span id="ajaxbusy-tmp"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+                            },
+                            complete: function () {
+                                $('#ajaxbusy-tmp').remove();
+                            },
+                            success: function(json) {
+                                if (json['error']) {
+                                    comoAlert(json['error'], title, 'red', 'fa-exclamation-triangle ');
+                                }
+                                if (json['templates']) {
+                                    elSelect.empty();
+                                    for (var i = 0; i < json['templates'].length; i++) {
+                                         elSelect.append('<option value="' + json['templates'][i] + '"' + ((nameNew == json['templates'][i] || nameOld == json['templates'][i]) ? ' selected' : '') + '>' + json['templates'][i] + '</option>');
+                                    }
+                                    elSelect.attr('size', json['templates'].length);
+                                }
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                comoAlert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText, '', 'red', 'fa-exclamation-triangle ');
+                            }
+                        });
+
+                        $(el).prop('disabled', false);
+                      }
+                    },
+                    cancel: { text: '{{ text_no }}', action: function () {
+                        $(el).prop('disabled', false);
+                      }
+                    }
+                },
+                onContentReady: function () {
+                    // bind to events
+                    var jc = this;
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$confirm.trigger('click'); // reference the button and click it
+                    });
+                }
+            });
+        }
+    }
+    function comoTemplateDelete(e, el, idSelect, nameSaved) {
+        e.preventDefault();
+        $('.tooltip').remove();
+        $(el).prop('disabled', true);
+        var elSelect = $('#' + idSelect);
+        var nameOld = elSelect.val();
+        if ($.confirm) {
+            var title = $(el).attr('data-original-title');
+            var content = '{{ text_template_deleteconfirm }}<br /><br />' + nameOld;
+            $.confirm({ icon: 'fa fa-warning', type: 'red', typeAnimated: true, title: title, content: content, escapeKey: 'cancel', backgroundDismiss: false,
+                buttons: {
+                    confirm: { text: '{{ text_yes }}', btnClass: 'btn-red', action: function () {
+                        $.ajax({
+                            url: 'index.php?route=extension/module/como_shippinglabels/ajaxTemplateDelete&user_token=' + getURLVar('user_token'),
+                            type: 'post',
+                            dataType: 'json',
+                            data: 'template=' + nameOld,
+                            beforeSend: function () {
+                                $(el).prepend('<span id="ajaxbusy-tmp"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+                            },
+                            complete: function () {
+                                $('#ajaxbusy-tmp').remove();
+                            },
+                            success: function(json) {
+                                if (json['error']) {
+                                    comoAlert(json['error'], title, 'red', 'fa-exclamation-triangle ');
+                                }
+                                if (json['templates']) {
+                                    elSelect.empty();
+                                    for (var i = 0; i < json['templates'].length; i++) {
+                                         elSelect.append('<option value="' + json['templates'][i] + '"' + ((nameSaved == json['templates'][i] || nameOld == json['templates'][i]) ? ' selected' : '') + '>' + json['templates'][i] + '</option>');
+                                    }
+                                    elSelect.attr('size', json['templates'].length);
+                                }
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                comoAlert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText, '', 'red', 'fa-exclamation-triangle ');
+                            }
+                        });
+
+                        $(el).prop('disabled', false);
+                      }
+                    },
+                    cancel: { text: '{{ text_no }}', action: function () {
+                        $(el).prop('disabled', false);
+                      }
+                    }
+                }
+            });
+        }
+    }
+    function comoTemplateCopy(e, el, idSelect, nameSaved) {
+        e.preventDefault();
+        $('.tooltip').remove();
+        $(el).prop('disabled', true);
+        var elSelect = $('#' + idSelect);
+        var nameOld = elSelect.val();
+        if ($.confirm) {
+            var title = $(el).attr('data-original-title');
+            var content = '{{ text_template_copyconfirm }}<br /><br />' + nameOld;
+            $.confirm({ icon: 'fa fa-question', type: 'green', typeAnimated: true, title: title, content: content, escapeKey: 'cancel', backgroundDismiss: false,
+                buttons: {
+                    confirm: { text: '{{ text_yes }}', btnClass: 'btn-red', action: function () {
+                        $.ajax({
+                            url: 'index.php?route=extension/module/como_shippinglabels/ajaxTemplateCopy&user_token=' + getURLVar('user_token'),
+                            type: 'post',
+                            dataType: 'json',
+                            data: 'template=' + nameOld,
+                            beforeSend: function () {
+                                $(el).prepend('<span id="ajaxbusy-tmp"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+                            },
+                            complete: function () {
+                                $('#ajaxbusy-tmp').remove();
+                            },
+                            success: function(json) {
+                                if (json['error']) {
+                                    comoAlert(json['error'], title, 'red', 'fa-exclamation-triangle ');
+                                }
+                                if (json['templates']) {
+                                    elSelect.empty();
+                                    for (var i = 0; i < json['templates'].length; i++) {
+                                         elSelect.append('<option value="' + json['templates'][i] + '"' + ((json['templateNew'] == json['templates'][i] || nameOld == json['templates'][i]) ? ' selected' : '') + '>' + json['templates'][i] + (json['templateNew'] ==  json['templates'][i] ? ' ({{ text_justcopied }})' : '') + '</option>');
+                                    }
+                                    elSelect.attr('size', json['templates'].length);
+                                }
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                comoAlert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText, '', 'red', 'fa-exclamation-triangle ');
+                            }
+                        });
+
+                        $(el).prop('disabled', false);
+                      }
+                    },
+                    cancel: { text: '{{ text_no }}', action: function () {
+                        $(el).prop('disabled', false);
+                      }
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+                    <div class="tab-pane" id="tab_button">
+                      <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_button_help }}</div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-button_text">{{ entry_button_text }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="button_text" value="{{ button_text }}" placeholder="{{ entry_button_text }}" id="input-button_text" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-button_color">{{ entry_button_color }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="button_color" value="{{ button_color }}" id="input-button_color" class="colorpicker" />
+                            <button type="button" data-toggle="tooltip" title="{{ text_delete }}" class="btn btn-danger btn-xs" onclick="$('#input-button_color').spectrum('set','');"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-button_backcolor">{{ entry_button_backcolor }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="button_backcolor" value="{{ button_backcolor }}" id="input-button_backcolor" class="colorpicker" />
+                            <button type="button" data-toggle="tooltip" title="{{ text_delete }}" class="btn btn-danger btn-xs" onclick="$('#input-button_backcolor').spectrum('set','');"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-button_quickprint_show">{{ entry_button_quickprint_show }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="button_quickprint_show" value="1"{% if button_quickprint_show %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="button_quickprint_show" value="0"{% if not button_quickprint_show %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-button_quickprint_text">{{ entry_button_text }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="button_quickprint_text" value="{{ button_quickprint_text }}" placeholder="{{ entry_button_text }}" id="input-button_quickprint_text" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-printsetup_printer">{{ entry_printsetup_printer }}</label>
+                        <div class="col-sm-8">
+                          <input type="text" name="printsetup_printer" value="{{ printsetup_printer }}" placeholder="{{ entry_printsetup_printer }}" id="input-printsetup_printer" class="form-control" />
+                          <div class="form-text">{{ entry_printsetup_printer_help }}</div>
+                          <div class="form-text">{{ entry_printsetup_printer_help1 }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-printsetup_silentprint">{{ entry_printsetup_silentprint }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="printsetup_silentprint" value="1"{% if printsetup_silentprint %} checked="checked"{% endif %} /> {{ text_yes }}</label>
+                            <label class="radio-inline"><input type="radio" name="printsetup_silentprint" value="0"{% if not printsetup_silentprint %} checked="checked"{% endif %} /> {{ text_no }}</label>
+                            <div class="form-text">{{ entry_printsetup_silentprint_help }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab_help">
+                      <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_help_help }}</div>
+                    </div>
+
+                </div>
+              </div>
+            </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-right">
+    <button type="submit" form="form-como_pl" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+    <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+  </div>
+</div>
+
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/css.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+<style>
+.CodeMirror {
+    resize: vertical;
+}
+</style>
+
+<script type="text/javascript"><!--
+$('#formcontent a:first').tab('show');
+
+// copy/delete buttons
+$(document).ready(function() {
+    $("#button-copy").click(function(event){
+        if ($.confirm) {
+            var title = $(this).attr('data-original-title');
+            $.confirm({ icon: 'fa fa-warning', type: 'red', typeAnimated: true, title: title, content: '{{ text_copyconfirm }}',
+                escapeKey: 'cancel', backgroundDismiss: true,
+                buttons: {
+                    confirm: { text: '{{ text_yes }}', btnClass: 'btn-red', action: function () {
+                        $('#form-como_pl').attr('action', $('<div/>').html('{{ action_copy }}').text());
+                        $('#form-como_pl').submit();
+                      } 
+                    },
+                    cancel: { text: '{{ text_no }}' }
+                }
+            });
+        } else {
+            if (confirm('{{ text_copyconfirm }}')) {
+                $('#form-como_pl').attr('action', $('<div/>').html('{{ action_copy }}').text());
+                $('#form-como_pl').submit();
+            }
+        }
+    });
+    $("#button-delete").click(function(event){
+        if ($.confirm) {
+            var title = $(this).attr('data-original-title');
+            $.confirm({ icon: 'fa fa-warning', type: 'red', typeAnimated: true, title: title, content: '{{ text_deleteconfirm }}',
+                escapeKey: 'cancel', backgroundDismiss: true,
+                buttons: {
+                    confirm: { text: '{{ text_yes }}', btnClass: 'btn-red', action: function () {
+                        $('#form-como_pl').attr('action', $('<div/>').html('{{ action_delete }}').text());
+                        $('#form-como_pl').submit();
+                      } 
+                    },
+                    cancel: { text: '{{ text_no }}' }
+                }
+            });
+        } else {
+            if (confirm('{{ text_deleteconfirm }}')) {
+                $('#form-como_pl').attr('action', $('<div/>').html('{{ action_delete }}').text());
+                $('#form-como_pl').submit();
+            }
+        }
+    });
+});
+
+// load color picker for colors
+$(document).ready(function() {
+    $('.colorpicker').each(function(){
+        $(this).spectrum({
+            //color: $(this).val(),
+            allowEmpty: true,
+            preferredFormat: "rgb",
+            showAlpha: true,
+            showInitial: true,
+            showInput: true,
+            showPalette: true,
+            showSelectionPalette: true,
+            maxSelectionSize: 20,
+            palette: [
+        ["#000","#444","#666","#999","#ccc","#eee","#f3f3f3","#fff"],
+        ["#f00","#f90","#ff0","#0f0","#0ff","#00f","#90f","#f0f"],
+        ["#f4cccc","#fce5cd","#fff2cc","#d9ead3","#d0e0e3","#cfe2f3","#d9d2e9","#ead1dc"],
+        ["#ea9999","#f9cb9c","#ffe599","#b6d7a8","#a2c4c9","#9fc5e8","#b4a7d6","#d5a6bd"],
+        ["#e06666","#f6b26b","#ffd966","#93c47d","#76a5af","#6fa8dc","#8e7cc3","#c27ba0"],
+        ["#c00","#e69138","#f1c232","#6aa84f","#45818e","#3d85c6","#674ea7","#a64d79"],
+        ["#900","#b45f06","#bf9000","#38761d","#134f5c","#0b5394","#351c75","#741b47"],
+        ["#600","#783f04","#7f6000","#274e13","#0c343d","#073763","#20124d","#4c1130"]
+            ],
+            localStorageKey: "spectrum.comopl",
+            cancelText: '{{ button_cancel }}',
+            chooseText: '{{ text_yes }}'
+        });
+     });
+});
+
+    function comoAlert(content, title = 'Page alert', color = 'green', fa_icon = 'fa-info-circle') {
+        if ($.confirm) {
+            $.alert({ icon: 'fa ' + fa_icon, type: color, typeAnimated: true, title: title, 
+                content: content,
+                escapeKey: 'okay', backgroundDismiss: true,
+                buttons: { okay: { text: '{{ text_close }}' } }
+            });
+        } else {
+            alert(content);
+        }
+    }
+//--></script>
+
+{{ footer }}

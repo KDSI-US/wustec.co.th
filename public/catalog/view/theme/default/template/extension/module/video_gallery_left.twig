@@ -1,0 +1,10 @@
+<h4 class="video-gallery-category">{{ heading_title }}</h4>
+<div class="leftvideo">
+	{% for info in video_galleries %}
+    {% if info.video_gallery_category_id == video_gallery_category_id %}
+  	<a href="{{ info.href }}" class="active">{{ info.title }}</a>
+  	{% else %}
+  	<a href="{{ info.href }}" class="">{{ info.title }}</a>
+  	{% endif %}
+    {% endfor %}
+</div>

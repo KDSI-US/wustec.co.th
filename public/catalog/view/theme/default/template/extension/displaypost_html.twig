@@ -1,0 +1,22 @@
+<div style="font-family: Open Sans;">
+	{% for result in lastrecords %}
+	<div style="width:32%; float:left; margin-right:10px;">
+	{% if result.post_type ==1 %}
+			<div class="image">
+			  <img src="{{ result.image }}" class="img-responsive" width="100%" alt="{{result.name}}" />
+			</div>
+		 {% endif %}
+		{% if result.post_type ==2 %}
+		<div class="image">
+			{% if result.video_url %}
+			  <div class="videoWrapper">
+				<iframe width="300px" height="300px" src="{{ result.video_url }}" frameborder="0" allowfullscreen></iframe>
+			 </div>
+			 {% endif %}
+		</div>
+		 {% endif %}
+		<h2>{{result.name}}</h2>
+		{{result.short_description}}
+	</div>
+	{% endfor %}
+</div>

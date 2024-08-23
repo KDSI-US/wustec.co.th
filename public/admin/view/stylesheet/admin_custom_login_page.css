@@ -1,0 +1,74 @@
+.login_pg {
+	overflow-x: hidden;
+	background: #8bbf7f url(/image/catalog/bg-warehouse.jpg) no-repeat fixed
+	center;
+	background-size: cover;
+}
+@media (min-width: 1120px), (min-height: 630px) {
+	body {
+		background-size: auto;
+	}
+}
+.login_painel {
+	border: 1px solid #eef7ec;
+	border-radius: 3px;
+	transition: all 0.5s ease 0s;
+	-webkit-transition: all 0.5s ease 0s;
+	-moz-transition: all 0.5s ease 0s;
+}
+.login_painel:hover {
+	box-shadow: 0 10px 3px -5px #0f5006;
+	border: none;
+	border-radius: 0;
+	transform: scale(1.05);
+	-webkit-transform: scale(1.05);
+	-moz-transform: scale(1.05);
+}
+.panel-heading {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+.panel-body {
+	padding: 25px;
+}
+.panel-title {
+	font-size: 1.3em;
+	text-transform: uppercase;
+	padding: 20px 0;
+	text-align: left;
+}
+.panel-heading i {
+	font-size: 2.5em;
+	color: rgb(10, 174, 0);
+	float: left;
+	padding-right: 10px;
+}
+.btn-primary {
+	font-size: 1.5em;
+	font-weight: 700;
+	text-transform: uppercase;
+	border-radius: 5px;
+	background-color: #0aae00;
+	border: 1px solid #0f5006;
+	box-shadow: 0 3px 0 #0f5006;
+	transition: 0.3s ease-in;
+}
+.btn-primary:hover {
+	background-color: #186814;
+}
+.login-container {
+	margin-top: 5%;
+}
+
+.login-credit {
+	font-size: 1.2em;
+	color: rgb(231, 238, 230);
+	margin: 5px auto;
+	width: 80%;
+	padding: 10px;
+}
+
+.login-credit a:link,
+.login-credit a:visited {
+	color: rgb(231, 238, 230);
+}

@@ -1,0 +1,58 @@
+{{ header }}
+<div id="module-emailtemplate-newsletter" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
+  {% endif %}
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+      {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-sm-9' %}
+    {% else %}
+      {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1>{{ heading_title }}</h1>
+      <p>{{ text_info }}</p>
+      <form action="{{ action }}" method="post" enctype="multipart/form-data" id="module-form">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <div class="checkbox disabled">
+                <label><input type="checkbox" name="preference_essential" value="1" checked="checked" disabled="disabled" /> {{ entry_preference_essential }}</label>
+              </div>
+              {% if module_emailtemplate_newsletter_notification %}<div class="checkbox">
+                <label><input type="checkbox" name="preference_notification" value="1"{{ preference_notification ? ' checked="checked"' }} /> {{ entry_preference_notification }}</label>
+              </div>{% endif %}
+              {% if module_emailtemplate_newsletter_newsletter %}<div class="checkbox">
+                <label><input type="checkbox" name="preference_newsletter" value="1"{{ preference_newsletter ? ' checked="checked"' }} /> {{ entry_preference_newsletter }}</label>
+              </div>{% endif %}
+            </div>
+            {% if module_emailtemplate_newsletter_showcase %}
+            <hr />
+            <div class="form-group">
+              <div class="checkbox">
+                <label><input type="checkbox" name="preference_showcase" value="1"{{ preference_showcase ? ' checked="checked"' }} /> {{ entry_preference_showcase }}</label>
+              </div>
+            </div>{% endif %}
+          </div>
+          <div class="panel-footer">
+            <div class="buttons clearfix">
+              <div class="pull-right">
+                <input type="submit" value="{{ button_unsubscribe }}" class="btn btn-link" onclick="$('#module-form').attr('action', '{{ action }}&action=unsubscribe')" />
+                <input type="submit" value="{{ button_save }}" class="btn btn-primary" />
+              </div>
+              {% if back %}<div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>{% endif %}
+            </div>
+          </div>
+        </div>
+      </form>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }}

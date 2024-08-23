@@ -1,0 +1,22 @@
+{% if cookie_consent_bar %}
+ <div id="cookie_bar"></div>
+  <script>
+	function iSenseLabsGDPR() {
+		var analytics_cookies_check = '{{ analytics_cookies_check }}';
+		if (analytics_cookies_check) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	window.onload = function() {
+		iSenseLabsGDPR();
+	};
+	$(document).ready(function() {
+	  $("#cookie_bar").load("index.php?route={{ gdprModulePath }}/cookie_consent_bar", function() {
+
+	  });
+
+	});
+  </script>
+{% endif %}

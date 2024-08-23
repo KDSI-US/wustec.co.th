@@ -1,0 +1,121 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="save-changes btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if install_success %}
+      <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ install_success }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="module_ocrestapi_status" id="input-status" class="form-control restapi_status">
+                {% if module_ocrestapi_status %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-entry-client_id">
+              <span data-toggle="tooltip" title="" data-original-title="{{ text_client_id }}">
+                {{ entry_client_id }}
+              </span>
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" name="module_ocrestapi_client_id" value="{{ module_ocrestapi_client_id }}" required="required"  />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-entry-client_secret">
+                  <span data-toggle="tooltip" title="" data-original-title="{{ text_client_secret }}">
+                    {{ entry_client_secret }}
+                  </span>
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" name="module_ocrestapi_client_secret" value="{{ module_ocrestapi_client_secret }}" required="required"  />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-entry-order-id">
+                  <span data-toggle="tooltip" title="" data-original-title="{{ text_basic_token }}">
+                    {{ entry_basic_token }}
+                  </span>
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control basic_token" id="input-key" type="text" name="basic_token"
+                     value="{{ basic_token }}" readonly />
+              <br>
+              <button type="button" id="button-generate" class="btn btn-primary"><i class="fa fa-refresh"></i> {{ button_generate_basic_token }}</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-entry-token_ttl">
+                  <span data-toggle="tooltip" title="" data-original-title="{{ text_token_ttl }}">
+                    {{ entry_token_ttl }}
+                  </span>
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" name="module_ocrestapi_token_ttl" value="{{ module_ocrestapi_token_ttl }}" required="required"  />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-entry-allowed-ip">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ text_allowed_ip }}">
+                      {{ entry_allowed_ip }}
+                    </span>
+            </label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" name="module_ocrestapi_allowed_ip"
+                     value="{{ module_ocrestapi_allowed_ip }}"/>
+            </div>
+          </div>
+          
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+  $('#button-generate').on('click', function() {
+    var client_id = $('[name=module_ocrestapi_client_id]').val();
+    var client_secret = $('[name=module_ocrestapi_client_secret]').val();
+    if(client_id.length < 1 || client_secret.length < 1) {
+      alert("Client ID and client secret are required!");
+    } else {
+      var b64 = btoa(client_id+":"+client_secret);
+      $('.basic_token').val(b64);
+    }
+  });
+  //--></script>
+{{ footer }}

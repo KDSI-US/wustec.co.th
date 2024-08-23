@@ -1,0 +1,29 @@
+//var words = ['Awesome!', 'Cool!', 'Great!', 'Amazing!'];
+var words = [{{ amazing_words }}];
+
+var swAllowOutsideClick = {{ sweetalert_cfg_allow_outside_click }};
+var swAutoCloseSeconds  = {{ sweetalert_cfg_auto_close_seconds }};
+
+
+{% if sweertalert_version == "1" %}
+
+    swal({
+        title  : "<img style='max-width: 33px; vertical-align: baseline;' src='image/catalog/likes.png' />" + words[Math.floor(Math.random() * words.length)],
+        "html" : true,
+        "text" : json['success'],
+        "type" : "success",
+        "timer": swAutoCloseSeconds,
+        "allowOutsideClick" : swAllowOutsideClick
+    });
+
+{% else %}
+
+    swal({
+        title  : "<img style='max-width: 33px; vertical-align: baseline;' src='catalog/view/theme/default/image/sweetalert/likes.png' />" + words[Math.floor(Math.random() * words.length)],
+        "html" : json['success'],
+        "type" : "success",
+        "timer": swAutoCloseSeconds,
+        "allowOutsideClick" : swAllowOutsideClick
+    });
+
+{% endif %}

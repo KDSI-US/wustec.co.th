@@ -1,0 +1,48 @@
+<div class="table-responsive">{{ git_hidden_tag }}
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-left">{{ column_name }}</td>
+        <td class="text-left">{{ column_email }}</td>
+        <td class="text-left">{{ column_customer_group }}</td>
+        <td class="text-left">{{ column_type }}</td>
+        <td class="text-left">{{ column_date_added }}</td>
+		<td class="text-left">{{ column_tax_id }}</td>
+        <td class="text-left">{{ column_seller_permit }}</td>
+        <td class="text-left">{{ column_seller_permit_file }}</td>
+        <td class="text-left">{{ column_approved }}</td>
+        <td class="text-right">{{ column_action }}</td>
+      </tr>
+    </thead>
+    <tbody>
+    {% if customer_approvals %}
+    {% for customer_approval in customer_approvals %}
+    <tr>
+      <td class="text-left">{{ customer_approval.name }}</td>
+      <td class="text-left">{{ customer_approval.email }}</td>
+      <td class="text-left">{{ customer_approval.customer_group }}</td>
+      <td class="text-left">{{ customer_approval.type }}</td>
+      <td class="text-left">{{ customer_approval.date_added }}</td>
+            <td class="text-left">{{ customer_approval.tax_id }}</td>
+      <td class="text-left">{{ customer_approval.seller_permit }}</td>
+      {% if customer_approval.has_seller_permit_file %}
+        <td class="text-center"><a href="{{ customer_approval.seller_permit_file }}" data-toggle="tooltip" title="Open file" target="_blank" class="btn btn-info" ><i class="fa fa-picture-o" aria-hidden="true"></i></a></td>
+      {% else %}
+        <td class="text-left"></td>
+      {% endif %}
+      <td class="text-left">{{ customer_approval.approved }}</td>
+      <td class="text-center"><a href="{{ customer_approval.approve }}" data-toggle="tooltip" title="{{ button_approve }}" class="btn btn-success"><i class="fa fa-thumbs-o-up"></i></a> <a href="{{ customer_approval.reason_denied }}" id="reason_denied" data-toggle="tooltip" title="{{ button_deny }}" class="btn btn-danger"><i class="fa fa-thumbs-o-down"></i></a> <a href="{{ customer_approval.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+      <td class="text-center" colspan="10">{{ text_no_results }}</td>
+    </tr>
+    {% endif %}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+</div>

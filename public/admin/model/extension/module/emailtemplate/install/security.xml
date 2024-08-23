@@ -1,0 +1,48 @@
+<modification>
+    <name>Email Templates Security</name>
+    <code>emailtemplates_security</code>
+    <version>3.0.5.114</version>
+    <author>Opencart-Templates</author>
+    <link>https://www.opencart-templates.co.uk/advanced_professional_email_template</link>
+
+    <file path="system/library/cart/customer.php">
+        <operation>
+            <search index="0"><![CDATA[private $customer_id;]]></search>
+            <ignoreif><![CDATA[private $load;]]></ignoreif>
+            <add position="after"><![CDATA[	private $load;]]></add>
+        </operation>
+        <operation>
+            <search index="0"><![CDATA[$this->request = $registry->get('request');]]></search>
+            <ignoreif><![CDATA[$this->load = $registry->get('load');]]></ignoreif>
+            <add position="after"><![CDATA[		$this->load = $registry->get('load');]]></add>
+        </operation>
+        <operation>
+            <search index="0"><![CDATA[$this->db->query("UPDATE " . DB_PREFIX . "customer SET]]></search>
+            <add position="before"><![CDATA[				// Customer IP Changed?
+                        if (isset($this->request->get['route']) && !in_array($this->request->get['route'], array('common/login', 'common/logout')) && (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')) {
+                            $user = new User($registry);
+
+                            if (!$user->isLogged()) {
+                                $customer_ip_query = $this->db->query("(SELECT ip FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$this->customer_id . "' AND ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "') UNION (SELECT ip FROM " . DB_PREFIX . "customer_ip WHERE customer_id = '" . (int)$this->customer_id . "' AND ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "')");
+
+                                if (!$customer_ip_query->num_rows) {
+                                    $this->load->controller('extension/module/emailtemplate_security/customerIpChanged', array($this->customer_id));
+                                }
+                            }
+                        }
+            ]]></add>
+        </operation>
+        <operation>
+            <search index="1"><![CDATA[$this->db->query("UPDATE " . DB_PREFIX . "customer SET]]></search>
+            <add position="before"><![CDATA[			// Customer IP Changed?
+			if (!$override) {
+                $customer_ip_query = $this->db->query("(SELECT ip FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$this->customer_id . "' AND ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "') UNION (SELECT ip FROM " . DB_PREFIX . "customer_ip WHERE customer_id = '" . (int)$this->customer_id . "' AND ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "')");
+
+                if (!$customer_ip_query->num_rows) {
+                    $this->load->controller('extension/module/emailtemplate_security/customerIpChanged', array($this->customer_id));
+                }
+            }
+            ]]></add>
+        </operation>
+    </file>
+</modification>

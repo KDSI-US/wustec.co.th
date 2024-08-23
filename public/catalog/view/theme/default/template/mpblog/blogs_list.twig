@@ -1,0 +1,178 @@
+{{ header }}
+<div id="container" class="container j-container mp-blog {{ journal_class }}">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="row">{{ column_left }}
+		{% if theme_name == 'journal2' %}
+			{{ column_right }}
+		{% endif %}
+		{% if column_left and column_right %}
+	    {% set class = 'col-sm-6' %}
+	    {% elseif column_left or column_right %}
+	    {% set class = 'col-sm-9' %}
+	    {% else %}
+	    {% set class = 'col-sm-12' %}
+	    {% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}
+			<h1>{{ heading_title }}</h1>
+			{% if mpblogposts %}
+			<div class="xl-100">
+				{% for mpblogpost in mpblogposts %}
+				<div class="mpblogpost-layout mpblogpost-list">
+					<div class="row">
+						<div class="col-sm-4 xl-33 sm-100">
+							<div class="image">
+							{% if mpblogpost.showImage %}
+							<a href="{{ mpblogpost.href }}"><img src="{{ mpblogpost.thumb }}" alt="{{ mpblogpost.name }}" title="{{ mpblogpost.name }}" class="img-responsive" /></a>
+							{% else %}
+							<div class="video-container"><iframe width="{{ mpblogpost.width }}" height="{{ mpblogpost.height }}" src="{{ mpblogpost.iframeVideo }}" frameborder="0" allowfullscreen></iframe></div>
+							{% endif %}
+							<ul class="list-inline dar hidden-xs">
+								{% if show_author %}
+								<li title="{{ mpblogpost.author }}">
+									<i class="fa fa-user"></i>                    
+									{% if mpblogpost.authorurl %}
+									<a href="{{ mpblogpost.authorurl }}">
+										{{ mpblogpost.author }}
+									</a>
+									{% else %}
+									{{ mpblogpost.author }}
+									{% endif %}
+								</li>
+								{% endif %}
+							</ul>  
+							{% if show_viewed %}
+								<div class="view" title="{{ mpblogpost.viewed }}">
+									<i class="fa fa-eye"></i>
+									{{ mpblogpost.viewed }}
+								</div>
+							{% endif %}
+						</div>
+						</div>
+						<div class="col-sm-8 xl-66 sm-100">
+							<div class="caption">
+								<h4><a href="{{ mpblogpost.href }}">{{ mpblogpost.name }}</a></h4>
+								<ul class="list-inline dar mpblogpost-id-{{ mpblogpost.mpblogpost_id }}">
+									{% if show_date %}
+									<li title="{{ mpblogpost.date_available }}">
+										<i class="fa fa-calendar"></i>
+										{% if mpblogpost.date_availableurl %}
+										<a href="{{ mpblogpost.date_availableurl }}">{{ mpblogpost.date_available }}</a>
+										{% else %}
+										{{ mpblogpost.date_available }}
+										{% endif %}
+									</li>
+									{% endif %}
+									{% if show_rating %}
+										<li title="{{ mpblogpost.rating }}">
+											<div class="rating small-rating">
+												<div class="rating-icons-container text-center">
+												<div class="rating-icons-wrap">
+												 {% for i in 1..5 %}
+													{% if mpblogpost.rating < i %}
+													{% set rdecimal = 'EMPTY_STAR' %}
+													{% if mpblogpost.rating|round(1, 'ceil') == i %}
+														{% set rates = mpblogpost.rating|split('.') %}
+														{% if rates[1] %}
+															{% if "0" ~ rates[1]|round(1, 'floor') < 0.6000 %}
+																{% set rdecimal = 'HALF_STAR' %}
+															{% endif %}
+															{% if "0" ~ rates[1]|round(1, 'floor') > 0.6000 %}
+																{% set rdecimal = 'FULL_STAR' %}
+															{% endif %}
+														{% endif %}
+													{% endif %}
+												{% if rdecimal == 'HALF_STAR' %}
+													<div class="rating-icons half">
+														<span class="red"></span>  
+														<span class="grey"></span>  
+														<i class="fa fa-star"></i>
+													</div>
+												{% endif %} {% if rdecimal == 'FULL_STAR' %}
+													<div class="rating-icons full">
+														<span class="red"></span>  
+														<span class="grey"></span>  
+														<i class="fa fa-star"></i>
+													</div>
+												{% endif %} {% if rdecimal == 'EMPTY_STAR' %}
+													<div class="rating-icons">
+														<span class="red"></span>  
+														<span class="grey"></span>  
+														<i class="fa fa-star"></i>
+													</div>
+												{% endif %} {% else %}
+												<div class="rating-icons full">
+													<span class="red"></span>  
+													<span class="grey"></span>  
+													<i class="fa fa-star"></i>
+												</div>
+												{% endif %}
+												{% endfor %}
+												</div>
+												</div>
+											</div>
+										</li>
+										{% endif %}
+								</ul>
+								{% if show_sdescription %}<p class="desc">{{ mpblogpost.sdescription1 }} {% if mpblogpost.sdescription1 and show_readmore %} <a href="{{ mpblogpost.href }}">  {{ text_readmore }} </a> {% endif %}</p>{% endif %}
+								<ul class="list-inline dar">
+									{% if show_wishlist %}
+									<li title="{{ mpblogpost.wishlist }}">
+										<span class="mpbloglike {% if mpblogpost.isLikeByMe %} liked {% endif %}" data-id="{{ mpblogpost.mpblogpost_id }}">
+										<i class="fa fa-heart {% if not mpblogpost.isLikeByMe %} fa-heart-o {% endif %}"></i>
+										<span>{{ mpblogpost.wishlist }}</span>
+										</span>
+									</li>
+									{% endif %}
+									{% if show_comments %}
+									<li title="{{ mpblogpost.comments }}">
+										<i class="fa {% if mpblogpost.comments %} fa-comments {% else %} fa-comments-o {% endif %}"></i>
+										{{ mpblogpost.comments ~ ' ' ~ text_comment }}
+									</li>
+									{% endif %}
+								</ul>
+								{% if show_tag and mpblogpost.tag %}
+								<ul class="list-inline blog-tags">
+									<li>
+										<i class="fa fa-tags"></i>
+										{% for rtag in mpblogpost.tag %}
+										{% if rtag.href %}
+							              <a href="{{ rtag.href }}">{{ rtag.tag }}</a>
+							              {% else %}
+							              {{ rtag.tag }}
+							              {% endif %}
+											,
+										{% endfor %}
+									</li>
+								</ul>
+								{% endif %}
+							</div>
+						</div>
+					</div>  
+				</div>
+				{% endfor %}
+			</div>
+			<div class="row">
+				<div class="col-sm-6 text-left">{{ pagination }}</div>
+				<div class="col-sm-6 text-right">{{ results }}</div>
+			</div>
+
+			{% else %}
+			<div class="row">
+			<div class="col-sm-12">
+				<p>{{ text_empty }}</p>
+				<div class="buttons text-right">
+					<div><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+				</div>
+			</div>
+			</div>
+			{% endif %}
+			{{ content_bottom }}</div>
+		{% if theme_name != 'journal2' %}
+	        	{{ column_right }}
+	      	{% endif %}</div>
+</div>
+{{ footer }}

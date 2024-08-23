@@ -1,0 +1,131 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+<div id="content" xmlns:v-on="http://www.w3.org/1999/xhtml">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="template-form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="template-form" class="form-horizontal">
+
+          <input type="hidden" name="id" value="{{ powerslip_template.id }}">
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="template_name" value="{{ powerslip_template.template_name }}" placeholder="{{ entry_name }}" class="form-control" />
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>Template dimensions</legend>
+
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="template_width">Width (cm)</label>
+              <div class="col-sm-10">
+                <input type="text" id="template_width" name="raw[width]" value="{{ powerslip_template.raw.width }}" v-model="width" v-on:keyup="onBoardDimensionChange" class="form-control" />
+                <small class="help-block">A4 format: 21cm</small>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="template_height">Height (cm)</label>
+              <div class="col-sm-10">
+                <input type="text" id="template_height" name="raw[height]" value="{{ powerslip_template.raw.height }}" v-model="height" v-on:keyup="onBoardDimensionChange" class="form-control" />
+                <small class="help-block">A4 format: 29.7cm</small>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="template_font_size">Font size (pt)</label>
+              <div class="col-sm-10">
+                <input type="text" id="template_font_size" name="raw[font_size]" value="{{ powerslip_template.raw.font_size }}" class="form-control" />
+                <small class="help-block">12pt (point) compares to 16px</small>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="template_inter_slip_space">Bottom Margin (cm)</label>
+              <div class="col-sm-10">
+                <input type="text" id="template_inter_slip_space" name="raw[inter_slip_space]" value="{{ powerslip_template.raw.inter_slip_space }}" class="form-control" />
+                <small class="help-block">Inter slip space</small>
+              </div>
+            </div>
+
+          </fieldset>
+          <div class="row">
+            <div class="col-sm-5">
+              {{ layout_vue }}
+              {{ product_loop_vue }}
+              {{ free_text_vue }}
+            </div>
+            <div class="col-sm-7">
+
+              {{ powerslip_template_form_drag_board }}
+
+              <!-- not used -->
+              <div id="app"></div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <style>
+        legend{
+          color: #42b883;
+        }
+
+        .small-td{
+          width: 22px;
+        }
+      </style>
+
+      {% if debug_powerslip %}
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <pre>{{ powerslip_template.raw_json }}</pre>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <script>
+        window.vue_data = {{ powerslip_template.raw_json ?? "{}" }};
+      </script>
+
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.11/interact.min.js"></script>
+      <link rel="stylesheet" href="view/javascript/powerslip/powerslip-interact.css?v2">
+      <script src="view/javascript/powerslip/powerslip-interact.js"></script>
+      <script src="view/javascript/powerslip/powerslip-template.vue.js"></script>
+
+{#
+      <link rel="stylesheet" href="view/javascript/powerslip/my-viewer/public/powerslip-interact.css">
+      <script src="http://192.168.1.90:5000/dist/js/app.js"></script>
+ #}
+    </div>
+  </div>
+</div>
+{{ footer }}

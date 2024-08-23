@@ -1,0 +1,35 @@
+<div class="container-fluid">
+<h3>{{ text_access_to_personal_data }}</h3>
+<p>{{ text_access_to_personal_data_helper }}</p>
+<ul class="nav nav-tabs" id="langtabs" role="tablist">
+{% for language in languages %}
+<li><a href="#lang-{{ language['language_id'] }}" role="tab" data-toggle="tab"><img src="{{ language['flag_url'] }}" title="{{ language['name'] }}"/> {{ language['name'] }}</a></li>
+{% endfor %}
+</ul> 
+<div class="tab-content">
+{% for language in languages %}
+<div class="tab-pane" id="lang-{{ language['language_id'] }}">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+      <h5><span class="required">*</span> <strong>{{ text_third_party_services }}</strong></h5>
+      <span class="help">{{ text_third_party_services_helper }}</span>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+      <textarea name="{{ moduleName }}[ThirdPartyServices][{{ language['language_id'] }}]" class="form-control" rows="4">{{ moduleData['ThirdPartyServices'][language['language_id']] is defined ? moduleData['ThirdPartyServices'][language['language_id']] : '' }}</textarea>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+      <h5><strong>{{ text_other_services }}</strong></h5>
+      <span class="help">{{ text_other_services_helper }}</span>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+      <textarea name="{{ moduleName }}[OtherServices][{{ language['language_id'] }}]" class="form-control" rows="4">{{ moduleData['OtherServices'][language['language_id']] is defined ? moduleData['OtherServices'][language['language_id']] : '' }}</textarea>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+<hr /><br />
+</div>

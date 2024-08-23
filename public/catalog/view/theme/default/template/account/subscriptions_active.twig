@@ -1,0 +1,22 @@
+{% if active_plan %}
+<div class="membership_active">
+  <div class="active_heading">
+    <h3>{{ active_plan.plan_name }}</h3>
+    <span class="activate_icon"><i class="fa fa-check-circle-o" aria-hidden="true"></i> <em>{{ text_active }}</em></span>
+  </div>
+  <ul class="list-unstyled">
+    <li>{{ text_active_plan }}: <b>{{ active_plan.name }}</b></li>
+    <li>{{ text_active_startdate }}: <b>{{ active_plan.start_date }}</b></li>
+    <li>{{ text_active_expdate }}: <b>{{ active_plan.end_date }}</b></li>
+    {% if active_plan.plan_info %}
+    <li>{{ text_active_info }}:
+      <ul>
+        {% for plan_info in active_plan.plan_info %}
+        <li>{{ plan_info.name }}</li>
+        {% endfor %}
+      </ul>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

@@ -1,0 +1,100 @@
+{{ header }}{{ git_hidden_tag }}
+<div id="container" class="container j-container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{% if custom_themename != 'journal2' %}<div class="row">{% endif %}{{ column_left }}{% if custom_themename == 'journal2' %}{{ column_right }}{% endif %}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1>{{ heading_title }}</h1>
+      <div class="membership_content" id="membership_content" {% if custom_themename == 'journal2' %}style="display:grid;"{% endif %}>
+        {% if sub_title %}
+        <div class="memberheading">
+          <span>{{ sub_title }}</span>
+        </div>
+        {% endif %}
+        {{ top_description }}
+        <div class="prcing_table">
+          <div class="table_titles clearfix">
+            <div class="table_cols_one title_text">{{ column_plan }}</div>
+            <div class="table_cols_two title_text2 hidden-xs">{{ column_feature }}</div>
+          </div>
+          {% for mpplan in mpplans %}
+          <div class="pricing_content green clearfix" id="pricingcontent-{{ mpplan.mpplan_id }}">
+            <div class="table_cols_one">
+              <div class="plan_name plan_name{{ mpplan.mpplan_id }}">{{ mpplan.name }}</div>
+              <h3 class="visible-xs xs-price">{{ mpplan.price }}</h3>
+              <div class="plan_time plan_time{{ mpplan.mpplan_id }}">{{ text_duration }} {{ mpplan.duration }}</div>
+            </div>  
+            <div class="table_cols_two plan_detail">
+              <ul class="list-unstyled">
+                {% if mpplan.informations %}
+                {% for information in mpplan.informations %}
+                  <li><label>{{ information.name }}</label></li>
+                {% endfor %}
+                {% endif %}
+              </ul>
+              <div class="plan_price">
+                <h3 class="hidden-xs">{{ mpplan.price }}</h3>
+                <a href="{{ mpplan.href }}" class="plan_view">{{ button_details }}</a>
+                <button class="plan_buy plan_buy{{ mpplan.mpplan_id }} btn" rel="{{ mpplan.mpplan_id }}" onclick="MPMEMBERSHIP.add('{{ mpplan.product_id }}','{{ mpplan.mpplan_id }}')">{{ button_buy }}</button>
+              </div>
+            </div>
+          </div>
+          <style type="text/css">
+            .membership_content .pricing_content .plan_name{{ mpplan.mpplan_id }} {
+              {% set style_one = '' %}
+              {% if mpplan.first_textcolor %}
+              {% set style_one = 'color: ' ~ mpplan.first_textcolor ~ ';' %}
+              {% endif %}
+              {{ style_one }}
+            }
+
+            .membership_content .pricing_content .plan_time{{ mpplan.mpplan_id }} {
+              {% set style_two = '' %}
+              {% if mpplan.second_textcolor %}
+              {% set style_two = 'color: ' ~ mpplan.second_textcolor ~ ';' %}
+              {% endif %} 
+              {{ style_two }}
+            }
+
+            #pricingcontent-{{ mpplan.mpplan_id }}:after {
+              {% set style_one = '#000D20' %}
+              {% if mpplan.first_bgcolor %}
+                {% set style_one = mpplan.first_bgcolor %}
+              {% endif %}
+              {% set style_two = '#343D4E' %}
+              {% if mpplan.second_bgcolor %}
+                {% set style_two = mpplan.second_bgcolor %}
+              {% endif %}
+              background-image: -webkit-linear-gradient(90deg, {{ style_two }} 50%, {{ style_one }} 50%);
+            }
+            #pricingcontent-{{ mpplan.mpplan_id }} {
+              {% set style_one = '#70B139' %}
+              {% if mpplan.first_bgcolor %}
+                {% set style_one = mpplan.first_bgcolor %}
+              {% endif %}
+              {% set style_two = '#5DA22E' %}
+              {% if mpplan.second_bgcolor %}
+                {% set style_two =  mpplan.second_bgcolor %}
+              {% endif %}
+              background-image: -webkit-linear-gradient(90deg, {{ style_two }} 50%, {{ style_one }} 50%) ;
+            }
+          </style>
+          {% endfor %}
+        </div>
+      </div>
+      {{ bottom_description }}
+      {{ content_bottom }}</div>
+    {% if custom_themename != 'journal2' %}{{ column_right }}{% endif %}
+  {% if custom_themename != 'journal2' %}</div>{% endif %}
+</div>
+{{ footer }}

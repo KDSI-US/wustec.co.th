@@ -1,0 +1,135 @@
+{{ header }}
+<link href="view/javascript/blog/bootstrap-switch.css" rel="stylesheet">
+<script src="view/javascript/blog/bootstrap-switch.js"></script>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+       {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+   {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+	{{ webxheader }}
+	 <div class="row">
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			<div class="tile">
+			  <div class="tile-heading">{{ text_t_post }} <span class="pull-right"></span></div>
+			  <div class="tile-body"><i class="fa fa fa-rss"></i>
+				<h2 class="pull-right">{{ post_total }}</h2>
+			  </div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			<div class="tile">
+			  <div class="tile-heading">{{ text_t_cpost }} <span class="pull-right"></span></div>
+			  <div class="tile-body"><i class="fa fa-chain"></i>
+				<h2 class="pull-right">{{ category_total }}</h2>
+			  </div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			<div class="tile">
+			  <div class="tile-heading">{{ text_pending_comment }} <span class="pull-right"></span></div>
+			  <div class="tile-body"><i class="fa fa-comment"></i>
+				<h2 class="pull-right">{{ comment_total }}</h2>
+			  </div>
+			</div>
+		</div>
+	 </div>
+	 <div class="row">
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-comment"></i> {{ heading_recent_top_comment }}</h3>
+				</div>
+				<div class="table-responsive webx_comment">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<td class="text-left">{{ entry_srno }}</td>
+								<td class="text-left">{{ entry_post }}</td>
+								<td>{{ entry_author }}</td>
+								<td>{{ entry_status }}</td>
+								<td class="text-right">{{ entry_action }}</td>
+							</tr>
+						</thead>
+						<tbody>
+						{% if comments %}
+							{% set i=1 %}
+							{% for comment in comments %}
+							<tr>
+								<td>{{ i }}</td>
+								<td>{{ comment.name }}</td>
+								<td>{{ comment.author }}</td>
+								<td>{{ comment.status }}</td>
+								<td class="text-right">
+									<a href="{{ comment.edit }}"><i class="fa fa-pencil"></i></a> 
+								</td>
+							</tr>
+						  {% set i=i+1 %}
+							 {% endfor %}
+						   {% else %}
+						  <tr>
+							<td class="text-center" colspan="5">{{ text_no_results }}</td>
+						  </tr>
+						  {% endif %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-rss"></i>{{ heading_recent_top_post }}</h3>
+				</div>
+				<div class="table-responsive webx_comment">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<td class="text-left">{{ entry_srno }}</td>
+								<td class="text-left">{{ entry_post }}</td>
+								<td>{{ entry_post }}</td>								
+								<td>{{ entry_status }}</td>								
+								<td class="text-right">{{ entry_action }}</td>
+							</tr>
+						</thead>
+						<tbody>
+						{% if posts %}
+							{% set i=1 %}
+							{% for post in posts %}
+							<tr>
+								<td>{{ i }}</td>
+								<td>{{ post.name }}</td>
+								<td>{{ post.viewed }}</td>
+								<td>{{ post.status }}</td>
+								<td class="text-right">
+									<a href="{{ post.edit }}"><i class="fa fa-pencil"></i></a>
+								</td>
+							</tr>
+						{% set i=i+1 %}
+							 {% endfor %}
+						   {% else %}
+						  <tr>
+							<td class="text-center" colspan="5">{{ text_no_results }}</td>
+						  </tr>
+						  {% endif %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{{ footer }}

@@ -1,0 +1,253 @@
+{{ header }}
+<div id="galleria-page" class="container">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}
+			{% if heading_title %}
+				<h1>{{ heading_title }}</h1>
+			{% endif %}
+			<div class="galleria-content{% if page_view == 2 %} swiper-container{% endif %}">
+				<div class="galleria-items{% if page_view == 0 %} row{% elseif page_view == 2 %} swiper-wrapper{% endif %}">
+					{% set i = 0 %}
+					{% for album in gallery %}
+						{% set i = i + 1 %}
+						{% if not page_view %}
+							<div class="col-sm-{{ column }}">
+								<div class="galleria-album galleria-grid-item">
+									{% if page_album_text == 1 %}
+										{% if page_album_title %}<a class="galleria-album-name" href="{{ album.href }}">{{ album.name }}</a>{% endif %}
+										{% if page_album_description %}<div class="galleria-album-description">{{ album.description }}</div>{% endif %}
+									{% endif %}
+									<a class="galleria-album-image" href="{{ album.href }}" title="{{ album.name }}">
+										<img src="{{ album.image }}" alt="{{ album.name }}" title="{{ album.name }}" class="img-responsive"/>
+										{% if page_album_text == 2 or page_album_text == 3 %}
+											<span class="galleria-spoiler">
+												{% if page_album_title %}<span class="galleria-album-name">{{ album.name }}</span>{% endif %}
+												{% if page_album_description %}<span class="galleria-album-description">{{ album.description }}</span>{% endif %}
+											</span>
+										{% endif %}
+									</a>
+									{% if not page_album_text %}
+										{% if page_album_title %}<a class="galleria-album-name" href="{{ album.href }}">{{ album.name }}</a>{% endif %}
+										{% if page_album_description %}<div class="galleria-album-description">{{ album.description }}</div>{% endif %}
+									{% endif %}
+								</div>
+							</div>
+							{% if i % page_grid == 0 %}<div class="clearfix"></div>{% endif %}
+
+						{% elseif page_view == 1 %}
+							<div class="galleria-album galleria-list-item">
+								<div class="row">
+									<div class="col-sm-3">
+										<a class="galleria-album-image" href="{{ album.href }}" title="{{ album.name }}">
+											<img src="{{ album.image }}" alt="{{ album.name }}" title="{{ album.name }}" class="img-responsive"/>
+										</a>
+									</div>
+									<div class="col-sm-9">
+										<div class="album-text">
+											{% if page_album_title %}<a class="galleria-album-name" href="{{ album.href }}">{{ album.name }}</a>{% endif %}
+											{% if page_album_description %}<div class="galleria-album-description">{{ album.description }}</div>{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+
+						{% elseif page_view == 2 %}
+							<div class="galleria-album swiper-slide">
+								<a class="galleria-album-image" href="{{ album.href }}" title="{{ album.name }}">
+									<img src="{{ album.image }}" alt="{{ album.name }}" title="{{ album.name }}" class="img-responsive"/>
+									{% if page_album_text == 2 or page_album_text == 3 %}
+										<span class="galleria-spoiler">
+											{% if page_album_title %}<span class="galleria-album-name">{{ album.name }}</span>{% endif %}
+											{% if page_album_description %}<span class="galleria-album-description">{{ album.description }}</span>{% endif %}
+										</span>
+									{% endif %}
+								</a>
+								{% if not page_album_text %}
+									{% if page_album_title %}<a class="galleria-album-name" href="{{ album.href }}">{{ album.name }}</a>{% endif %}
+								{% endif %}
+							</div>
+						
+						{% elseif page_view == 3 %}
+							<div class="galleria-album masonry-item">
+								<a class="galleria-album-image" href="{{ album.href }}" title="{{ album.name }}">
+									<img src="{{ album.image }}" alt="{{ album.name }}" title="{{ album.name }}" class="img-responsive"/>
+									{% if page_album_text == 2 or page_album_text == 3 %}
+										<span class="galleria-spoiler">
+											{% if page_album_title %}<span class="galleria-album-name">{{ album.name }}</span>{% endif %}
+											{% if page_album_description %}<span class="galleria-album-description">{{ album.description }}</span>{% endif %}
+										</span>
+									{% endif %}
+								</a>
+								{% if not page_album_text %}
+									{% if page_album_title %}<a class="galleria-album-name" href="{{ album.href }}">{{ album.name }}</a>{% endif %}
+									{% if page_album_description %}<div class="galleria-album-description">{{ album.description }}</div>{% endif %}
+								{% endif %}
+							</div>
+
+						{% endif %}
+					{% endfor %}
+				</div>
+
+				{% if page_view == 2 %}
+				<div class="swiper-pager">
+				    <div class="swiper-button-next"></div>
+				    <div class="swiper-button-prev"></div>
+				</div>
+				{% endif %}
+
+			</div>
+			<div class="galleria-description">
+				{{ page_description }}
+			</div>
+			{{ column_right }}
+		</div>
+	</div>
+</div>
+{{ pagination }}
+{{ content_bottom }}
+<style>
+.hidden {
+	display: none;
+}
+.galleria-album {
+	overflow: hidden;
+}
+.galleria-album-image,
+.galleria-album-name {
+	display: block;
+	text-align: center;
+}
+.galleria-album-name{
+	font-size: 15px;
+	line-height: 24px;
+}
+.galleria-description {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.galleria-album-image img {
+	margin: 0 auto;
+	transition: 0.4s;
+}
+{% if animation %}
+.galleria-album:hover img {
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+}
+.galleria-album-image {
+    overflow: hidden;
+}
+{% endif %}
+{% if page_album_text == 2 %}
+.galleria-spoiler {
+    position: absolute;
+    display: block;
+    background: rgba(0,0,0,0.4);
+    color: #ffffff;
+    padding: 5px;
+    width: 100%;
+    max-height: 50%;
+    transition: 0.3s;
+}
+.galleria-album-image {
+	position:relative;
+	overflow: hidden;
+}
+.galleria-album-image:hover .galleria-spoiler{
+	bottom: -50px;
+	-moz-transform: translate(0px, -50px);
+	-webkit-transform: translate(0px, -50px);
+	-o-transform: translate(0px, -50px);
+	-ms-transform: translate(0px, -50px);
+	transform: translate(0px, -50px);
+}
+{% endif %}
+{% if page_album_text == 3 %}
+.galleria-spoiler {
+    position: absolute;
+    display: block;
+    background: rgba(0,0,0,0.5);
+    color: #ffffff;
+    padding: 5px;
+    width: 100%;
+    bottom: 0;
+    max-height: 50%;
+}
+.galleria-album-image {
+	position:relative;
+	overflow: hidden;
+}
+{% endif %}
+{% if not page_view %}
+.galleria-album {
+	margin-bottom: 25px;
+}
+{% endif %}
+{% if page_view == 1 %}
+.galleria-album {
+	box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+	margin-bottom: 25px;
+	border-radius: 5px;
+}
+.galleria-album-name {
+	text-align: left;
+}
+.album-text {
+    padding: 10px 10px 10px 0;
+}
+{% endif %}
+{% if page_view == 2 %}
+.galleria-album{
+	text-align: center;
+}
+{% endif %}
+{% if page_view == 3 %}
+.galleria-album { 
+	box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+	margin-bottom: 20px; 
+	width: {{ album_width }}px;
+}
+.galleria-album-name,.galleria-album-description {
+	padding: 5px 12px;
+}
+{% endif %}
+{% if page_css %}{{ page_css }}{% endif %}
+</style>
+
+{% if page_view == 2 %}
+<script><!--
+$('.galleria-content').swiper({
+	mode: 'horizontal',
+	slidesPerView: {{ page_grid }},
+	nextButton: '.galleria-content .swiper-button-next',
+    prevButton: '.galleria-content .swiper-button-prev',
+	autoplay: 2500,
+	spaceBetween: 20,
+	loop: true
+});
+//--></script>
+{% elseif page_view == 3 %}
+<script><!--
+$(window).load(function(){ 
+  	$('.galleria-items').masonry({
+	  itemSelector: '.masonry-item',
+	  columnWidth: {{ album_width }},
+	  gutter: 20
+	});
+});
+//--></script>
+{% endif %}
+{{ footer }}

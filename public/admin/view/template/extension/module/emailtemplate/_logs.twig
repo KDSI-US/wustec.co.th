@@ -1,0 +1,167 @@
+<div class="panel panel-default" id="form-logs">
+  <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_sent }}</h3></div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6 col-lg-3">
+        <div class="form-group">
+          <label for="filter_emailtemplate_id" class="control">{{ text_template }}</label>
+          <select name="filter_emailtemplate_id" id="filter_emailtemplate_id" class="form-control form-filter">
+            <option value="">{{ text_all }} ({{ total_template_logs }})</option>
+            {% if total_missing_template_logs %}<option value="missing"{{ filter_emailtemplate_id == 'missing' ? ' selected="selected"' }}>{{ text_missing }} ({{ total_missing_template_logs }})</option>{% endif %}
+            {% for row in emailtemplates %}
+              <option value="{{ row.emailtemplate_id }}"{{ filter_emailtemplate_id == row.emailtemplate_id or (filter_emailtemplate_id == '' and filter_emailtemplate_key and filter_emailtemplate_key == row.emailtemplate_key) ? ' selected="selected"' }}>{{ row.label }}{% if row.count %} ({{ row.count }}){% endif %}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="form-group">
+          <label for="filter_email" class="control">{{ entry_email }}</label>
+          <input class="form-control" type="text" name="filter_email" id="filter_email" value="{{ filter_email }}" />
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-2">
+        <div class="form-group">
+          <label for="filter_customer_id" class="control">{{ text_customer }}</label>
+          <input type="hidden" name="filter_customer_id" id="filter_customer_id" class="form-filter" value="{{ filter_customer_id }}" />
+          <div class="input-group">
+            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control input-autocomplete-customer" data-field="input[name=filter_customer_id]" type="text" name="" value="{{ filter_customer }}" autocomplete="off" placeholder="{{ text_search }}" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-2">
+        <div class="form-group">
+          <label for="filter_store_id" class="control">{{ entry_store }}</label>
+          <select name="filter_store_id" id="filter_store_id" class="form-control form-filter">
+            <option value="">{{ text_select }}</option>
+            {% for store in stores %}
+              <option value="{{ store.store_id }}"{{ filter_store_id == store.store_id and filter_store_id != '' ? ' selected="selected"' }}>{{ store.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-2">
+        <div class="form-group">
+          <label for="filter_sent" class="control">{{ text_sent }}</label>
+          <div class="input-group">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-default danger {{ filter_sent == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                <input class="form-filter" type="radio" name="filter_sent" value="0" {{ filter_sent == 0 ? ' checked="checked"' }}/><i class="fa fa-fw fa-times"></i>
+              </label>
+              <label class="btn btn-default success {{ filter_sent == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                <input class="form-filter" type="radio" name="filter_sent" value="1" {{ filter_sent == 1 ? ' checked="checked"' }}/><i class="fa fa-fw fa-check"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ajax-filter">
+      <div class="table-responsive">
+        <table class="table table-bordered table-row-check" id="template_list">
+          <thead class="thead-light">
+          <tr>
+            <th width="45" class="text-center"><input type="checkbox" data-checkall="input[name^='selected']" /></th>
+            <th><a href="{{ sort_subject }}"{{ sort == 'subject' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_subject }}</a> / <a href="{{ sort_to }}"{{ sort == 'to' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_to }}</a> / <a href="{{ sort_from }}"{{ sort == 'from' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_from }}</a></th>
+            <th class="text-center">
+              {% if filter_sent %}
+                <a href="{{ sort_sent }}"{{ sort == 'sent' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_sent }}</a>
+              {% else %}
+                <a href="{{ sort_added }}"{{ sort == 'added' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_date }}</a>
+              {% endif %}
+              {% if log_read_enabled %} (<a href="{{ sort_read }}"{{ sort == 'read' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_read }}</a>){% endif %}</th>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% if logs %}
+            {% for row in logs %}
+              <tr data-id="{{ row.id }}">
+                <td class="text-center"><input type="checkbox" name="selected[]" value="{{ row.id }}" /></td>
+                <td class="cell-mail-info"><b>{{ row.subject }}</b>
+                  <div class="text-small">
+                    <i>{{ column_to }}:</i>
+                    {% if row.customer_url %}
+                      <a href="{{ row.customer_url }}">{{ row.customer_name }}</a> &lt;<a href="mailto:{{ row.to }}?subject={{ row.subject }}">{{ row.to }}</a>&gt;
+                    {% else %}
+                      <a href="mailto:{{ row.to }}?subject={{ row.subject }}">{{ row.to }}</a>
+                    {% endif %}
+                  </div>
+                  <div class="text-small">
+                    <i>{{ column_from }}:</i>
+                    {% if row.sender %}
+                      {{ row.sender }} &lt;<a href="mailto:{{ row.from }}?subject={{ row.subject }}">{{ row.from }}</a>&gt;
+                    {% else %}
+                      <a href="mailto:{{ row.from }}?subject={{ row.subject }}">{{ row.from }}</a>
+                    {% endif %}
+                  </div>
+                </td>
+                <td class="text-center"><i>{{ row.sent }}</i>{% if row.read %}<br /> (<i><b>{{ row.read }}</b></i>){% endif %}</td>
+                <td class="text-right">
+                  <div class="btn-group" style="white-space:nowrap;font-size:0;">
+                    {% if row.emailtemplate_url %}
+                      <a href="{{ row.emailtemplate_url }}" style="float:none;" data-toggle="tooltip" title="{{ row.emailtemplate_label }} ({{ row.emailtemplate_key }})" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+                    {% endif %}
+                    {% if row.download_url %}
+                      <a href="{{ row.download_url }}" style="float:none;" data-toggle="tooltip" title="{{ text_download }}" class="btn btn-warning"><i class="fa fa-download"></i></a>
+                    {% endif %}
+                    {% if row.resend %}
+                      <button data-resend="{{ row.resend }}" data-msg-confirm="{{ text_confirm }}" data-toggle="tooltip" data-loading-text="<i class='fa fa-circle-o-notch fa-fw fa-spin'></i>" type="button" class="btn btn-success" style="float:none;" title="{{ row.sent ? text_resend : button_send }}"><i class="fa fa-envelope"></i></button>
+                      <a href="javascript:void(0)" class="btn btn-info load-email" style="float:none;" data-toggle="tooltip" data-loading-text="<i class='fa fa-circle-o-notch fa-fw fa-spin'></i>" title="{{ text_preview }}"><i class="fa fa-eye"></i></a>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td class="text-center" colspan="6">
+                <p>{{ text_no_results }}</p>
+              </td>
+            </tr>
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="row mt-2">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ pagination_results }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="emailBox" class="panel panel-default panel-inbox hide mt-4">
+  <div class="panel-heading">
+    <ul class="panel-inbox-properties">
+      <li>
+        <label>{{ text_to }}</label>
+        <span data-field="customer_name"></span> &lt;<a data-field="to" data-type="mailto"></a>&gt;
+      </li>
+      <li>
+        <label>{{ text_from }}</label>
+        <span data-field="sender"></span>
+        <i>&lt;</i><a data-field="from" data-type="mailto"></a><i>&gt;</i>
+      </li>
+      <li>
+        <label>{{ text_subject }}</label>
+        <b data-field="subject"></b>
+      </li>
+    </ul>
+    <div class="panel-inbox-buttons">
+      <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-field="mailto"><i class="fa fa-reply"></i> {{ button_reply }}</a>
+      <button data-resend="" data-msg-confirm="{{ text_confirm }}" data-toggle="tooltip" data-loading-text="<i class='fa fa-circle-o-notch fa-fw fa-spin'></i>" type="button" class="btn btn-sm btn-success" style="float:none;"><i class="fa fa-envelope"></i> {{ button_send }}</button>
+      <div class="panel-inbox-meta">
+        <p><span data-field="sent"></span></p>
+        <p class="hide"><b>{{ text_read }}</b> <span data-field="read"></span></p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <iframe src="javascript:false;" id="emailBoxFrame" style="width:100%; height:500px; border:none; margin:0 auto; float:none; display:block"></iframe>
+  </div>
+  <div class="panel-loading">
+    <i class="fa fa-spinner fa-spin fa-5x" style="color:#009afd"></i>
+  </div>
+</div>

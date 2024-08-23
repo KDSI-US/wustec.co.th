@@ -1,0 +1,151 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div id="emailtemplate">
+    <div class="page-header">
+      <div class="container-fluid clearfix">
+        <div class="pull-right">
+          <button type="submit" form="form-account" class="btn btn-success"><i class="fa fa-plus"></i><span class="hidden-xs d-sm-none"> {{ button_install }}</span></button>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <h1>{{ heading_install }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item{{ loop.index==breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-account" class="container-fluid">
+      {% if error_warning is not empty %}
+        <div class="alert alert-danger">
+          <i class="fa fa-exclamation-circle"></i> {{ error_warning }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if error_attention is not empty %}
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-circle"></i> {{ error_attention }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if success is not empty %}
+        <div class="alert alert-success">
+          <i class="fa fa-exclamation-circle"></i> {{ success }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <i class="fa fa-pencil"></i> {{ text_install }}
+        </div>
+        <div class="panel-body">
+          <div class="list-group">
+            <div class="list-group-item">
+              <h4 style="margin-bottom:0">{{ text_order }}</h4>
+            </div>
+            <label class="list-group-item">
+              <input name="original_templates[order.customer]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_customer }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[order.admin]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_admin }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[order.update]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_update }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[order.voucher]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_voucher }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.voucher]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_voucher }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[order.return]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_return }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[order.return_customer]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_return_customer }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.return_history]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_return_history }} </label>
+          </div>
+          <div class="list-group">
+            <div class="list-group-item">
+              <h4 style="margin-bottom:0">{{ text_customer }}</h4>
+            </div>
+            <label class="list-group-item">
+              <input name="original_templates[customer.register]" value="1" checked="checked" type="checkbox"/>
+              {{ template_customer_register }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[customer.forgotten]" value="1" checked="checked" type="checkbox"/>
+              {{ template_customer_forgotten }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[information.contact_customer]" value="1" checked="checked" type="checkbox"/>
+              {{ template_information_contact_customer }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.customer_approve]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_customer_approve }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.customer_deny]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_customer_deny }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.customer_create]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_customer_create }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.customer_history]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_customer_history }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.customer_reward]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_customer_reward }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.customer_transaction]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_customer_transaction }} </label>
+          </div>
+          <div class="list-group">
+            <div class="list-group-item">
+              <h4 style="margin-bottom:0">{{ text_affiliate }}</h4>
+            </div>
+            <label class="list-group-item">
+              <input name="original_templates[affiliate.register]" value="1" checked="checked" type="checkbox"/>
+              {{ template_affiliate_register }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[affiliate.register_admin]" value="1" checked="checked" type="checkbox"/>
+              {{ template_affiliate_register_admin }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.affiliate_approve]" value="1" checked="checked" type="checkbox"/>
+              {{ template_affiliate_approve }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[admin.affiliate_deny]" value="1" checked="checked" type="checkbox"/>
+              {{ template_affiliate_deny }} </label>
+          </div>
+          <div class="list-group">
+            <div class="list-group-item">
+              <h4 style="margin-bottom:0">{{ text_admin }}</h4>
+            </div>
+            <label class="list-group-item">
+              <input name="original_templates[admin.newsletter]" value="1" checked="checked" type="checkbox"/>
+              {{ template_admin_newsletter }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[customer.register_admin]" value="1" checked="checked" type="checkbox"/>
+              {{ template_customer_register_admin }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[information.contact]" value="1" checked="checked" type="checkbox"/>
+              {{ template_information_contact }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[affiliate.register_admin]" value="1" checked="checked" type="checkbox"/>
+              {{ template_affiliate_register_admin }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[product.review]" value="1" checked="checked" type="checkbox"/>
+              {{ template_order_admin }} </label>
+          </div>
+          <div class="list-group">
+            <div class="list-group-item">
+              <h4 style="margin-bottom:0">{{ text_extra }}</h4>
+            </div>
+            <label class="list-group-item">
+              <input name="original_templates[journal.form]" value="1" checked="checked" type="checkbox"/>
+              {{ template_journal_form }} </label>
+            <label class="list-group-item">
+              <input name="original_templates[journal.newsletter]" value="1" checked="checked" type="checkbox"/>
+              {{ template_journal_newsletter }} </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{{ footer }}

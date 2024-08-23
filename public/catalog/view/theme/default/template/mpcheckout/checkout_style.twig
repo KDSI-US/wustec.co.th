@@ -1,0 +1,220 @@
+<style type="text/css">
+  
+  /* Button Colors start */
+  {% if background_button or font_button or border_button %}
+  .mp-checkout .mp-comments .btn-primary, .mp-checkout .login-panel .btn-primary, .mp-checkout .shoppingcart .table .input-group-btn .btn-primary{
+    {% if background_button %}
+    background: {{ background_button }};
+    {% endif %}
+
+    {% if font_button %}
+    color: {{ font_button }};
+    {% endif %}
+
+    {% if border_button  %}
+    border-color: {{ border_button }};
+    {% endif %}
+  }
+  {% endif %}
+  /* Button color end */
+
+  /* Button Hover Colors start */
+  {% if background_hover_button or font_hover_button or border_hover_button %}
+  .mp-checkout .mp-comments .btn-primary:hover, .mp-checkout .login-panel .btn-primary:hover,  .mp-checkout .shoppingcart .table .input-group-btn .btn-primary:hover{
+    {% if background_hover_button %}
+    background: {{ background_hover_button }};
+    {% endif %}
+
+    {% if font_hover_button %}
+    color: {{ font_hover_button }};
+    {% endif %}
+
+    {% if border_hover_button %}
+    border-color: {{ border_hover_button }};
+    {% endif %}
+  }
+  {% endif %}
+  /* Button Hover Color end */
+
+
+  /* Table Colors */
+  {% if background_table %}
+  .mp-checkout .shoppingcart .table{
+    background: {{ background_table }};
+  }
+  {% endif %}
+
+  {% if order_total_color or font_order_total_color %}
+  .mp-checkout .shoppingcart .table tr:last-child .c-total {
+    {% if order_total_color %}
+    background: {{ order_total_color }};
+    {% endif %}
+
+    {% if font_order_total_color %}
+    color: {{ font_order_total_color }};
+    {% endif %}
+  }
+  {% endif %}
+
+  {% if border_table_data or border_top_table_data or font_table_data %}
+  .mp-checkout .shoppingcart .table thead td, .mp-checkout .shoppingcart .table thead tr:first-child td, .mp-checkout .shoppingcart .table tbody td{
+
+  {% if border_table_data %}   
+    border-color: {{ border_table_data }};
+    {% endif %}
+
+    {% if border_top_table_data %}
+    border-top: 3px solid {{ border_top_table_data }};
+    {% endif %}
+
+  {% if font_table_data %}
+    color: {{ font_table_data }};
+    {% endif %}
+  }
+  {% endif %}
+  /* Table Colors End*/
+
+
+  /* Panel Colors */
+  {% if background_panel_icon or font_panel_icon %}
+  .mp-checkout .panel-default > .panel-heading i, .mp-checkout .mp-comments .panel-heading i{
+    {% if background_panel_icon %}
+    background: {{ background_panel_icon }};
+    {% endif %}
+
+    {% if font_panel_icon %}
+    color: {{ font_panel_icon }};
+    {% endif %}
+  }
+  {% endif %}
+
+  {% if background_panel or font_panel %}
+  .mp-checkout .panel{
+    {% if background_panel %}
+    background: {{ background_panel }};
+    {% endif %}
+
+    {% if font_panel %}
+    color: {{ font_panel }};
+    {% endif %}
+  }
+  .checkbox label, .radio label{
+    {% if font_panel %}
+    color: {{ font_panel }};
+    {% endif %}
+  }
+  {% endif %}
+
+
+  {% if background_panel_heading %}
+  .mp-checkout .panel-default > .panel-heading, .mp-checkout .mp-comments .panel-heading span{
+    background-color: {{ background_panel_heading }};
+  }
+  {% endif %}
+
+  {% if border_panel_body or font_panel_body %}
+  .mp-checkout .panel-default > .panel-heading, .mp-checkout .mp-comments .panel-heading span, .mp-checkout .mp-comments .panel-body, .mp-checkout .panel-default > .panel-heading .accordion-toggle i{
+
+    {% if font_panel_body %}
+    color: {{ font_panel_body }};
+    {% endif %}
+
+    {% if border_panel_body %}
+    border-color: {{ border_panel_body }};
+    {% endif %}
+  }
+  {% endif %}
+
+  {% if border_panel_default %}
+  .mp-checkout .panel-default{
+    border-color: {{ border_panel_default }}; 
+  }
+  {% endif %}
+
+  {% if border_panel_confirm %}
+  .mp-checkout .mp-comments .panel-heading i{
+    border-color: {{ border_panel_confirm }};
+  }
+  {% endif %}
+
+  /* Panel Colors End*/
+
+
+  /* Container Colors */  
+  {% if background_container %}
+  .mp-checkout, .mp-checkout .mp-comments .panel-heading{
+    background-color: {{ background_container }};
+  }
+  {% endif %}
+
+  {% if background_container_heading or font_container_heading %}
+  .mp-container h1{
+    {% if background_container_heading %}
+    background: {{ background_container_heading }};
+    {% endif %}
+
+    {% if font_container_heading %}
+    color: {{ font_container_heading }};
+    {% endif %}
+  }
+  {% endif %}
+  /* Container Colors End */
+  /* Account Tabs Colors End */
+  {% if font_account_panel or background_account_panel %}
+  .mp-checkout .account-option-buttons .btn-default{
+    {% if background_account_panel %}
+    background: {{ background_account_panel }};
+    {% endif %}
+
+    {% if font_account_panel %}
+    color: {{ font_account_panel }};
+    {% endif %}
+  }
+  {% endif %}
+
+  {% if font_hover_account_panel or background_hover_account_panel %}
+  .mp-checkout .account-option-buttons .btn-default.active, .mp-checkout .account-option-buttons .btn-default:active {
+    {% if background_hover_account_panel %}
+    background: {{ background_hover_account_panel }};
+    {% endif %}
+
+    {% if font_hover_account_panel %}
+    color: {{ font_hover_account_panel }};
+    {% endif %}
+  }
+  {% endif %}
+  /* Account Tabs Colors End */
+
+  {% if background_container %}
+    .mp-checkout {
+        border: 1px solid #ddd;
+        padding: 15px 15px 0;
+        padding-bottom: 0;
+      }
+      .mp-checkout .account-option-buttons .btn-default:nth-child(2){
+        border-left: none;
+        border-right: none;
+      }
+  {% endif %}
+
+  {% if overlay_blur %}
+  .mp-checkout .blur{
+    filter: blur(1.5px);
+    -o-filter: blur(1.5px);
+    -webkit-filter: blur(1.5px);
+  }
+  .mpdisable{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: rgba(255,255,255,0.1);
+  }
+  {% endif %}
+
+  /* Custom CSS */
+  {{ custom_css }}
+  /* Custom CSS End */  
+
+</style>

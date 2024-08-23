@@ -1,0 +1,41 @@
+{#Show the print packing slip button on top right of order list page#}
+
+<div class="btn-group" style="margin-right: 1px;">
+    <button id="button-powerslip" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Print Packing Slip <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        {% if powerslip_templates is empty %}
+            <li> &nbsp; No template available.</li>
+        {% endif %}
+
+{#        name="template_index"#}
+{#        value="{{ key }}"#}
+        {% for key, powerslip_template in powerslip_templates %}
+            <li>
+                <button type="submit" form="form-order" class="btn btn-link"
+                        data-tv-role="powerslip-click-to-print"
+                        formaction="{{ powerslip_template.action }}"
+                        formtarget="_blank">
+                    {{ powerslip_template.name }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $('input[name^=\'selected\']').on('change', function() {
+            $('#button-powerslip').prop('disabled', true);
+
+            var selected = $('input[name^=\'selected\']:checked');
+
+            if (selected.length) {
+                $('#button-powerslip').prop('disabled', false);
+            }
+        });
+    })
+
+    $('#button-powerslip').prop('disabled', true);
+</script>

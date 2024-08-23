@@ -1,0 +1,280 @@
+<file path="admin/controller/marketing/contact.php" email_template="admin.newsletter">
+	<operation>
+		<search index="0"><![CDATA[$data['breadcrumbs'] = array();]]></search>
+		<add position="before"><![CDATA[
+        $this->document->addScript('view/javascript/summernote/summernote.js');
+        $this->document->addScript('view/javascript/summernote/opencart.js');
+        $this->document->addStyle('view/javascript/summernote/summernote.css');
+
+		$this->load->model('localisation/language');
+		$this->load->model('extension/module/emailtemplate');
+
+		$this->load->language('extension/module/emailtemplate/newsletter');
+
+        $templates = $this->model_extension_module_emailtemplate->getTemplates(array(
+			'emailtemplate_key' => 'admin.newsletter'
+		));
+
+		$data['email_templates'] = array();
+
+		foreach($templates as $row) {
+			$data['email_templates'][] = array(
+				'value' => $row['emailtemplate_id'],
+				'label' => $row['emailtemplate_label'] . (!empty($row['emailtemplate_default']) ? ' (' . strip_tags($this->language->get('text_default')) . ')': '')
+			);
+		}
+
+		$data['languages'] = $this->model_localisation_language->getLanguages();
+
+        $data['user_token'] = $this->session->data['user_token'];
+
+        $data['summernote_language'] = $this->language->get('summernote');
+        if ($data['summernote_language'] == 'summernote') $data['summernote_language'] = 'en';
+	]]></add>
+	</operation>
+    <operation>
+        <search index="0"><![CDATA[if (!$this->request->post['subject']) {]]></search>
+        <add position="replace" offset="6"><![CDATA[if (empty($json['error'])) {
+				$this->load->model('localisation/language');
+
+				$languages = $this->model_localisation_language->getLanguages();
+
+				foreach ($languages as $language) {
+					if (empty($this->request->post['subject'][$language['language_id']])) {
+						$json['error']['subject'][$language['language_id']] = $this->language->get('error_subject');
+					}
+
+					if (empty($this->request->post['message'][$language['language_id']]) || trim(strip_tags(html_entity_decode($this->request->post['message'][$language['language_id']], ENT_QUOTES, 'UTF-8'))) == '') {
+						$json['error']['message'][$language['language_id']] = $this->language->get('error_message');
+					}
+				}
+
+				if (!empty($json['error'])) {
+					$json['error']['warning'] = $this->language->get('error_warning');
+				}
+			}]]></add>
+    </operation>
+	<operation info="Add extra info into email array. Regex to be backwards compatible with 3.0.1.*">
+		<search regex="true"><![CDATA[~\$emails\[.*?\] = \$customer_info\['email'\];~]]></search>
+		<add position="replace"><![CDATA[$email_total = isset($this->request->post['customer']) ? count($this->request->post['customer']) : 1;;
+
+									$emails[] = array(
+										'customer' => $customer_info,
+										'email' => $customer_info['email'],
+										'customer_id' => $customer_info['customer_id'],
+										'store_id' => $customer_info['store_id'],
+										'language_id' => $customer_info['language_id']
+									);]]></add>
+	</operation>
+	<operation info="Add extra info into email array">
+		<search><![CDATA[$emails[$result['customer_id']] = $result['email'];]]></search>
+		<add position="replace"><![CDATA[$emails[] = array(
+								'email' => $result['email'],
+								'customer_id' => isset($result['customer_id']) ? $result['customer_id'] : 0,
+								'store_id' => isset($result['store_id']) ? $result['store_id'] : 0,
+								'language_id' => isset($result['language_id']) ? $result['language_id'] : 0
+							);]]></add>
+	</operation>
+	<operation info="affiliate_all">
+		<search index="2"><![CDATA[$emails[] = $result['email'];]]></search>
+		<add position="replace"><![CDATA[$emails[] = array(
+								'email' => $result['email'],
+								'affiliate_id' => $result['affiliate_id']
+							);]]></add>
+	</operation>
+	<operation info="affiliate">
+		<search><![CDATA[$emails[] = $affiliate_info['email'];]]></search>
+		<add position="replace"><![CDATA[$email_total = 1;
+
+									$emails[] = array(
+										'affiliate' => $affiliate_info,
+										'email' => $affiliate_info['email'],
+										'affiliate_id' => $affiliate_info['affiliate_id']
+									);]]></add>
+	</operation>
+	<operation info="newsletter, customer_all, product">
+		<search><![CDATA[$emails[] = $result['email'];]]></search>
+		<add position="replace"><![CDATA[$emails[] = array(
+								'email' => $result['email'],
+								'customer_id' => isset($result['customer_id']) ? $result['customer_id'] : 0,
+								'store_id' => isset($result['store_id']) ? $result['store_id'] : 0,
+								'language_id' => isset($result['language_id']) ? $result['language_id'] : 0
+							);]]></add>
+	</operation>
+
+	<operation info="Move message into foreach">
+		<search index="0"><![CDATA[foreach ($emails as $email) {]]></search>
+		<add/>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$message  = '<html ]]></search>
+		<add position="before"><![CDATA[					if (isset($this->request->get['sent_total'])) {
+                        $sent_total = $this->request->get['sent_total'];
+                    } else {
+                        $sent_total = 0;
+                    }
+
+		            foreach ($emails as $email_info) {
+						$email = is_array($email_info) ? $email_info['email'] : $email_info;
+
+						if (!empty($email_info['language_id'])) {
+							$language_id = $email_info['language_id'];
+						} else {
+							$language_id = $this->config->get('config_language_id');
+						}
+
+						if (isset($email_info['store_id']) && $this->request->post['store_id'] == 0) {
+ 							$store_id = $email_info['store_id'];
+						} else {
+							$store_id = $this->request->post['store_id'];
+						}
+
+						// Prepare mail: admin.newsletter
+						$this->load->model('extension/module/emailtemplate');
+
+						$template_load = array(
+							'key' => 'admin.newsletter',
+							'language_id' => $language_id,
+							'email' => $email,
+							'store_id' => $store_id
+						);
+
+						if (isset($email_info['customer']) && isset($email_info['customer']['customer_id'])) {
+							$template_load['customer_id'] = $email_info['customer']['customer_id'];
+						} elseif (!empty($email_info['customer_id'])) {
+                            $template_load['customer_id'] = $email_info['customer_id'];
+                        } else {
+                            $this->load->model('customer/customer');
+
+                            $customer_info = $this->model_customer_customer->getCustomerByEmail($email);
+
+                            if ($customer_info) {
+                                $template_load['customer_id'] = $email_info['customer_id'];
+                            }
+						}
+
+						if (!empty($this->request->post['emailtemplate_id'])) {
+                            $template_load['emailtemplate_id'] = $this->request->post['emailtemplate_id'];
+                        }
+
+						$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+                        if ($template) {
+                            if (isset($email_info['customer'])) {
+                                $template->addData($email_info['customer']);
+                                unset($email_info['customer']);
+                            } elseif (isset($template_load['customer_id'])) {
+                                $customer_info = $this->model_customer_customer->getCustomer($template_load['customer_id']);
+
+                                if ($customer_info) {
+                                    $template->addData($customer_info);
+                                }
+                            }
+
+                            if (isset($email_info['affiliate'])) {
+                                $template->addData($email_info['affiliate']);
+                                unset($email_info['affiliate']);
+                            } elseif (isset($email_info['affiliate_id'])) {
+                                $affiliate_info = $this->model_sale_affiliate->getAffiliate($email_info['affiliate_id']);
+                                $template->addData($affiliate_info);
+                            }
+
+                            if (!empty($this->request->post['subject'][$language_id])) {
+                                $template->data['emailtemplate']['subject'] = $this->request->post['subject'][$language_id];
+                            } else {
+                                $template->data['emailtemplate']['subject'] = $this->config->get('config_name');
+                            }
+
+                            if (!empty($this->request->post['preview'][$language_id])) {
+                                $template->data['emailtemplate']['preheader_preview'] = $this->request->post['preview'][$language_id];
+                            }
+
+                            if (!empty($this->request->post['message'][$language_id]) && is_array($this->request->post['message'])) {
+                                $template->data['message'] = $this->request->post['message'][$language_id];
+                            } else {
+                                $template->data['message'] = '';
+                            }
+
+                            if (is_array($email_info)) {
+                                $template->addData($email_info);
+                            } else {
+                                $template->addData('email', $email_info);
+                            }
+						    // Prepared mail: admin.newsletter
+                        }
+		]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[<title>' . $this->request->post['subject'] . '</title>]]></search>
+		<add position="replace"><![CDATA[<title></title>]]></add>
+	</operation>
+    <operation>
+		<search index="0"><![CDATA[$mail->setSubject(html_entity_decode($this->request->post['subject'], ENT_QUOTES, 'UTF-8'));]]></search>
+		<add position="replace"></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[html_entity_decode($this->request->post['message'],]]></search>
+		<add position="replace"><![CDATA[html_entity_decode(($template ? $template->data['message'] : ''),]]></add>
+	</operation>
+    <operation>
+        <search index="0"><![CDATA[if ($emails) {]]></search>
+        <ignoreif><![CDATA[$json['error']['email'] = $this->language->get('error_email');]]></ignoreif>
+        <add position="replace"><![CDATA[if (!$emails) {
+                    $json['error']['email'] = $this->language->get('error_email');
+                } else {]]></add>
+    </operation>
+    <operation>
+        <search index="0"><![CDATA[$mail->send();]]></search>
+        <add position="after" offset="1"><![CDATA[					if ($json['next'] && $sent_total) {
+						$json['next'] .= '&sent_total=' . $sent_total;
+        			}
+
+        			$json['success'] = sprintf($this->language->get('text_sent'), $sent_total, $email_total);]]></add>
+    </operation>
+    <operation>
+        <search index="0"><![CDATA[$mail->send();]]></search>
+        <add position="replace"><![CDATA[// Send mail: admin.newsletter
+							if ($template && $template->check()) {
+								if ($template->data['message']) {
+									$template->data['message'] = $template->replaceContent($template->data['message']);
+								}
+
+								$template->build();
+
+                                // Disable preference checking if not newsletter
+                                $module_status = ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference'));
+                                if ($module_status && isset($this->request->post['to']) && in_array($this->request->post['to'], array('customer', 'customer_all'))) {
+                                    $template->data['emailtemplate']['preference'] = false;
+                                }
+
+								$mail->setSubject($template->data['emailtemplate']['subject']);
+
+								if (trim(strip_tags($template->data['emailtemplate']['content1'])) == '') {
+                                    $template->fetch(null, $template->data['message']);
+								}
+
+								$template->hook($mail);
+
+								$mail->send();
+
+								$this->model_extension_module_emailtemplate->sent();
+
+								$sent_total++;
+							}]]></add>
+    </operation>
+	<operation>
+		<search index="0"><![CDATA[$this->load->view('marketing/contact']]></search>
+		<add position="replace"><![CDATA[$this->load->view('extension/module/emailtemplate/marketing_contact']]></add>
+	</operation>
+</file>
+
+<file path="catalog/controller/account/newsletter.php" email_template="admin.newsletter">
+	<operation>
+	    <search index="0"><![CDATA[class ControllerAccountNewsletter extends Controller {]]></search>
+	   	<ignoreif><![CDATA[public function unsubscribe(]]></ignoreif>
+	   	<add position="after"><![CDATA[	public function unsubscribe() {
+        $this->response->redirect($this->url->link('extension/module/emailtemplate_newsletter/unsubscribe'));
+ 	}
+ 	  ]]></add>
+	</operation>
+</file>

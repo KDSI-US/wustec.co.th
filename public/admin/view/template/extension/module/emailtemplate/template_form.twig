@@ -1,0 +1,745 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div id="emailtemplate">
+    <div class="page-header">
+      <div class="container-fluid clearfix">
+        <div class="pull-right">
+          <button id="submit_form_button" type="submit" form="form-emailtemplate" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-success"><i class="fa fa-save"></i></button>
+          {% if emailtemplate.emailtemplate_id != 1 %}<a href="{{ action }}&action=delete" data-confirm="{{ text_confirm }}" data-toggle="tooltip" title="{{ button_delete_template }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>{% endif %}
+          <a href="javascript:void(0)" class="btn btn-default btn-inbox-preview" data-target="#preview-mail" data-loading-text="<i class='fa fa-circle-o-notch fa-fw fa-spin'></i>"  data-toggle="tooltip" title="{{ button_preview }}"><i class="fa fa-fw fa-eye"></i></a>
+          <div class="btn-group">
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-caret-down"></i></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              {% if emailtemplate.emailtemplate_id != 1 %}<li><a href="{{ action_insert_template }}" class="dropdown-item">{{ text_create_template }}</a></li>{% endif %}
+              <li class="divider"></li>
+              <li><a href="{{ config_url }}" class="dropdown-item">{{ button_config }}</a></li>
+              <li><a href="{{ logs_url }}" class="dropdown-item"><i class="fa fa-fw fa-send"></i> {{ button_logs }}</a></li>
+              <li><a href="{{ modification_url }}" class="dropdown-item"><i class="fa fa-fw fa-code"></i> {{ button_modification }}</a></li>
+              <li><a href="{{ clear_cache_url }}" class="dropdown-item"><i class="fa fa-fw fa-trash"></i> {{ button_clear_cache }}</a></li>
+              {% if emailtemplates %}
+                <li class="divider"></li>
+                <li class="title">{{ text_templates }}</li>
+                {% if template_default_url and default_emailtemplate_id != emailtemplate.emailtemplate_id %}
+                  <li><a href="{{ template_default_url }}" class="dropdown-item">{{ template_default_label }}</a></li>
+                {% else %}
+                  <li class="active"><a href="#" class="dropdown-item">{{ template_default_label }}</a></li>
+                {% endif %}
+                {% for row in emailtemplates %}
+                  <li class="{{ row.emailtemplate_id == emailtemplate.emailtemplate_id ? ' active' }}"><a href="{{ row.url|raw }}" class="dropdown-item">{{ row.name }}{% if row.emailtemplate_status != 1 %} <i class="fa fa-ban text-danger" data-toggle="tooltip" title="{{ text_disabled }}"></i>{% endif %}</a></li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <h1 class="panel-title">{{ emailtemplate.label }}{% if emailtemplate.status != 1 %} <i class="fa fa-ban text-danger" data-toggle="tooltip" title="{{ text_disabled }}"></i>{% endif %}{% if emailtemplate.default %} <small>({{ text_default }})</small>{% endif %} <small style="vertical-align: middle;">{{ emailtemplate.key }}</small></h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item{{ loop.index==breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="container-fluid">
+      {% if error_warning is not empty %}
+        <div class="alert alert-danger">
+          <i class="fa fa-exclamation-circle"></i> {{ error_warning }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if error_attention is not empty %}
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-circle"></i> {{ error_attention }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if success is not empty %}
+        <div class="alert alert-success">
+          <i class="fa fa-exclamation-circle"></i> {{ success }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %}
+      <div class="panel panel-default panel-inbox hide" id="preview-mail" data-store="{{ emailtemplate.store_id }}">
+        <div class="panel-heading">
+          <i class="fa fa-eye"></i> {{ heading_preview }}
+          <div class="panel-heading-action">{% if languages|length > 1 %}
+              <div class="btn-group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><img src="language/{{ languages|first['code'] }}/{{ languages|first['code'] }}.png" title="{{ languages|first['name'] }}"/></button>
+                <ul class="dropdown-menu dropdown-menu-right" id="preview-language" role="menu">
+                  {% for language in languages %}
+                    <li class="{{ loop.first ? ' active' }}"><a href="#" class="dropdown-item" data-language="{{ language.language_id }}"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/> <span>{{ language.name }}</span></a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+            <div class="btn-group">
+              <button class="btn btn-default media-icon selected" data-width="100%" data-toggle="tooltip" title="{{ text_desktop }}"><i data-width="100%" class="fa fa-desktop"></i></button>
+              <button class="btn btn-default media-icon" data-width="768px" data-toggle="tooltip" title="{{ text_tablet }}"><i class="fa fa-tablet"></i></button>
+              <button class="btn btn-default media-icon" data-width="320px"  data-toggle="tooltip" title="{{ text_mobile }}"><i class="fa fa-mobile"></i></button>
+            </div>
+
+            <button class="btn btn-default template-update" data-toggle="tooltip" title="{{ button_update_preview }}"><i class="fa fa-refresh"></i></button>
+            <button type="button" data-target="#send-test-email-modal" data-toggle="modal" class="btn btn-default"><i class="fa fa-envelope" data-toggle="tooltip" title="{{ button_test }}"></i></button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="preview-frame">
+            <i class="fa fa-spinner fa-spin fa-5x" style="color:#009afd"></i>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <p>{{ text_help_preview }}</p>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-emailtemplate">
+            <div class="panel-nav-tabs">
+              <ul class="nav nav-tabs mb-0" id="tabs-main">
+                <li class="nav-item active"><a href="javascript:void(0)" class="nav-link" data-target="#tab-content" data-toggle="tab" role="tab"><i class="fa fa-font hidden-xs"></i> {{ heading_content }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-setting" data-toggle="tab" role="tab"><i class="fa fa-wrench hidden-xs"></i> {{ heading_settings }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-mail" data-toggle="tab" role="tab"><i class="fa fa-envelope hidden-xs"></i> {{ heading_mail }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-products" data-toggle="tab" role="tab"><i class="fa fa-gift hidden-xs"></i> {{ heading_product }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-shortcodes" data-toggle="tab" role="tab"><i class="fa fa-magic hidden-xs"></i> {{ heading_shortcodes }}</a></li>
+              </ul>
+              <div class="tab-content panel-tab-default">
+                <div id="tab-content" class="tab-pane fade active in">
+                  <div class="row">
+                    {% if languages|length > 1 %}
+                      <div class="col-lg-2">
+                        <div class="panel-nav-tabs">
+                          <ul class="nav nav-pills nav-stacked">
+                            {% for language in languages %}
+                              <li class="nav-item{{ loop.first ? ' active' }}" data-language="{{ language.language_id }}">
+                                <a href="javascript:void(0)" class="nav-link" data-target="#tab-language-{{ language.language_id }}" data-toggle="tab" role="tab">
+                                  <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/> {{ language.name }}{% if language.default == 1 %} <small>({{ text_default }})</small>{% endif %} </a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      </div>
+                    {% endif %}
+                    <div class="{{ languages|length> 1 ? 'col-lg-10' : 'col-lg-12' }}">
+                      <div class="tab-content">
+                        {% for langId,description in emailtemplate_description %}
+                          <div id="tab-language-{{ langId }}" class="tab-pane fade{% if loop.first %} active in{% endif %}" data-language="{{ langId }}">
+                            <div class="form-group row">
+                              <label class="control-label col-xl-2 col-xs-12" for="emailtemplate_description_heading_{{ langId }}">{{ entry_heading }}</label>
+                              <div class="col-xl-10 col-xs-12">
+                                <input class="form-control" name="emailtemplate_description_heading[{{ langId }}]" id="emailtemplate_description_heading_{{ langId }}" value="{{ description.heading }}" />
+                                {% if error_emailtemplate_description_heading[langId] is defined %}<span class="text-danger">{{ error_emailtemplate_description_heading[langId] }}</span>{% endif %}
+                              </div>
+                            </div>
+                            {% if emailtemplate.key == 'order.update' or emailtemplate.key == 'admin.return_history' or emailtemplate.key == 'admin.customer_history' or emailtemplate.key == 'admin.newsletter' %}
+                              <div class="form-group row">
+                                <label class="control-label col-xl-2 col-xs-12" for="emailtemplate_description_comment_{{ langId }}">{{ entry_comment }}</label>
+                                <div class="col-xl-10 col-xs-12">
+                                  <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote_language }}" name="emailtemplate_description_comment[{{ langId }}]" id="emailtemplate_description_comment_{{ langId }}">{{ description.comment }}</textarea>
+                                  {% if error_emailtemplate_description_comment[langId] is defined %} <span class="text-danger">{{ error_emailtemplate_description_comment[langId] }}</span>{% endif %}
+                                </div>
+                              </div>
+                            {% endif %}
+                            {% for i in 1..content_count %}
+                              {% if loop.index <=content_count and description.content~i is defined %}
+                                <div class="form-group row emailtemplate_content{% if i !=1 and description['content'~i] is empty %} hide{% endif %}">
+                                  <label class="control-label col-xl-2 col-xs-12" for="emailtemplate_description_content_{{ i }}_{{ langId }}">
+                                    {{ entry_content_count|format(i) }} <small>{{ '{{ emailtemplate.content' ~ i ~ ' }}' }}</small>
+                                    {% if description['content'~(i+1)] == '' and content_count > i %} <button type="button" class="add-editor btn btn-info btn-xs" data-content="{{ i+1 }}" data-lang="{{ langId }}"><i class="fa fa-plus"></i></button>
+                                    {% endif %}
+                                  </label>
+                                  <div class="col-xl-10 col-xs-12">
+                                    <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote_language }}" name="emailtemplate_description_content{{ i }}[{{ langId }}]" id="emailtemplate_description_content{{ i }}_{{ langId }}">{{ description['content'~i] }}</textarea>
+                                    {% if error_emailtemplate_description_content[langId] is defined %} <span class="text-danger">{{ error_emailtemplate_description_content[i][langId] }}</span>{% endif %}
+                                  </div>
+                                </div>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="tab-setting" class="tab-pane form-horizontal fade form-horizontal">
+                  <div class="well">
+                    <fieldset>
+                      <legend style="padding-left:20px;padding-right:20px;">{{ heading_condition }} <i class="fa fa-question-circle text-info" data-toggle="collapse" data-target="#collapse-condition-info" style="cursor:pointer"></i></legend>
+                      <div class="collapse" id="collapse-condition-info">
+                        {{ text_help_condition }}
+                      </div>
+
+                      {% if customer_groups is not empty %}
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="customer_group_id">{{ entry_customer_group }}</label>
+                          <div class="col-md-4">
+                            <select name="customer_group_id" id="customer_group_id" class="form-control">
+                              <option value="">{{ text_select }}</option>
+                              {% for row in customer_groups %}
+                                <option value="{{ row.customer_group_id }}" {{ emailtemplate.customer_group_id==row.customer_group_id ? ' selected="selected" ' }}>{{ row.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if stores is not empty %}
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="store_id">{{ entry_store }}</label>
+                          <div class="col-md-4">
+                            <select name="store_id" id="store_id" class="form-control">
+                              <option value="NULL">{{ text_select }}</option>
+                              {% for store in stores %}
+                                <option value="{{ store.store_id }}" {{ emailtemplate.store_id==store.store_id and emailtemplate.store_id matches '/^\\d+$/' ? ' selected="selected" ' }}>{{ store.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if order_statuses is not empty %}
+                        <hr style="margin-top:5px;margin-bottom:5px;"/>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="order_status_id">{{ entry_order_status }}</label>
+                          <div class="col-md-4">
+                            <select name="order_status_id" id="order_status_id" class="form-control">
+                              <option value="">{{ text_select }}</option>
+                              {% for row in order_statuses %}
+                                <option value="{{ row.order_status_id }}" {{ emailtemplate.order_status_id==row.order_status_id ? ' selected="selected" ' }}>{{ row.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if payment_methods is not empty and shipping_methods is not empty %}
+                        <div class="form-group row">
+                          <label for="payment_method" class="col-md-2 control-label">{{ entry_payment_method }}</label>
+                          <div class="col-md-4">
+                            <select name="payment_method" id="payment_method" class="form-control">
+                              <option value="">{{ text_select }}</option>
+                              {% for payment_method in payment_methods %}
+                                <option value="{{ payment_method.code }}"{{ emailtemplate.payment_method == payment_method.code ? ' selected="selected"' }}>{{ payment_method.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <label for="shipping_method" class="col-md-2 control-label">{{ entry_shipping_method }}</label>
+                          <div class="col-md-4">
+                            <select name="shipping_method" id="shipping_method" class="form-control">
+                              <option value="">{{ text_select }}</option>
+                              {% for shipping_method in shipping_methods %}
+                                <option value="{{ shipping_method.code }}"{{ emailtemplate.shipping_method == shipping_method.code ? ' selected="selected"' }}>{{ shipping_method.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      {% endif %}
+                      <input type="hidden" name="emailtemplate_condition" value=""/>
+                      {% if emailtemplate.type == 'order' %}
+                      <div class="form-group row">
+                        <label class="col-md-2 control-label" for="add-condition-category">{{ entry_category }}</label>
+                        <div class="col-md-4">
+                          <select id="add-condition-category" class="form-control add-condition-action" data-type="category">
+                            <option value="">{{ text_select }}</option>
+                            {% for category in categories %}
+                              <option value="{{ category.category_id }}">{{ category.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <label class="col-md-2 control-label" for="add-condition-manufacturer">{{ entry_manufacturer }}</label>
+                        <div class="col-md-4">
+                          <select id="add-condition-manufacturer" class="form-control add-condition-action" data-type="manufacturer">
+                            <option value="">{{ text_select }}</option>
+                            {% for manufacturer in manufacturers %}
+                              <option value="{{ manufacturer.manufacturer_id }}">{{ manufacturer.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if emailtemplate_shortcodes is not empty %}
+                        <div class="form-group">
+                          <label class="col-md-2 control-label" for="add-condition">{{ entry_condition_custom }}</label>
+                          <div class="col-md-10">
+                            <select id="add-condition" class="form-control">
+                              <option value="">{{ text_select }}</option>
+                              {% for row in emailtemplate_shortcodes %}
+                                {% if row.emailtemplate_shortcode_code|slice(0, 5) != 'text_' and row.emailtemplate_shortcode_code|slice(0, 7) != 'button_' and row.emailtemplate_shortcode_code|slice(0, 6) != 'error_' and row.emailtemplate_shortcode_code|slice(0, 6) != 'error_' %}
+                                  <option value="{{ row.emailtemplate_shortcode_code }}">{{ row.emailtemplate_shortcode_code }}</option>
+                                {% endif %}
+                              {% endfor %}
+                            </select>
+                            <div id="emailtemplate_conditions">
+                              <hr>
+                              {% if emailtemplate.condition %} {% for i, row in emailtemplate.condition %}
+                                <div class="row mt-1" id="template-condition-{{ i }}" data-count="{{ i }}">
+                                  {% if row.label %}
+                                    <div class="col-md-4">
+                                      <input type="text" name="emailtemplate_condition[{{ i }}][key]" class="form-control" value="{{ row.key }}" readonly="readonly"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <select name="emailtemplate_condition[{{ i }}][operator]" class="form-control">
+                                        <option value="==" {{ row.operator=='==' ? ' selected="selected" ' }}>(==) {{ text_condition_equal }} </option>
+                                        <option value="!=" {{ row.operator=='!=' ? ' selected="selected" ' }}>(!=) {{ text_condition_not_equal }} </option>
+                                      </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="hidden" name="emailtemplate_condition[{{ i }}][value]" class="form-control" value="{{ row.value }}" />
+                                      <input type="text" readonly name="emailtemplate_condition[{{ i }}][label]" class="form-control" value="{{ row.label }}" />
+                                    </div>
+                                  {% else %}
+                                    <div class="col-md-4">
+                                      <input type="text" name="emailtemplate_condition[{{ i }}][key]" class="form-control" value="{{ row.key }}" readonly="readonly"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <select name="emailtemplate_condition[{{ i }}][operator]" class="form-control">
+                                        <option value="==" {{ row.operator=='==' ? ' selected="selected" ' }}>(==) {{ text_condition_equal }}</option>
+                                        <option value="!=" {{ row.operator=='!=' ? ' selected="selected" ' }}>(!=) &nbsp;{{ text_condition_not_equal }}</option>
+                                        <option value="&gt;" {{ row.operator=='&gt;' ? ' selected="selected" ' }}>(&gt;) &nbsp;&nbsp;{{ text_condition_greater }}</option>
+                                        <option value="&lt;" {{ row.operator=='&lt;' ? ' selected="selected" ' }}>(&lt;) &nbsp;&nbsp;{{  text_condition_less }}</option>
+                                        <option value="&gt;=" {{ row.operator=='&gt;=' ? ' selected="selected" ' }}>(&gt;=) {{ text_condition_greater_equal }}</option>
+                                        <option value="&lt;=" {{ row.operator=='&lt;=' ? ' selected="selected" ' }}>(&lt;=) {{ text_condition_less_equal }}</option>
+                                        <option value="IN" {{ row.operator=='IN' ? ' selected="selected" ' }}>(IN) {{ text_condition_in }}</option>
+                                        <option value="NOTIN" {{ row.operator=='NOTIN' ? ' selected="selected" ' }}>(NOTIN) {{ text_condition_not_in }}</option>
+                                      </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" name="emailtemplate_condition[{{ i }}][value]" class="form-control" value="{{ row.value }}" placeholder="Value"/>
+                                      <label class="checkbox-inline"><input type="checkbox" name="emailtemplate_condition[{{ i }}][required]" value="1"{{ row.required ? ' checked' }} /> Required</label>
+                                    </div>
+                                  {% endif %}
+                                  <div class="col-md-2 text-right">
+                                    <button type="button" class="btn btn-danger btn-remove-row" data-remove="#template-condition-{{ i }}"><i class="fa fa-times"></i></button>
+                                  </div>
+                                </div>
+                              {% endfor %} {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                    </fieldset>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-md-2 control-label" for="emailtemplate_key">{{ entry_key }}</label>
+                    <div class="col-md-4">
+                      <input required="required" type="text" name="emailtemplate_key" value="{{ emailtemplate.key }}" id="emailtemplate_key" class="form-control"/>
+                      {% if error_emailtemplate_key %}<span class="text-danger">{{ error_emailtemplate_key }}</span>{% endif %}
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_label">{{ entry_label }}</label>
+                    <div class="col-md-4">
+                      <input required="required" type="text" name="emailtemplate_label" value="{{ emailtemplate.label }}" id="emailtemplate_label" class="form-control"/>
+                      {% if error_emailtemplate_label %}<span class="text-danger">{{ error_emailtemplate_label }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_type">{{ entry_type }}</label>
+                    <div class="col-md-4">
+                      <select name="emailtemplate_type" id="emailtemplate_type" class="form-control">
+                        <option value="">{{ text_select }}</option>
+                        <option value="customer"{{ emailtemplate.type == 'customer' ? ' selected="selected"' }}>{{ text_customer }}</option>
+                        <option value="order"{{ emailtemplate.type == 'order' ? ' selected="selected"' }}>{{ text_order }}</option>
+                        <option value="admin"{{ emailtemplate.type == 'admin' ? ' selected="selected"' }}>{{ text_admin }}</option>
+                        <option value="affiliate"{{ emailtemplate.type == 'affiliate' ? ' selected="selected"' }}>{{ text_affiliate }}</option>
+                        <option value="other"{{ emailtemplate.type == 'other' ? ' selected="selected"' }}>{{ text_other }}</option>
+                      </select>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_preference">{{ entry_preference }}</label>
+                    <div class="col-md-4">
+                      <select name="emailtemplate_preference" id="emailtemplate_preference" class="form-control">
+                        <option value="">{{ text_select }}</option>
+                        <option value="essential"{{ emailtemplate.preference == 'essential' ? ' selected="selected"' }}>{{ text_essential }}</option>
+                        <option value="notification"{{ emailtemplate.preference == 'notification' ? ' selected="selected"' }}>{{ text_notification }}</option>
+                        <option value="newsletter"{{ emailtemplate.preference == 'newsletter' ? ' selected="selected"' }}>{{ text_newsletter }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_id">{{ entry_template_config }}</label>
+                    <div class="col-md-10">
+                      <div class="input-group">
+                        <select name="emailtemplate_config_id" id="emailtemplate_config_id" class="form-control">
+                          <option value="0">{{ text_select_auto }}</option>
+                          {% for row in emailtemplate_configs %}
+                            <option value="{{ row.emailtemplate_config_id }}"{{ emailtemplate.emailtemplate_config_id == row.emailtemplate_config_id ? ' selected="selected"' }}>{{ row.emailtemplate_config_name }}</option>
+                          {% endfor %}
+                        </select>
+                        <div class="input-group-btn">
+                          <a href="{{ config_url }}" data-toggle="tooltip" title="{{ text_edit }}" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_template">{{ entry_template_file }}</label>
+                    <div class="col-md-4">
+                      <select name="emailtemplate_template" id="emailtemplate_template" class="form-control">
+                        <option value="">{{ text_select }}</option>
+                        {% if emailtemplate_files.catalog is not empty %} <optgroup label="{{ emailtemplate_files.dirs.catalog }}" data-type="catalog">
+                          {% for file in emailtemplate_files.catalog %}
+                            <option value="{{ file }}" {{ emailtemplate.template==file ? ' selected="selected" ' }}>{{ file }}</option>
+                          {% endfor %} </optgroup>
+                        {% endif %}
+                        {% if emailtemplate_files.admin is not empty %} <optgroup label="{{ emailtemplate_files.dirs.admin }}" data-type="admin">
+                          {% for file in emailtemplate_files.admin %}
+                            <option value="{{ file }}" {{ emailtemplate.template==file ? ' selected="selected" ' }}>{{ file }}</option>
+                          {% endfor %} </optgroup>
+                        {% endif %}
+                      </select>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_wrapper_tpl">{{ entry_wrapper }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_wrapper_tpl" value="{{ emailtemplate.wrapper_tpl }}" id="emailtemplate_wrapper_tpl" class="form-control"/>
+                      {% if error_emailtemplate_wrapper_tpl %}<span class="text-danger">{{ error_emailtemplate_wrapper_tpl }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_language_files">{{ entry_language_files }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_language_files" value="{{ emailtemplate.language_files }}" id="emailtemplate_language_files" class="form-control"/>
+                      {% if error_emailtemplate_language_files %}<span class="text-danger">{{ error_emailtemplate_language_files }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_log">{{ entry_log_template }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default success{{ emailtemplate.log==1 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_log" value="1" {{ emailtemplate.log==1 ? ' checked="checked" ' }}/>{{ text_enabled }} </label>
+                        <label class="btn btn-default danger{{ emailtemplate.log==2 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_log" value="2" {{ emailtemplate.log==2 ? ' checked="checked" ' }}/>{{ text_disabled }} </label>
+                        <label class="btn btn-default{{ emailtemplate.log==0 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_log" value="0" {{ emailtemplate.log==0 ? ' checked="checked" ' }}/>{{ text_default }} </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_send_max">{{ entry_send_max }}</label>
+                    <div class="col-md-4">
+                      <input type="number" min="0" step="1" name="emailtemplate_send_max" value="{{ emailtemplate.send_max }}" id="emailtemplate_send_max" class="form-control"/>
+                      <span class="form-text text-muted">{{ text_help_send_max }}</span>
+                    </div>
+                  </div>
+                  <div class="form-group form-group-radio">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_queue">{{ entry_mail_queue }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger{{ emailtemplate.mail_queue==0 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_mail_queue" value="0" {{ emailtemplate.mail_queue==0 ? ' checked="checked" ' }}/>{{ text_no }} </label>
+                        <label class="btn btn-default success{{ emailtemplate.mail_queue==1 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_mail_queue" value="1" {{ emailtemplate.mail_queue==1 ? ' checked="checked" ' }}/>{{ text_yes }} </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group form-group-radio">
+                    <label class="col-md-2 control-label" for="emailtemplate_status">{{ entry_status }}</label>
+                    <div class="col-md-10">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default success{{ emailtemplate.status==1 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_status" value="1" {{ emailtemplate.status==1 ? ' checked="checked" ' }}/>{{ text_enabled }} </label>
+                        <label class="btn btn-default danger{{ emailtemplate.status==0 ? ' active' }}">
+                          <input type="radio" name="emailtemplate_status" value="0" {{ emailtemplate.status==0 ? ' checked="checked" ' }}/>{{ text_disabled }} </label>
+                      </div>
+                      {% if error_emailtemplate_status %}<span class="text-danger">{{ error_emailtemplate_status }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <hr/>
+                  <h3 class="clearfix">
+                    {{ heading_event }} <button type="button" data-modal="remote" data-url="{{ action_event_add }}" data-refresh="#events_list" class="btn btn-sm btn-primary pull-right"><i class="fa fa-info-circle"></i> {{ button_add_event }}</button>
+                  </h3>
+                  <div id="events_list">
+                    {% if emailtemplate_events %}
+                      <div class="table-responsive">
+                        <table class="table table-hover table-row-check">
+                          <thead class="thead-light">
+                          <tr>
+                            <th style="width: 1px;" class="text-center">
+                              <input type="checkbox" onclick="$('input[name*=\'event_selection\']').prop('checked', this.checked);"/>
+                            </th>
+                            <th class="text-left">
+                              {{ column_code }}
+                            </th>
+                            <th class="text-left"></th>
+                            <th class="text-left">
+                              {{ column_status }}
+                            </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {% for event in emailtemplate_events %}
+                            <tr>
+                              <td class="text-center">
+                                <input type="checkbox" name="event_selection[]" value="{{ event.event_id }}"/>
+                              </td>
+                              <td class="text-left">
+                                {{ event.code }}
+                              </td>
+                              <td class="text-left">
+                                <b>{{ text_trigger }}</b> {{ event.trigger }}
+                                <br /><b>{{ text_action }}</b> {{ event.action }}
+                              </td>
+                              <td class="text-left">
+                                {{ event.status }}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td width="1">
+                              <button class="btn btn-danger btn-sm" data-confirm="{{ text_confirm }}" data-action="{{ action }}&action=delete_event" data-toggle="tooltip" title="{{ button_clear }}"><i class="fa fa-trash"></i></button>
+                            </td>
+                            <td colspan="3">
+                              &nbsp;
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <!-- #tab-setting -->
+                <div id="tab-mail" class="tab-pane form-horizontal fade form-horizontal">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_description_subject">{{ entry_subject }}</label>
+                    <div class="col-md-10">
+                      {% for language in languages %}
+                        <div class="input-group{{ loop.index > 1 ? ' mt-1' }}">
+                          <span class="input-group-addon"><span class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span></span>
+                          <input type="text" name="emailtemplate_description_subject[{{ language.language_id }}]" value="{% if emailtemplate_description[language.language_id].subject is defined %}{{ emailtemplate_description[language.language_id].subject }}{% endif %}" class="form-control"/>
+                        </div>
+                        {% if error_emailtemplate_description_subject[language.language_id] is defined %} <span class="text-danger">{{ error_emailtemplate_description_subject[i][language.language_id] }}</span>{% endif %} {% endfor %} {% if text_help_subject %}<span class="form-text text-muted">{{ text_help_subject }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_description_preview">{{ entry_preheader }}</label>
+                    <div class="col-md-10">
+                      {% for language in languages %}
+                        <div class="input-group{{ loop.index > 1 ? ' mt-1' }}">
+                          <span class="input-group-addon"><span class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span></span>
+                          <input type="text" name="emailtemplate_description_preview[{{ language.language_id }}]" value="{% if emailtemplate_description[language.language_id].preview is defined %}{{ emailtemplate_description[language.language_id].preview }}{% endif %}" class="form-control"/>
+                        </div>
+                        {% if error_emailtemplate_description_preview[language.language_id] is defined %} <span class="text-danger">{{ error_emailtemplate_description_preview[i][language.language_id] }}</span>{% endif %} {% endfor %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_to">{{ entry_mail_to }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_to" value="{{ emailtemplate.mail_to }}" id="emailtemplate_mail_to" class="form-control" autocomplete="email"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_from">{{ entry_mail_from }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_from" value="{{ emailtemplate.mail_from }}" id="emailtemplate_mail_from" class="form-control" autocomplete="name"/>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_sender">{{ entry_mail_sender }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_sender" value="{{ emailtemplate.mail_sender }}" id="emailtemplate_mail_sender" class="form-control" autocomplete="off" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_replyto">{{ entry_mail_replyto }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_replyto" value="{{ emailtemplate.mail_replyto }}" id="emailtemplate_mail_replyto" class="form-control" autocomplete="off" />
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_replyto_name">{{ entry_mail_replyto_name }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_replyto_name" value="{{ emailtemplate.mail_replyto_name }}" id="emailtemplate_mail_replyto_name" class="form-control" autocomplete="off" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_cc">{{ entry_mail_cc }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_cc" value="{{ emailtemplate.mail_cc }}" id="emailtemplate_mail_cc" class="form-control" autocomplete="off" />
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_bcc">{{ entry_mail_bcc }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_bcc" value="{{ emailtemplate.mail_bcc }}" id="emailtemplate_mail_bcc" class="form-control" autocomplete="off" />
+                    </div>
+                  </div>
+                  <div class="form-group form-group-radio row">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_plain_text">{{ entry_mail_plain_text }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default success{{ emailtemplate.mail_plain_text==1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_mail_plain_text" value="1" {{ emailtemplate.mail_plain_text==1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i> </label>
+                        <label class="btn btn-default danger{{ emailtemplate.mail_plain_text==0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_mail_plain_text" value="0" {{ emailtemplate.mail_plain_text==0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i> </label>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_html">{{ entry_mail_html }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default success{{ emailtemplate.mail_html==1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_mail_html" value="1" {{ emailtemplate.mail_html==1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i> </label>
+                        <label class="btn btn-default danger{{ emailtemplate.mail_html==0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_mail_html" value="0" {{ emailtemplate.mail_html==0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i> </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_mail_attachment">{{ entry_mail_attachment }}</label>
+                    <div class="col-md-4">
+                      <input type="text" name="emailtemplate_mail_attachment" value="{{ emailtemplate.mail_attachment }}" id="emailtemplate_mail_attachment" class="form-control"/>
+                      {% if error_emailtemplate_mail_attachment %}<span class="text-danger">{{ error_emailtemplate_mail_attachment }}</span>{% endif %}
+                    </div>
+                  </div>
+                </div>
+                <!-- #tab-mail -->
+                <div id="tab-products" class="tab-pane form-horizontal fade">
+                  <fieldset class="mt-3">
+                    <legend class="h4">{{ heading_showcase }}</legend>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_showcase">{{ entry_showcase }}</label>
+                      <div class="col-md-4">
+                        <select class="form-control" name="emailtemplate_showcase" id="emailtemplate_showcase" onchange="jQuery('.collapse-showcase').collapse((this.value=='' || this.value=='none') ? 'hide' : 'show');">
+                          <option value="">{{ text_select }}</option>
+                          <option value="1" {{ emailtemplate.showcase==1 ? ' selected="selected" ' }}>{{ text_default }}</option>
+                          <option value="none" {{ emailtemplate.showcase=='none' ? ' selected="selected" ' }}>{{ text_disabled }}</option>
+                          <option value="products" {{ emailtemplate.showcase=='products' ? ' selected="selected" ' }}>{{ text_custom }}</option>
+                          <option value="latest" {{ emailtemplate.showcase=='latest' ? ' selected="selected" ' }}>{{ text_latest }}</option>
+                          <option value="bestsellers" {{ emailtemplate.showcase=='bestsellers' ? ' selected="selected" ' }}>{{ text_bestsellers }}</option>
+                          <option value="popular" {{ emailtemplate.showcase=='popular' ? ' selected="selected" ' }}>{{ text_popular }}</option>
+                          <option value="specials" {{ emailtemplate.showcase=='specials' ? ' selected="selected" ' }}>{{ text_specials }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group showcase_products{{ emailtemplate.showcase !='products' ? ' hide' }}">
+                      <label class="col-md-2 control-label showcase_products{{ emailtemplate.showcase !='products' ? ' hide' }}" for="emailtemplate_showcase_selection">{{ entry_product }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group">
+                          <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-fw fa-search"></i></span></span>
+                          <input type="text" class="form-control input-autocomplete-product" id="emailtemplate_showcase_selection" data-field="input[name=emailtemplate_showcase_selection]" data-output="#emailtemplate_showcase_output" name="" value="" autocomplete="off" placeholder="{{ text_search }}"/>
+                          <input type="hidden" name="emailtemplate_showcase_selection" value="{{ emailtemplate.showcase_selection }}"/>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div id="emailtemplate_showcase_output" class="{{ showcase_selection is empty ? 'hide' }}">
+                          <ul class="list-group list-group-small" style="margin-top:6px;">
+                            {% if showcase_selection is not empty %} {% for row in showcase_selection %}
+                              <li class="list-group-item" data-id="{{ row.product_id }}"><a href="javascript:void(0)" class="badge remove list-group-item-danger" data-toggle="tooltip" title="{{ button_remove }}"><i class="fa fa-fw fa-times"></i></a> {{ row.name }} </li>
+                            {% endfor %} {% endif %}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group collapse collapse-showcase{{ emailtemplate.showcase !='none' ? ' in' }}">
+                      <label class="col-md-2 control-label">{{ entry_title }}</label>
+                      <div class="col-md-10">
+                        {% for language in languages %}
+                          <div class="input-group{{ loop.index > 1 ? ' mt-1' }}">
+                            <span class="input-group-addon"><span class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span></span>
+                            <input type="text" name="emailtemplate_description_showcase_title[{{ language.language_id }}]" value="{% if emailtemplate_description[language.language_id].showcase_title is defined %}{{ emailtemplate_description[language.language_id].showcase_title }}{% endif %}" class="form-control"/>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </fieldset>
+                  {% if emailtemplate.type == 'order' %}
+                  <fieldset class="mt-3">
+                    <legend class="h4">{{ heading_order_product }}</legend>
+                    <div class="form-group form-group-radio row">
+                      <label class="col-md-2 control-label">{{ entry_status }}</label>
+                      <div class="col-md-10">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default success{{ emailtemplate.order_product==1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_order_product" onchange="jQuery('.collapse-product-order').collapse('show');" value="1" {{ emailtemplate.order_product==1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i> </label>
+                          <label class="btn btn-default danger{{ emailtemplate.order_product==0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_order_product" onchange="jQuery('.collapse-product-order').collapse('hide');" value="0" {{ emailtemplate.order_product==0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i> </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group collapse collapse-product-order{{ emailtemplate.order_product==1 ? ' in' }}">
+                      <label class="col-md-2 control-label">{{ entry_title }}</label>
+                      <div class="col-md-10">
+                        {% for language in languages %}
+                          <div class="input-group{{ loop.index > 1 ? ' mt-1' }}">
+                            <span class="input-group-addon"><span class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span></span>
+                            <input type="text" name="emailtemplate_description_order_title[{{ language.language_id }}]" value="{% if emailtemplate_description[language.language_id].order_title is defined %}{{ emailtemplate_description[language.language_id].order_title }}{% endif %}" class="form-control"/>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </fieldset>
+                  {% endif %}
+                  {% if emailtemplate.type == 'customer' %}
+                  <fieldset class="mt-3">
+                    <legend class="h4">{{ heading_cart_product }}</legend>
+                    <div class="form-group form-group-radio row">
+                      <label class="col-md-2 control-label">{{ entry_status }}</label>
+                      <div class="col-md-10">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default success{{ emailtemplate.cart_product==1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_cart_product" onchange="jQuery('.collapse-product-cart').collapse('show');" value="1" {{ emailtemplate.cart_product==1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i> </label>
+                          <label class="btn btn-default danger{{ emailtemplate.cart_product==0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_cart_product" onchange="jQuery('.collapse-product-cart').collapse('hide');" value="0" {{ emailtemplate.cart_product==0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i> </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group collapse collapse-product-cart{{ emailtemplate.cart_product==1 ? ' in' }}">
+                      <label class="col-md-2 control-label">{{ entry_title }}</label>
+                      <div class="col-md-10">
+                        {% for language in languages %}
+                          <div class="input-group{{ loop.index > 1 ? ' mt-1' }}">
+                            <span class="input-group-addon"><span class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span></span>
+                            <input type="text" name="emailtemplate_description_cart_title[{{ language.language_id }}]" value="{% if emailtemplate_description[language.language_id].cart_title is defined %}{{ emailtemplate_description[language.language_id].cart_title }}{% endif %}" class="form-control"/>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </fieldset>
+                  {% endif %}
+                </div>
+                <div id="tab-shortcodes" class="tab-pane fade">
+                  <p>{{ text_help_shortcodes }}</p>
+                  <div class="row">
+                    <div class="col-xs-12 col-md-9 mb-3 form-inline">
+                      <div class="form-group" style="margin-right:8px;">
+                        <div class="input-group">
+                          <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-fw fa-search"></i></span></span>
+                          <input class="form-control" type="text" value="" name="filter_shortcodes_search" id="filter_shortcodes_search" placeholder="{{ text_search }}" autocomplete="off" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="border-top:none;">
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" name="filter_shortcodes_language" id="filter_shortcodes_language" autocomplete="off" />
+                          <label class="form-check-label" for="filter_shortcodes_language">{{ button_language_shortcodes }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3 mb-3 text-right">
+                      {% if emailtemplate.shortcodes %}
+                        <button class="btn btn-warning" data-confirm="{{ text_confirm }}" data-action="{{ action }}&action=delete_shortcode"><i class="fa fa-eraser"></i> {{ button_clear }}</button>
+                      {% else %}
+                        <button class="btn btn-info" data-action="{{ action }}&action=default_shortcode"><i class="fa fa-magic"></i> {{ button_default_shortcodes }}</button>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div id="shortcodes-list"><i class="fa fa-spinner fa-spin fa-3x" style="color:#009afd"></i></div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="send-test-email-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h5 class="modal-title">{{ button_test }}</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="field-send-test-email">{{ entry_email }}</label>
+          <input type="email" class="form-control" value="{{ config_email }}" id="field-send-test-email" autofocus required/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="send-test-email" type="button" class="btn btn-success" data-loading-text="{{ text_loading }}">{{ button_send }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modal-frame" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+{{ footer }}

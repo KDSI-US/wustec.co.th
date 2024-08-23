@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>{{ store_name }}</title>
+  <style type="text/css">
+    {{ config.body_font_source }}
+    * {
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+    body, table, td {
+      font-family: {{ config.body_font_custom ? config.body_font_custom ~ ', ' }}{{ config.body_font_family }} !important;;
+      font-size: {{config.body_font_size }}px;
+      line-height: 160%;
+      color: {{config.body_font_color }};
+    }
+    table, td {
+      mso-table-lspace: 0pt !important;
+      mso-table-rspace: 0pt !important;
+    }
+    table {
+      border-spacing: 0 !important;
+      border-collapse: collapse !important;
+      table-layout: fixed;
+      margin: 0 auto;
+    }
+    @media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
+      .email-container {
+        min-width: 320px !important;
+      }
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+      .email-container {
+        min-width: 375px !important;
+      }
+    }
+    {% if config.email_responsive %}
+    @media all and (max-width:961px) {
+      .email-shadow, .mobile-hide { display:none !important;}
+      .table-order thead > tr > th {
+        width: auto;
+        font-size: 11px !important;
+        letter-spacing: 0 !important;
+        padding-left: 3px !important;
+        padding-right: 3px !important;
+      }
+      .table-order tbody > tr > td, .product-table td .price { padding: 3px !important; font-size: 14px !important;}
+      .table-order tbody > tr > td .product-desc {font-size:12px !important;}
+      .table-orderClean .orderTotal {float: none !important; width: 100% !important;}
+      .email-main-text,
+      .email-showcase-inner { padding-left:15px !important;padding-right:15px !important }
+      .clear-mobile { clear:both !important }
+      .email-showcase-row { display:block; }
+      .email-showcase-item {   float:left; width:33.33333% !important; max-width:none !important;}
+      .email-showcase-item:nth-child(4n+4) {  clear: left; }
+      .table-responsive {width: 100%;overflow-x: auto;overflow-y: hidden;-webkit-overflow-scrolling: touch;-ms-overflow-style: -ms-autohiding-scrollbar;}
+    }
+
+    @media screen and (max-width: 600px) {
+      .email-container {
+        width: 100% !important;
+        margin: auto !important;
+        max-width:none !important;
+      }
+      .email-main-text {
+        font-size:14px !important;
+      }
+      .table-stack table, table.table-stack { width:100% !important;  max-width:100% !important;  }
+      .table-row-stack, .table-cell-stack {  display:block !important; width: auto !important; padding-left: 0 !important; padding-right: 0 !important;}
+      .table-info .table-cell-stack { padding-left: 8px !important; padding-right: 8px !important; }
+      .table-info .table-stack > tbody > tr > td + td {  border-top:1px solid #E0E0E0 !important; }
+      .table-info .table-stack table {  float: none }
+      .table-order tfoot > tr > td { font-size:13px !important;padding:0 !important;}
+      .fluid {
+        max-width: 100% !important;
+        height: auto !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      .stack-column, .stack-column-center {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      td.stack-column, td.stack-column-center {
+        display: block !important;
+      }
+      .stack-column-center {
+        text-align: center !important;
+      }
+      .center-on-narrow {
+        text-align: center !important;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        float: none !important;
+      }
+      table.center-on-narrow {
+        display: inline-block !important;
+      }
+      .email-product-image { width: auto !important; padding: 0 0 5px 0 !important;	}
+      .email-logo img, .email-product-image img { max-width: 100% !important;	height: auto !important; }
+      .heading2 { font-size: 18px !important; line-height: 20px !important; letter-spacing: 0.5px !important; }
+      .heading3 { font-size:14px !important; }
+      .email-product-data { font-size:13px !important; line-height: 15px; }
+      .email-footer-text, .email-footer-text p { font-size:11px !important }
+      .email-footer-text { padding-left: 10px !important; padding-right: 10px !important;}
+      .email-footer-text table > thead > tr > th { padding-bottom: 0 !important; padding-top: 20px !important;}
+      .mobile-hide {  display:none !important; }
+      .email-showcase .heading3 { text-align: center !important;}
+      .email-showcase-item { width:50% !important;clear:none !important;}
+      .email-showcase-item:nth-child(odd) { clear: left !important; }
+    }
+    @media all and (max-width:481px) {
+      .email-showcase-item { display:block; width:100% !important; clear: left !important;}
+      .email-showcase-item .productTitle { height: auto !important; padding-top: 15px !important; }
+      .email-showcase-item > table { float:none; margin-left:auto; margin-right:auto; width:100% !important; }
+    }
+    {% endif %}
+  </style>
+  {% if config.body_font_url and config.body_font_source == '' %}
+    <link href="{{ config.body_font_url }}" rel="stylesheet" type="text/css">
+  {% endif %}
+  {% if config.body_font_custom %}<!--[if mso]>
+  <style type="text/css">
+    body, table, td { font-family: {{ config.body_font_family }}; }
+  </style>
+  <![endif]-->{% endif %}
+</head>
+<body text="{{ config.body_font_color }}" link="{{ config.body_link_color }}" alink="{{ config.body_link_color }}" vlink="{{ config.body_link_color }}" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;text-size-adjust:100%;margin:0;padding:0;width:100%;height:100%;{{ config.body_bg_color ? ' background-color:' ~ config.body_bg_color ~ ';' }}">
+<center style="width: 100%; text-align: left;">
+  {% if emailtemplate.preheader_preview %}<div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">{{ emailtemplate.preheader_preview }}</div>
+  <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
+    &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>{% endif %}
+  {% if not config.has_section %}
+  <div style="max-width: {{ config.email_full_width }};{{ config.page_align == 'center' ? 'margin-left:auto;margin-right:auto;'}} " class="email-container">
+    <!--[if mso]>
+    <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0" style="width:{{ config.email_full_width }}">
+      <tr>
+        <td>
+    <![endif]-->
+  {% endif %}
+  <table id="emailTemplate" class="email-style email-style{{ config.style|title }}" cellspacing="0" cellpadding="0" border="0"{{ config.body_bg_color ? ' bgcolor="' ~ config.body_bg_color ~ '"' }} style="{{ config.body_bg_color ? ' background-color:' ~ config.body_bg_color ~ ';' }}width:100%;">
+    {% if config.head_text or config.shadow_top and config.shadow_top.length %}<tr>
+      <td valign="top" style="text-align:{{ config.page_align }};">
+        {% if config.has_section %}<div style="max-width: {{ config.email_full_width }};{{ config.page_align == 'center' ? 'margin-left:auto;margin-right:auto;'}} " class="email-container">
+          <!--[if mso]>
+          <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0" style="width:{{ config.email_full_width }}">
+            <tr><td>
+          <![endif]-->{% endif %}
+          <table dir="{{ direction }}" cellspacing="0" cellpadding="0" border="0" style="width:100%;direction:{{ direction }};">
+            {% if config.head_text %}
+            <tr>
+              <td style="height:5px;line-height:5px;font-size:5px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="email-head-text" style="font-size:12px;font-weight:normal;text-align:center;">
+                {{ config.head_text }}
+              </td>
+            </tr>
+            <tr>
+              <td style="height:3px;line-height:3px;font-size:3px;">&nbsp;</td>
+            </tr>
+            {% endif %}
+          </table>
+          {% if config.has_section %}
+          <!--[if mso]>
+          </td></tr></table>
+          <![endif]-->
+        </div>{% endif %}
+      </td>
+    </tr>{% endif %}
+    {% if config.header_status %}
+    <tr>
+      <td valign="top"{{ config.header_section_bg_color ? ' bgcolor="' ~ config.header_section_bg_color ~ '"' }} style="{{ config.header_section_bg_color ? ' background:' ~ config.header_section_bg_color ~ ';' }}text-align:{{ config.page_align }};">
+        {% if config.has_section %}<div style="max-width: {{ config.email_full_width }};{{ config.page_align == 'center' ? 'margin-left:auto;margin-right:auto;'}} " class="email-container">{% endif %}
+          {% if config.header_spacing.0 or config.header_spacing.1 %}
+          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+            {% if config.header_spacing.0 %}
+              <tr>
+                <td style="height:{{ config.header_spacing.0 }}px;font-size:0pt;line-height:{{ config.header_spacing.0 }}px;">&nbsp;</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <td>
+                {% endif %}
+                {% if config.has_section %}
+                <!--[if mso]>
+                <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0" style="width:{{ config.email_full_width }}"><tr><td>
+                <![endif]-->{% endif %}
+                <div class="email-header-wrap">
+                  {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+                  <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                    {% if config.shadow_top.length %}
+                      <tr class="email-shadow">
+                        {% if config.shadow_top.left_img %}
+                          <td valign="top" style="width:{{ config.shadow_top.left_img_width }}px;height:{{ config.shadow_top.left_img_height }}px;font-size:1px;line-height:0;mso-line-height-alt:0;mso-margin-top-alt:1px;">
+                            <img src="{{ config.shadow_top.left_img }}" alt="" />
+                          </td>
+                        {% endif %}
+                        <td valign="top" style="font-size:1px;line-height:0;mso-margin-top-alt:1px;">
+                          <table class="email-shadowTop" border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                            {{ config.shadow_top.bg }}
+                            <tr>
+                              <td bgcolor="{{ config.header_bg_color }}" style="background:{{ config.header_bg_color }};height:{{ config.shadow_top.overlap }}px;font-size:1px;line-height:{{ config.shadow_top.overlap }}px;mso-margin-top-alt:1px;">&nbsp;</td>
+                            </tr>
+                          </table>
+                        </td>
+                        {% if config.shadow_top.right_img %}
+                          <td valign="top" style="font-size:1px;line-height:0;mso-line-height-alt:0;mso-margin-top-alt:1px;width:{{ config.shadow_top.right_img_width }}px;height:{{ config.shadow_top.right_img_height }}px;">
+                            <img src="{{ config.shadow_top.right_img }}" alt="" />
+                          </td>
+                        {% endif %}
+                      </tr>
+                    {% endif %}
+                    <tr>
+                      <td>
+                        <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;{% if config.shadow_top.length %}margin-top:-{{ config.shadow_top.length }}px;{% endif %}">
+                          <tr>
+                            {{ config.shadow_left.bg }}
+                            <td>
+                            {% endif %}
+                              {% if not config.border_radius and (config.header_border_top.0 or config.header_border_bottom.0) %}
+                              <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                {% if config.header_border_top.0 %}
+                                <tr>
+                                  <td bgcolor="{{ config.header_border_top.1 }}" style="background:{{ config.header_border_top.1 }};height:{{ config.header_border_top.0 }}px;font-size:1px;line-height:{{ config.header_border_top.0 }}px;mso-line-height-alt:0;mso-margin-top-alt:1px;">&nbsp;</td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                  <td>
+                              {% endif %}
+                                    {% if not config.border_radius and (config.header_border_left.0 or config.header_border_right.0) %}
+                                    <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                      <tr>
+                                        {% if config.header_border_left.0 %}
+                                          <td bgcolor="{{ config.header_border_right.1 }}" class="mobile-hide" style="background:{{ config.header_border_left.1 }};width:{{ config.header_border_left.0 }}px;font-size:{{ config.header_border_left.0}}px;">&nbsp;</td>
+                                        {% endif %}
+                                        <td{{ config.header_bg_color ? ' bgcolor="' ~ config.header_bg_color ~ '"' }} style="{{ config.header_bg_color ? ' background-color:' ~ config.header_bg_color ~ ';' }}{% if config.header_bg_image %}background-image:url('{{ config.header_bg_image }}');background-repeat: no-repeat;background-position: center center;background-size:cover;{% endif %}">
+                                          {% endif %}
+                                          <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                            {% if config.header_padding and config.header_padding[0] %}
+                                              <tr><td style="height:{{ config.header_padding[0] }}px;font-size:0;line-height:{{ config.header_padding[0] }}px;">&nbsp;</td></tr>
+                                            {% endif %}
+                                            <tr>
+                                              <td valign="top">
+                                                <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                                  <tr>
+                                                    {% if config.header_padding and config.header_padding[3] %}
+                                                      <td style="width:{{ config.header_padding[3] }}px;font-size:0;">&nbsp;</td>
+                                                    {% endif %}
+                                                    <td valign="middle" style="{{ config.header_height ? 'height:' ~ config.header_height ~ 'px;' }}">
+                                                      <table align="{{ config.logo_align }}" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                                        <tr>
+                                                          {% if config.logo or config.header_html == '' %}
+                                                          <td class="email-logo" valign="middle" style="text-align:{{ config.logo_align }};">
+                                                            <a href="{{ store_url|replace({'&amp;':'&'}) }}" target="_blank" title="{{ store_name }}" style="font-size:{{ config.logo_font_size }}px;line-height:100%;color:{{ config.logo_font_color }};">
+                                                              {% if config.logo %}
+                                                                <img src="{{ config.logo }}" alt="{{ store_name }}" border="0" style="display:inline;max-width:100%;{{ config.logo_width ? 'width:' ~ config.logo_width ~ 'px'  }};"/>
+                                                              {% else %}
+                                                                {{ store_name }}
+                                                              {% endif %}
+                                                              {% if emailtemplate.tracking_img %}<img src="{{ emailtemplate.tracking_img }}" style="border:0;width:1px;height:1px;" alt="" />{% endif %}
+                                                            </a>
+                                                          </td>
+                                                          {% endif %}
+                                                          {% if config.header_html %}
+                                                            <td>
+                                                              <table align="{% if config.logo_align == 'left' %}right{% elseif config.logo_align == 'right' %}left{% endif %}" cellpadding="0" cellspacing="0" border="0">
+                                                                <tr>
+                                                                  <td style="font-size:0pt;line-height:8px;height:8px;">&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td class="email-header-html" style="color:#DBDBDB;vertical-align:top;font-size:12px;font-weight:bold;text-align:{% if config.logo_align == 'left' %}right{% elseif config.logo_align == 'right' %}left{% else %}center{% endif %};">
+                                                                    {{ config.header_html }}
+                                                                  </td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="font-size:0pt;line-height:8px;height:8px;">&nbsp;</td>
+                                                                </tr>
+                                                              </table>
+                                                            </td>
+                                                          {% endif %}
+                                                        </tr>
+                                                      </table>
+                                                    </td>
+                                                    {% if config.header_padding and config.header_padding[1] %}
+                                                      <td style="width:{{ config.header_padding[1] }}px;font-size:0;">&nbsp;</td>
+                                                    {% endif %}
+                                                  </tr>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                            {% if config.header_padding and config.header_padding[2] %}
+                                              <tr><td style="height:{{ config.header_padding[2] }}px;font-size:0;line-height:{{ config.header_padding[2] }}px;">&nbsp;</td></tr>
+                                            {% endif %}
+                                          </table>
+                                        {% if not config.border_radius and (config.header_border_left.0 or config.header_border_right.0) %}
+                                        </td>
+                                        {% if config.header_border_right.0 %}<td bgcolor="{{ config.header_border_right.1 }}" class="mobile-hide" style="background:{{ config.header_border_right.1 }};width:{{ config.header_border_right.0 }}px;font-size:{{ config.header_border_right.0}}px;">&nbsp;</td>{% endif %}
+                                      </tr>
+                                    </table>
+                                    {% endif %}
+                                  {% if not config.border_radius and (config.header_border_top.0 or config.header_border_bottom.0) %}
+                                  </td>
+                                </tr>
+                                {% if config.header_border_bottom.0 %}
+                                <tr>
+                                  <td bgcolor="{{ config.header_border_bottom.1 }}" style="background:{{ config.header_border_bottom.1 }};height:{{ config.header_border_bottom.0 }}px;font-size:1px;line-height:{{ config.header_border_bottom.0 }}px;mso-line-height-alt:0;mso-margin-bottom-alt:1px;">&nbsp;</td>
+                                </tr>
+                                {% endif %}
+                              </table>
+                              {% endif %}
+                              {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+                            </td>
+                            {{ config.shadow_right.bg }}
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  {% endif %}
+                </div>
+                {% if config.has_section %}
+                <!--[if mso]>
+                </td></tr></table>
+                <![endif]-->
+                {% endif %}
+                {% if config.header_spacing.0 or config.header_spacing.1 %}
+              </td>
+            </tr>
+            {% if config.header_spacing.1 %}
+              <tr>
+                <td style="height:{{ config.header_spacing.1 }}px;font-size:0pt;line-height:{{ config.header_spacing.1 }}px;">&nbsp;</td>
+              </tr>
+            {% endif %}
+          </table>
+          {% endif %}
+          {% if config.has_section %}</div>{% endif %}
+      </td>
+    </tr>
+    {% endif %}
+
+    <tr>
+      <td valign="top"{{ config.body_section_bg_color ? ' bgcolor="' ~ config.body_section_bg_color ~ '"' }} style="{{ config.body_section_bg_color ? ' background:' ~ config.body_section_bg_color ~ ';' }}text-align:{{ config.page_align }};">
+        {% if config.has_section %}<div style="max-width: {{ config.email_full_width }};{{ config.page_align == 'center' ? 'margin-left:auto;margin-right:auto;'}} " class="email-container">{% endif %}
+          {% if config.page_spacing.0  or config.page_spacing.1 %}
+          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+            {% if config.page_spacing.0 %}
+            <tr>
+              <td style="height:{{ config.page_spacing.0 }}px;font-size:0pt;line-height:{{ config.page_spacing.0 }}px;">&nbsp;</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <td>
+                {% endif %}
+                {% if config.has_section %}
+                <!--[if mso]>
+                <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0"{{ config.page_bg_color ? ' bgcolor="' ~ config.page_bg_color ~ '"' }} style="{{ config.page_bg_color ? 'background:' ~ config.page_bg_color ~ ';' }}width:{{ config.email_full_width }}"><tr><td>
+                <![endif]-->{% endif %}
+                <div class="email-page-wrap">
+                  {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+                  <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                    <tr>
+                      <td>
+                        <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+                          <tr>
+                            {{ config.shadow_left.bg }}
+                            <td>
+                              {% endif %}
+                              {% if not config.border_radius and (config.page_border_top.0 or config.page_border_bottom.0) %}
+                              <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                {% if config.page_border_top.0 %}
+                                <tr>
+                                  <td bgcolor="{{ config.page_border_top.1 }}" class="mobile-hide" style="background:{{ config.page_border_top.1 }};height:{{ config.page_border_top.0 }}px;font-size:1px;line-height:{{ config.page_border_top.0 }}px;mso-line-height-alt:0;mso-margin-top-alt:1px;">&nbsp;</td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                  <td>
+                                  {% endif %}
+                                    <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                      <tr>
+                                        {% if not config.border_radius and config.page_border_left.0 %}
+                                          <td bgcolor="{{ config.page_border_left.1 }}" class="mobile-hide" style="background:{{ config.page_border_left.1 }};width:{{ config.page_border_left.0}}px;font-size:1px;">&nbsp;</td>
+                                        {% endif %}
+                                        <td class="email-main-text">
+                                          {% if emailtemplate.heading %}
+                                            <table dir="{{ direction }}" cellspacing="0" cellpadding="0" border="0" style="width:100%;direction:{{ direction }};">
+                                            <tr>
+                                              <td>
+                                                <table align="{{ config.text_align }}" border="0" cellpadding="0" cellspacing="0" class="table-heading">
+                                                  <tbody>
+                                                  <tr>
+                                                    <td width="2"></td>
+                                                    <td class="heading2"><strong>{{ emailtemplate.heading }}</strong></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td height="3" style="font-size:1px; line-height:3px; height:3px;" width="2"></td>
+                                                    <td height="3" style="font-size:1px; line-height:3px; height:3px;"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td bgcolor="#e8e8e8" height="1" style="font-size:1px; line-height:1px; height:1px;" width="2"></td>
+                                                    <td bgcolor="#e8e8e8" height="1" style="font-size:1px; line-height:1px; height:1px;"></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td height="15" style="font-size:1px; line-height:1px; height:1px;" width="2"></td>
+                                                    <td height="15" style="font-size:1px; line-height:15px; height:15px;"></td>
+                                                  </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                          {% endif %}
+                                          {CONTENT}
+                                          {% if config.page_footer_text %}
+                                            <table cellpadding="0" cellspacing="0" style="width:100%;"><tr><td style="font-size:15px;line-height:15px;height:15px;">&nbsp;</td></tr></table>
+                                            <div class="email-footer-text">{{ config.page_footer_text }}</div>
+                                          {% endif %}
+                                        </td>
+                                        {% if not config.border_radius and config.page_border_right.0 %}
+                                        <td bgcolor="{{ config.page_border_right.1 }}" class="mobile-hide" style="background:{{ config.page_border_right.1 }};width:{{ config.page_border_right.0}}px;font-size:{{ config.page_border_right.0}}px;">&nbsp;</td>
+                                        {% endif %}
+                                      </tr>
+                                    </table>
+                                    {% if not config.border_radius and (config.page_border_top.0 or config.page_border_bottom.0) %}
+                                  </td>
+                                </tr>
+                                {% if config.page_border_bottom.0 %}
+                                <tr>
+                                  <td bgcolor="{{ config.page_border_bottom.1 }}" class="mobile-hide" style="background:{{ config.page_border_bottom.1 }};height:{{ config.page_border_bottom.0 }}px;font-size:1px;line-height:{{ config.page_border_bottom.0 }}px;mso-line-height-alt:0;mso-margin-bottom-alt:1px;">&nbsp;</td>
+                                </tr>
+                                {% endif %}
+                              </table>
+                              {% endif %}
+                              {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+                            </td>
+                            {{ config.shadow_right.bg }}
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  {% endif %}
+                </div>
+                {% if config.has_section %}
+                <!--[if mso]>
+                </td></tr></table>
+                <![endif]-->{% endif %}
+              {% if config.page_spacing.0 or config.page_spacing.1 %}
+              </td>
+            </tr>
+            {% if config.page_spacing.1 %}
+            <tr>
+              <td style="height:{{ config.page_spacing.1 }}px;font-size:0pt;line-height:{{ config.page_spacing.1 }}px;">&nbsp;</td>
+            </tr>
+            {% endif %}
+          </table>
+          {% endif %}
+        {% if config.has_section %}</div>{% endif %}
+      </td>
+    </tr>
+
+    {% if showcase_selection %}
+    <tr>
+      <td valign="top"{{ config.showcase_section_bg_color ? ' bgcolor="' ~ config.showcase_section_bg_color ~ '"' }} style="{{ config.showcase_section_bg_color ? 'background:' ~ config.showcase_section_bg_color ~ ';' }}text-align:{{ config.page_align }};">
+        {% if config.has_section %}<div style="max-width: {{ config.email_full_width }};{{ config.page_align == 'center' ? 'margin-left:auto;margin-right:auto;'}} " class="email-container">
+          <!--[if mso]>
+          <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0"{{ config.showcase_bg_color ? ' bgcolor="' ~ config.showcase_bg_color ~ '"' }} style="width:{{ config.email_full_width }}"><tr><td>
+          <![endif]-->{% endif %}
+          <div class="email-showcase-wrap">
+            {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+            <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+              <tr>
+                <td>
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;{% if config.shadow_top.length %}margin-top:-{{ config.shadow_top.length }}px;{% endif %}">
+                    <tr>
+                      {{ config.shadow_left.bg }}
+                      <td>
+                        {% endif %}
+                        {% if not config.border_radius and (config.showcase_border_top.0 or config.showcase_border_bottom.0) %}
+                        <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                          {% if config.showcase_border_top.0 %}
+                          <tr>
+                            <td bgcolor="{{ config.showcase_border_top.1 }}" style="background:{{ config.showcase_border_top.1 }};height:{{ config.showcase_border_top.0 }}px;font-size:1px;line-height:{{ config.showcase_border_top.0 }}px;mso-line-height-alt:0;mso-margin-top-alt:1px;">&nbsp;</td>
+                          </tr>
+                          {% endif %}
+                          <tr>
+                            <td>
+                            {% endif %}
+                              <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                                <tr>
+                                  {% if not config.border_radius and config.showcase_border_left.0 %}
+                                    <td bgcolor="{{ config.showcase_border_left.1 }}" class="mobile-hide" style="background:{{ config.showcase_border_left.1 }};width:{{ config.showcase_border_left.0}}px;font-size:{{ config.showcase_border_left.0}}px;">&nbsp;</td>
+                                  {% endif %}
+                                  <td class="email-showcase-inner">
+                                    <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                                      {% if config.showcase_title or emailtemplate.showcase_title %}
+                                        <tr>
+                                          <td align="{{ config.text_align }}" class="email-showcase" style="width:100%; padding-bottom:0">
+                                            <table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                                              <tr>
+                                                <td style="height:15px;font-size:1px;line-height:15px;">&nbsp;</td>
+                                              </tr>
+                                              <tr>
+                                                <td class="heading3" align="{{ config.text_align }}"><strong>{{ emailtemplate.showcase_title|default(config.showcase_title) }}</strong></td>
+                                              </tr>
+                                              <tr>
+                                                <td style="height:4px;font-size:1px;line-height:1px;">&nbsp;</td></tr>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                      {% endif %}
+                                      <tr>
+                                        <td align="{{ config.text_align }}" class="email-showcase">
+                                          <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                                            <tr>
+                                              <td align="left" class="email-showcase-items" style="font-size:0pt;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                                                <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                                                  <tr class="email-showcase-row">
+                                                    {% for row in showcase_selection %}
+                                                    <td class="email-showcase-item" style="width:{{ config.showcase_item_width }};vertical-align:top;">
+                                                      <table border="0" cellspacing="0" cellpadding="0" class="emailtemplateSpacing" style="width:100%;border:none;mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;">
+                                                        <tr>
+                                                          <td valign="bottom" align="center" class="productTitle" style="word-wrap: break-word;font-weight:bold;font-size:0.9em;line-height:16px;vertical-align:bottom;height:50px;text-align:center">
+                                                            <a href="{{ row.url|replace({'&amp;':'&'}) }}" target="_blank" title="{{ row.preview }}">{{ row.name_short }}</a>
+                                                          </td>
+                                                        </tr>
+                                                        {% if config.showcase_setting.rating and row.rating %}
+                                                          <tr>
+                                                            <td class="rating" style="font-size:13px;color:#ca8f00;text-align:center;" title="{{ text_rating }}">
+                                                              <span>
+                                                                {% for i in 1..5 %}<small>{{ row.rating < i ? '&#9734;' : '&#9733;' }}</small>{% endfor %}
+                                                              </span>
+                                                              <small> ({{ row.reviews }})</small></td>
+                                                          </tr>
+                                                        {% endif %}
+                                                        {% if config.showcase_setting.price != 0 %}
+                                                          <tr>
+                                                            <td class="price" style="font-size:0.95em;text-align:center;height:20px;line-height:18px;padding:5px 0 0 0;vertical-align:top;">
+                                                              <table align="center" cellspacing="0" cellpadding="0" class="price-inner" style="width:auto;">
+                                                                {% if not row.special %}
+                                                                  <tr>
+                                                                    <td style="font-size:1em;padding:0 2px 0 2px;">{{ row.price }}</td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                    <td style="border-top:1px dotted #ccc;height:1px;font-size:1px;line-height:1px;">&nbsp;</td>
+                                                                  </tr>
+                                                                {% else %}
+                                                                  <tr>
+                                                                    <td style="font-size:1em;line-height:1;padding:2px;"><span class="price-old" style="color:#FF0000;text-decoration:line-through;">{{ row.price }}</span></td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                    <td style="font-size:1em;line-height:1;padding:2px;"><b class="price-new" style="font-weight:bold">{{ row.special }}</b></td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                    <td style="border-top:1px dotted #ccc;height:1px;font-size:1px;line-height:1px;">&nbsp;</td>
+                                                                  </tr>
+                                                                {% endif %}
+                                                              </table>
+                                                            </td>
+                                                          </tr>
+                                                        {% endif %}
+                                                        {% if config.showcase_setting.image != 0 and row.image %}
+                                                          <tr>
+                                                            <td valign="top" align="center" class="img" style="word-wrap: break-word;text-align:center;height:110px;vertical-align:top;">
+                                                              <a href="{{ row.url|replace({'&amp;':'&'}) }}" target="_blank" title="{{ row.preview }}">
+                                                                <img src="{{ row.image|replace({' ':'%20'}) }}" alt="" style="display:inline-block;max-width:90%;margin:0 auto;" />
+                                                              </a>
+                                                            </td>
+                                                          </tr>
+                                                        {% endif %}
+                                                        {% if row.description %}
+                                                          <tr><td height="5" style="font-size:1px;line-height:5px;mso-margin-top-alt:1px;">&nbsp;</td></tr>
+                                                          <tr>
+                                                          <td valign="top" align="center" class="productTitle" height="110" style="word-wrap: break-word;text-align:center;padding-left:8px;padding-right:8px;font-size:0.9em;line-height: 1.35;padding-top: 5px;color: #757575;font-family:{{ config.body_font_family }};">{{ row.description }}</td>
+                                                          </tr>{% endif %}
+                                                      </table>
+                                                    </td>
+                                                    {% if loop.index is divisible by(config.showcase_setting.per_row|default(4)) and not loop.last %}</tr><tr class="email-showcase-row">{% endif %}
+                                                    {% endfor %}
+                                                  </tr>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                  {% if not config.border_radius and config.showcase_border_right.0 %}
+                                  <td bgcolor="{{ config.showcase_border_right.1 }}" class="mobile-hide" style="background:{{ config.showcase_border_right.1 }};width:{{ config.showcase_border_right.0}}px;font-size:{{ config.showcase_border_right.0}}px;">&nbsp;</td>
+                                  {% endif %}
+                                </tr>
+                              </table>
+                              {% if not config.border_radius and (config.showcase_border_top.0 or config.showcase_border_bottom.0) %}
+                            </td>
+                          </tr>
+                          {% if config.showcase_border_bottom.0 %}
+                          <tr>
+                            <td bgcolor="{{ config.showcase_border_bottom.1 }}" style="background:{{ config.showcase_border_bottom.1 }};height:{{ config.showcase_border_bottom.0 }}px;font-size:1px;line-height:{{ config.showcase_border_bottom.0 }}px;mso-line-height-alt:0;mso-margin-bottom-alt:1px;">&nbsp;</td>
+                          </tr>
+                          {% endif %}
+                        </table>
+                        {% endif %}
+                        {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+                      </td>
+                      {{ config.shadow_right.bg }}
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            {% endif %}
+          </div>
+          {% if config.has_section %}
+          <!--[if mso]>
+          </td></tr></table>
+          <![endif]-->
+        </div>{% endif %}
+      </td>
+    </tr>
+    {% endif %}
+    {% if config.footer_status %}
+  </table>
+  <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+    <tr><td>
+      {% if config.has_section %}<div style="max-width: {{ config.email_full_width }};margin: 0 auto;" class="email-container">
+      <!--[if mso]>
+      <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0" style="width:{{ config.email_full_width }}"><tr><td>
+      <![endif]-->{% endif %}
+      <table align="{{ config.page_align }}" cellspacing="0" cellpadding="0" border="0" style="width:100%">
+        <tr>
+          <td valign="top"{{ config.footer_section_bg_color ? ' bgcolor="' ~ config.footer_section_bg_color ~ '"' }} style="{{ config.footer_section_bg_color ? 'background:' ~ config.footer_section_bg_color ~ ';' }}text-align:{{ config.page_align }};">
+            {% if config.footer_spacing.0  or config.footer_spacing.1 %}
+            <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+              {% if config.footer_spacing.0 %}
+                <tr>
+                  <td style="height:{{ config.footer_spacing.0 }}px;font-size:0pt;line-height:{{ config.footer_spacing.0 }}px;">&nbsp;</td>
+                </tr>
+              {% endif %}
+              <tr>
+                <td>
+                  {% endif %}
+                  <div class="email-footer-wrap">
+                    <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                      {% if config.shadow_bottom.length %}
+                      <tr class="email-shadow">
+                        <td>
+                          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;table-layout:fixed!important;">
+                            <tr>
+                              {% if config.shadow_bottom.left_img %}
+                                <td valign="top" style="width:{{ config.shadow_bottom.left_img_width }}px">
+                                  <img src="{{ config.shadow_bottom.left_img }}" alt="" style="width:{{ config.shadow_bottom.left_img_width }}px;height:{{ config.shadow_bottom.left_img_height }}px;" />
+                                </td>
+                              {% endif %}
+                              <td valign="top" style="font-size:1px;line-height:0;mso-margin-bottom-alt:1px;">
+                                <table class="email-shadowTop" border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                                  <tr>
+                                    <td bgcolor="{{ config.page_bg_color }}" style="background:{{ config.page_bg_color }};height:{{ config.shadow_bottom.overlap }}px;font-size:1px;line-height:{{ config.shadow_bottom.overlap }}px;mso-margin-bottom-alt:1px;">&nbsp;</td>
+                                  </tr>
+                                  {{ config.shadow_bottom.bg }}
+                                </table>
+                              </td>
+                              {% if config.shadow_bottom.right_img %}
+                                <td valign="top" style="width:{{ config.shadow_bottom.right_img_width }}px;">
+                                  <img src="{{ config.shadow_bottom.right_img }}" alt="" style="width:{{ config.shadow_bottom.right_img_width }}px;height:{{ config.shadow_bottom.right_img_height }}px;" />
+                                </td>
+                              {% endif %}
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      {% endif %}
+                      {% if config.footer_text %}
+                      <tr>
+                        <td>
+                          {% endif %}
+                          {% if not config.border_radius and (config.footer_border_top.0 or config.footer_border_bottom.0) %}
+                          <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                            {% if config.footer_border_top.0 %}
+                            <tr>
+                              <td bgcolor="{{ config.footer_border_top.1 }}" style="background:{{ config.footer_border_top.1 }};height:{{ config.footer_border_top.0 }}px;font-size:1px;line-height:{{ config.footer_border_top.0 }}px;mso-line-height-alt:0;mso-margin-bottom-alt:1px;">&nbsp;</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                              <td>
+                                {% endif %}
+                                <table dir="{{ direction }}" cellspacing="0" cellpadding="0" border="0" style="width:100%;direction:{{ direction }};">
+                                  <tr>
+                                    {% if not config.border_radius and config.footer_border_left.0 %}
+                                      <td bgcolor="{{ config.footer_border_right.1 }}" class="mobile-hide" style="background:{{ config.footer_border_left.1 }};width:{{ config.footer_border_left.0}}px;font-size:{{ config.footer_border_left.0}}px;">&nbsp;</td>
+                                    {% endif %}
+                                    <td class="email-footer-text">
+                                      {{ config.footer_text }}
+                                    </td>
+                                    {% if not config.border_radius and config.footer_border_right.0 %}
+                                      <td bgcolor="{{ config.footer_border_right.1 }}" class="mobile-hide" style="background:{{ config.footer_border_right.1 }};width:{{ config.footer_border_right.0}}px;font-size:{{ config.footer_border_right.0}}px;">&nbsp;</td>
+                                    {% endif %}
+                                  </tr>
+                                </table>
+                                {% if not config.border_radius and (config.footer_border_top.0 or config.footer_border_bottom.0) %}
+                              </td>
+                            </tr>
+                            {% if config.footer_border_bottom.0 %}
+                            <tr>
+                              <td bgcolor="{{ config.footer_border_bottom.1 }}" style="background:{{ config.footer_border_bottom.1 }};height:{{ config.footer_border_bottom.0 }}px;font-size:1px;line-height:{{ config.footer_border_bottom.0 }}px;mso-line-height-alt:0;mso-margin-bottom-alt:1px;">&nbsp;</td>
+                            </tr>
+                            {% endif %}
+                          </table>
+                          {% endif %}
+                          {% if config.shadow_top.length or config.shadow_bottom.length or config.shadow_left.length or config.shadow_right.length %}
+                        </td>
+                      </tr>
+                      {% endif %}
+                    </table>
+                  </div>
+                  {% if config.footer_spacing.0 or config.footer_spacing.1 %}
+                </td>
+              </tr>
+              {% if config.footer_spacing.1 %}
+                <tr>
+                  <td style="height:{{ config.footer_spacing.1 }}px;font-size:0pt;line-height:{{ config.footer_spacing.1 }}px;">&nbsp;</td>
+                </tr>
+              {% endif %}
+            </table>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+      {% if config.has_section %}
+        <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+        </div>{% endif %}
+      </td>
+    </tr>{% endif %}
+  </table>
+  {% if not config.has_section %}</div>
+  <!--[if mso]>
+  </td></tr></table>
+  <![endif]-->{% endif %}
+</center>
+</body>
+</html>

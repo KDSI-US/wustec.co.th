@@ -1,0 +1,115 @@
+
+	<div class="row layout4">	
+	
+		<!-- Blog Content Start --->
+
+		{% for blog in blogs %}
+		
+			<div class="{{ listing_row }} blogs_post">
+				
+				<div class="blog_post4">
+					
+					<div class="row">
+					
+					
+						<div class="list_blog">
+						
+							
+							
+				{% if show_thumb %}
+				{% if blog.post_type ==1 %}
+					<div class="col-sm-4">
+					    <a href="{{ blog.href }}"><img src="{{ blog.image }}" class="img-responsive" width="100%" alt="" /></a>
+					</div>
+				{% endif %}
+					{% if blog.post_type ==2 %}
+				<div class="col-sm-4">
+					{% if blog.video_url %}
+				      <div class="videoWrapper">
+						<iframe width="{{ thumbsize_w }}" height="{{ thumbsize_h }}" src="{{ blog.video_url }}" frameborder="0" allowfullscreen></iframe>
+					 </div>
+					{% endif %}
+				</div>
+				{% endif %}
+			{% endif %}
+			
+			
+							
+							<div class="{% if show_thumb %})col-sm-8 {% else %}col-sm-12 {% endif %}">
+							
+								{% if showtitle %}
+									<a href="{{ blog.href }}"><h3>{{ blog.name }}</h3></a>
+								{% endif %}
+								
+								{% if show_publishdate or show_author %}
+								<p class="post_date_blog">
+									{% if show_author %}
+									<span><a >{{ blog.username }}</a></span>
+									{% endif %}
+									{% if show_publishdate %}
+									<span class="date_blog">: {{ blog.date }}</span>
+									{% endif %}
+								</p>
+								{% endif %}
+								
+								{% if blog.short_description is not empty %}
+									<p class="description">{{ blog.short_description }}</p>
+								{% endif %}
+								<hr />
+								<div class="row">
+									<div class="col-sm-4">
+										<a href="{{ blog.href }}">{{ blogsetting_readmore }}</a>
+									</div>
+									<div class="col-sm-6 col-sm-offset-2">
+										<div class="view_like">
+											{% if show_totalview %}<span><i class="fa fa-eye"></i> {{ blog.viewed }}</span>{% endif %}
+											{% if show_like %}<span><i class="fa fa-heart"></i> {{ blog.likes }}</span>{% endif %}
+											{% if comment %}<span><i class="fa fa-comments"></i> {{ blog.comments }}</span>{% endif %}
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							
+						</div>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		{% endfor %}
+	</div>
+<script>
+$(function() {
+
+    var $allVideos = $("iframe[src^='//player.vimeo.com'], iframe[src^='//www.youtube.com'], object, embed"),
+    $fluidEl = $("figure");
+
+ $allVideos.each(function() {
+
+   $(this)
+     // jQuery .data does not work on object/embed elements
+     .attr('data-aspectRatio', this.height / this.width)
+     .removeAttr('height')
+     .removeAttr('width');
+
+ });
+
+ $(window).resize(function() {
+
+   var newWidth = $fluidEl.width();
+   $allVideos.each(function() {
+
+     var $el = $(this);
+     $el
+         .width(newWidth)
+         .height(newWidth * $el.attr('data-aspectRatio'));
+
+   });
+
+ }).resize();
+
+});
+</script>

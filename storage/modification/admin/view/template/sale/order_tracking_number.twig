@@ -1,0 +1,148 @@
+<div id="tracking_no"></div>
+<div id="tracking_number_block">
+<fieldset>
+  <legend>{{ text_tracking_info }} {{ order_id }}</legend>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td class="text-left">{{ text_tracking_id }}</td>
+        <td class="text-left">{{ text_tracking_date }}</td>
+        <td class="text-left">{{ text_tracking_courier }}</td>
+        <td class="text-left">{{ text_tracking_number }}</td>
+          <td class="text-left">Delete</td>
+      </tr>
+	</thead>
+    {% for tracking in tracking_info %}
+    <tr>
+      <td>{{ tracking.order_shipment_id }}</td>
+      <td>{{ tracking.date_added }}</td>
+      <td>{{ tracking.shipping_courier_name }}</td>
+      <td>
+      {% if tracking.shipping_courier_code == 'dhl' %}
+        <a href="https://www.dhl.com/us-en/home/tracking.html?tracking-id={{ tracking.tracking_number }}&submit=1" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'fedex' %}
+        <a href="https://www.fedex.com/fedextrack/?action=track&trackingnumber={{ tracking.tracking_number }}&cntry_code=us&locale=en_us" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'ups' %}
+        <a href="https://www.ups.com/track?loc=en_US&requester=QUIC&tracknum={{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'royal-mail' %}
+        <a href="https://www.royalmail.com/track-your-item#/tracking-results/{{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'usps' %}
+        <a href="https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels={{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'auspost' %}
+        <a href="https://auspost.com.au/mypost/track/#/details/{{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% else %}
+        {{ tracking.tracking_number }}
+      {% endif %}
+      </td>
+        <td>
+        <button id="button-sendSMS" data-firstname="{{ customer_info.firstname }}" data-telephone="{{ customer_info.telephone }}" data-tracking="{{ tracking.tracking_number }}" class="btn btn-success btn-s"><i class="fa fa-mobile" aria-hidden="true"></i></button>
+        	<button id="button-delete-{{ tracking.order_shipment_id }}" class="btn btn-danger btn-s"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </td>
+        <script>
+          $('#button-delete-{{ tracking.order_shipment_id }}').on('click', function() {
+            $.ajax({
+              url: '{{ api_url }}index.php?route=api/order/delete_tracking_number&order_shipment_id={{ tracking.order_shipment_id }}&order_id={{ order_id }}',
+              type: 'post',
+              dataType: 'json',
+              data: '',
+              success: function(json) {
+                if (json['error']) {
+                  $('#tracking_no').before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                if (json['success']) {
+                  $('#tracking_number_block').load('index.php?route=sale/tracking_number/callTrackingInfoTab&user_token={{ user_token }}&order_id={{ order_id }}');
+                  
+                  $('#tracking_no').before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+        </script>
+    </tr>
+    {% endfor %}
+  </table>
+    	<div  id="add-tracking-number">
+		<legend>{{ text_tracking_number_add }}</legend>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-date-added">{{ entry_shipment_date }}</label>
+            <div class="col-sm-2">
+              <div class="input-group date">
+                <input type="text" name="shipment_date_added" id="input-date-added" value="{{ shipment_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span> 
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-shipping-courier">{{ entry_courier }}</label>
+            <div class="col-sm-10">
+              <select name="shipping_courier_id" id="input-shipping-courier" class="form-control">
+                {% for shipping_courier in shipping_couriers %}
+                  <option value="{{ shipping_courier.shipping_courier_id }}">{{ shipping_courier.shipping_courier_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-tracking-number">{{ entry_tracking_number }}</label>
+            <div class="col-sm-10">
+              <div class="input-group text">
+                <input type="text" name="tracking_number" id="input-tracking-number" value="{{ tracking_number }}" placeholder="{{ entry_tracking_number }}" size="130" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </form>
+      <div class="text-right">
+        <button id="button-tracking-number" data-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> {{ button_tracking_number_add }}</button>
+      </div>
+	</div>
+</fieldset>
+</div>
+<script>
+  $('#button-tracking-number').on('click', function() {
+	  $.ajax({
+		  url: '{{ api_url }}index.php?route=api/order/addTrackingNumber&order_id={{ order_id }}',
+		  type: 'post',
+		  dataType: 'json',
+		  data: 'shipment_date_added=' + ($('input[name=\'shipment_date_added\']').val()) + '&shipping_courier_id=' + encodeURIComponent($('select[name=\'shipping_courier_id\']').val()) + '&tracking_number=' + ($('input[name=\'tracking_number\']').val()),
+		  beforeSend: function() {
+			  $('#button-tracking-number').button('loading');
+		  },
+		  complete: function() {
+			  $('#button-tracking-number').button('reset');
+		  },
+		  success: function(json) {
+			  $('.alert-dismissible').remove();
+
+			  if (json['error']) {
+				  $('#tracking_no').before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			  }
+
+			  if (json['success']) {
+          $('#tracking_number_block').load('index.php?route=sale/tracking_number/callTrackingInfoTab&user_token={{ user_token }}&order_id={{ order_id }}');
+
+				  $('#tracking_no').before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			  }
+		  },
+		  error: function(xhr, ajaxOptions, thrownError) {
+			  alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		  }
+	  });
+  });
+</script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<script src="view/javascript/twilio.js" type="text/javascript"></script>
+
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script>
+  $('.date').datetimepicker({
+	  language: '{{ datepicker }}',
+	  pickTime: false
+  });
+</script>
+			

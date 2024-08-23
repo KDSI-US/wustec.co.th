@@ -1,0 +1,93 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> {{ heading_title }}</h3>
+  </div>
+  <div class="panel-body" style="padding: 0;">
+    <div id="chartdiv" style="width: 100%; height: 270px; background-color: #FFFFFF;" ></div>
+  </div>
+</div>
+
+<script src="//cdn.amcharts.com/lib/4/core.js"></script>
+<script src="//cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="//cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script>
+am4core.useTheme(am4themes_animated);
+
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+chart.colors.step = 2;
+
+chart.data = {{ orders_customers }};
+
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.minGridDistance = 50;
+dateAxis.groupData = true;
+dateAxis.groupCount = 20;
+
+function createAxisAndSeries(field, name, opposite, bullet) {
+  var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  if(chart.yAxes.indexOf(valueAxis) != 0){
+	valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
+  }
+  
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.dataFields.valueY = field;
+  series.dataFields.dateX = "date";
+  series.strokeWidth = 2;
+  // series.yAxis = valueAxis;
+  series.name = name;
+  series.tooltipText = "{name}: [bold]{valueY}[/]";
+  series.tensionX = 0.8;
+  series.showOnInit = true;
+  series.groupFields.valueY = "sum";
+  
+  var scrollbarX = new am4charts.XYChartScrollbar();
+  scrollbarX.series.push(series);
+  chart.scrollbarX = scrollbarX;
+  var interfaceColors = new am4core.InterfaceColorSet();
+  
+  switch(bullet) {
+	case "triangle":
+	  var bullet = series.bullets.push(new am4charts.Bullet());
+	  bullet.width = 12;
+	  bullet.height = 12;
+	  bullet.horizontalCenter = "middle";
+	  bullet.verticalCenter = "middle";
+	  
+	  var triangle = bullet.createChild(am4core.Triangle);
+	  triangle.stroke = interfaceColors.getFor("background");
+	  triangle.strokeWidth = 2;
+	  triangle.direction = "top";
+	  triangle.width = 12;
+	  triangle.height = 12;
+	  break;
+	default:
+	  var bullet = series.bullets.push(new am4charts.CircleBullet());
+	  bullet.circle.stroke = interfaceColors.getFor("background");
+	  bullet.circle.strokeWidth = 2;
+	  break;
+  }
+  
+  valueAxis.renderer.line.strokeOpacity = 1;
+  valueAxis.renderer.line.strokeWidth = 2;
+  valueAxis.renderer.line.stroke = series.stroke;
+  valueAxis.renderer.labels.template.fill = series.stroke;
+  valueAxis.renderer.opposite = opposite;
+}
+
+createAxisAndSeries("column-1", "Total Orders", false, "circle");
+createAxisAndSeries("column-2", "Total Customers", true, "triangle");
+
+chart.cursor = new am4charts.XYCursor();
+chart.zoomOutButton.disabled = false;
+
+var date1 = new Date();
+var date2 = new Date();
+
+chart.events.on("ready", function () {
+  dateAxis.zoomToDates(
+	new Date(date1.setMonth(date1.getMonth()-12)),
+	new Date(date2.setMonth(date2.getMonth()+1))
+  );
+});
+</script>

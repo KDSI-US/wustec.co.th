@@ -1,0 +1,74 @@
+{{ header }}{{ git_hidden_tag }}
+{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>{{ heading_title }}</h1>
+			<div class="pull-right">
+				<a href="{{ url }}&route=sale/order/add&ioe-iframed=1" title="{{ label_add }}" class="ioe-modal-trigger edit btn btn-primary closing">
+					<i class="fa fa-plus"></i>
+				</a>
+			</div>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+			<div id="ioe" data-api-url="{{ api_url }}" data-url="{{ url }}">
+				<div id="ioe-content" data-url="{{ table_url }}" data-token="{{ token }}" data-api-token="{{ api_token }}">
+					<div class="loading">loading...</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).on("focusout", "td.trn input", function () {
+  var input = $(this);
+  if (input.val() != input.attr("orig")) {
+    $.get(
+      input.attr("rel") + "&language=&tracking_no=" + input.val(),
+      function (result) {
+        input.val(result);
+        input.attr("orig", result);
+        input.parents("td").attr("bgcolor", "#ffefaf");
+        setTimeout(function () {
+          input.parents("td").removeAttr("bgcolor");
+        }, 1500);
+      }
+    );
+  }
+});
+
+$(document).on("focusout", ".click_order_status", function () {
+  var myObj = $(this);
+  myObj.children().first().attr("style", "display:none");
+  myObj.children().first().next().removeAttr("style");
+});
+
+$(document).on("click", ".click_order_status", function () {
+  var myObj = $(this);
+  myObj.children().first().removeAttr("style");
+  myObj.children().first().next().attr("style", "display:none");
+});
+
+$(document).on("change", "select.ordsts", function () {
+  var input = $(this);
+  if (input.val() != input.attr("orig")) {
+    $.get(
+      input.attr("rel") + "&language=&order_status_id=" + input.val(),
+      function (result) {
+        input.next().text(result);
+        input.parents("td").attr("bgcolor", "#ffefaf");
+        setTimeout(function () {
+          input.parents("td").removeAttr("bgcolor");
+        }, 1500);
+      }
+    );
+  }
+});
+</script>
+{{ footer }}

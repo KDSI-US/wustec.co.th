@@ -1,0 +1,30 @@
+{% if shortcodes %}
+  <div id="shortcodes-result">
+    <div class="table-responsive">
+      <table class="table table-hover table-row-check">
+        <thead class="thead-light">
+        <tr>
+          <th width="45" class="text-center"><input type="checkbox" data-checkall="input[name^='shortcode_selection']" /></th>
+          <th style="width:30%;"><a href="{{ sort_code }}"{{ sort == 'code' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_code }}</a></th>
+          <th><a href="{{ sort_example }}"{{ sort == 'example' ? ' class="' ~ order|lower ~ '"'  }}>{{ column_example }}</a></th>
+          <th width="60"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in shortcodes %}
+          <tr>
+            <td class="text-center"><input type="checkbox" name="shortcode_selection[]" value="{{ row.id }}" /></td>
+            <td><input type="text" class="shortcode-select" value="{{ '{{ ' ~ row.code ~ ' }}' }}" /></td>
+            <td style="white-space:normal; word-wrap:break-word;">{% if row.example is iterable %}<pre>{% for key, item in row.example %}\n{{ key }} - {{ item }}{% endfor %}</pre>{% else %}{{ row.example }}{% endif %}</td>
+            <td class="text-center"><a href="javascript:void(0)" class="btn btn-default" data-modal="remote" data-url="{{ row.url_edit }}" data-refresh="#shortcodes-result" data-refresh-url="{{ action }}"><i class="fa fa-pencil"></i></a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-6 text-left">{{ pagination }}</div>
+      <div class="col-md-6 text-right">{{ pagination_results }}</div>
+    </div>
+  </div>
+{% endif %}

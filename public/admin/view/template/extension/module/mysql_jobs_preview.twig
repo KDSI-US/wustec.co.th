@@ -1,0 +1,27 @@
+<html>
+	<div name="header" style="font-family: 'Arial'; font-size: 20px; font-weight: bold;">
+		{{ text_report }}: {{ name }}
+	</div>
+	<div name="dateTime" style="font-family: 'Arial'; font-size: 12px;">
+		{{ dateTime }}
+	</div>
+	<br />
+	<table style="border: solid 1px black; border-collapse: collapse;">
+		<tr>
+			{% for key,value in query[0] %}
+			<td style="padding: 3px 10px 3px 10px; background-color: #93c5ff; font-family: 'Arial'; font-size: 14px; font-weight: bold; border: solid 1px black; border-collapse: collapse;">
+				{{ key|escape|replace({'_':' '})|capitalize }}
+			</td>
+			{% endfor %}
+		</tr>
+		{% for cat in query %}
+		<tr>
+			{% for cell in cat %}
+			<td style="padding: 3px 10px 3px 10px; border: solid 1px black; font-family: 'Arial'; font-size: 14px;">
+				{{ cell|escape }}
+			</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+</html>

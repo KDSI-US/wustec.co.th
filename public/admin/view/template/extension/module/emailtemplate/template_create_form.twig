@@ -1,0 +1,93 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div id="emailtemplate">
+    <div class="page-header">
+      <div class="container-fluid clearfix">
+        <div class="pull-right">
+          <button id="submit_form_button" type="submit" form="form-emailtemplate" data-toggle="tooltip" title="{{ button_create }}" class="btn btn-success"><i class="fa fa-save"></i></button>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item{{ loop.index==breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-emailtemplate" class="container-fluid form-horizontal">
+      {% if error_warning is not empty %}
+        <div class="alert alert-danger">
+          <i class="fa fa-exclamation-circle"></i> {{ error_warning }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if error_attention is not empty %}
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-circle"></i> {{ error_attention }} <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <i class="fa fa-pencil"></i> {{ heading_template_create }}
+        </div>
+        <div class="panel-body">
+          <div class="form-group required">
+            <label class="col-md-2 control-label" for="emailtemplate_label">{{ entry_label }}</label>
+            <div class="col-md-10">
+              <input required="required" type="text" name="emailtemplate_label" value="{{ emailtemplate.label }}" id="emailtemplate_label" class="form-control"/>
+              {% if error_emailtemplate_label is not empty %}<span class="text-danger">{{ error_emailtemplate_label }}</span>{% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-2 control-label" for="emailtemplate_type">{{ entry_type }}</label>
+            <div class="col-md-10">
+              <select name="emailtemplate_type" id="emailtemplate_type" class="form-control" required="required">
+                <option value="">{{ text_select }}</option>
+                <option value="customer"{{ emailtemplate.type == 'customer' ? ' selected="selected"' }}>{{ text_customer }}</option>
+                <option value="order"{{ emailtemplate.type == 'order' ? ' selected="selected"' }}>{{ text_order }}</option>
+                <option value="admin"{{ emailtemplate.type == 'admin' ? ' selected="selected"' }}>{{ text_admin }}</option>
+                <option value="affiliate"{{ emailtemplate.type == 'affiliate' ? ' selected="selected"' }}>{{ text_affiliate }}</option>
+                <option value="other"{{ emailtemplate.type == 'other' ? ' selected="selected"' }}>{{ text_other }}</option>
+              </select>
+              {% if error_emailtemplate_type is not empty %}<span class="text-danger">{{ error_emailtemplate_type }}</span>{% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-2 control-label" for="emailtemplate_key">{{ entry_key }}</label>
+            <div class="col-md-5">
+              <select name="emailtemplate_key_select" id="emailtemplate_key_select" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for row in emailtemplate_keys %}
+                  <option value="{{ row.value }}" {{ emailtemplate.key==row.value or emailtemplate.key_select==row.value ? ' selected="selected" ' }}>{{ row.label }}</option>
+                {% endfor %}
+              </select>
+              <span class="form-text text-muted" style="margin-bottom: 0">{{ text_help_template_key }}</span>
+            </div>
+            <div class="col-md-5">
+              <input class="form-control" type="text" name="emailtemplate_key" value="{{ emailtemplate.key }}" placeholder="{{ text_placeholder_custom }}" id="emailtemplate_key"/>
+            </div>
+            {% if error_emailtemplate_key %}<span class="form-text text-muted text-danger">{{ error_emailtemplate_key }}</span>{% endif %}
+          </div>
+          {% if copy_emailtemplates %}
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="emailtemplate_copy_id">{{ entry_template_copy }}</label>
+            <div class="col-md-5">
+              <select name="emailtemplate_copy_id" id="emailtemplate_copy_id" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for row in copy_emailtemplates %}
+                  <option value="{{ row.emailtemplate_id }}" {{ emailtemplate.key==emailtemplate_key.value or emailtemplate.key_select==row.emailtemplate_key ? ' selected="selected" ' }}>{{ row.label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          {% endif %}
+          <div id="emailtemplate_option_placeholder" class="well">
+            <fieldset>
+              <legend>{{ heading_condition }}</legend>
+              <div class="ajax-loading"></div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{{ footer }}

@@ -1,0 +1,38 @@
+<div class="all-list">
+  <h1>{{ heading_title }}</h1>
+    {% for key,tab in tabs %}
+    <div id="listtab-{{ module }}-{{ key }}">      
+      {% if not 'mpblogposts_' ~ key %}
+      <h3><i class="fa fa-caret-right" aria-hidden="true"></i> {{ tab }}</h3>
+      <div class="row">
+      {% for mpblogpost in attribute(_context, 'mpblogposts_' ~ key) %}
+      <div class="mpblog-layout col-sm-12">
+        <div class=" row">
+          <div class="image col-md-4 col-sm-12 xl-33 md-33 sm-100">
+            {% if mpblogpost.showImage %}
+            <a href="{{ mpblogpost.href }}"><img src="{{ mpblogpost.thumb }}" alt="{{ mpblogpost.name }}" title="{{ mpblogpost.name }}" class="img-responsive" /></a>
+            {% else %}
+            <div class="video-container">
+              <iframe width="{{ mpblogpost.width }}" height="{{ mpblogpost.height }}" src="{{ mpblogpost.iframeVideo }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+            {% endif %}
+          </div>
+          <div class="caption col-md-8 col-sm-12 xl-66 md-66 sm-100">
+            <h4><a href="{{ mpblogpost.href }}">{{ (mpblogpost.name|length > 40) ? mpblogpost.name|slice(0,40) : mpblogpost.name }}</a></h4>
+            <p>{% if show_sdescription and false %} {{ (mpblogpost.sdescription|length > 70) ? mpblogpost.sdescription|slice(0, 70) : mpblogpost.sdescription }} {% endif %} </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-sm-12">
+          <h4>{{ text_empty.key }}</h4>
+        </div>
+    </div>
+    {% endif %}
+  </div>
+    <hr/>
+    {% endfor %}
+</div>

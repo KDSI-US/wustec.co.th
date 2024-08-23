@@ -1,0 +1,35 @@
+<div class="mpfaq-extend">
+  <div class="mpfaq-wrap">
+      <h1>{{ heading_title }}</h1>
+      {% if categories %}
+      <div class="mpfaq">
+        {% for category in categories %}
+          <div class="mpfaq-inner">
+          <h2>{{ category.name }}</h2>
+          {% for question in category.questions %}
+            <h3 class="mpfaq-que">{{ question.question }}</h3>
+            <div class="mpfaq-ans">
+              <p>{{ question.answer }}</p>
+            </div>
+          {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      {% else %}
+        <p class="text-center">{{ text_no_faq }}</p>
+      {% endif %}
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    {% if module == 0 %}
+      $('.mpfaq').each(function(){
+        $(this).mpfaqAccordian({
+          collapsible: true,
+          headline: '.mpfaq-que',
+          highlander: true
+        });
+    });
+    {% endif %}
+  });
+</script>

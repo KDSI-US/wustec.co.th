@@ -1,0 +1,47 @@
+<file path="admin/controller/mail/affiliate.php" email_template="admin.affiliate_deny">
+	<operation>
+		<search index="1"><![CDATA[$mail = new Mail(]]></search>
+		<add position="before"><![CDATA[
+			// Prepare mail: admin.affiliate_deny
+			$this->load->model('extension/module/emailtemplate');
+
+			$template_load = array(
+				'key' => 'admin.affiliate_deny',
+				'customer_id' => $customer_info['customer_id'],
+				'customer_group_id' => $customer_info['customer_group_id'],
+				'language_id' => $customer_info['language_id'],
+				'store_id' => $customer_info['store_id']
+			);
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+            if ($template) {
+			    $template->addData($customer_info);
+			    // Prepared mail: admin.affiliate_deny
+            }
+		]]></add>
+	</operation>
+	<operation>
+		<search index="1"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[
+		// Send mail: admin.affiliate_deny
+		if ($template && $template->check()) {
+		    $template->build();
+            $template->hook($mail);
+        }
+
+		$mail->send();
+
+		$this->model_extension_module_emailtemplate->sent();]]></add>
+	</operation>
+    <operation error="skip">
+        <search><![CDATA[$mail->setText($this->load->view('mail/affiliate_deny', $data));]]></search>
+        <ignoreif><![CDATA[if (empty($template)) $mail->setText($this->load->view('mail/affiliate_deny', $data));]]></ignoreif>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setText($this->load->view('mail/affiliate_deny', $data));]]></add>
+    </operation>
+    <operation error="skip">
+        <search><![CDATA[$mail->setHtml($this->load->view('mail/affiliate_deny', $data));]]></search>
+        <ignoreif><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/affiliate_deny', $data));]]></ignoreif>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/affiliate_deny', $data));]]></add>
+    </operation>
+</file>

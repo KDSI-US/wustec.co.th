@@ -1,0 +1,28 @@
+<file path="admin/model/marketing/affiliate.php" email_template="admin.affiliate_transaction">
+	<operation>
+		<search index="0"><![CDATA[$message  = sprintf($this->language->get('text_transaction_received')]]></search>
+		<add position="before"><![CDATA[
+			$this->load->model('extension/module/emailtemplate');
+
+			$template = $this->model_extension_module_emailtemplate->load('admin.affiliate_transaction');
+
+			$template->data['customer_transaction_received'] = $this->currency->format($amount, $this->config->get('config_currency'));
+			$template->data['customer_transaction_total'] = $this->currency->format($this->getTransactionTotal($affiliate_id), $this->config->get('config_currency'));
+		]]></add>
+	</operation>
+	<operation>
+		<search index="1"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[
+			$template->data['text_transaction_heading'] = $template->data['text_transaction_heading'];
+
+			$template->data['text_received'] = sprintf($template->data['text_transaction_received'], $template->data['customer_transaction_received']);
+			$template->data['text_total'] = sprintf($template->data['text_transaction_total'], $template->data['customer_transaction_total']);
+
+			$template->build();
+			$template->hook($mail);
+
+ 			$mail->send();
+ 			
+ 			$this->model_extension_module_emailtemplate->sent();]]></add>
+	</operation>
+</file>

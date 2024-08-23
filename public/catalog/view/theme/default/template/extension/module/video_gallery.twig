@@ -1,0 +1,74 @@
+<link href="catalog/view/theme/default/stylesheet/video_gallery.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" /> 
+<div class="video-gallery">	
+	<div class="box-heading">{{ heading_title }}</div>
+  <div class="row">
+		<div class="swiper-viewport">
+			<div id="video-gallery" class="swiper-container">
+				<div class="swiper-wrapper">
+					{% for info in video_galleries %}
+					<div class="swiper-slide">
+						{% if info.chk_video_category_title == 0 AND info.chk_video_category_image == 0 OR info.chk_video_category_description == 0 %}
+						<div></div>
+						{% else %}
+						<div class="col-sm-12">
+							<div class="box">
+								{% if info.chk_video_category_image==1 %}
+								<div class="image">
+									{% if info.image %}
+									<a href="{{ info.href }}"><img src="{{ info.image }}"/></a>
+									{% endif %}
+									<div class="onhover">
+										{% if info.chk_video_category_title==1 %}
+										<h5>{{ info.title }}</h5>
+										{% endif %}
+									</div>
+								</div>
+								{% endif %}
+								{% if info.chk_video_category_title==1 %}
+								<h3><a href="{{ info.href }}">{{ info.title }}</a></h3>
+								{% endif %}
+								{% if info.chk_video_category_description==1 %}	
+								<p>{{ info.description }}</p>	
+								{% endif %}
+							</div>
+						</div>
+						{% endif %}
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="swiper-pager">
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$('#videos').swiper({
+	mode: 'horizontal',
+		breakpoints: { 
+		320: {
+			slidesPerView: 1,
+			spaceBetween: 20
+		},
+		480: {
+			slidesPerView: 1,
+			spaceBetween: 30
+		},
+		640: {
+			slidesPerView: 2,
+			spaceBetween: 30
+		},
+	},
+	slidesPerView: 3,
+	pagination: '.videos{{ module }}',
+	paginationClickable: true,
+	nextButton: '.swiper-button-next',
+	prevButton: '.swiper-button-prev',
+	autoplay: 2500,
+	loop: true
+});
+</script>

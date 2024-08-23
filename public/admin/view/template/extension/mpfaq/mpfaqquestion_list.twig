@@ -1,0 +1,195 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right"><a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-mpfaqquestion').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-question">{{ entry_question }}</label>
+                <input type="text" name="filter_question" value="{{ filter_question }}" placeholder="{{ entry_question }}" id="input-question" class="form-control" />
+              </div>              
+            </div> 
+           <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-category">{{ entry_category }}</label>
+                <input type="text" name="filter_category" value="{{ filter_category }}" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+              </div> 
+            </div>  
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" id="input-status" class="form-control">
+                  <option value="*"></option>
+                    {% if filter_status == '1' %}
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                    {% endif %}
+                    {% if filter_status == '0' %}
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% else %}
+                      <option value="0">{{ text_disabled }}</option>
+                    {% endif %}?>
+                </select>
+              </div>            
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+            </div>
+          </div>
+        </div>
+        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-mpfaqquestion">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td class="text-left">{% if sort == 'fd.question' %}
+                    <a href="{{ sort_question }}" class="{{ order|lower }}">{{ column_question }}</a>
+                    {% else %}
+                    <a href="{{ sort_question }}">{{ column_question }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'mfcd.name' %}
+                    <a href="{{ sort_category }}" class="{{ order|lower }}">{{ column_category }}</a>
+                    {% else %}
+                    <a href="{{ sort_category }}">{{ column_category }}</a>
+                    {% endif %}</td>
+                  <td class="text-right">{% if sort == 'f.sort_order' %}
+                    <a href="{{ sort_sort_order }}" class="{{ order|lower }}">{{ column_sort_order }}</a>
+                    {% else %}
+                    <a href="{{ sort_sort_order }}">{{ column_sort_order }}</a>
+                    {% endif %}</td>
+                  <td class="text-right">{% if sort == 'f.status' %}
+                    <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                    {% else %}
+                    <a href="{{ sort_status }}">{{ column_status }}</a>
+                    {% endif %}</td>
+                  <td class="text-right">{{ column_action }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {% if mpfaqquestions %}
+                {% for mpfaqquestion in mpfaqquestions %}
+                <tr>
+                  <td class="text-center">{% if mpfaqquestion.mpfaqquestion_id in selected %}
+                    <input type="checkbox" name="selected[]" value="{{ mpfaqquestion.mpfaqquestion_id }}" checked="checked" />
+                    {% else %}
+                    <input type="checkbox" name="selected[]" value="{{ mpfaqquestion.mpfaqquestion_id }}" />
+                    {% endif %}</td>
+                  <td class="text-left">{{ mpfaqquestion.question }}</td>
+                  <td class="text-left">{{ mpfaqquestion.name }}</td>
+                  <td class="text-right">{{ mpfaqquestion.sort_order }}</td>
+                  <td class="text-right">{{ mpfaqquestion.status }}</td>
+                  <td class="text-right"><a href="{{ mpfaqquestion.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="6">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+  var url = 'index.php?route=catalog/mpfaqquestion&user_token={{ user_token }}';
+
+  var filter_question = $('input[name=\'filter_question\']').val();
+
+  if (filter_question) {
+    url += '&filter_question=' + encodeURIComponent(filter_question);
+  }  
+
+  var filter_category = $('input[name=\'filter_category\']').val();
+
+  if (filter_category) {
+    url += '&filter_category=' + encodeURIComponent(filter_category);
+  }
+
+  var filter_status = $('select[name=\'filter_status\']').val();
+
+  if (filter_status != '*') {
+    url += '&filter_status=' + encodeURIComponent(filter_status);
+  } 
+
+  location = url;
+});
+//--></script>
+<script type="text/javascript"><!--
+$('input[name=\'filter_category\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/mpfaq/mpfaqquestion/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['mpfaqcategory_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_category\']').val(item['label']);
+  }
+}); 
+
+$('input[name=\'filter_question\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/mpfaq/mpfaqquestion/quautocomplete&user_token={{ user_token }}&filter_question=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['question'],
+            value: item['mpfaqquestion_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_question\']').val(item['label']);
+  }
+}); 
+//--></script> 
+</div>
+{{ footer }}

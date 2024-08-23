@@ -1,0 +1,305 @@
+{{ header }}{{ git_hidden_tag }}
+
+<script>
+$("#title-content").remove();
+$(".content-top-breadcum .container .row").append('<div id="title-content-account"><h1>My Account</h1></div>');
+var txt = '';
+txt += '<ul class="breadcrumb">';
+{% for breadcrumb in breadcrumbs %}
+txt += '<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>';
+{% endfor %}
+txt += '</ul>';
+$("#title-content-account").append(txt);
+</script>
+			
+<style>
+#container {
+  width: 80%;
+}
+@media only screen and (max-width: 767px) {
+  #container {
+    width: 98%;
+  }
+}
+</style>
+<div class="container-fluid j-container" id="container">
+  <ul id="duplicated-item" class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  {% if not customer_approved %}
+    <div class="alert alert-info alert-dismissible fade in" style="margin:0px 0px 20px;" role="alert"><i class="fa fa-info-circle"></i> {{ alert_verification_info }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+  {% endif %}
+  {% if success %}
+  <div class="success alert alert-success alert-dismissible fade in" style="margin:0px 0px 20px;" role="alert"><i class="fa fa-check-circle"></i> {{ success }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+  {% endif %}
+  <div class="row">{{ column_left }}
+    {% if theme_name == 'journal2' %}
+      {% set my_row = 'j-row' %}
+    {{ column_right }}
+    {% else %}
+      {% set my_row = 'row' %}
+    {% endif %}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <div class="dashboard dash-template3 {{ journal_class }}">
+        <div class="{{ my_row }} dash-cols tile-cols">
+            {% if display_total_orders %}
+            <div class="{{ col_class }} col-md-6 col-sm-12 col-xs-12 md-50 sm-100 xs-100">
+              <div class="tile tile-one flex">
+                <div class="tile-heading clearfix theme-color">
+                  <i class="fa fa-shopping-cart"></i>
+                </div>
+                <div class="tile-body text-center clearfix">
+                  <h1>{{ panel_orders }}</h1>
+                  <h2>{{ total_orders }}</h2>
+                  <div class="view-all"><a href="{{ view_order }}">{{ text_view_order }}</a></div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% if display_total_transactions %}
+            <div class="{{ col_class }} col-md-6 col-sm-12 col-xs-12 md-50 sm-100 xs-100">
+              <div class="tile tile-one flex">
+                <div class="tile-heading clearfix theme-color">
+                  <i class="fa fa-money" aria-hidden="true"></i>
+                </div>
+                <div class="tile-body text-center clearfix">
+                  <h1>{{ text_transactions }}</h1>
+                  <h2>{{ total_transactions }}</h2>
+                  <div class="view-all"><a href="{{ view_transactions }}">{{ text_view_transactions }}</a></div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% if display_total_wishlist %}
+            <div class="{{ col_class }} col-md-6 col-sm-12 col-xs-12 md-50 sm-100 xs-100">
+              <div class="tile tile-one flex">
+                <div class="tile-heading clearfix theme-color">
+                  <i class="fa {% if product.wishlist is defined %} {% set wishlist = product.wishlist %} {% elseif wishlist is not defined %} {% set wishlist = false %} {% endif %} {{ (wishlist ? 'fa-heart ' : 'fa-heart-o') }}"></i>
+                </div>
+                <div class="tile-body text-center clearfix">
+                  <h1>{{ panel_wishlist }}</h1>
+                  <h2>{{ total_wishlist }}</h2>
+                  <div class="view-all"><a href="{{ view_wishlists }}">{{ text_view_wishlists }}</a></div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% if display_reward_points %}
+            <div class="{{ col_class }} col-md-6 col-sm-12 col-xs-12 md-50 sm-100 xs-100">
+              <div class="tile tile-one flex">
+                <div class="tile-heading clearfix theme-color">
+                  <i class="fa fa-trophy" aria-hidden="true"></i>
+                </div>
+                <div class="tile-body text-center clearfix">
+                  <h1>{{ panel_reward_points }}</h1>
+                  <h2>{{ total_reward_points }}</h2>
+                  <div class="view-all"><a href="{{ view_reward }}">{{ text_view_reward }}</a></div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          <div class="{{ my_row }}">
+          <div class="col-md-5 col-sm-12 xl-40 sm-100 md-100">
+            <div class="profile-section">
+              <div class="row">
+               <div class="col-sm-12 col-xs-12 text-center">
+               {% if profile_picture_thumb|length and picture_status %}
+                <div class="user-image">
+                  <img src="{{ profile_picture_thumb }}" class="img-circle img-responsive" />
+                </div>
+                {% else %}
+                <div class="user-icon">
+                  <i class="fa fa-user"></i>
+                </div>
+                {% endif %}
+              </div>
+              <div class="col-sm-12 col-xs-12 text-center">
+                <div class="user-name"><span style="margin-top:15px;">{{ customer_name }}</span></div>
+                <div class="info">{{ customer_email }}</div>
+                {% if customer_tax_id and (customer_tax_id != "") %}
+                <div class="info overflow-hidden" style="max-width:350px;">Tax ID : {{ customer_tax_id }}</div>
+                {% endif %}
+                <div class="info overflow-hidden">Seller's Permit : {{ customer_seller_permit }}</div>
+                <div style="margin-bottom:10px;">
+                  {% if not customer_approved %}
+                    {% if not customer_denied %}
+                      {% if customer_has_seller_permit_file %}
+                        <i class="fa fa-exclamation-circle" style="font-size:14px;color:#FFC107"></i>&nbsp;<b>Pending</b>
+                      {% else %}
+                        <i class="fa fa-info-circle" style="font-size:14px;color:#007bff"></i>&nbsp;<b>Verification Required</b>
+                      {% endif %}
+                    {% else %}
+                      <i class="fa fa-times-circle" style="font-size:14px;color:#dc3545"></i>&nbsp;<b>Not Verified</b>
+                    {% endif %}
+                  {% else %}
+                    <i class="fa fa-check-circle" style="font-size:14px;color:#28a745"></i>&nbsp;<b>Verified</b>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-sm-12 col-xs-12">
+                <div class="profile-links">
+                  <a href="{{ link_edit }}" data-toggle="tooltip" data-placement="top" title="{{ text_edit }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                  <a href="{{ link_logout }}" data-toggle="tooltip" data-placement="top" title="{{ text_logout }}"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>          
+          <div class="col-md-7 col-sm-12 xl-60 sm-100 md-100">
+            {% if custom_links %}
+            <ul class="list-inline account-links row">
+              {% set link_row = 1 %}
+              {% for custom_link in custom_links %}
+              <li class="col-sm-6 col-xs-12 col-md-4 xl-33 md-50 sm-50 xs-100">
+                <a href="{{ custom_link.link }}">
+                  <div class="wrap clearfix">
+                    {% if custom_link.type == 'icon' %}
+                    <div class="icon"><i class="fa {{ custom_link.icon }}"></i></div>
+                    {% else %}
+                    <div class="icon"><img width="52" height="50" src="{{ custom_link.image }}"></div>
+                    {% endif %}
+                    <span>{{ custom_link.title }}</span>
+                  </div>  
+                </a>
+              </li>
+              {% set link_row = link_row + 1 %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+        {% if affiliate_links %}
+        <div class="{{ my_row }}">
+          <div class="col-md-12 col-sm-12 xl-100 sm-100 md-100">
+            <div class="grey-table">
+            <h3><b>{{ affiliate_title }}</b></h3>
+            </div>
+            <ul class="list-inline account-links row">
+              {% set affiliate_link_row = 1 %}
+              {% for affiliate_link in affiliate_links %}
+              <li class="col-sm-6 col-xs-12 col-md-4 xl-33 md-50 sm-50 xs-100">
+                <a href="{{ affiliate_link.link }}">
+                  <div class="wrap clearfix">
+                    {% if affiliate_link.type == 'icon' %}
+                    <div class="icon"><i class="fa {{ affiliate_link.icon }}"></i></div>
+                    {% else %}
+                    <div class="icon"><img width="52" height="50" src="{{ affiliate_link.image }}"></div>
+                    {% endif %}
+                    <span>{{ affiliate_link.title }}</span>
+                  </div>  
+                </a>
+              </li>
+              {% set affiliate_link_row = affiliate_link_row + 1 %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+        <div class="{{ my_row }}">
+        {% if display_orders %}
+          <div class="col-sm-12">
+            <div class="grey-table">
+              <h3><b>{{ text_latest_order }} <a href="{{ view_order }}" class="pull-right"><i class="fa fa-eye"></i> {{ button_view_all }}</a></b></h3>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover list">
+                  <thead>
+                    <tr>
+                      <td class="text-left">{{ column_order_id }}</td>
+                      <td class="text-left">{{ column_product }}</td>
+                      <td class="text-left">{{ column_status }}</td>
+                      <td class="text-right">{{ column_total }}</td>
+                      <td class="text-left">{{ column_date_added }}</td>
+                      <td class="text-left">{{ column_tracking_number }}</td>
+                      <td class="text-right">{{ column_action }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if orders %}
+                    {% for order in orders %}
+                    <tr>
+          						<td class="text-left">#{{ order.order_id }}</td>
+          						<td class="text-left">{{ order.products }}</td>
+          						<td class="text-left">{{ order.status }}</td>
+          						<td class="text-right">{{ order.total }}</td>
+          						<td class="text-left">{{ order.date_added }}</td>
+                      <td class="text-left">{{ order.tracking_number }}</td>
+                     	<td class="text-right"><a class="btn button" href="{{ order.view }}" data-toggle="tooltip" title="" data-original-title="{{ button_view }}"><i class="fa fa-eye"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                      <td class="text-center" colspan="6">{{ text_no_results }}</td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          {% endif %}    
+          <div class="clearfix"></div>      
+        </div>
+      </div>
+      {{ content_bottom }}</div>
+	    {% if theme_name != 'journal2' %}
+        {{ column_right }}
+      {% endif %}
+  </div>
+</div>
+<style type="text/css">
+  {% if themecolor %}
+  .profile-section{
+    border-top: 3px solid {{ themecolor }};
+  }
+  .profile-section .user-icon{
+    border-color: {{ themecolor }};
+  }
+  .profile-section .user-icon i{
+    color: {{ themecolor }};
+  }
+  .dashboard .dash-cols .tile-heading, .dashboard .grey-table h3{
+    background: {{ themecolor }};
+  }
+  .account-links li i, .dash-template3 .tile .tile-body h1{
+    color: {{ themecolor }};
+  }
+  
+  .tile .tile-body h2{
+    color: {{ themecolor }};
+  }
+  .dashboard .view-all a, .dash-template3 .account-links li span{
+    color: {{ themecolor }};
+  }
+  .profile-links a i{
+    color: {{ themecolor }};
+  }
+  .dash-template3 .account-links li .icon{
+    border: 2px solid {{ themecolor }};
+  }
+  {% endif %}
+
+  {% if textcolor %}
+  .dashboard .dash-cols .tile-heading, .right-account-links li .wrap, .dashboard .grey-table h3, .dashboard .grey-table h3 a{
+    color: {{ textcolor }};
+  }
+  .account-links li span{
+    color: {{ textcolor }}; 
+  }
+  {% endif %}
+
+  {{ customcss }}
+</style>
+
+<script>$("#duplicated-item").remove();</script>
+			
+{{ footer }}

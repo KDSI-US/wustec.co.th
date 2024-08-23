@@ -1,0 +1,14 @@
+<div class="mpfaq-extend category">
+	<div class="mpfaq-wrap">
+		<h1>{{ heading_title }}</h1>
+		<div class="list-group">
+		  {% for mpcategory in mpcategories %}
+		  {% if mpcategory.mpfaqcategory_id == filter_mpfaqcategory_id %}
+		  <a href="{{ mpcategory.href }}" class="list-group-item active">{{ mpcategory.name }}</a>
+		  {% else %}
+		  <a href="{{ mpcategory.href }}" class="list-group-item">{{ mpcategory.name }}</a>
+		  {% endif %}
+		  {% endfor %}
+		</div>
+	</div>
+</div>

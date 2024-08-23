@@ -1,0 +1,134 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div id="emailtemplate">
+    <div class="page-header">
+      <div class="container-fluid clearfix">
+        <h1>{{ heading_title }} <small style="vertical-align:middle">{{ version }}</small></h1>
+        <div class="pull-right">
+          <button class="btn btn-danger" data-confirm="{{ text_confirm }}" data-action="{{ action }}&action=delete" data-toggle="tooltip" title="{{ button_delete }}">
+            <i class="fa fa-trash"></i></button>
+          <a href="{{ action_insert_template }}" class="btn btn-primary" data-toggle="tooltip" title="{{ text_create_template }}"><i class="fa fa-plus"></i></a>
+          {% if action_configs is not empty and action_configs|length > 1 %}
+            <div class="btn-group" data-toggle="tooltip" title="{{ button_config }}">
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></button>
+              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li><a href="{{ config_url }}" class="dropdown-item"><b>{{ button_default_config }}</b></a></li>
+                <li class="divider"></li>
+                {% for row in action_configs %} {% if row.id != 1 %}
+                  <li><a href="{{ row.url|raw }}" class="dropdown-item">{{ row.name }}</a></li>
+                {% endif %} {% endfor %}
+              </ul>
+            </div>
+          {% else %} <a href="{{ config_url }}" class="btn btn-warning" data-toggle="tooltip" title="{{ heading_config }}"><i class="fa fa-cog"></i></a>
+          {% endif %}
+          <li class="btn-group" data-toggle="tooltip" title="{{ button_tools }}">
+            <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fa fa-caret-down"></i></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <li><a href="{{ logs_url }}" class="dropdown-item"><i class="fa fa-fw fa-send"></i> {{ button_logs }}</a></li>
+              <li><a href="{{ modification_url }}" class="dropdown-item"><i class="fa fa-fw fa-code"></i> {{ button_modification }}</a></li>
+              <li><a href="{{ clear_cache_url }}" class="dropdown-item"><i class="fa fa-fw fa-trash"></i> {{ button_clear_cache }}</a></li>
+              {% if emailtemplate_modules %}
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header"><i class="fa fa-puzzle-piece"></i> <b>{{ text_modules }}</b></li>
+                {% for row in emailtemplate_modules %}
+                  <li><a href="{{ row.url|raw }}" class="dropdown-item">{{ row.name }}</a></li>
+                {% endfor %} {% endif %} {% if templates_restore %}
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header"><i class="fa fa-undo"></i> <b>{{ button_restore }}</b></li>
+                {% for row in templates_restore %}
+                  <li><a href="{{ row.url|raw }}" class="dropdown-item">{{ row.name }}</a></li>
+                {% endfor %} {% endif %}
+            </ul>
+          </li>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item{{ loop.index==breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <form action="{{ action }}" method="post" id="form-emailtemplate" class="container-fluid" data-version="{{ version }}">
+      {% if error_warning is not empty %}
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      {% if error_attention is not empty %}
+        <div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_attention }} <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      {% if error_unsent is not empty %}
+        <div class="alert alert-info"><i class="fa fa-clock-o"></i> <div class="alert-message">{{ error_unsent }}</div> <div class="btn-group" style="margin:-3px 0 -2px 5px;"><button type="button" data-confirm="{{ text_confirm }}" data-loading-text="{{ text_sending }}" data-action="cron" data-toggle="tooltip" title="{{ button_cron }}" class="btn btn-xs btn-default"><i class="fa fa-fw fa-play"></i></button> <button type="button" class="btn btn-xs btn-default btn-cron-cancel hide"><i class="fa fa-close"></i></button></div> <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      {% if success is not empty %}
+        <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }} <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+
+      <div class="panel panel-default">
+        <div class="panel-heading filter-templates">
+          <div class="row">
+            <div class="col-xs-12 col-md-6">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-default{{ emailtemplate_type=='' ? ' active' }}">
+                  <input type="radio" name="filter_type" value="" {{ emailtemplate_type=='' ? ' checked="checked"' }} autocomplete=" off"/>
+                  <span class="filter-label">{{ text_all }}</span>
+                </label>
+                {% if emailtemplate_types and emailtemplate_types|length > 1 %} {% if 'order' in emailtemplate_types %} <label class="btn btn-default{{ emailtemplate_type=='order' ? ' active' }}">
+                  <input type="radio" name="filter_type" value="order" {{ emailtemplate_type=='order' ? ' checked="checked" ' }} autocomplete="off" />
+                  <span class="filter-label">{{ text_order }}</span>
+                </label>
+                {% endif %} {% if 'customer' in emailtemplate_types %} <label class="btn btn-default{{ emailtemplate_type=='customer' ? ' active' }}">
+                  <input type="radio" name="filter_type" value="customer" {{ emailtemplate_type=='customer' ? ' checked="checked" ' }} autocomplete="off" />
+                  <span class="filter-label">{{ text_customer }}</span>
+                </label>
+                {% endif %} {% if 'affiliate' in emailtemplate_types %} <label class="btn btn-default{{ emailtemplate_type=='affiliate' ? ' active' }}">
+                  <input type="radio" name="filter_type" value="affiliate" {{ emailtemplate_type=='affiliate' ? ' checked="checked" ' }} autocomplete="off" />
+                  <span class="filter-label">{{ text_affiliate }}</span>
+                </label>
+                {% endif %} {% if 'admin' in emailtemplate_types %} <label class="btn btn-default{{ emailtemplate_type=='admin' ? ' active' }}">
+                  <input type="radio" name="filter_type" value="admin" {{ emailtemplate_type=='admin' ? ' checked="checked" ' }} autocomplete="off" />
+                  <span class="filter-label">{{ text_admin }}</span>
+                </label>
+                {% endif %} {% if 'other' in emailtemplate_types %} <label class="btn btn-default{{ emailtemplate_type=='other' ? ' active' }}">
+                  <input type="radio" name="filter_type" value="other" {{ emailtemplate_type=='other' ? ' checked="checked" ' }} autocomplete="off" />
+                  <span class="filter-label">{{ text_other }}</span>
+                </label>
+                {% endif %} {% endif %}
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-3">
+              <div class="input-group">
+                <span class="input-group-addon" data-toggle="tooltip" title="{{ text_preference }}"><span class="input-group-text"><i class="fa fa-briefcase"></i></span></span>
+                <select class="form-control" name="filter_preference" style="-webkit-appearance:none;">
+                  <option value="">{{ text_select }}</option>
+                  <option value="essential"{{ filter_preference == 'essential' ? ' selected="selected"' }}>{{ text_essential }}</option>
+                  <option value="notification"{{ filter_preference == 'notification' ? ' selected="selected"' }}>{{ text_notification }}</option>
+                  <option value="newsletter"{{ filter_preference == 'newsletter' ? ' selected="selected"' }}>{{ text_newsletter }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-3">
+              <div class="input-group pull-right">
+                <span class="input-group-addon" data-toggle="tooltip" title="{{ text_search }}"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+                <input class="form-control" type="text" name="filter_content" value="" placeholder="{{ button_search }}" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="ajax-templates">
+            <div class="ajax-filter ajax-loading">
+              <i class="fa fa-spinner fa-spin fa-5x" style="color:#009afd"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="support-text">
+        <h3>Extension Support - <a href="{{ support_url }}">Open support ticket</a></h3>
+        <p>
+          This Extension is brought to you by: <a href="https://www.opencart-templates.co.uk" target="_blank">Opencart-templates</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+{{ footer }}

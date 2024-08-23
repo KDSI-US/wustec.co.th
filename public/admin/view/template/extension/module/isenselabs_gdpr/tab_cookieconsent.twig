@@ -1,0 +1,325 @@
+<div class="container-fluid">
+    <h3>{{ text_general }}</h3>
+    <br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_enable }}</strong></h5>
+            <span class="help">{{ text_cc_enable_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[CC][Enabled]" class="form-control">
+                  <option value="1" {{ moduleData['CC']['Enabled'] is not empty and moduleData['CC']['Enabled'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['CC']['Enabled'] is empty or moduleData['CC']['Enabled'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_link_to_pp }}</strong></h5>
+            <span class="help">{{ text_cc_link_to_pp_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[CC][LinkToPP]" class="form-control">
+                  <option value="1" {{ moduleData['CC']['LinkToPP'] is not empty and moduleData['CC']['LinkToPP'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['CC']['LinkToPP'] is empty or moduleData['CC']['LinkToPP'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_pp_page }}</strong></h5>
+            <span class="help">{{ text_cc_pp_page_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[CC][PageId]" class="form-control">
+                  <option value="0" {{ moduleData['CC']['PageId'] is empty or moduleData['CC']['PageId'] == '0' ? 'selected=selected' : '' }}>{{ text_cc_pp_default_page }}</option>
+                  {% for i_page in informations %} 
+                      <option value="{{ i_page['information_id'] }}" {{ moduleData['CC']['PageId'] is not empty and moduleData['CC']['PageId'] == i_page['information_id'] ? 'selected=selected' : '' }}>{{ i_page['title'] }}</option>
+                  {% endfor %} 
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_track_pp_clicks }}</strong></h5>
+            <span class="help">{{ text_cc_track_pp_clicks_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <select name="{{ moduleName }}[CC][TrackPPClicks]" class="form-control">
+                  <option value="1" {{ moduleData['CC']['TrackPPClicks'] is not empty and moduleData['CC']['TrackPPClicks'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['CC']['TrackPPClicks'] is empty or moduleData['CC']['TrackPPClicks'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+	
+	<div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_default_action }}</strong></h5>
+            <span class="help">{{ text_cc_default_action_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <select name="{{ moduleName }}[CC][DefaultAction]" class="form-control">
+                  <option value="analytics" {{ moduleData['CC']['DefaultAction'] is not empty and moduleData['CC']['DefaultAction'] == 'analytics' ? 'selected=selected' : '' }}>{{ text_cc_stop_analytics }}</option>
+                  <option value="marketing" {{ moduleData['CC']['DefaultAction'] is not empty and moduleData['CC']['DefaultAction'] == 'marketing' ? 'selected=selected' : '' }}>{{ text_cc_stop_marketing }}</option>
+                  <option value="analytics_marketing" {{ moduleData['CC']['DefaultAction'] is not empty and moduleData['CC']['DefaultAction'] == 'analytics_marketing' ? 'selected=selected' : '' }}>{{ text_cc_stop_both }}</option>
+                  <option value="nothing"  {{ moduleData['CC']['DefaultAction'] is empty or moduleData['CC']['DefaultAction'] == 'nothing' ? 'selected=selected' : '' }}>{{ text_cc_stop_nothing }}</option>
+             </select>
+             <br />
+             <div class="checkbox">
+              <label>
+                <input type="checkbox" name="{{ moduleName }}[ApplyDefaultAction]" value="yes" {{ moduleData.ApplyDefaultAction ? 'checked' }}/> {{ text_apply_default_state }}
+              </label>
+            </div>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_close_action }}</strong></h5>
+            <span class="help">{{ text_cc_close_action_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <select name="{{ moduleName }}[CC][CloseAction]" class="form-control">
+                  <option value="analytics" {{ moduleData['CC']['CloseAction'] is not empty and moduleData['CC']['CloseAction'] == 'analytics' ? 'selected=selected' : '' }}>{{ text_cc_stop_analytics }}</option>
+                  <option value="marketing" {{ moduleData['CC']['CloseAction'] is not empty and moduleData['CC']['CloseAction'] == 'marketing' ? 'selected=selected' : '' }}>{{ text_cc_stop_marketing }}</option>
+                  <option value="analytics_marketing" {{ moduleData['CC']['CloseAction'] is not empty and moduleData['CC']['CloseAction'] == 'analytics_marketing' ? 'selected=selected' : '' }}>{{ text_cc_stop_both }}</option>
+                  <option value="nothing"  {{ moduleData['CC']['CloseAction'] is empty or moduleData['CC']['CloseAction'] == 'nothing' ? 'selected=selected' : '' }}>{{ text_cc_stop_nothing }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    
+	<div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_always_show }}</strong></h5>
+            <span class="help">{{ text_cc_always_show_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+     		<select name="{{ moduleName }}[CC][AlwaysShow]" class="form-control">
+                <option value="1" {{ moduleData['CC']['AlwaysShow'] is not empty and moduleData['CC']['AlwaysShow'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+			  	<option value="0"  {{ moduleData['CC']['AlwaysShow'] is empty or moduleData['CC']['AlwaysShow'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+            </select>
+        </div>
+    </div>
+    <hr /><br />
+    
+   	<h3>{{ text_cookie_management }}</h3>
+   	<br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_ccc_functional }}</strong></h5>
+            <span class="help">{{ text_ccc_functional_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <textarea name="{{ moduleName }}[CCC][Functional]" class="form-control" rows="4">{{ moduleData['CCC']['Functional'] is defined ? moduleData['CCC']['Functional'] : 'PHPSESSID
+cookies
+language
+cookieconsent_status
+cookieconsent_preferences_disabled' }}</textarea>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_ccc_analytics }}</strong></h5>
+            <span class="help">{{ text_ccc_analytics_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <textarea name="{{ moduleName }}[CCC][Analytics]" class="form-control" rows="4">{{ moduleData['CCC']['Analytics'] is defined ? moduleData['CCC']['Analytics'] : '_ga
+_gid
+_gat
+__atuvc
+__atuvs
+__utma
+__cfduid' }}</textarea>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_ccc_marketing }}</strong></h5>
+            <span class="help">{{ text_ccc_marketing_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <textarea name="{{ moduleName }}[CCC][Marketing]" class="form-control" rows="4">{{ moduleData['CCC']['Marketing'] is defined ? moduleData['CCC']['Marketing'] : '_gads
+IDE
+test_cookie
+fr
+tr
+collect
+GPS
+PREF
+BizoID' }}</textarea>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <h3>{{ text_cc_customize }}</h3>
+    <br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_texts }}</strong></h5>
+            <span class="help">{{ text_cc_texts_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-9">
+            <ul class="nav nav-tabs" id="langtabs-cc" role="tablist">
+			  {% for language in languages %} 
+				<li><a href="#lang-cc-{{ language['language_id'] }}" role="tab" data-toggle="tab"><img src="{{ language['flag_url'] }}" title="{{ language['name'] }}"/> {{ language['name'] }}</a></li>
+			  {% endfor %} 
+			</ul>
+			<div class="tab-content">
+			  {% for language in languages %} 
+				<div class="tab-pane" id="lang-cc-{{ language['language_id'] }}">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<h5><strong>{{ text_cc_main_message }}</strong></h5>
+							<span class="help">{{ text_cc_main_message_helper }}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+							<textarea name="{{ moduleName }}[CC][Message][{{ language['language_id'] }}]" class="form-control" rows="4">{{ moduleData['CC']['Message'][language['language_id']] is defined ? moduleData['CC']['Message'][language['language_id']] : 'This website uses cookies to ensure you get the best experience on our website.' }}</textarea>
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<h5><strong>{{ text_cc_pp_message }}</strong></h5>
+							<span class="help">{{ text_cc_pp_message_helper }}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+							<input name="{{ moduleName }}[CC][PPText][{{ language['language_id'] }}]" class="form-control" value="{{ moduleData['CC']['PPText'][language['language_id']] is defined ? moduleData['CC']['PPText'][language['language_id']] : 'Privacy Policy' }}" />
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<h5><strong>{{ text_cc_accept_text }}</strong></h5>
+							<span class="help">{{ text_cc_accept_text_helper }}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+							<input name="{{ moduleName }}[CC][AcceptText][{{ language['language_id'] }}]" class="form-control" value="{{ moduleData['CC']['AcceptText'][language['language_id']] is defined ? moduleData['CC']['AcceptText'][language['language_id']] : 'Accept' }}" />
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<h5><strong>{{ text_cc_dismiss_text }}</strong></h5>
+							<span class="help">{{ text_cc_dismiss_text_helper }}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+							<input name="{{ moduleName }}[CC][DismissText][{{ language['language_id'] }}]" class="form-control" value="{{ moduleData['CC']['DismissText'][language['language_id']] is defined ? moduleData['CC']['DismissText'][language['language_id']] : 'Close' }}" />
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<h5><strong>{{ text_cc_cookies_change }}</strong></h5>
+							<span class="help">{{ text_cc_cookies_change_helper }}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+							<input name="{{ moduleName }}[CC][CookiesText][{{ language['language_id'] }}]" class="form-control" value="{{ moduleData['CC']['CookiesText'][language['language_id']] is defined ? moduleData['CC']['CookiesText'][language['language_id']] : 'Preferences' }}" />
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<h5><strong>{{ text_cc_cookie_button }}</strong></h5>
+							<span class="help">{{ text_cc_cookie_button_helper }}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+							<input name="{{ moduleName }}[CC][ASButtonText][{{ language['language_id'] }}]" class="form-control" value="{{ moduleData['CC']['ASButtonText'][language['language_id']] is defined ? moduleData['CC']['ASButtonText'][language['language_id']] : 'Cookie Bar' }}" />
+						</div>
+					</div>
+				</div>
+			  {% endfor %} 
+			</div>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_positioning }}</strong></h5>
+            <span class="help">{{ text_cc_positioning_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[CC][Position]" class="form-control">
+                  <option value="default"  {{ moduleData['CC']['Position'] is empty or moduleData['CC']['Position'] == 'default' ? 'selected=selected' : '' }}>{{ text_cc_banner_bottom }}</option>
+                  <option value="top" {{ moduleData['CC']['Position'] is not empty and moduleData['CC']['Position'] == 'top' ? 'selected=selected' : '' }}>{{ text_cc_banner_top }}</option>
+                  <option value="top-pushdown" {{ moduleData['CC']['Position'] is not empty and moduleData['CC']['Position'] == 'top-pushdown' ? 'selected=selected' : '' }}>{{ text_cc_banner_top_pushdown }}</option>
+                  <option value="bottom-left" {{ moduleData['CC']['Position'] is not empty and moduleData['CC']['Position'] == 'bottom-left' ? 'selected=selected' : '' }}>{{ text_cc_banner_float_left }}</option>
+                  <option value="bottom-right" {{ moduleData['CC']['Position'] is not empty and moduleData['CC']['Position'] == 'bottom-right' ? 'selected=selected' : '' }}>{{ text_cc_banner_float_right }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_cc_palette }}</strong></h5>
+            <span class="help">{{ text_cc_palette_styling }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <div class="input-group">
+			  <span class="input-group-addon" style="min-width:150px;">{{ text_cc_bar_bg }}</span>
+			  <input type="color" name="{{ moduleName }}[CC][Style][BannerBG]" class="form-control" value="{{ moduleData['CC']['Style']['BannerBG'] is defined ? moduleData['CC']['Style']['BannerBG'] : '#000000' }}" />
+			 </div>
+             <br />
+             <div class="input-group">
+			  <span class="input-group-addon" style="min-width:150px;">{{ text_cc_bar_text }}</span>
+			  <input type="color" name="{{ moduleName }}[CC][Style][BannerText]" class="form-control" value="{{ moduleData['CC']['Style']['BannerText'] is defined ? moduleData['CC']['Style']['BannerText'] : '#FFFFFF' }}" />
+			 </div>
+             <br />
+             <div class="input-group">
+			  <span class="input-group-addon" style="min-width:150px;">{{ text_cc_button_bg }}</span>
+			  <input type="color" name="{{ moduleName }}[CC][Style][ButtonBG]" class="form-control" value="{{ moduleData['CC']['Style']['ButtonBG'] is defined ? moduleData['CC']['Style']['ButtonBG'] : '#F1D600' }}" />
+			 </div>
+             <br />
+             <div class="input-group">
+			  <span class="input-group-addon" style="min-width:150px;">{{ text_cc_button_text }}</span>
+			  <input type="color" name="{{ moduleName }}[CC][Style][ButtonText]" class="form-control" value="{{ moduleData['CC']['Style']['ButtonText'] is defined ? moduleData['CC']['Style']['ButtonText'] : '#000000' }}" />
+			 </div>
+             <br />
+             <div class="input-group">
+			  <span class="input-group-addon" style="min-width:150px;">{{ text_cc_transparency }}</span>
+			  <input step="1" min="0" max="100" type="number" name="{{ moduleName }}[CC][Style][Opacity]" class="form-control" value="{{ moduleData['CC']['Style']['Opacity'] is defined ? moduleData['CC']['Style']['Opacity'] : '100' }}" />
+              <span class="input-group-addon">%</span>
+			 </div>
+        </div>
+    </div>
+    <hr /><br />
+	
+	<div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_gdpr_cc_styles }}</strong></h5>
+            <span class="help">{{ text_gdpr_cc_styles_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <textarea name="{{ moduleName }}[CC][Styles]" class="form-control" rows="10">{{ moduleData['CC']['Styles'] is defined ? moduleData['CC']['Styles'] : '.cc-btn {}
+.cc-dismiss {}
+.cc-settings {}
+.cc-allow {}
+.cc-message {}
+.cc-link {}
+.cc-window {}
+.cc-close {}
+.cc-revoke {}
+.cc-settings-view {}
+.cc-settings-dialog {}
+.cc-btn-close-settings {}
+.cc-btn-save-settings {}' }}</textarea>
+        </div>
+    </div>
+    <hr /><br />
+    
+	<em>{{ text_consent_bar_copyright }}</em>
+</div>

@@ -1,0 +1,302 @@
+{% if albums %}
+<div class="galleria-mod galleria-mod-{{ module }}">
+	{% for album in albums %}
+		<div class="galleria-album-{{ album.album_id }}">
+			{% if album_title == 0 and album.name %}
+				<h3 class="album-title">{{ album.name }}</h3>
+			{% endif %}
+
+			{% if album_description == 0 and album.description %}
+			<div class="album-description">
+				{{ album.description }}
+			</div>
+			{% endif %}
+
+			<div class="album-content {% if album_view == 2 %}album-carousel-{{ album.album_id }} swiper-container{% endif %}">
+				<div class="album-items {% if album_view == 0 %} row{% elseif album_view == 2 %} swiper-wrapper{% endif %}">
+					{% set i = 0 %}
+					{% for image in album.images %}
+						{% set i = i + 1 %}
+						{% if not album_view %}
+							<div class="col-sm-{{ column }}">
+								<div class="galleria-image galleria-grid-item">
+									{% if image_title == 1 %}
+										{% if image.name %}<span class="galleria-image-name" href="{{ image.popup }}">{{ image.name }}</span>{% endif %}
+									{% endif %}
+									{% if image_description == 1 %}
+										{% if image.description %}<div class="galleria-image-description">{{ image.description }}</div>{% endif %}
+									{% endif %}
+									<a class="galleria-image-image" href="{{ image.popup }}" title="{{ image.name }}">
+										<img src="{{ image.thumb }}" alt="{{ image.name }}" title="{{ image.name }}" class="img-responsive"/>
+										{% if image_title == 2 or image_description == 2 or image_title == 3 or image_description == 3 %}<span class="galleria-spoiler">{% endif %}
+										{% if image_title == 2 or image_title == 3 %}
+											{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+										{% endif %}
+										{% if image_description == 2 or image_description == 3 or image_description == 4 %}
+											{% if image.description %}<span class="galleria-image-description{% if image_description == 4 %} hidden{% endif %}">{{ image.description }}</span>{% endif %}
+										{% endif %}
+										{% if image_title == 2 or image_description == 2 or image_title == 3 or image_description == 3 %}</span>{% endif %}
+									</a>
+									{% if not image_title %}
+										{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+									{% endif %}
+									{% if not image_description %}
+										{% if image.description %}<div class="galleria-image-description">{{ image.description }}</div>{% endif %}
+									{% endif %}
+								</div>
+							</div>
+							{% if i % image_grid == 0 %}<div class="clearfix"></div>{% endif %}
+
+						{% elseif album_view == 1 %}
+							<div class="galleria-image galleria-list-item">
+								<div class="row">
+									<div class="col-sm-3">
+										<a class="galleria-image-image" href="{{ image.popup }}" title="{{ image.name }}">
+											<img src="{{ image.thumb }}" alt="{{ image.name }}" title="{{ image.name }}" class="img-responsive"/>
+										</a>
+									</div>
+									<div class="col-sm-9">
+										<div class="galleria-album-text">
+											{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+											{% if image.description %}<div class="galleria-image-description">{{ image.description }}</div>{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+
+						{% elseif album_view == 2 %}
+							<div class="galleria-image swiper-slide">
+								<a class="galleria-image-image" href="{{ image.popup }}" title="{{ image.name }}">
+									<img src="{{ image.thumb }}" alt="{{ image.name }}" title="{{ image.name }}" class="img-responsive"/>
+									{% if image_title == 2 or image_description == 2 or image_title == 3 or image_description == 3 %}<span class="galleria-spoiler">{% endif %}
+									{% if image_title == 2 or image_title == 3 %}
+										{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+									{% endif %}
+									{% if image_description == 2 or image_description == 3 or image_description == 4 %}
+										{% if image.description %}<span class="galleria-image-description{% if image_description == 4 %} hidden{% endif %}">{{ image.description }}</span>{% endif %}
+									{% endif %}
+									{% if image_title == 2 or image_description == 2 or image_title == 3 or image_description == 3 %}</span>{% endif %}
+								</a>
+								{% if not image_title %}
+									{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+								{% endif %}
+							</div>
+						
+						{% elseif album_view == 3 %}
+							<div class="galleria-image masonry-item">
+								<a class="galleria-image-image" href="{{ image.popup }}" title="{{ image.name }}">
+									<img src="{{ image.thumb }}" alt="{{ image.name }}" title="{{ image.name }}" class="img-responsive"/>
+									{% if image_title == 2 or image_description == 2 or image_title == 3 or image_description == 3 %}<span class="galleria-spoiler">{% endif %}
+									{% if image_title == 2 or image_title == 3 %}
+										{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+									{% endif %}
+									{% if image_description == 2 or image_description == 3 or image_description == 4 %}
+										{% if image.description %}<span class="galleria-image-description{% if image_description == 4 %} hidden{% endif %}">{{ image.description }}</span>{% endif %}
+									{% endif %}
+									{% if image_title == 2 or image_description == 2 or image_title == 3 or image_description == 3 %}</span>{% endif %}
+								</a>
+								{% if not image_title %}
+										{% if image.name %}<span class="galleria-image-name">{{ image.name }}</span>{% endif %}
+									{% endif %}
+									{% if not image_description %}
+										{% if image.description %}<div class="galleria-image-description">{{ image.description }}</div>{% endif %}
+									{% endif %}
+							</div>
+
+						{% endif %}
+					{% endfor %}
+				</div>
+
+				{% if album_view == 2 %}
+				<div class="swiper-pager">
+				    <div class="swiper-button-next"></div>
+				    <div class="swiper-button-prev"></div>
+				</div>
+				{% endif %}
+
+			</div>
+
+			{% if album_title == 1 and album.name %}
+				<h3 class="album-title">{{ album.name }}</h3>
+			{% endif %}
+
+			{% if album_description == 1 and album.description %}
+			<div class="album-description">
+				{{ album.description }}
+			</div>
+			{% endif %}
+
+		</div>
+		{% if album_view == 2 %}
+		<script><!--
+			$('.galleria-mod-{{ module }} .album-carousel-{{ album.album_id }}').swiper({
+				mode: 'horizontal',
+				slidesPerView: {{ image_grid }},
+				nextButton: '.galleria-mod-{{ module }} .album-carousel-{{ album.album_id }} .swiper-button-next',
+			    prevButton: '.galleria-mod-{{ module }} .album-carousel-{{ album.album_id }} .swiper-button-prev',
+				autoplay: 2500,
+				spaceBetween: 20,
+				loop: true
+			});
+		//--></script>
+		{% endif %}
+	{% endfor %}
+</div>
+
+<style>
+.hidden {
+	display: none;
+}
+.galleria-mod-{{ module }} .galleria-image {
+	overflow: hidden;
+}
+.galleria-mod-{{ module }} .galleria-image-image,
+.galleria-mod-{{ module }} .galleria-image-name {
+	display: block;
+	text-align: center;
+}
+.galleria-mod-{{ module }} .galleria-image-name{
+	font-size: 15px;
+	line-height: 24px;
+}
+.galleria-mod-{{ module }} .album-description {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.galleria-mod-{{ module }} .galleria-image-image img {
+	margin: 0 auto;
+	transition: 0.4s;
+}
+{% if animation %}
+.galleria-mod-{{ module }} .galleria-image:hover img {
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+}
+.galleria-mod-{{ module }} .galleria-image-image {
+    overflow: hidden;
+}
+{% endif %}
+{% if image_title == 2 or image_description == 2 %}
+.galleria-mod-{{ module }} .galleria-spoiler {
+    position: absolute;
+    display: block;
+    background: rgba(0,0,0,0.5);
+    color: #ffffff;
+    padding: 5px;
+    width: 100%;
+    max-height: 50%;
+    transition: 0.3s;
+}
+.galleria-mod-{{ module }} .galleria-image-image {
+	position:relative;
+	overflow: hidden;
+}
+.galleria-mod-{{ module }} .galleria-image-description {
+	line-height: 17px;
+}
+.galleria-mod-{{ module }} .galleria-image-image:hover .galleria-spoiler{
+	bottom: -50px;
+	-moz-transform: translate(0px, -50px);
+	-webkit-transform: translate(0px, -50px);
+	-o-transform: translate(0px, -50px);
+	-ms-transform: translate(0px, -50px);
+	transform: translate(0px, -50px);
+}
+{% endif %}
+{% if image_title == 3 or image_description == 3 %}
+.galleria-mod-{{ module }} .galleria-spoiler {
+    position: absolute;
+    display: block;
+    background: rgba(0,0,0,0.5);
+    color: #ffffff;
+    padding: 5px;
+    width: 100%;
+    bottom: 0;
+    max-height: 50%;
+}
+.galleria-mod-{{ module }} .galleria-image-image {
+	position:relative;
+	overflow: hidden;
+}
+.galleria-mod-{{ module }} .galleria-image-description {
+	line-height: 17px;
+}
+{% endif %}
+{% if not album_view %}
+.galleria-mod-{{ module }} .galleria-image {
+	margin-bottom: 25px;
+}
+{% endif %}
+{% if album_view == 1 %}
+.galleria-mod-{{ module }} .galleria-image {
+	box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+	margin-bottom: 25px;
+	border-radius: 5px;
+}
+.galleria-mod-{{ module }} .galleria-image-name {
+	text-align: left;
+}
+.galleria-mod-{{ module }} .galleria-album-text {
+    padding: 10px 10px 10px 0;
+}
+@media (max-width:767px) {
+	.galleria-mod-{{ module }} .galleria-album-text {
+    	padding: 15px;
+	}
+	.galleria-mod-{{ module }} .galleria-image-name {
+	    text-align: center;
+	}
+}
+{% endif %}
+{% if album_view == 2 %}
+.galleria-mod-{{ module }} .galleria-image{
+	text-align: center;
+}
+{% endif %}
+{% if album_view == 3 %}
+.galleria-mod-{{ module }} .galleria-image { 
+	box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+	margin-bottom: 20px; 
+	width: {{ image_width }}px;
+}
+.galleria-mod-{{ module }} .galleria-image-name,.galleria-mod-{{ module }} .galleria-image-description {
+	padding: 5px 12px;
+}
+{% endif %}
+{% if album_css %}{{ album_css }}{% endif %}
+</style>
+
+{% if album_view == 3 %}
+<script><!--
+$(window).load(function(){ 
+  	$('.galleria-mod-{{ module }} .album-items').masonry({
+	  itemSelector: '.masonry-item',
+	  columnWidth: {{ image_width }},
+	  gutter: 20
+	});
+});
+//--></script>
+{% endif %}
+<script><!--
+$(document).ready(function() {
+	$('.galleria-mod-{{ module }} .album-items').magnificPopup({
+		type:'image',
+		delegate: 'a',
+		gallery: {
+			enabled: true
+		},
+		image: {
+			titleSrc: function(item) {
+				var description_el = $(item.el).parent('.galleria-image').find('.galleria-image-description');
+				var description = '';
+				if (description_el.length) {
+					description = description_el.html();
+				}
+				return item.el.attr('title') + '<small>' + description + '</small>';
+			}
+		}
+	});
+});
+//--></script>
+{% endif %}

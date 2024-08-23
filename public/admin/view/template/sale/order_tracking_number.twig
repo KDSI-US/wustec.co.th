@@ -1,0 +1,37 @@
+<fieldset>
+  <legend>{{ text_tracking_info }} {{ order_id }}</legend>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td class="text-left">{{ text_tracking_id }}</td>
+        <td class="text-left">{{ text_tracking_date }}</td>
+        <td class="text-left">{{ text_tracking_courier }}</td>
+        <td class="text-left">{{ text_tracking_number }}</td>
+      </tr>
+	</thead>
+    {% for tracking in tracking_info %}
+    <tr>
+      <td>{{ tracking.order_shipment_id }}</td>
+      <td>{{ tracking.date_added }}</td>
+      <td>{{ tracking.shipping_courier_name }}</td>
+      <td>
+      {% if tracking.shipping_courier_code == 'dhl' %}
+        <a href="https://www.dhl.com/us-en/home/tracking.html?tracking-id={{ tracking.tracking_number }}&submit=1" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'fedex' %}
+        <a href="https://www.fedex.com/fedextrack/?action=track&trackingnumber={{ tracking.tracking_number }}&cntry_code=us&locale=en_us" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'ups' %}
+        <a href="https://www.ups.com/track?loc=en_US&requester=QUIC&tracknum={{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'royal-mail' %}
+        <a href="https://www.royalmail.com/track-your-item#/tracking-results/{{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'usps' %}
+        <a href="https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels={{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% elseif tracking.shipping_courier_code == 'auspost' %}
+        <a href="https://auspost.com.au/mypost/track/#/details/{{ tracking.tracking_number }}" target="_blank">{{ tracking.tracking_number }}</a>
+      {% else %}
+        {{ tracking.tracking_number }}
+      {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</fieldset>

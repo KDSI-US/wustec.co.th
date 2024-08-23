@@ -1,0 +1,44 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <form action="{{ action }}" method="post" id="emailtemplate">
+    <div class="page-header">
+      <div class="container-fluid clearfix">
+        <div class="pull-right">
+          <button type="submit" class="btn btn-danger" data-toggle="tooltip" title="{{ button_delete }}" data-confirm="{{ text_confirm }}"><i class="fa fa-trash"></i></button>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <h1><i class="fa fa-inbox"></i> {{ heading_logs }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item{{ loop.index == breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div id="form-logs" class="container-fluid">
+      {% if error_warning is not empty %}
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      {% if error_attention is not empty %}
+        <div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_attention }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      {% if error_unsent is not empty %}
+        <div class="alert alert-info"><i class="fa fa-clock-o"></i> <div class="alert-message">{{ error_unsent }}</div> <div class="btn-group" style="margin:-3px 0 -2px 5px;"><button type="button" data-confirm="{{ text_confirm }}" data-loading-text="{{ text_sending }}" data-action="cron" data-toggle="tooltip" title="{{ button_cron }}" class="btn btn-xs btn-default"><i class="fa fa-fw fa-play"></i></button> <button type="button" class="btn btn-xs btn-default btn-cron-cancel hide"><i class="fa fa-close"></i></button></div> <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      {% if success is not empty %}
+        <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+      {% endif %}
+      <div id="ajax-logs">
+        <div class="panel panel-default" id="form-filter">
+          <div class="panel-body">
+            <div class="ajax-filter ajax-loading">
+              <i class="fa fa-spinner fa-spin fa-5x" style="color:#009afd"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</form>
+{{ footer }}

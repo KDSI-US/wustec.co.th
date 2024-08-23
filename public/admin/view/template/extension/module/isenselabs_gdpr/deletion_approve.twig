@@ -1,0 +1,140 @@
+<div class="container-fluid approve-form">
+    <div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h3 class="step">{{ text_approve_deletion_header }}</h3>
+		</div>
+    </div>    
+    <br />    
+    {% if (not approve_form) %} 
+    	<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h4>{{ text_unexpected_error }}</h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="pull-right">
+					<a onclick="goBack(this);" class="btn btn-danger">{{ text_go_back }}</a>
+				</div>
+			</div>
+		</div>  
+    {% else %} 
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h5><strong>{{ text_email_request }}</strong>: {{ deletion_data['email'] }}</h5>
+				<h5><strong>{{ text_date_time_request }}</strong>: {{ deletion_data['date_added'] }}</h5>
+				<h5><strong>{{ text_language_request }}</strong>: {{ language_data['name'] }}</h5>
+				<h5><strong>{{ text_store_request }}</strong>: {{ store_data['name'] }}</h5>
+				<br />
+
+				<h5>{{ text_deletion_approve_helper }} <strong>{{ deletion_data['email'] }}</strong></h5>
+				<h5>{{ text_data_approve_deletion_helper }}</h5>
+			</div>
+		</div>
+		<br /><br />
+		
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<h4><strong>{{ text_column_deletion_date }}</strong></h4>
+		<span class="help">{{ text_deletion_date }}</span>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<input type="text" name="date_deletion" id="date_deletion" data-date-format="YYYY-MM-DD" value="{{ deletion_data['date_deletion'] is not empty and deletion_data['date_deletion'] != '0000-00-00 00:00:00' ? deletion_data['date_deletion'] : '' }}" class="input-lg form-control date" />
+			</div>
+		</div>
+		
+		<br /><hr />
+		
+		<h4><strong>{{ text_data_to_be_deleted }}</strong></h4>
+		<span class="help">{{ text_data_to_be_deleted_helper }}</span>
+		<br /><br />	
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<h5><strong>{{ text_customer_data }}</strong></h5>
+				<span class="help">{{ text_customer_data_helper }}</span>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<label class="radio-inline">
+				  <input type="radio" {{ deletion_data['customer_data'] ? 'checked="checked"' : '' }} name="customer_data" value="1"> {{ text_yes }} 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" {{ not deletion_data['customer_data'] ? 'checked="checked"' : '' }} name="customer_data" value="0"> {{ text_no }} 
+				</label>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<h5><strong>{{ text_address_data }}</strong></h5>
+				<span class="help">{{ text_address_data_helper }}</span>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<label class="radio-inline">
+				  <input type="radio" {{ deletion_data['address_data'] ? 'checked="checked"' : '' }} name="address_data" value="1"> {{ text_yes }} 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" {{ not deletion_data['address_data'] ? 'checked="checked"' : '' }} name="address_data" value="0"> {{ text_no }} 
+				</label>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<h5><strong>{{ text_order_data }}</strong></h5>
+				<span class="help">{{ text_order_data_helper }}</span>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<label class="radio-inline">
+				  <input type="radio" {{ deletion_data['order_data'] ? 'checked="checked"' : '' }} name="order_data" value="1"> {{ text_yes }} 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" {{ not deletion_data['order_data'] ? 'checked="checked"' : '' }} name="order_data" value="0"> {{ text_no }} 
+				</label>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<h5><strong>{{ text_gdpr_data }}</strong></h5>
+				<span class="help">{{ text_gdpr_data_helper }}</span>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<label class="radio-inline">
+				  <input type="radio" {{ deletion_data['gdpr_data'] ? 'checked="checked"' : '' }} name="gdpr_data" value="1"> {{ text_yes }} 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" {{ not deletion_data['gdpr_data'] ? 'checked="checked"' : '' }} name="gdpr_data" value="0"> {{ text_no }} 
+				</label>
+			</div>
+		</div>
+		
+		<br /><hr />
+		
+		<h4><strong>{{ text_custom_message }}</strong></h4>
+		<span class="help">{{ text_custom_message_helper }}</span>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<br />
+				<input name="deletion_id" type="hidden" value="{{ deletion_data['deletion_id'] }}" />
+				<textarea name="message" rows="7" id="message" placeholder="{{ text_message }}" class="form-control">{{ deletion_data['message'] }}</textarea>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="pull-right">
+					<br />
+					<a onclick="approveDeletionRequest(this);" class="btn btn-primary">{{ text_approve_deletion }}</a>&nbsp;&nbsp;<a onclick="goBack(this);" class="btn btn-danger">{{ text_go_back }}</a>
+				</div>
+			</div>
+		</div>
+    {% endif %} 
+</div>
+<script>
+$('.date').datetimepicker({
+	pickTime: false
+});
+</script>

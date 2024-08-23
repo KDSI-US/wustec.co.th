@@ -1,0 +1,22 @@
+<div class="left_widget">
+<h2>{{ heading_title }}</h2>
+<ul class="categorylisting">
+  {% for category in categories %}
+	  {% if category.blog_category_id == blog_category_id %}
+	<li><a href="{{ category.href }}"><i class="fa fa-angle-double-right"></i>{{ category.name }}</a></li>
+  {% if category.children %}
+	{% for child in category.children %}
+  {% if child.blog_category_id == child_id %}
+	<li><a href="{{ child.href }}">&nbsp;&nbsp;&nbsp; <i class="fa fa-angle-double-right"></i> {{ child.name }}</a></li>
+	{% else %}
+	<li><a href="{{ child.href }}">&nbsp;&nbsp;&nbsp; <i class="fa fa-angle-double-right"></i> {{ child.name }}</a></li>
+  {% endif %}
+  
+   {% endfor %}
+   {% endif %}
+ {% else %}
+	<li><a href="{{ category.href }}"><i class="fa fa-angle-double-right"></i>{{ category.name }}</a></li>
+ {% endif %}
+ {% endfor %}
+</ul>
+</div>

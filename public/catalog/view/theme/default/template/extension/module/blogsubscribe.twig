@@ -1,0 +1,35 @@
+<div id="bsubscribe" class="left_widget">
+	<h2>{{ text_subscribe }}</h2>
+	<div class="bsubscribe">
+		<input type="text" name="bsubscribe" placeholder="{{ text_email }}" class="form-control" />
+		<button type="button" id="bemailsave" class="btn btn-primary">{{ text_subscribe }}</button>
+	</div>
+</div>
+<script type="text/javascript"><!--
+$('#bemailsave').on('click', function(){
+	$.ajax({
+		url: 'index.php?route=extension/module/blogsubscribe/addemail',
+		type: 'post',
+		data: $('#bsubscribe input[type=\'text\']'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#bemailsave').button('loading');
+		},
+		complete: function() {
+			$('#bemailsave').button('reset');
+		},
+		success: function(json){
+			$( "#bsubscribe .bsubscribe .alert" ).remove();
+			if(json['success']){
+				$('#bsubscribe .bsubscribe').html('' + json['success'] + '');
+			}
+			if(json['error']){
+				$('#bsubscribe .bsubscribe').prepend('<div class="alert alert-danger">' + json['error'] + '</div>');
+			}
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+});
+--></script>

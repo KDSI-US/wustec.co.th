@@ -1,0 +1,30 @@
+{{ header }} 
+<div id="container" class="container j-container">
+  <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+    {% for breadcrumb in breadcrumbs %}
+      <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{ breadcrumb.href }}" itemprop="item"><span itemprop="name">{{ breadcrumb.text }}</span></a><meta itemprop="position" content="{{ loop.index }}" /></li>
+    {% endfor %}
+  </ul>
+  <div class="row">
+    {{ column_left }} 
+    {% if (column_left and column_right) %} 
+    {% set class = 'col-sm-6' %} 
+    {% elseif (column_left or column_right) %} 
+    {% set class = 'col-sm-9' %} 
+    {% else %} 
+    {% set class = 'col-sm-12' %} 
+    {% endif %} 
+    <div id="content" class="{{ class }}">{{ content_top }} 
+	    <h2>{{ successful_deletion_request }}</h2>
+		<p>{{ manual_deletion ? successful_deletion_request_helper : successful_deletion_request_helper_automatically }}</p>
+		<div class="buttons clearfix">
+		  <div class="pull-right">
+			<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+		  </div>
+		</div> 
+      {{ content_bottom }} 
+    </div>
+    {{ column_right }} 
+  </div>
+</div>
+{{ footer }}

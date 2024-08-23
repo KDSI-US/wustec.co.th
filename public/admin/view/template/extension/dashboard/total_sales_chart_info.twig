@@ -1,0 +1,104 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> {{ dashboard_heading_title }}</h3>
+  </div>
+  <div class="panel-body" style="padding: 0;">
+    <div id="salechartdiv" style="width: 100%; height: 270px; background-color: #FFFFFF;" ></div>
+  </div>
+</div>
+
+<!-- amCharts javascript sources -->
+<script src="//www.amcharts.com/lib/4/core.js"></script>
+<script src="//www.amcharts.com/lib/4/charts.js"></script>
+<script src="//www.amcharts.com/lib/4/themes/animated.js"></script>
+
+<script>
+
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+    
+    // Create chart instance
+    var salechart = am4core.create("salechartdiv", am4charts.XYChart);
+    
+    // Increase contrast by taking evey second color
+    salechart.colors.step = 2;
+    
+    // Add data
+    salechart.data = {{ sales }};
+    
+    // Create axes
+    var saleDateAxis = salechart.xAxes.push(new am4charts.DateAxis());
+    saleDateAxis.renderer.minGridDistance = 50;
+    saleDateAxis.groupData = true;
+    saleDateAxis.groupCount = 20;
+    
+    // Create series
+    function createSaleAxisAndSeries(field, name, opposite, bullet) {
+      var saleValueAxis = salechart.yAxes.push(new am4charts.ValueAxis());
+      if(salechart.yAxes.indexOf(saleValueAxis) != 0){
+      	saleValueAxis.syncWithAxis = salechart.yAxes.getIndex(0);
+      }
+      
+      var saleSeries = salechart.series.push(new am4charts.LineSeries());
+      saleSeries.dataFields.valueY = field;
+      saleSeries.dataFields.dateX = "date";
+      saleSeries.strokeWidth = 2;
+      saleSeries.name = name;
+      saleSeries.tooltipText = "{name}: [bold]{valueY}[/]";
+      saleSeries.tensionX = 0.8;
+      saleSeries.showOnInit = true;
+      saleSeries.groupFields.valueY = "sum";
+      
+      var saleScrollbarX = new am4charts.XYChartScrollbar();
+      saleScrollbarX.series.push(saleSeries);
+      salechart.scrollbarX = saleScrollbarX;
+      
+      var saleInterfaceColors = new am4core.InterfaceColorSet();
+      
+      switch(bullet) {
+        case "triangle":
+          var saleBullet = series.bullets.push(new am4charts.Bullet());
+          saleBullet.width = 12;
+          saleBullet.height = 12;
+          saleBullet.horizontalCenter = "middle";
+          saleBullet.verticalCenter = "middle";
+          
+          var saleTriangle = saleBullet.createChild(am4core.Triangle);
+          saleTriangle.stroke = saleInterfaceColors.getFor("background");
+          saleTriangle.strokeWidth = 2;
+          saleTriangle.direction = "top";
+          saleTriangle.width = 12;
+          triangsaleTrianglele.height = 12;
+          break;
+        default:
+          var saleBullet = saleSeries.bullets.push(new am4charts.CircleBullet());
+          saleBullet.circle.stroke = saleInterfaceColors.getFor("background");
+          saleBullet.circle.strokeWidth = 2;
+          break;
+      }
+      
+      saleValueAxis.renderer.line.strokeOpacity = 1;
+      saleValueAxis.renderer.line.strokeWidth = 2;
+      saleValueAxis.renderer.line.stroke = saleSeries.stroke;
+      saleValueAxis.renderer.labels.template.fill = saleSeries.stroke;
+      saleValueAxis.renderer.opposite = opposite;
+    }
+    
+    createSaleAxisAndSeries("column-1", "Total Sales", false, "circle");
+    
+    // Add cursor
+    salechart.cursor = new am4charts.XYCursor();
+    
+    salechart.zoomOutButton.disabled = false;
+
+    var date3 = new Date();
+    var date4 = new Date();
+    
+    salechart.events.on("ready", function () {
+      saleDateAxis.zoomToDates(
+        new Date(date3.setMonth(date3.getMonth()-12)),
+        new Date(date4.setMonth(date4.getMonth()+1))
+      );
+    });
+</script>

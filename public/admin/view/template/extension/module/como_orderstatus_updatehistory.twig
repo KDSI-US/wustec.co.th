@@ -1,0 +1,65 @@
+<div id="como_history">
+ <div class="container-fluid">
+  <div class="row">
+    <input type="hidden" name="order_id" value="{{ order_id }}" />
+
+    {% if quickedit_history_status and histories %}
+        <div class="col-sm-12"><button class="btn btn-default btn-sm " style="font-weight: bold;" type="button" data-toggle="collapse" data-target="#history-collapse" aria-expanded="false">{{ entry_history }} <i class="fa fa-caret-down"></i></button></div>
+        <div class="col-sm-12 collapse" id="history-collapse">
+          <table class="table table-hover table-striped table-bordered">
+            <thead>
+              <tr>
+                <td class="text-left">{{ column_date_added }}</td>
+                <td class="text-left">{{ column_comment }}</td>
+                <td class="text-left">{{ column_status }}</td>
+                <td class="text-left">{{ column_notify }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for history in histories %}
+              <tr>
+                <td class="text-left">{{ history.date_added }}</td>
+                <td class="text-left"><div class="como-ellipses-3">{{ history.comment }}</div></td>
+                <td class="text-left">{{ history.status }}</td>
+                <td class="text-left">{{ history.notify }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+<script>
+    $('.como-ellipses-3').click(function () {
+        $(this).toggleClass('como-ellipses-3 como-ellipses-none');
+    });
+
+    window.order_id_save = {{ order_id_selected_json }};
+</script>
+        </div>
+    {% endif %}
+
+    <label class="col-sm-12" for="input-order-status">{{ entry_order_status }}</label>
+    <div class="col-sm-12">
+        <select name="order_status_id" id="input-order-status" class="form-control">
+        {% for order_statuses in order_statuses %}
+          <option value="{{ order_statuses.order_status_id }}"{% if order_statuses.order_status_id == order_status_id %} selected="selected"{% endif %}>{{ order_statuses.name }}</option>
+        {% endfor %}
+        </select>
+        <br />
+    </div>
+  {% if quickedit_notify_status %}
+    <label class="col-sm-12" for="input-notify"><input type="checkbox" name="notify" value="1" id="input-notify"{% if quickedit_notify_default %} checked{% endif %} /> {{ entry_notify }}</label>
+  {% else %}
+    <input type="hidden" name="notify" value="1" id="input-notify"{% if quickedit_notify_default %} checked{% endif %} />
+  {% endif %}
+  {% if quickedit_comment_status %}
+    <label class="col-sm-12" for="input-comment-osp">{{ entry_comment }}</label>
+    <div class="col-sm-12">
+        <textarea name="comment" rows="10" id="input-comment-osp" class="form-control"></textarea>
+    </div>
+  {% else %}
+        <textarea name="comment" rows="10" id="input-comment-osp" style="display: none;"></textarea>
+  {% endif %}
+  </div>
+ </div>
+</div>
+<!-- OCMOD-SEARCH other modules can use to add content -->
+

@@ -1,0 +1,524 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right form-inline">
+                <button type="submit" form="form-module" name="apply" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success"><i class="fa fa-check"></i></button>
+                <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-main" data-toggle="tab">{{ tab_main }}</a></li>
+                    <li><a href="#tab-page" data-toggle="tab">{{ tab_page }}</a></li>
+                    <li><a href="#tab-album" data-toggle="tab">{{ tab_album }}</a></li>
+                    <li><a href="#tab-widget" data-toggle="tab">{{ tab_widget }}</a></li>
+                    <li><a href="#tab-license" data-toggle="tab">{{ tab_license }}</a></li>
+                </ul>
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+                    <div class="tab-content">
+
+                        <div class="tab-pane active form-horizontal" id="tab-main">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-status"><span class="help" title="{{ help_status }}" data-toggle="tooltip">{{ entry_status }}</span></label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_status" id="input-status" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_status ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_status ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-image-description-status">{{ entry_image_description_status }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_image_description_status" id="input-image-description-status" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_image_description_status ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_image_description_status ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-image-title-status">{{ entry_image_title_status }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_image_title_status" id="input-image-title-status" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_image_title_status ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_image_title_status ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-sitemap">{{ entry_sitemap }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_sitemap" id="input-sitemap" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_sitemap ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_sitemap ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-unique">{{ entry_unique }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_unique" id="input-unique" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_unique ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_unique ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane form-horizontal" id="tab-page">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-status"><span class="help" title="{{ help_page_status }}" data-toggle="tooltip">{{ entry_page_status }}</span></label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_status" id="input-page-status" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_page_status ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_page_status ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-view">{{ entry_page_view }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_view" id="input-page-view" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_page_view ? "selected" : "" }}>{{ text_format_grid }}</option>
+                                        <option value="1" {{ "1" == module_galleria_page_view ? "selected" : "" }}>{{ text_format_list }}</option>
+                                        <option value="2" {{ "2" == module_galleria_page_view ? "selected" : "" }}>{{ text_format_carousel }}</option>
+                                        <option value="3" {{ "3" == module_galleria_page_view ? "selected" : "" }}>{{ text_format_masonry }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-grid">{{ entry_page_grid }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_grid" id="input-page-grid" class="form-control">
+                                        <option value="1" {{ "1" == module_galleria_page_grid ? "selected" : "" }}>1</option>
+                                        <option value="2" {{ "2" == module_galleria_page_grid ? "selected" : "" }}>2</option>
+                                        <option value="3" {{ "3" == module_galleria_page_grid ? "selected" : "" }}>3</option>
+                                        <option value="4" {{ "4" == module_galleria_page_grid ? "selected" : "" }}>4</option>
+                                        <option value="6" {{ "6" == module_galleria_page_grid ? "selected" : "" }}>6</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-limit">{{ entry_page_limit }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_page_limit" value="{{ module_galleria_page_limit }}" placeholder="{{ entry_page_limit }}" id="input-page-limit" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-album-title">{{ entry_page_album_title }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_album_title" id="input-page-album-title" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_page_album_title ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_page_album_title ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-album-description">{{ entry_page_album_description }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_album_description" id="input-page-album-description" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_page_album_description ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_page_album_description ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-album-text">{{ entry_page_album_text }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_album_text" id="input-page-album-text" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_page_album_text ? "selected" : "" }}>{{ text_after_album }}</option>
+                                        <option value="1" {{ "1" == module_galleria_page_album_text ? "selected" : "" }}>{{ text_before_album }}</option>
+                                        <option value="2" {{ "2" == module_galleria_page_album_text ? "selected" : "" }}>{{ text_on_album_hover }}</option>
+                                        <option value="3" {{ "3" == module_galleria_page_album_text ? "selected" : "" }}>{{ text_on_album }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-animation">{{ entry_album_animation }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_album_animation" id="input-album-animation" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_album_animation ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_album_animation ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-width">{{ entry_album_width }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_album_width" value="{{ module_galleria_album_width }}" placeholder="{{ entry_album_width }}" id="input-album-width" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-height">{{ entry_album_height }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_album_height" value="{{ module_galleria_album_height }}" placeholder="{{ entry_album_height }}" id="input-album-height" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ entry_page_title }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input type="text" name="module_galleria_page_title[{{ language.language_id }}]" value="{{ module_galleria_page_title ? module_galleria_page_title[language.language_id] : "" }}" placeholder="{{ entry_page_title }}" id="input-page-title{{ language.language_id }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ entry_page_description }}</label>
+                                <div class="col-sm-10">
+                                    <ul class="nav nav-tabs" id="page-description-language">
+                                        {% for language in languages %}
+                                            <li><a href="#page-description-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/> {{ language.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="tab-content">
+                                        {% for language in languages %}
+                                            <div class="tab-pane" id="page-description-language{{ language.language_id }}">
+                                        <textarea name="module_galleria_page_description[{{ language.language_id }}]" id="input-page-description{{ language.language_id }}" class="form-control" data-toggle="summernote" data-lang="{{ summernote }}">{{ module_galleria_page_description[language.language_id] }}</textarea>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ entry_page_meta_title }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input type="text" name="module_galleria_page_meta_title[{{ language.language_id }}]" value="{{ module_galleria_page_meta_title ? module_galleria_page_meta_title[language.language_id] : "" }}" placeholder="{{ entry_page_meta_title }}" id="input-page-meta-title{{ language.language_id }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ entry_page_meta_description }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <textarea name="module_galleria_page_meta_description[{{ language.language_id }}]" placeholder="{{ entry_page_meta_description }}" id="input-page-meta-description{{ language.language_id }}" class="form-control" rows="5">{{ module_galleria_page_meta_description[language.language_id] }}</textarea>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ entry_page_meta_keywords }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input type="text" name="module_galleria_page_meta_keyword[{{ language.language_id }}]" value="{{ module_galleria_page_meta_keyword ? module_galleria_page_meta_keyword[language.language_id] : "" }}" placeholder="{{ entry_page_meta_keywords }}" id="input-page-meta-keyword{{ language.language_id }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ entry_page_seo_url }}</label>
+                                <div class="col-sm-10">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                          <tr>
+                                            <td class="text-left">{{ entry_store }}</td>
+                                            <td class="text-left">{{ entry_keyword }}</td>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% for store in stores %}
+                                          <tr>
+                                            <td class="text-left">{{ store.name }}</td>
+                                            <td class="text-left">
+                                              {% for language in languages %}
+                                                <div class="input-group">
+                                                  <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                                  <input type="text" name="module_galleria_page_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if module_galleria_page_seo_url[store.store_id][language.language_id] %}{{ module_galleria_page_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_page_seo_url }}" class="form-control" />
+                                                </div>
+                                                {% if error_keyword[store.store_id][language.language_id] %}
+                                                  <div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+                                                {% endif %} 
+                                              {% endfor %}
+                                            </td>
+                                          </tr>
+                                          {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-menu"><span class="help" title="{{ help_page_menu }}" data-toggle="tooltip">{{ entry_page_menu }}</span></label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_page_menu" id="input-page-menu" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_page_menu ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_page_menu ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" data-parent-id="#input-page-menu" data-parent-value="1">
+                                <label class="col-sm-2 control-label">{{ entry_page_menu_title }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input type="text" name="module_galleria_page_menu_title[{{ language.language_id }}]" value="{{ module_galleria_page_menu_title ? module_galleria_page_menu_title[language.language_id] : "" }}" placeholder="{{ entry_page_menu_title }}" id="input-page-menu-title{{ language.language_id }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-page-css"><span class="help" title="{{ help_page_css }}" data-toggle="tooltip">{{ entry_page_css }}</span></label>
+                                <div class="col-sm-10">
+                                    <textarea name="module_galleria_page_css" placeholder="{{ entry_page_css }}" id="input-page-css" class="form-control" rows="5">{{ module_galleria_page_css }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane form-horizontal" id="tab-album">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-view">{{ entry_album_view }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_album_view" id="input-album-view" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_album_view ? "selected" : "" }}>{{ text_format_grid }}</option>
+                                        <option value="1" {{ "1" == module_galleria_album_view ? "selected" : "" }}>{{ text_format_list }}</option>
+                                        <option value="2" {{ "2" == module_galleria_album_view ? "selected" : "" }}>{{ text_format_carousel }}</option>
+                                        <option value="3" {{ "3" == module_galleria_album_view ? "selected" : "" }}>{{ text_format_masonry }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-title">{{ entry_album_title }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_album_title" id="input-album-title" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_album_title ? "selected" : "" }}>{{ text_before_images }}</option>
+                                        <option value="1" {{ "1" == module_galleria_album_title ? "selected" : "" }}>{{ text_after_images }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-description">{{ entry_album_description }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_album_description" id="input-album-description" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_album_description ? "selected" : "" }}>{{ text_before_images }}</option>
+                                        <option value="1" {{ "1" == module_galleria_album_description ? "selected" : "" }}>{{ text_after_images }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-image-title">{{ entry_album_image_title }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_album_image_title" id="input-album-image-title" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_album_image_title ? "selected" : "" }}>{{ text_after_image }}</option>
+                                        <option value="1" {{ "1" == module_galleria_album_image_title ? "selected" : "" }}>{{ text_before_image }}</option>
+                                        <option value="2" {{ "2" == module_galleria_album_image_title ? "selected" : "" }}>{{ text_on_image_hover }}</option>
+                                        <option value="3" {{ "3" == module_galleria_album_image_title ? "selected" : "" }}>{{ text_on_image }}</option>
+                                        <option value="4" {{ "4" == module_galleria_album_image_title ? "selected" : "" }}>{{ text_disabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-image-description">{{ entry_album_image_description }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_album_image_description" id="input-album-image-description" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_album_image_description ? "selected" : "" }}>{{ text_after_image }}</option>
+                                        <option value="1" {{ "1" == module_galleria_album_image_description ? "selected" : "" }}>{{ text_before_image }}</option>
+                                        <option value="2" {{ "2" == module_galleria_album_image_description ? "selected" : "" }}>{{ text_on_image_hover }}</option>
+                                        <option value="3" {{ "3" == module_galleria_album_image_description ? "selected" : "" }}>{{ text_on_image }}</option>
+                                        <option value="4" {{ "4" == module_galleria_album_image_description ? "selected" : "" }}>{{ text_disabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-image-grid">{{ entry_image_grid }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_image_grid" id="input-image-grid" class="form-control">
+                                        <option value="1" {{ "1" == module_galleria_image_grid ? "selected" : "" }}>1</option>
+                                        <option value="2" {{ "2" == module_galleria_image_grid ? "selected" : "" }}>2</option>
+                                        <option value="3" {{ "3" == module_galleria_image_grid ? "selected" : "" }}>3</option>
+                                        <option value="4" {{ "4" == module_galleria_image_grid ? "selected" : "" }}>4</option>
+                                        <option value="6" {{ "6" == module_galleria_image_grid ? "selected" : "" }}>6</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-image-animation">{{ entry_image_animation }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_image_animation" id="input-image-animation" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_image_animation ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_image_animation ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-image-width">{{ entry_image_width }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_image_width" value="{{ module_galleria_image_width }}" placeholder="{{ entry_image_width }}" id="input-image-width" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-image-height">{{ entry_image_height }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_image_height" value="{{ module_galleria_image_height }}" placeholder="{{ entry_image_height }}" id="input-image-height" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-album-css">{{ entry_album_css }}</label>
+                                <div class="col-sm-10">
+                                    <textarea name="module_galleria_album_css" placeholder="{{ entry_album_css }}" id="input-album-css" class="form-control" rows="5">{{ module_galleria_album_css }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane form-horizontal" id="tab-widget">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-view">{{ entry_album_view }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_view" id="input-widget-view" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_widget_view ? "selected" : "" }}>{{ text_format_grid }}</option>
+                                        <option value="1" {{ "1" == module_galleria_widget_view ? "selected" : "" }}>{{ text_format_list }}</option>
+                                        <option value="2" {{ "2" == module_galleria_widget_view ? "selected" : "" }}>{{ text_format_carousel }}</option>
+                                        <option value="3" {{ "3" == module_galleria_widget_view ? "selected" : "" }}>{{ text_format_masonry }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-title">{{ entry_album_title }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_title" id="input-widget-title" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_widget_title ? "selected" : "" }}>{{ text_before_images }}</option>
+                                        <option value="1" {{ "1" == module_galleria_widget_title ? "selected" : "" }}>{{ text_after_images }}</option>
+                                        <option value="2" {{ "2" == module_galleria_widget_title ? "selected" : "" }}>{{ text_disabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-description">{{ entry_album_description }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_description" id="input-widget-description" class="form-control">
+                                        <option value="2" {{ "2" == module_galleria_widget_description ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="0" {{ "0" == module_galleria_widget_description ? "selected" : "" }}>{{ text_before_images }}</option>
+                                        <option value="1" {{ "1" == module_galleria_widget_description ? "selected" : "" }}>{{ text_after_images }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-image-title">{{ entry_album_image_title }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_image_title" id="input-widget-image-title" class="form-control">
+                                        <option value="4" {{ "4" == module_galleria_widget_image_title ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="0" {{ "0" == module_galleria_widget_image_title ? "selected" : "" }}>{{ text_after_image }}</option>
+                                        <option value="1" {{ "1" == module_galleria_widget_image_title ? "selected" : "" }}>{{ text_before_image }}</option>
+                                        <option value="2" {{ "2" == module_galleria_widget_image_title ? "selected" : "" }}>{{ text_on_image_hover }}</option>
+                                        <option value="3" {{ "3" == module_galleria_widget_image_title ? "selected" : "" }}>{{ text_on_image }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-image-description">{{ entry_album_image_description }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_image_description" id="input-widget-image-description" class="form-control">
+                                        <option value="4" {{ "4" == module_galleria_widget_image_description ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="0" {{ "0" == module_galleria_widget_image_description ? "selected" : "" }}>{{ text_after_image }}</option>
+                                        <option value="1" {{ "1" == module_galleria_widget_image_description ? "selected" : "" }}>{{ text_before_image }}</option>
+                                        <option value="2" {{ "2" == module_galleria_widget_image_description ? "selected" : "" }}>{{ text_on_image_hover }}</option>
+                                        <option value="3" {{ "3" == module_galleria_widget_image_description ? "selected" : "" }}>{{ text_on_image }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-grid">{{ entry_image_grid }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_grid" id="input-widget-grid" class="form-control">
+                                        <option value="1" {{ "1" == module_galleria_widget_grid ? "selected" : "" }}>1</option>
+                                        <option value="2" {{ "2" == module_galleria_widget_grid ? "selected" : "" }}>2</option>
+                                        <option value="3" {{ "3" == module_galleria_widget_grid ? "selected" : "" }}>3</option>
+                                        <option value="4" {{ "4" == module_galleria_widget_grid ? "selected" : "" }}>4</option>
+                                        <option value="6" {{ "6" == module_galleria_widget_grid ? "selected" : "" }}>6</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-animation">{{ entry_image_animation }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_galleria_widget_animation" id="input-widget-animation" class="form-control">
+                                        <option value="0" {{ "0" == module_galleria_widget_animation ? "selected" : "" }}>{{ text_disabled }}</option>
+                                        <option value="1" {{ "1" == module_galleria_widget_animation ? "selected" : "" }}>{{ text_enabled }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-width">{{ entry_image_width }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_widget_width" value="{{ module_galleria_widget_width }}" placeholder="{{ entry_image_width }}" id="input-widget-width" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-height">{{ entry_image_height }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_galleria_widget_height" value="{{ module_galleria_widget_height }}" placeholder="{{ entry_image_height }}" id="input-widget-height" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-widget-css">{{ entry_album_css }}</label>
+                                <div class="col-sm-10">
+                                    <textarea name="module_galleria_widget_css" placeholder="{{ entry_album_css }}" id="input-widget-css" class="form-control" rows="5">{{ module_galleria_widget_css }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane form-horizontal" id="tab-license">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    {{ text_copyright }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"><!--
+    $('.nav[id*=language]').find('a:first').tab('show');
+//--></script>
+<script type="text/javascript"><!--
+    function visibility(selector = '.form-group'){
+        $.each($(selector), function(index, item){
+            var parent = $(item).data('parent-id');
+            var value = $(item).data('parent-value');
+            if (parent) {
+            if ($(parent).val() == value && $(parent).is(':visible')) {
+                $(item).css('background', '#e9f1fe').show(400);
+            } else {
+                $(item).hide(400);
+            }
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        setInterval('visibility()', 500);
+    });
+//--></script>
+{{ footer }}

@@ -1,0 +1,13 @@
+<div class="tile">{{ git_hidden_tag }}
+  <div class="tile-heading">{{ heading_title }} <span class="pull-right radback">
+    {% if percentage > 0 %}
+    <i class="fa fa-caret-up"></i>
+    {% elseif percentage < 0 %}
+    <i class="fa fa-caret-down"></i>
+    {% endif %}
+    {{ percentage }}%</span></div>
+  <div class="tile-body"><i class="fa fa-credit-card"></i>
+    <span class="pull-right" style="font-size: 20px;"><b>{{ total }}</b></span>
+  </div>
+  <div class="tile-footer"><a href="{{ sale }}">{{ text_view }}</a></div>
+</div>

@@ -1,0 +1,210 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ link_statuscolors }}" data-toggle="tooltip" title="{{ button_statuscolors_help }}" class="btn btn-success"><i class="fa fa-list"></i> {{ button_statuscolors }}</a>
+        <button type="submit" form="form-como_orderstatus" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-como_orderstatus" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-4 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-8">
+              <label class="radio-inline"><input type="radio" name="module_como_orderstatus_status" value="1"{% if module_como_orderstatus_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+              <label class="radio-inline"><input type="radio" name="module_como_orderstatus_status" value="0"{% if not module_como_orderstatus_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+            </div>
+          </div>
+
+          <div class="tab-pane">
+            <ul class="nav nav-tabs" id="formcontent">
+                <li><a href="#tab_general" data-toggle="tab">{{ tab_general }}</a></li>
+                <li><a href="#tab_help" data-toggle="tab">{{ tab_help }}</a></li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div class="tab-pane" id="tab_general">
+                  <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_general_help }}</div>
+
+                  <fieldset>
+                    <legend>{{ tab_orderstatus_colors_help }}</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-colors_status">{{ entry_colors_status }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_colors_status" value="1"{% if module_como_orderstatus_colors_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_colors_status" value="0"{% if not module_como_orderstatus_colors_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-colors_fontsize">{{ entry_colors_fontsize }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="module_como_orderstatus_colors_fontsize" value="{{ module_como_orderstatus_colors_fontsize }}" placeholder="{{ entry_colors_fontsize }}" id="input-colors_fontsize" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-colors_fontweight">{{ entry_colors_fontweight }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="module_como_orderstatus_colors_fontweight" value="{{ module_como_orderstatus_colors_fontweight }}" placeholder="{{ entry_colors_fontweight }}" id="input-colors_fontweight" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-colors_align">{{ entry_colors_align }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_colors_align" value="left"{% if module_como_orderstatus_colors_align == 'left' %} checked="checked"{% endif %} /> {{ text_left }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_colors_align" value="center"{% if module_como_orderstatus_colors_align == 'center' %} checked="checked"{% endif %} /> {{ text_center }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_colors_align" value="right"{% if module_como_orderstatus_colors_align == 'right' %} checked="checked"{% endif %} /> {{ text_right }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-colors_bgcolor">{{ entry_colors_bgcolor }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="module_como_orderstatus_colors_bgcolor" value="{{ module_como_orderstatus_colors_bgcolor }}" placeholder="{{ entry_colors_bgcolor }}" id="input-colors_bgcolor" class="form-control colorpicker" />
+                        </div>
+                    </div>
+
+                  </fieldset>
+
+                  <fieldset>
+                    <legend>{{ tab_orderstatus_quickedit_help }}</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickedit_status">{{ entry_quickedit_status }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_status" value="1"{% if module_como_orderstatus_quickedit_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_status" value="0"{% if not module_como_orderstatus_quickedit_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickedit_comment_status">{{ entry_quickedit_comment_status }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_comment_status" value="1"{% if module_como_orderstatus_quickedit_comment_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_comment_status" value="0"{% if not module_como_orderstatus_quickedit_comment_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickedit_notify_status">{{ entry_quickedit_notify_status }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_notify_status" value="1"{% if module_como_orderstatus_quickedit_notify_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_notify_status" value="0"{% if not module_como_orderstatus_quickedit_notify_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickedit_notify_default">{{ entry_quickedit_notify_default }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_notify_default" value="1"{% if module_como_orderstatus_quickedit_notify_default %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_notify_default" value="0"{% if not module_como_orderstatus_quickedit_notify_default %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickedit_history_status">{{ entry_quickedit_history_status }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_history_status" value="1"{% if module_como_orderstatus_quickedit_history_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickedit_history_status" value="0"{% if not module_como_orderstatus_quickedit_history_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                  </fieldset>
+
+                  <fieldset>
+                    <legend>{{ tab_orderstatus_quickview_help }}</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickview_status">{{ entry_quickview_status }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickview_status" value="1"{% if module_como_orderstatus_quickview_status %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickview_status" value="0"{% if not module_como_orderstatus_quickview_status %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="input-quickview_showoption">{{ entry_quickview_showoption }}</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickview_showoption" value="1"{% if module_como_orderstatus_quickview_showoption %} checked="checked"{% endif %} /> {{ text_enabled }}</label>
+                            <label class="radio-inline"><input type="radio" name="module_como_orderstatus_quickview_showoption" value="0"{% if not module_como_orderstatus_quickview_showoption %} checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                        </div>
+                    </div>
+
+                  </fieldset>
+
+                </div>
+
+                <div class="tab-pane" id="tab_help">
+                  <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ tab_help_help }}</div>
+                </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="pull-right">
+        <button type="submit" form="form-como_orderstatus" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+    </div>
+  </div>
+<script>
+    $('#formcontent a:first').tab('show');
+
+    $(document).ready(function() {
+        $('.colorpicker').each(function(){
+            $(this).spectrum({
+                //flat: true,
+                allowEmpty: true,
+                preferredFormat: "hex", //rgb
+                showAlpha: true,
+                showInitial: true,
+                showInput: true,
+                showPalette: true,
+                showSelectionPalette: true,
+                maxSelectionSize: 20,
+                palette: [
+            ["#000","#444","#666","#999","#ccc","#eee","#f3f3f3","#fff"],
+            ["#f00","#f90","#ff0","#0f0","#0ff","#00f","#90f","#f0f"],
+            ["#f4cccc","#fce5cd","#fff2cc","#d9ead3","#d0e0e3","#cfe2f3","#d9d2e9","#ead1dc"],
+            ["#ea9999","#f9cb9c","#ffe599","#b6d7a8","#a2c4c9","#9fc5e8","#b4a7d6","#d5a6bd"],
+            ["#e06666","#f6b26b","#ffd966","#93c47d","#76a5af","#6fa8dc","#8e7cc3","#c27ba0"],
+            ["#c00","#e69138","#f1c232","#6aa84f","#45818e","#3d85c6","#674ea7","#a64d79"],
+            ["#900","#b45f06","#bf9000","#38761d","#134f5c","#0b5394","#351c75","#741b47"],
+            ["#600","#783f04","#7f6000","#274e13","#0c343d","#073763","#20124d","#4c1130"]
+                ],
+                localStorageKey: "spectrum.comosc",
+                cancelText: 'Откажи',
+                chooseText: 'Да'
+            });
+         });
+    });
+</script>
+{{ footer }}

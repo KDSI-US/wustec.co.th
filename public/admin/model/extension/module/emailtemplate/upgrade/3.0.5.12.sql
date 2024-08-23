@@ -1,0 +1,16 @@
+ALTER TABLE `oc_emailtemplate_logs`
+CHANGE `emailtemplate_key` `emailtemplate_key` varchar(32) DEFAULT NULL,
+CHANGE `emailtemplate_id` `emailtemplate_id` int(11) UNSIGNED DEFAULT NULL,
+CHANGE `emailtemplate_config_id` `emailtemplate_config_id` int(11) UNSIGNED DEFAULT NULL,
+CHANGE `customer_id` `customer_id` int(11) UNSIGNED DEFAULT NULL,
+CHANGE `customer_group_id` `customer_group_id` int(11) UNSIGNED DEFAULT NULL,
+CHANGE `language_id` `language_id` int(11) UNSIGNED DEFAULT NULL,
+CHANGE `store_id` `store_id` int(11) UNSIGNED DEFAULT NULL,
+CHANGE `emailtemplate_log_to` `emailtemplate_log_to` varchar(96) NOT NULL,
+CHANGE `emailtemplate_log_from` `emailtemplate_log_from` varchar(96) NOT NULL,
+CHANGE `emailtemplate_log_reply_to` `emailtemplate_log_reply_to` varchar(96) DEFAULT NULL,
+CHANGE `emailtemplate_log_cc` `emailtemplate_log_cc` varchar(96) DEFAULT NULL,
+CHANGE `emailtemplate_log_sender` `emailtemplate_log_sender` varchar(32) DEFAULT NULL,
+CHANGE `emailtemplate_log_subject` `emailtemplate_log_subject` varchar(120) DEFAULT NULL,
+CHANGE `emailtemplate_log_heading` `emailtemplate_log_heading` varchar(64) DEFAULT NULL,
+CHANGE `emailtemplate_log_enc` `emailtemplate_log_enc` varchar(32) DEFAULT NULL;

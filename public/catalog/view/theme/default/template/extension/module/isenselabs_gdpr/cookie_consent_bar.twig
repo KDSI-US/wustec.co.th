@@ -1,0 +1,144 @@
+{% if (enabled is not empty and enabled == constant('true')) %} 
+	<!--Cookie Consent Bar by iSenseLabs GDPR Extension-->
+	<script>
+		var analytics_cookies_disable = '{{ analytics_cookies_disable }}';
+		var marketing_cookies_disable = '{{ marketing_cookies_disable }}';
+		var disabled_cookie_sets = '{{ disabled_cookie_sets }}';
+		var url_variations = JSON.parse('{{ url_variations }}');
+		var disable_marketing = false;
+		var disable_analytics = false;
+		
+		var set_gdpr_handlers = function(){
+			{% if (track_pp_clicks is not empty and track_pp_clicks == 1) %} 
+			$('body').delegate('a.cc-btn.cc-allow', 'click', function(e) {
+				$.get('{{ action }}');
+				var CookiesDisabled = '';
+				CookiesDisabled = Cookies.get('cookieconsent_preferences_disabled');
+				if (CookiesDisabled) {
+					if (CookiesDisabled.indexOf('analytics') >= 0) disable_analytics = true;
+					if (disabled_cookie_sets.indexOf('marketing') >= 0) disable_marketing = true;
+					if (disable_analytics) {
+						gtag('consent', 'update',{'ad_storage': 'denied','analytics_storage': 'denied'});
+					} else {
+						gtag('consent', 'update',{'ad_storage': 'granted','analytics_storage': 'granted'});
+					}
+					if (disable_marketing) {
+						fbq('consent', 'revoke');
+					} else {
+						fbq('consent', 'grant');
+					}
+				}
+			});
+			{% endif %}
+			$('body').delegate('a.cc-btn.cc-dismiss', 'click', function(e) {
+				{% if (close_action == 'nothing') %} 
+					gtag('consent', 'update', {'ad_storage': 'granted','analytics_storage': 'granted'});
+					fbq('consent', 'grant');
+				{% elseif (close_action == 'analytics_marketing') %} 
+					var cookie_text = 'analytics,marketing';
+					Cookies.set('cookieconsent_preferences_disabled', cookie_text, { expires: 365 });
+					gtag('consent', 'update', {'ad_storage': 'denied','analytics_storage': 'denied'});
+					fbq('consent', 'revoke');
+				{% elseif (close_action == 'analytics') %} 
+					var cookie_text = 'analytics';
+					Cookies.set('cookieconsent_preferences_disabled', cookie_text, { expires: 365 });
+					gtag('consent', 'update', {'ad_storage': 'denied','analytics_storage': 'denied'});
+					fbq('consent', 'grant');
+				{% elseif (close_action == 'marketing') %} 
+					var cookie_text = 'marketing';
+					Cookies.set('cookieconsent_preferences_disabled', cookie_text, { expires: 365 });
+					gtag('consent', 'update',{'ad_storage': 'granted','analytics_storage': 'granted'});
+					fbq('consent', 'revoke');
+				{% endif %} 
+			});
+			
+			$('body').delegate('a.cc-btn-close-settings', 'click', function(e) {
+				$('.cc-settings-view').fadeOut(100);
+			});
+			$('body').delegate('a.cc-btn-save-settings', 'click', function(e) {
+				var cookie_text = '';
+				if ($('input[name="cookie_isl_analytics"]:checked').length == 0) {
+					cookie_text += 'analytics,';
+				}
+				if ($('input[name="cookie_isl_marketing"]:checked').length == 0) {
+					cookie_text += 'marketing,';
+				}
+				Cookies.set('cookieconsent_preferences_disabled', cookie_text, { expires: 365 });
+				$('.cc-settings-view').fadeToggle(100);
+			});
+		};
+		
+		function maintainCookies() {
+			if (disabled_cookie_sets.indexOf('marketing') >= 0) disable_marketing = true;
+			if (disabled_cookie_sets.indexOf('analytics') >= 0) disable_analytics = true;
+			$.each(Cookies.get(), function(i, item) {
+				if (disable_analytics && (analytics_cookies_disable.indexOf(i) >= 0)) {
+					$.each(url_variations, function(ai, asite) {
+						clearCookie(i,asite,'/');
+					});
+				}
+				if (disable_marketing && (marketing_cookies_disable.indexOf(i) >= 0)) {
+					$.each(url_variations, function(mi, msite) {
+						clearCookie(i,msite,'/');
+					});
+				}
+			});
+			return true;
+		}
+		
+		var cc_popup;
+		$(document).ready(function(){
+			cookieconsent.initialise({
+			  {% if (position != 'default' and position != 'top-pushdown') %} 
+			  "position": "{{ position }}",
+			  {% endif %} 
+			  {% if (position == 'top-pushdown') %} 
+			  "position": "top",
+			  "static": true,
+			  {% endif %} 
+			  "palette": {
+				"popup": {
+				  "background": "{{ banner_bg }}",
+				  "text": "{{ banner_text }}"
+				},
+				"button": {
+				  "background": "{{ button_bg }}",
+				  "text": "{{ button_text }}"
+				}
+			  },
+			  "type": "opt-in",
+              "revokeBtn": "<div class='cc-revoke {{ '{{' }}classes{{ '}}' }}'>{{ as_text }}</div>",
+			  {% if (always_show is not empty and always_show == 1 and as_text is not empty) %} 
+		      "alwaysShow": true,
+			  {% else %} 
+			  "alwaysShow": false,  
+			  {% endif %} 
+			  {% if (show_pp_link is empty or pp_text is empty or show_pp_link == 0) %} 
+			  "showLink": false,
+			  {% endif %} 
+			  "content": {
+				"message": "{{ message }}",
+				"allow": "{{ accept_text }}",
+				"dismiss": "{{ dismiss_text }}",
+				"settings": "{{ cookie_settings_text }}",
+				{% if (show_pp_link is not empty and show_pp_link == 1 and pp_text is not empty) %} 
+				"link": "{{ pp_text }}",
+				"href": "{{ pp_link }}"
+				{% endif %} 
+			  }
+			}, function (popup) {
+				cc_popup = popup;
+			}, function (err) {
+				console.log(err);
+			});
+			
+			var html_cookie_settings = '<div id="cookieconsent:settings" class="cc-settings-view"><div class="cc-settings-dialog"><span class="cookie_settings_header">{{ text_cookie_settings_header }}</span><br /><br /><label><input type="checkbox" checked="checked" disabled="disabled" value="functional" /> {{ text_general_cookies }}</label><br />{{ text_general_cookies_helper }}<br /><br /><label><input type="checkbox" {{ analytics_cookies_check }} name="cookie_isl_analytics" value="analytics" /> {{ text_general_analytics }}</label><br />{{ text_general_analytics_helper }}<br /><br /><label><input type="checkbox" {{ marketing_cookies_check }} name="cookie_isl_marketing" value="marketing" /> {{ text_general_marketing }}</label><br />{{ text_general_marketing_helper }}<br /><br /><div class="cc-compliance cc-highlight"><a class="cc-btn cc-btn-close-settings">{{ text_btn_close }}</a>&nbsp;&nbsp;<a class="cc-btn cc-btn-save-settings">{{ text_btn_save }}</a></div></div></div>';
+			$('body').append(html_cookie_settings);
+			set_gdpr_handlers();
+			maintainCookies();
+		});
+
+	</script>
+	
+	{% if (custom_css is not empty) %}<style>{{ custom_css }}</style>{% endif %}
+{% endif %}

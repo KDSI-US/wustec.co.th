@@ -1,0 +1,159 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+<div id="content" class="mp-content">
+	{{ mpblogmenu }}
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumbs in breadcrumb %}
+				<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="mpblog-body">
+		<div class="container-fluid">
+			{% if error_warning %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+			{% endif %}
+			{% if success %}
+			<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+			{% endif %}
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="tile">
+						<a href="{{ mpblogs }}">
+						<div class="tile-heading">{{ text_total_blogs }} </div>
+						<div class="tile-body">
+							<h2> <i class="fa fa-file-text-o"></i> {{ total_blogs }}</h2>
+						</div>
+						<div class="tile-footer">{{ text_view_blogs }}</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="tile">
+						<a href="{{ mpcategory }}">
+						<div class="tile-heading">{{ text_total_categories }} </div>
+						<div class="tile-body">
+							<h2> <i class="fa fa-list"></i> {{ total_categories }}</h2>
+						</div>
+						<div class="tile-footer">{{ text_view_categories }}</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="tile">
+						<a href="{{ mpcomment }}">
+						<div class="tile-heading">{{ text_total_comments }} </div>
+						<div class="tile-body">
+							<h2> <i class="fa fa-comments"></i> {{ total_comments }}</h2>
+						</div>
+						<div class="tile-footer">{{ text_view_comments }}</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="tile">
+						<a href="{{ mprating }}">
+						<div class="tile-heading">{{ text_total_ratings }} </div>
+						<div class="tile-body">
+							<h2> <i class="fa fa-star"></i> {{ total_ratings }}</h2>
+						</div>
+						<div class="tile-footer">{{ text_view_ratings }}</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-12">
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+					    <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> {{ text_latest_blogs }}</h3>
+					  </div>
+					  <div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<td>{{ column_image }}</td>
+									<td>{{ column_blog }}</td>
+									<td>{{ column_published }}</td>
+									<td>{{ column_date_available }}</td>
+									<td class="text-right">{{ column_action }}</td>
+								</tr>
+							</thead>
+							<tbody>
+								{% if latest_blogs %} 
+								{% for latest_blog in latest_blogs %}
+								<tr>
+									<td><img src="{{ latest_blog.thumb }}" alt="{{ latest_blog.name }}" /></td>
+									<td><a href="{{ latest_blog.href }}">{{ latest_blog.name }}</a></td>
+									<td>{{ latest_blog.status }}</td>
+									<td>{{ latest_blog.date_available }}</td>
+									<td class="text-right"><a href="{{ latest_blog.href }}" data-toggle="tooltip" title="{{ text_edit }}" class="btn btn-info" data-original-title="{{ text_edit }}"><i class="fa fa-eye"></i></a></td>
+								</tr>
+								{% endfor %}
+							    {% else %}
+								<tr>
+									<td colspan="6" align="center">{{ text_no_blogs }}</td>
+								</tr>
+								{% endif %}
+							</tbody>
+						</table>
+					  </div>					  		
+					</div>
+					<div class="buttons text-right">
+						<a class="btn btn-primary" href="{{ all_blogs }}">{{ button_viewall }}</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-12">
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+					    <h3 class="panel-title"><i class="fa fa-comments"></i> {{ text_latest_comments }}</h3>
+					  </div>
+					  <div class="table-responsive">
+					    <table class="table">
+					      <thead>
+					        <tr>
+					          <td>{{ column_blog }}</td>
+					          <td>{{ column_commentby }}</td>
+					          <td>{{ column_comment }}</td>
+					          <td>{{ column_date_added }}</td>
+
+					          <td class="text-right">{{ column_action }}</td>
+					        </tr>
+					      </thead>
+					      <tbody>
+					          	{% if latest_comments %} 
+								{% for latest_comment in latest_comments %}
+								<tr>
+									<td>{{ latest_comment.name }}</td>
+									<td><a href="{{ latest_comment.href }}">{{ latest_comment.author }}</a></td>
+									<td>{{ latest_comment.text }}</td>
+									<td>{{ latest_comment.date_added }}</td>
+									<td class="text-right"><a href="{{ latest_comment.href }}" data-toggle="tooltip" title="{{ text_edit }}" class="btn btn-info" data-original-title="{{ text_edit }}"><i class="fa fa-eye"></i></a></td>
+								</tr>
+								{% endfor %}
+							    {% else %}
+								<tr>
+									<td colspan="6">{{ text_no_comments }}</td>
+								</tr>
+								{% endif %}
+					      </tbody>
+					    </table>
+					  </div>
+					</div>
+					<div class="buttons text-right">
+						<a class="btn btn-primary" href="{{ all_comments }}">{{ button_viewall }}</a>
+					</div>
+				</div>
+			</div> 
+		</div>
+	</div>
+</div>
+{{ footer }}

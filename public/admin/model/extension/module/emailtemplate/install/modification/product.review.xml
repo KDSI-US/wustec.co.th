@@ -1,0 +1,61 @@
+<file path="catalog/model/catalog/review.php" email_template="product.review">
+	<operation>
+		<search index="0"><![CDATA[$mail = new Mail(]]></search>
+		<add position="before"><![CDATA[			// Prepare mail: product.review
+			$this->load->model('extension/module/emailtemplate');
+
+			$template_load = array('key' => 'product.review');
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+            if ($template) {
+                $template->addData($data, 'review');
+
+                $template->addData($product_info, 'product');
+
+                if (defined('HTTP_ADMIN')) {
+                    $admin_url = HTTP_ADMIN;
+                } elseif ($this->config->get('config_ssl')) {
+                    $admin_url = $this->config->get('config_ssl') . 'admin/';
+                } else {
+                    $admin_url = $this->config->get('config_url') . 'admin/';
+                }
+
+                $template->data['review_approve'] = $admin_url . 'index.php?route=catalog/review/edit&review_id=' . $review_id;
+
+				if ($this->language->get('button_review_approve') && $this->language->get('button_review_approve') != 'button_review_approve') {
+					$template->data['review_approve_text'] =  $this->language->get('button_review_approve');
+				} else {
+					$template->data['review_approve_text'] =  $template->data['review_approve'];
+				}
+
+                $template->data['customer_link'] = $admin_url . 'index.php?route=customer/customer/edit&filter_name=' . urlencode($data['name']);
+
+                if ($this->language->get('button_customer_link') && $this->language->get('button_customer_link') != 'button_customer_link') {
+                    $template->data['customer_link_text'] =  $this->language->get('button_customer_link');
+                } else {
+                    $template->data['customer_link_text'] =  $template->data['customer_link'];
+                }
+
+				$template->data['product_link'] = $this->url->link('product/product', 'product_id=' . $product_id);
+			    // Prepared mail: product.review
+		]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[// Send mail: product.review
+			    if ($template && $template->check()) {
+			    	$template->build();
+			    	$template->hook($mail);
+
+					if ($this->customer && $this->customer->isLogged()) {
+						$mail->setReplyTo($this->customer->getEmail());
+					}
+
+					$mail->send();
+
+					$this->model_extension_module_emailtemplate->sent();
+                }
+            }]]></add>
+	</operation>
+</file>

@@ -1,0 +1,231 @@
+{{ header }}
+<div id="container" class="container j-container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{% if custom_themename != 'journal2' %}<div class="row">{% endif %}{{ column_left }}{% if custom_themename == 'journal2' %}{{ column_right }}{% endif %}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1>{{ heading_title }}</h1>
+      <div class="membership_content_cols" id="membership_content">
+        {% if sub_title %}
+        <div class="memberheading">
+          <span>{{ sub_title }}</span>
+        </div>
+        {% endif %}
+        {{ top_description }}
+        <div class="prcing_table">
+          <div class="table_titles clearfix hide">
+            <div class="table_cols_one title_text">{{ column_plan }}</div>
+            <div class="table_cols_two title_text2 hidden-xs">{{ column_feature }}</div>
+          </div>
+          <div class="row">
+          {% for mpplan in mpplans %}
+            <div class="col-sm-4 xl-25 sm-50 md-25 xs-100">
+              <div class="pricing_content green clearfix" id="pricingcontent-{{ mpplan.mpplan_id }}">
+                <div class="table_cols_one">
+                  <div class="plan_name plan_name{{ mpplan.mpplan_id }}">{{ mpplan.name }}</div>
+                  <h3 class="xs-price">{{ mpplan.price }}</h3>
+                  <div class="plan_time plan_time{{ mpplan.mpplan_id }}">{{ text_duration }} {{ mpplan.duration }}</div>
+                </div>  
+                <div class="table_cols_two plan_detail">
+                  {% if loop.index == 1 %}
+                  <ul class="list-unstyled"  {{loop.index}}>
+                    {% if mpplan.informations %}
+                    {% for information in mpplan.informations %}
+                      <li class="accordion"><label>{{ information }}</label></li>
+                        <div class="mpplan-panel-green">
+                        {% if attribute(mpplan.feature_comments, loop.index0)|raw|nl2br != '' %}
+                          <p>{{ attribute(mpplan.feature_comments, loop.index0)|raw|nl2br }}</p>
+                        {% endif %}  
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+                  {% if loop.index == 2 %}
+                  <ul class="list-unstyled"  {{loop.index}}>
+                    {% if mpplan.informations %}
+                    {% for information in mpplan.informations %}
+                      <li class="accordion"><label>{{ information }}</label></li>
+                        <div class="mpplan-panel-blue">
+                        {% if attribute(mpplan.feature_comments, loop.index0)|raw|nl2br != '' %}
+                          <p>{{ attribute(mpplan.feature_comments, loop.index0)|raw|nl2br }}</p>
+                        {% endif %}  
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+                  {% if loop.index == 3 %}
+                  <ul class="list-unstyled"  {{loop.index}}>
+                    {% if mpplan.informations %}
+                    {% for information in mpplan.informations %}
+                      <li class="accordion"><label>{{ information }}</label></li>
+                        <div class="mpplan-panel-pupple">
+                        {% if attribute(mpplan.feature_comments, loop.index0)|raw|nl2br != '' %}
+                          <p>{{ attribute(mpplan.feature_comments, loop.index0)|raw|nl2br }}</p>
+                        {% endif %}  
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                  </ul>
+                  {% endif %}                                    
+                  <div class="plan_price">
+                    <!-- <a href="{{ mpplan.href }}" class="plan_view">{{ button_details }}</a> -->
+                    <button class="plan_buy plan_buy{{ mpplan.mpplan_id }} btn" rel="{{ mpplan.mpplan_id }}" onclick="MPMEMBERSHIP.add('{{ mpplan.product_id }}','{{ mpplan.mpplan_id }}')">{{ button_buy }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>          
+            <style type="text/css">
+              .membership_content .pricing_content .plan_name{{ mpplan.mpplan_id }} {
+                {% set style_one = '' %}
+                {% if mpplan.first_textcolor %}
+                {% set style_one = 'color: ' ~ mpplan.first_textcolor ~ ';' %}
+                {% endif %}
+                {{ style_one }}
+              }
+
+              .membership_content .pricing_content .plan_time{{ mpplan.mpplan_id }} {
+                {% set style_two = '' %}
+                {% if mpplan.second_textcolor %}
+                  {% set style_two = 'color: ' ~ mpplan.second_textcolor ~ ';' %}
+                {% endif %} 
+                {{ style_two }}
+              }
+
+              #pricingcontent-{{ mpplan.mpplan_id }} .table_cols_one{
+                {% set style_one = '' %}
+                {% if mpplan.first_bgcolor %}
+                  {% set style_one = mpplan.first_bgcolor %}
+                {% endif %}
+                {% set style_two = '' %}
+                {% if mpplan.second_bgcolor %}
+                  {% set style_two =  mpplan.second_bgcolor %}
+                {% endif %}
+                background: {{ style_one }};
+              }
+
+              #pricingcontent-{{ mpplan.mpplan_id }} .table_cols_two{
+                {% set style_one = '' %}
+                {% if mpplan.first_bgcolor %}
+                  {% set style_one = mpplan.first_bgcolor %}
+                {% endif %}
+                {% set style_two = '' %}
+                {% if mpplan.second_bgcolor %}
+                  {% set style_two =  mpplan.second_bgcolor %}
+                {% endif %}
+                background: {{ style_two }};
+              }
+
+              {% if mpplan.second_textcolor %}
+              #pricingcontent-{{ mpplan.mpplan_id }} .table_cols_two label {
+                color: {{ mpplan.second_textcolor }};
+              }
+              {% endif %}
+
+              {% if mpplan.first_bgcolor %}
+              #pricingcontent-{{ mpplan.mpplan_id }} .table_cols_one::after{
+                color: {{ mpplan.first_bgcolor }};
+              }
+              {% endif %}
+
+              {% if mpplan.second_textcolor %}
+              #pricingcontent-{{ mpplan.mpplan_id }} .plan_view{
+                color: {{ mpplan.second_textcolor }};
+                border-color: {{ mpplan.second_textcolor }};
+              }
+              {% endif %}
+
+              {% if mpplan.first_bgcolor or mpplan.first_textcolor %}
+              #pricingcontent-{{ mpplan.mpplan_id }} .plan_buy{
+                {% if mpplan.first_bgcolor %}
+                background: {{ mpplan.first_bgcolor }};
+                border-color: {{ mpplan.first_bgcolor }};
+                {% endif %}
+
+                {% if mpplan.first_textcolor %}
+                color: {{ mpplan.first_textcolor }};
+                {% endif %}
+              }
+              {% endif %}
+            </style>
+          {% endfor %}
+
+<style>
+.accordion {
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  /*
+  background-color: #ccc; 
+  */
+  opacity: 0.7;
+}
+
+.mpplan-panel-green {
+  padding: 0 18px;
+  display: none;
+  background-color: #b8f5b0;
+  overflow: hidden;
+}
+
+.mpplan-panel-blue {
+  padding: 0 18px;
+  display: none;
+  background-color: #aef5ef;
+  overflow: hidden;
+}
+
+.mpplan-panel-pupple {
+  padding: 0 18px;
+  display: none;
+  background-color: #e8ccff;
+  overflow: hidden;
+}
+
+</style>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+
+          </div>
+        </div>
+      </div>
+      {{ bottom_description }}
+      {{ content_bottom }}</div>
+    {% if custom_themename != 'journal2' %}{{ column_right }}{% endif %}
+  {% if custom_themename != 'journal2' %}</div>{% endif %}
+</div>
+</div>
+{{ footer }}

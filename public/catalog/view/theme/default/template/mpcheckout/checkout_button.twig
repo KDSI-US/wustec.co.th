@@ -1,0 +1,37 @@
+    {% if show_comment %}
+    <div class="form-group">
+      <textarea name="comment" class="form-control" placeholder="{{ comment_placeholder }}" rows="6">{{ comment }}</textarea>
+    </div>
+    {% endif %}
+
+    {% if text_agree %}
+    <div class="checkbox">
+      <label>
+      {% if agree %}
+      <input type="checkbox" name="agree" value="1" checked="checked" /> 
+      {% else %}
+      <input type="checkbox" name="agree" value="1" /> 
+      {% endif %}
+      {{ text_agree }}
+      </label>
+    </div>
+    {% endif %}
+
+    {% if payment %}
+    {{ payment }}
+    {% else %}
+    <div class="buttons">
+      
+      {% if continue_shopping_button %}
+      <a href="{{ continue_shopping }}" class="btn btn-primary pull-left"><i class="fa fa-share fa-flip-horizontal" aria-hidden="true"></i> &nbsp;{{ button_continue_shopping }}</a> 
+      {% endif %}
+
+      <button type="button" id="button-checkout" class="btn btn-primary pull-right"><i class="fa fa-credit-card" aria-hidden="true"></i> {{ button_checkout }}</button>
+    </div>
+    {% endif %}
+{% if autotrigger_order %}
+<script type="text/javascript"><!--
+$('#button-confirm').trigger('click');
+$('.checkout-button-position input[type="submit"]').trigger('click');
+//--></script>
+{% endif %}

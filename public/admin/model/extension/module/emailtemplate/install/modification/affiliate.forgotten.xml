@@ -1,0 +1,31 @@
+<file path="catalog/controller/affiliate/forgotten.php" email_template="affiliate.forgotten">
+	<operation>
+		<search index="0"><![CDATA[$mail = new Mail(]]></search>
+		<add position="before"><![CDATA[			$this->load->model('extension/module/emailtemplate');
+
+			$template = $this->model_extension_module_emailtemplate->load('affiliate.forgotten');
+
+			$affiliate_info = $this->model_affiliate_affiliate->getAffiliateByEmail($this->request->post['email']);
+
+			$template->data['affiliate'] = $affiliate_info;
+
+			$template->data['password'] = $password;
+
+			$template->data['account_login'] = $this->url->link('affiliate/login', '', true);
+
+			if (!empty($template->data['button_account_login'])) {
+				$template->data['account_login_text'] = $template->data['button_account_login'];
+			} else {
+				$template->data['account_login_text'] = $template->data['account_login'];
+			}
+ 		]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[			$template->hook($mail);
+
+			$mail->send();
+
+			$this->model_extension_module_emailtemplate->sent();]]></add>
+	</operation>
+</file>

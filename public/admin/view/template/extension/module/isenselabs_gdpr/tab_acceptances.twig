@@ -1,0 +1,124 @@
+<div class="acceptances-filter-data well">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+           <label for="acceptance_id">{{ column_acceptance_id }}</label>
+            <input name="acceptance_id" id="acceptance_id" class="form-control acceptances_input" value="{{ filter_data['acceptance_id'] }}" />
+        </div>
+        <div class="form-group">
+            <label for="email">{{ column_email }}</label>
+            <input name="email" id="email" class="form-control acceptances_input" value="{{ filter_data['email'] }}" />
+        </div>
+        <div class="form-group">
+            <label for="name">{{ column_name }}</label>
+            <input name="name" id="name" class="form-control acceptances_input" value="{{ filter_data['name'] }}" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <label for="date_start">{{ text_date_start }}</label>
+            <input name="date_start" id="date_start" class="form-control date" data-date-format="YYYY-MM-DD" value="{{ filter_data['date_start'] }}" />
+        </div>
+        <div class="form-group">
+            <label for="date_end">{{ text_date_end }}</label>
+            <input name="date_end" id="date_end" class="form-control date" data-date-format="YYYY-MM-DD" value="{{ filter_data['date_end'] }}" />
+        </div>
+        <div class="form-group text-right">
+             <br />
+             <button class="btn btn-acceptances-export btn-default" onClick="exportAcceptances(this, event);">{{ text_btn_export }}</button>
+             <button class="btn btn-acceptances-filter btn-primary" onClick="filterAcceptances(this, event);">{{ text_filter }}</button>
+        </div>
+    </div>
+	<div class="col-xs-12 col-sm-12 col-md-6">
+		<div class="form-group text-right">
+             <button id="deleteAcceptances" class="btn btn-acceptances-delete btn-danger">{{ text_delete_guest }}</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>            
+</div>
+<table class="table table-striped table-acceptances-results table-hover"> 
+    <thead>
+        <tr>
+            <th>{{ column_acceptance_id }}</th> 
+            <th>{{ column_email }}</th> 
+            <th>{{ column_name }}</th>
+            <th>{{ column_content }}</th>
+            <th>{{ column_user_agent }}</th>
+            <th>{{ column_accept_language }}</th>
+            <th>{{ column_client_ip }}</th>
+            <th class="text-right">{{ column_date }}</th> 
+            <th class="text-right">{{ column_actions }}</th> 
+        </tr> 
+    </thead> 
+    <tbody>
+        {% if (sources|length > 0) %} 
+            {% for index,result in sources %} 
+            <tr> 
+                <td>{{ result['acceptance_id'] }}</td> 
+                <td style="word-break: break-word; width: 20%">{{ result['email'] }}</td> 
+                <td>{{ result['name'] }}</td> 
+                <td>{{ result['content'] }}</td> 
+                <td style="word-break: break-word; width: 20%">{{ result['user_agent'] }}</td> 
+                <td style="word-break: break-word; width: 20%">{{ result['accept_language'] }}</td> 
+                <td>{{ result['client_ip'] }}</td> 
+                <td class="text-right">{{ result['date_added'] }}</td> 
+				<td class="text-right"><a class="btn btn-small btn-default" href="{{ result['link'] }}" target="_blank" data-toggle="tooltip" title="" data-original-title="{{ text_view_current }}"><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn btn-small btn-primary"  href="{{ result['download'] }}" target="_blank" data-toggle="tooltip" title="" data-original-title="{{ text_download }}"><i class="fa fa-eye"></i></a></td> 
+            </tr> 
+            {% endfor %} 
+        {% else %} 
+            <tr>
+                <td colspan="9" class="text-center">{{ text_no_results }}</td>
+            </tr>
+        {% endif %} 
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="9">
+    	        <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script type="text/javascript">
+$('.date').datetimepicker({
+	pickTime: false
+});
+    
+// input auto-send query
+$('.acceptances_input').on('keydown', function(e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('.btn-acceptances-filter').trigger('click');
+    }
+});
+
+$('#deleteAcceptances').on('click', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: "index.php?route={{ modulePath }}/deleteGuestAcceptances&store_id={{ storeId }}&{{ token_string }}={{ token }}",
+      type: 'POST',
+      dataType: 'json',
+      cache: false,
+      beforeSend: function() {
+        
+          if (!confirm("{{ text_guest_delete_confirm }}")) {
+            return false;
+          }
+          $('.acceptances-view').html('<p><h2 class="text-center">{{ text_loading_data }}</h2></p><br /><div class="loader"></div>');
+      },
+      success: function(data) {
+        if (!data.error) {
+			alert(data.success_message);
+          location.reload();
+        } else {
+			alert(data.error_message);
+            location.reload();
+		}
+      }
+    });
+});
+</script>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <base href="{{ base }}" />
+    <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ como_shipping_labels_css }}" />
+    <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+</head>
+
+<body style="margin-left: {{ margin_left }}{{ labelbox_unit }}; margin-top: {{ margin_top }}{{ labelbox_unit }};">
+{% if orders %}
+    {% for key, order in orders %}
+    <div class="label-sticky" style="width: {{ labelbox_width }}{{ labelbox_unit }}; height: {{ labelbox_height }}{{ labelbox_unit }}; margin-right: {{ distance_x }}{{ labelbox_unit }}; margin-bottom: {{ distance_y }}{{ labelbox_unit }};{% if labelbox_rotate %} transform: rotate({{ labelbox_rotate }}deg) translate({{ (labelbox_width-labelbox_height)/2 }}{{ labelbox_unit }},{{ (labelbox_width-labelbox_height)/2 }}{{ labelbox_unit }});{% endif %}">
+    <span class="label-sticky-sender" style="width: {{ labelbox_height-2 }}{{ labelbox_unit }}; height: {{ labelbox_height-2 }}{{ labelbox_unit }}; top: 0{{ labelbox_unit }}; left: 2{{ labelbox_unit }}; transform: rotate(-90deg);">
+        <span style="display: block; border-bottom: 1px solid gray; margin-right: 2{{ labelbox_unit }};">{{ order.order_barcode }}</span>
+        {{ order.sender_address }}
+    </span>
+    <span class="label-sticky-shipping" style="top: 5mm; left: 27mm;">
+        {{ order.shipping_address }}
+    </span>
+    </div>
+    {% if labelsperpage > 0 and (key + 1) < orders|length and (key + 1) is divisible by(labelsperpage) %}<p style="overflow: hidden; float: none; display: block; page-break-before: always; page-break-after: always;"></p>{% endif %}
+    {% endfor %}
+{% else %}
+    <div class="message">
+        <strong>{{ text_selectorders }}</strong>
+    </div>
+{% endif %}
+
+{{ include_print }}
+
+</body>
+</html>

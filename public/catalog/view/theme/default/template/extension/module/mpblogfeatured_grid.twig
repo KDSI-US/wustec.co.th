@@ -1,0 +1,133 @@
+<div class="mp-grid-layout mp-blog {{ themeclass }}">
+  <h1>{{ heading_title }}</h1>
+  <div class="row">
+    {% for mpblogpost in mpblogposts %}
+    <div class="mpblog-layout col-lg-4 col-md-4 col-sm-6 col-xs-12 xs-100 sm-50 md-50 lg-33 xl-33">
+      <div class="inner-layout">
+        <div class="image">
+          {% if mpblogpost.showImage %}
+          <div class="video-container"><a href="{{ mpblogpost.href }}"><img src="{{ mpblogpost.thumb }}" alt="{{ mpblogpost.name }}" title="{{ mpblogpost.name }}" class="img-responsive" /></a></div>
+          {% else %}
+          <div class="video-container"><iframe src="{{ mpblogpost.iframeVideo }}" frameborder="0" allowfullscreen></iframe></div>
+          {% endif %}
+          {% if show_viewed %}
+            <div class="view" title="{{ mpblogpost.viewed }}">
+              <i class="fa fa-eye"></i>
+              {{ mpblogpost.viewed }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="caption">
+          <h4><a href="{{ mpblogpost.href }}">{{ mpblogpost.name }}</a></h4>
+            <ul class="dar clearfix list-inline mpblogpost-id-{{ mpblogpost.mpblogpost_id }}">
+                    <li class="col-xs-6 col-sm-6 xl-50">
+                    {% if show_date %}
+                      <i class="fa fa-calendar"></i>
+                      {% if mpblogpost.date_availableurl %}
+                      <a href="{{ mpblogpost.date_availableurl }}">{{ mpblogpost.date_available }}</a>
+                      {% else %}
+                      {{ mpblogpost.date_available }}
+                      {% endif %}
+                    {% endif %}
+                    </li>
+                    {% if show_author %}
+                    <li title="{{ mpblogpost.author }}" class="author col-xs-6 col-sm-6 xl-50">
+                      <i class="fa fa-user"></i>                    
+                      {% if mpblogpost.authorurl %}
+                      <a href="{{ mpblogpost.authorurl }}">
+                        {{ mpblogpost.author }}
+                      </a>
+                      {% else %}
+                      {{ mpblogpost.author }}
+                      {% endif %}
+                    </li>
+                    {% endif %}
+                    {% if show_rating %}
+                    <li class="col-sm-12 col-xs-12 xl-100" title="{{ mpblogpost.rating }}">
+                      <div class="rating small-rating text-center">
+                        <div class="rating-icons-container text-center">
+                        <div class="rating-icons-wrap">
+                         {% for i in 1..5 %}
+                          {% if mpblogpost.rating < i %}
+                          {% set rdecimal = 'EMPTY_STAR' %}
+                          {% if mpblogpost.rating|round(1, 'ceil') == i %}
+                            {%  set rates = mpblogpost.rating|split('.') %}
+                            {% if rates.1 %}
+                              {% if "0" ~ rates.1 < 0.6000 %}
+                                {% set rdecimal = 'HALF_STAR' %}
+                              {% endif %}
+                              {% if "0" ~ rates.1 > 0.6000 %}
+                                {% set rdecimal = 'FULL_STAR' %}
+                              {% endif %}
+                            {% endif %}
+                          {% endif %}
+                        {% if rdecimal=='HALF_STAR' %}
+                          <div class="rating-icons half">
+                            <span class="red"></span>  
+                            <span class="grey"></span>  
+                            <i class="fa fa-star"></i>
+                          </div>
+                        {% endif %} {% if rdecimal=='FULL_STAR' %}
+                          <div class="rating-icons full">
+                            <span class="red"></span>  
+                            <span class="grey"></span>  
+                            <i class="fa fa-star"></i>
+                          </div>
+                        {% endif %} {% if rdecimal=='EMPTY_STAR' %}
+                          <div class="rating-icons">
+                            <span class="red"></span>  
+                            <span class="grey"></span>  
+                            <i class="fa fa-star"></i>
+                          </div>
+                        {% endif %} {% else %}
+                        <div class="rating-icons full">
+                          <span class="red"></span>  
+                          <span class="grey"></span>  
+                          <i class="fa fa-star"></i>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+                        </div>
+                      </div>
+                    </li>
+                    {% endif %}
+                  </ul>
+            {% if show_sdescription %}<p class="desc">{{ mpblogpost.sdescription }} {% if mpblogpost.sdescription and show_readmore %} <a href="{{ mpblogpost.href }}"> {{ text_readmore }} </a> {% endif %}</p> {% endif %}
+            <ul class="list-inline dar cmt-wsh clearfix">
+              {% if show_wishlist %}
+              <li title="{{ mpblogpost.wishlist }}">
+                <span class="mpbloglike {% if mpblogpost.isLikeByMe %} liked {% endif %}" data-id="{{ mpblogpost.mpblogpost_id }}">
+                <i class="fa fa-heart {% if not mpblogpost.isLikeByMe %} fa-heart-o {% endif %}"></i>
+                <span>{{ mpblogpost.wishlist }}</span>
+                </span>
+              </li>
+            {% endif %}
+            {% if show_comments %}
+              <li class="pull-right" title="{{ mpblogpost.comments }}">
+                <i class="fa {% if mpblogpost.comments %} fa-comments {% else %} fa-comments-o {% endif %}"></i>
+                {{ mpblogpost.comments ~ ' ' ~ text_comment }}
+              </li>
+            {% endif %}
+            </ul>
+            {% if show_tag and mpblogpost.tag %}
+              <ul class="list-inline blog-tags">
+                <li>
+                  <i class="fa fa-tags"></i>
+                  {% for rtag in mpblogpost.tag %}
+                  {% if rtag.href %}
+                  <a href="{{ rtag.href }}">{{ rtag.tag }}</a>
+                  {% else %}
+                  {{ rtag.tag }}
+                  {% endif %}
+                  ,
+                  {% endfor %}
+                </li>
+              </ul>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>

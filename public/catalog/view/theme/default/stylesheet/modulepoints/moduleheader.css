@@ -1,0 +1,20 @@
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	color: #666;
+	font-size: 12px;
+	line-height: 20px;
+	width: 100%;
+}
+header{
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+a:hover{
+	text-decoration: none;
+}
+#logo{
+	margin: 15px 0 0 0;
+}

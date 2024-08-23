@@ -1,0 +1,285 @@
+<div class="panel panel-default">{{ git_hidden_tag }}
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> {{ heading_title }}</h3>
+  </div>
+  <div class="table-responsive">
+
+{% if orderstatus_status %}
+<script>
+  {% if orderstatus_quickedit_status %}
+
+    $(document).ready(function() {
+        $('[id^=ordstat-]').each(function(){
+            if (!$(this).parent().attr('onclick')) {
+                $(this).parent().click($(this).attr('id'), comoOrderstatusQuickedit).attr('title', '{{ text_clicktoedit }}');
+            }
+         });
+    });
+
+    function comoBtOnClickCell(field, value, row, $element) { // compatibility with bootstrap-table plugin
+        var id = $element.find('span').attr('id');
+        if (id && id.startsWith('ordstat-')) {
+            comoOrderstatusQuickedit(id);
+        }
+    };
+
+    function comoOrderstatusQuickedit(e) {
+        $('.tooltip').remove();
+        if (typeof e === 'number') {
+            var span_id = 'ordstat-' + e;
+        } else if (typeof e === 'string') {
+            var span_id = e;
+        } else {
+            var span_id = e.data;
+        }
+        var order_id = span_id.split('-')[1];
+        if (!order_id || $('#' + span_id).data('running')) {
+            return;
+        }
+        $('#' + span_id).data('running', '1');
+        var order_id_selected = [];
+        var selected = $('input[name^="selected"]:checked');
+        if (selected.length) {
+            for (var i = 0; i < selected.length; i++) {
+                order_id_selected.push(selected[i].value);
+            }
+        }
+        $.ajax({
+            url: 'index.php?route=extension/module/como_orderstatus/quickeditHtml&user_token={{ user_token }}',
+            type: 'post',
+            dataType: 'json',
+            data: 'order_id=' + order_id + '&order_id_selected=' + encodeURIComponent(JSON.stringify(order_id_selected)),
+            beforeSend: function () {
+                $('#'+span_id).parent().prepend('<span id="ajaxbusy-'+order_id+'"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+            },
+            complete: function () {
+                $('#ajaxbusy-'+order_id).remove();
+                $('#' + span_id).data('running', '');
+            },
+            success: function(json) {
+                $('#ajaxbusy-'+order_id).remove();
+                $('#' + span_id).data('running', '');
+                if (json['error']) {
+                    alert(json['error']);
+                }
+                if (json['success']) {
+                    if (json['html']) {
+                        $('#comoModal .modal-title').html(json['title']);
+                        $('#comoModal .modal-body').html(json['html']);
+                    }
+                    $('#comoModal .como_save').show();
+                    $('#comoModal .como_cancel').show();
+                    $('#comoModal .como_close').hide();
+                    $('#comoModal .modal-dialog').attr('style', 'max-width: 600px;');
+                    $('#comoModal').modal('show');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+  {% endif %}
+  {% if orderstatus_quickview_status %}
+    function comoOrderstatusQuickview(order_id) {
+        $('.tooltip').remove();
+        buttonEl = $('#qv-' + order_id);
+        $.ajax({
+            url: 'index.php?route=extension/module/como_orderstatus/quickviewOrder&user_token={{ user_token }}',
+            type: 'post',
+            dataType: 'json',
+            data: 'order_id=' + order_id,
+            beforeSend: function () {
+                window.como_temp = buttonEl.html();
+                buttonEl.html('<span id="ajaxbusy-'+order_id+'"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+            },
+            complete: function () {
+                $('#ajaxbusy-'+order_id).remove();
+                buttonEl.html(window.como_temp);
+            },
+            success: function(json) {
+                if (json['error']) {
+                    alert(json['error']);
+                }
+                if (json['success']) {
+                    if (json['html']) {
+                        $('#comoModal .modal-title').html(json['title']);
+                        $('#comoModal .modal-body').html(json['html']);
+                    }
+                    $('#comoModal .como_save').hide();
+                    $('#comoModal .como_cancel').hide();
+                    $('#comoModal .como_close').show();
+                    $('#comoModal .modal-dialog').removeAttr('style');
+                    $('#comoModal').modal('show'); 
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    
+        return false;
+    }
+  {% endif %}
+</script>
+{% endif %}
+          
+    <table class="table">
+      <thead>
+        <tr>
+          <td class="text-right">{{ column_order_id }}</td>
+          <td>{{ column_customer }}</td>
+
+          <td>{{ column_city }}</td>
+          <td>{{ column_payment }}</td>
+			
+          <td>{{ column_status }}</td>
+          <td>{{ column_date_added }}</td>
+          <td class="text-right">{{ column_total }}</td>
+          <td class="text-right">{{ column_action }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% if orders %}
+        {% for order in orders %}
+        <tr>
+          <td class="text-right">{{ order.order_id }}</td>
+          <td>{{ order.customer }}</td>
+
+			<td>{{ order.shipping_city }}</td>
+			<td>{{ order.payment_method }}</td>
+			
+          
+		{% if order.status == 'Shipped' %} <td><span class = "label label-info">{{ order.status }}</span></td>
+		{% elseif order.status == 'Pending' %} <td><span class = "label label-warning">{{ order.status }}</span></td>
+		{% elseif order.status == 'Complete' %} <td><span class = "label label-success">{{ order.status }}</span></td>
+		{% elseif order.status == 'Chargeback' %} <td><span class = "label label-success">{{ order.status }}</span></td>
+		{% elseif order.status == 'Processing' %} <td><span class="label label-default">{{ order.status }}</span></td>
+		{% elseif order.status == 'Processed' %} <td><span class = "label label-warning">{{ order.status }}</span></td>
+		{% elseif order.status == 'Refunded' %} <td><span class = "label label-warning">{{ order.status }}</span></td>
+		{% elseif order.status == 'Canceled' %} <td><span class = "label label-danger">{{ order.status }}</span></td>
+		{% elseif order.status == 'Chargeback' %} <td><span class = "label label-warning">{{ order.status }}</span></td>
+		{% elseif order.status == 'Expired' %} <td><span class = "label label-primary">{{ order.status }}</span></td>
+		{% elseif order.status == 'Reversed' %} <td><span class = "label label-danger">{{ order.status }}</span></td>
+		{% elseif order.status == 'Voided' %} <td><span class = "label label-danger">{{ order.status }}</span></td>
+		{% else %} <td>{{ order.status }}</td>
+		{% endif %}
+			
+          <td>{{ order.date_added }} {{ order.time_added }}</td>
+          <td class="text-right">{{ order.total }}</td>
+          <td class="text-right">
+{% if orderstatus_status and orderstatus_quickview_status %}
+    <button id="qv-{{ order.order_id }}" onclick="return comoOrderstatusQuickview({{ order.order_id }});" data-toggle="tooltip" title="{{ button_quickview }}" class="btn btn-success"><i class="fa fa-eye"></i></button>
+{% endif %}<a href="{{ order.view }}"
+           data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td class="text-center" colspan="8">{{ text_no_results }}</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+{% if orderstatus_status %}
+<div id="comoModal" class="modal fade in" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default como_close" data-dismiss="modal"><i class="fa fa-times"></i> {{ button_close }}</button>
+        <button type="button" class="btn btn-default como_cancel" data-dismiss="modal"><i class="fa fa-times"></i> {{ button_cancel }}</button>
+        <button type="button" class="btn btn-primary como_save" onclick="comoModalSave()"><i class='fa fa-save'></i> {{ button_save }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 80%;
+    }
+}
+@media (min-width: 1024px) {
+    .modal-dialog {
+        width: 800px;
+    }
+}
+</style>
+<script>
+    $(document).on('shown.bs.modal', function(e) {
+        $('select:visible:enabled:first, input:visible:enabled:first, button:visible:enabled:first', e.target).focus();
+    });
+
+  {% if orderstatus_quickedit_status %}
+    function comoModalSave() {
+        order_id = $('#comoModal input[name=order_id]').val();
+        if (typeof window.order_id_save === 'undefined') {
+            window.order_id_save = [order_id];
+        }
+        order_status_id = $('#comoModal select[name=order_status_id]').val();
+        notify = $('#comoModal input[name=notify]').prop('checked') ? 1 : 0;
+        copytoadmin = $('#comoModal input[name=copytoadmin]').prop('checked') ? 1 : 0;
+        comment = $('#comoModal textarea[name=comment]').val();
+        $.ajax({
+            url: 'index.php?route=extension/module/como_orderstatus/quickeditSave&user_token={{ user_token }}',
+            type: 'post',
+            dataType: 'json',
+            data: 'api_token={{ api_token }}&order_id=' + order_id + '&order_status_id=' + order_status_id + '&notify=' + notify + '&copytoadmin=' + copytoadmin + '&comment=' + encodeURIComponent(comment) + '&order_id_save=' + encodeURIComponent(JSON.stringify(order_id_save)),
+            beforeSend: function () {
+                $('#comoModal .como_save').parent().prepend('<span id="ajaxbusy-'+order_id+'"><i class="fa fa-cog fa-lg fa-spin"></i></span>');
+            },
+            complete: function () {
+                $('#ajaxbusy-'+order_id).remove();
+            },
+            success: function(json) {
+                window.order_id_save = '';
+                $('#ajaxbusy-'+order_id).remove();
+                if (json['error']) {
+                    alert(json['error']);
+                }
+                if (json['success']) {
+                    $('#comoModal').modal('hide');
+                    if (json['html_status']) {
+                        var html_status = json['html_status'];
+                        if (typeof html_status === 'object') {
+                            for (const order_id in html_status) {
+                                comoUpdateCellStatus(order_id, html_status[order_id]);
+                            }
+                        } else {
+                            comoUpdateCellStatus(order_id, html_status);
+                        }
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+    function comoUpdateCellStatus(order_id, html) {
+        var tdCell = $('#ordstat-' + order_id).parent();
+        tdCell.html(html);
+        
+        // compatibility with bootstrap-table plugin
+        var tbl = tdCell.closest('table');
+        if (typeof tbl.bootstrapTable === 'function') {
+            var rowIndex = tdCell.parent().data('index'); // row index
+            var fieldName
+            fieldName = tbl.children('thead').find('th:eq(' + tdCell.index() + ')').data('field');
+            if (typeof rowIndex !== 'undefined' && typeof fieldName !== 'undefined') {
+                tbl.bootstrapTable('updateCell', { index: rowIndex, field: fieldName, value: html });
+            }
+        }
+    }
+  {% endif %}
+</script>
+{% endif %}
+          
+  </div>
+</div>

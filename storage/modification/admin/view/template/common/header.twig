@@ -1,0 +1,208 @@
+<!DOCTYPE html>{{ git_hidden_tag }}
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+
+<script src="view/javascript/jquery/jquery-ui/pagejquery-ui.js"></script>
+			
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<link href="view/stylesheet/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<script src="view/javascript/jquery/datetimepicker/moment/moment.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+<link href="view/stylesheet/admin_dashboard_new_tiles_design.css" rel="stylesheet">
+{% for style in styles %}
+<link type="text/css" href="{{ style.href }}" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+
+	<link type="text/css" href="view/stylesheet/admin_sidebar_icon.css" rel="stylesheet" media="screen" />
+	<script src="view/javascript/admin_sidebar_icon.js"></script>
+			
+<script src="view/javascript/common.js" type="text/javascript"></script>
+{% for script in scripts %}
+<script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
+
+<script src="view/javascript/speakingurl.js" type="text/javascript"></script>
+<script src="view/javascript/jquery.stringtoslug.js" type="text/javascript"></script>
+			
+</head>
+<body>
+<div id="container">
+<header id="header" class="navbar navbar-static-top">
+  <div class="container-fluid">
+
+			{% if logged %}
+			<a id="button-menu-fix" class=""><span class="fa fa-bars"></span></a>
+			{% endif %}
+			
+    <div id="header-logo" class="navbar-header"><a href="{{ home }}" class="navbar-brand"><img src="/image/catalog/logo-admin-{{ HTTP_HOST }}.png" alt="{{ heading_title }}" title="{{ heading_title }}" /></a></div>
+
+<style>
+#header .navbar-clock {
+  width: 210px;
+}
+</style>
+		<div id="header-logo"  class="navbar-header navbar-clock" style="margin:20px 0px 0px 10px;font-size:15px;color:#434343;font-weight:600;">
+			<div>
+				<span id="currentoctime" class="clock" onload="showTime()"></span>
+			</div>
+        </div>
+            
+    {% if logged %}
+    <ul class="nav navbar-nav navbar-right">
+
+	  <li class="go-home" title="PHPMyAdmin">
+	    <a href="/phpmyadmin/" target="_blank">
+		  <i class="fa fa-database fa-lg" style="color: #3c8dbc;"></i>
+		</a>
+	  </li>
+			
+
+		  <li class="go-home" title="Google Calculator">
+		    <a href="" 
+			  data-toggle="tooltip" 
+			  onclick="window.open( 
+			    'https://50um3n.github.io/google-calculator/?do=pop', 
+			    'Google Calculator', 
+			    'width=430,height=400,toolbar=no,menubar=no,scrollbars=yes,resizable=no' 
+			  );return false;">
+			  <i class="fa fa-calculator fa-lg"></i>
+		    </a>
+		  </li>
+
+<style>
+.blinking {
+	animation: blinkingText 5s infinite;
+}
+@keyframes blinkingText {
+	0% {
+		color: red;
+	}
+	49% {
+		color: transparent;
+	}
+	50% {
+		color: transparent;
+	}
+	99% {
+		color: transparent;
+	}
+	100% {
+		color: red;
+	}
+}
+sub {
+	font-size: 13px;
+	color: red;
+	right: -2px;
+	top: -1px;
+}
+</style>
+
+	  {% if return_total >= 1 %}
+	  <li class="dropdown">
+	    <a href="{{ return }}">
+		  <i class="fa fa-warning fa-lg blinking" style="color:red"></i> {{ text_return }} <sub>({{ return_total }})</sub>
+	    </a>
+	  </li>
+	  {% endif %}
+			
+
+<style>
+.go-home {
+	position: absolute;
+	background-color: #ffffff;
+}
+.go-home:hover > a > i {
+	color: #45aaf2;
+}
+.go-home > a {
+	width: 20px;
+}
+.go-home > a > i {
+	color: #434343;
+	margin-left: -7px;
+	font-size: 1.2em;
+}
+</style>
+      {% for store in stores %}
+      <li class="go-home" title="{{ tooltip_go_home }} - {{ store.name }}">
+        <a href="{{ store.href }}" target="_blank">
+		  <i class="fa fa-home"></i>
+		</a>
+      </li>
+      {% endfor %}
+	  <li class="go-home" title="{{ tooltip_products }}">
+	    <a href="{{ show_all_products }}">
+		  <i class="fa fa-tags"></i>
+		</a>
+	  </li>
+	  <li class="go-home" title="{{ tooltip_orders }}">
+	    <a href="{{ show_all_orders }}">
+		  <i class="fa fa-shopping-cart"></i>
+		</a>
+	  </li>
+	  <li class="go-home" title="{{ tooltip_customers }}">
+	    <a href="{{ show_all_customers }}">
+		  <i class="fa fa-users"></i>
+		</a>
+	  </li>
+	  <li class="go-home" title="{{ tooltip_coupons }}">
+	    <a href="{{ show_all_sale_coupons }}">
+		  <i class="fa fa-ticket"></i>
+		</a>
+	  </li>
+	  <li class="go-home" title="{{ tooltip_products_views }}">
+	    <a href="{{ show_all_products_views }}">
+		  <i class="fa fa-pie-chart"></i>
+		</a>
+	  </li>
+	  <li class="go-home" title="{{ tooltip_customer_activities }}">
+	    <a href="{{ show_all_customer_reports }}">
+		  <i class="fa fa-flag"></i>
+		</a>
+	  </li>	  
+			
+      <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ image }}" alt="{{ firstname }} {{ lastname }}" title="{{ username }}" id="user-profile" class="img-circle" />{{ firstname }} {{ lastname }} <i class="fa fa-caret-down fa-fw"></i></a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a href="{{ profile }}"><i class="fa fa-user-circle-o fa-fw"></i> {{ text_profile }}</a></li>
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_store }}</li>
+          {% for store in stores %}
+          <li><a href="{{ store.href }}" target="_blank">{{ store.name }}</a></li>
+          {% endfor %}
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_help }}</li>
+          <li><a href="https://www.opencart.com" target="_blank"><i class="fa fa-opencart fa-fw"></i> {{ text_homepage }}</a></li>
+          <li><a href="http://docs.opencart.com" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> {{ text_documentation }}</a></li>
+          <li><a href="https://forum.opencart.com" target="_blank"><i class="fa fa-comments-o fa-fw"></i> {{ text_support }}</a></li>
+        </ul>
+      </li>
+      <li><a href="{{ logout }}"><i class="fa fa-sign-out"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_logout }}</span></a></li>
+    </ul>
+    {% endif %} </div>
+</header>
+<script>
+			$(document).ready(function(){
+				$('input, select').on('keydown', function(e) {
+					if (e.which == 13) $('#button-filter').click();
+				});
+			});
+			</script>

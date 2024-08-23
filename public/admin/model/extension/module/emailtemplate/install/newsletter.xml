@@ -1,0 +1,268 @@
+<modification>
+    <name>Email Templates Newsletter</name>
+    <code>emailtemplates_newsletter</code>
+    <version>3.0.5.114</version>
+    <author>Opencart-Templates</author>
+    <link>https://www.opencart-templates.co.uk/advanced_professional_email_template</link>
+
+    <file path="catalog/controller/account/newsletter.php">
+        <operation>
+            <search index="0"><![CDATA[function index(]]></search>
+            <add position="after"><![CDATA[     if ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference')) {
+            $this->response->redirect($this->url->link('extension/module/emailtemplate_newsletter', '', true));
+        }]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/model/customer/customer.php|catalog/model/account/customer.php">
+        <operation>
+            <search index="0"><![CDATA[$customer_id = $this->db->getLastId();]]></search>
+            <add position="after"><![CDATA[
+		// trigger event eventAddCustomer
+		$this->load->controller('extension/module/emailtemplate_newsletter/eventAddCustomer', $this->getCustomer($customer_id));
+        ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/common/footer.php|catalog/controller/extension/module/account.php">
+        <operation>
+            <search index="0"><![CDATA[$data['newsletter'] = $this->url->link('account/newsletter', '', true);]]></search>
+            <ignoreif><![CDATA[$data['newsletter'] = $this->url->link('extension/module/emailtemplate_newsletter']]></ignoreif>
+            <add position="replace"><![CDATA[//$data['newsletter'] = $this->url->link('account/newsletter', '', true);
+		if ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference')) {
+			$data['newsletter'] = $this->url->link('extension/module/emailtemplate_newsletter', '', true);
+		} else {
+			$data['newsletter'] = $this->url->link('account/newsletter', '', true);
+		}
+        ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/account/account.php">
+        <operation>
+            <search index="0"><![CDATA[$data['newsletter'] = $this->url->link('account/newsletter', '', true);]]></search>
+            <ignoreif><![CDATA[$data['newsletter'] = $this->url->link('extension/module/emailtemplate_newsletter']]></ignoreif>
+            <add position="replace"><![CDATA[//$data['newsletter'] = $this->url->link('account/newsletter', '', true);
+		if ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference')) {
+			$data['newsletter'] = $this->url->link('extension/module/emailtemplate_newsletter', '', true);
+
+			// Create new language to prevent overwriting
+			$language_code = !empty($this->session->data['language']) ? $this->session->data['language'] : $this->config->get('config_language');
+
+			$oLanguage = new Language($language_code);
+			$oLanguage->load('extension/module/emailtemplate_newsletter');
+
+			$data['text_newsletter'] = $oLanguage->get('text_edit_newsletter_preference');
+		} else {
+			$data['newsletter'] = $this->url->link('account/newsletter', '', true);
+		}
+        ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/account/register.php">
+        <operation>
+            <search index="0"><![CDATA[if (isset($this->request->post['newsletter'])) {]]></search>
+            <add position="before"><![CDATA[		if ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference')) {
+			// Create new language to prevent overwriting
+			$language_code = !empty($this->session->data['language']) ? $this->session->data['language'] : $this->config->get('config_language');
+
+			$oLanguage = new Language($language_code);
+			$oLanguage->load('extension/module/emailtemplate_newsletter');
+
+   			$data['module_emailtemplate_newsletter_status'] = $this->config->get('module_emailtemplate_newsletter_status');
+			$data['module_emailtemplate_newsletter_notification'] = $this->config->get('module_emailtemplate_newsletter_notification');
+			$data['module_emailtemplate_newsletter_showcase'] = $this->config->get('module_emailtemplate_newsletter_showcase');
+
+			$data['text_preference'] = $oLanguage->get('text_preference');
+			$data['entry_preference_essential'] = $oLanguage->get('entry_preference_essential');
+			$data['entry_preference_notification'] = $oLanguage->get('entry_preference_notification');
+			$data['entry_preference_showcase'] = $oLanguage->get('entry_preference_showcase');
+
+			$data['preference_notification'] = (isset($this->request->post['preference_notification'])) ? $this->request->post['preference_notification'] : 1;
+			$data['preference_showcase'] = (isset($this->request->post['preference_showcase'])) ? $this->request->post['preference_showcase'] : 1;
+		}
+        ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/checkout/register.php">
+        <operation>
+            <search index="0"><![CDATA[$data['entry_newsletter'] =]]></search>
+            <add position="after"><![CDATA[
+        if ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference')) {
+			// Create new language to prevent overwriting
+			$language_code = !empty($this->session->data['language']) ? $this->session->data['language'] : $this->config->get('config_language');
+
+			$oLanguage = new Language($language_code);
+			$oLanguage->load('extension/module/emailtemplate_newsletter');
+
+   			$data['module_emailtemplate_newsletter_status'] = $this->config->get('module_emailtemplate_newsletter_status');
+			$data['module_emailtemplate_newsletter_notification'] = $this->config->get('module_emailtemplate_newsletter_notification');
+			$data['module_emailtemplate_newsletter_showcase'] = $this->config->get('module_emailtemplate_newsletter_showcase');
+
+			$data['text_preference'] = $oLanguage->get('text_preference');
+			$data['entry_preference_essential'] = $oLanguage->get('entry_preference_essential');
+			$data['entry_preference_notification'] = $oLanguage->get('entry_preference_notification');
+			$data['entry_preference_newsletter'] = $oLanguage->get('entry_preference_newsletter');
+			$data['entry_preference_showcase'] = $oLanguage->get('entry_preference_showcase');
+
+			$data['preference_notification'] = (isset($this->request->post['preference_notification'])) ? $this->request->post['preference_notification'] : 1;
+			$data['preference_showcase'] = (isset($this->request->post['preference_showcase'])) ? $this->request->post['preference_showcase'] : 1;
+		}
+        ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/*/template/account/register.twig">
+        <operation>
+            <search index="0"><![CDATA[{{ footer }}]]></search>
+            <add position="before"><![CDATA[{% if module_emailtemplate_newsletter_status %}<div id="emailtemplate-preference" class="row">
+  <div class="col-sm-10 col-sm-offset-2">
+  <div class="help-block"><button type="button" class="btn btn-link btn-collapse collapsed" data-toggle="collapse" data-target="#collapse-preference" style="padding:0;"><i class="fa fa-fw"></i> {{ text_preference }}</button></div>
+  <div id="collapse-preference" class="collapse">
+    <div class="form-group row">
+      <div class="col-xs-12">
+        <div class="checkbox disabled text-muted">
+          <label>
+            <input type="checkbox" name="preference_essential" id="input_preference_essential" value="1" checked="checked" disabled="disabled" />
+            {{ entry_preference_essential }}</label>
+        </div>
+        {% if module_emailtemplate_newsletter_notification %}<div class="checkbox">
+          <label>
+            <input type="checkbox" name="preference_notification" id="input_preference_notification" value="1"{% if preference_notification %} checked="checked"{% endif %} />
+            {{ entry_preference_notification }}</label>
+        </div>{% endif %}
+        {% if module_emailtemplate_newsletter_showcase %}<div class="checkbox">
+          <label>
+            <input type="checkbox" name="preference_showcase" id="input_preference_showcase" value="1"{% if preference_showcase %} checked="checked"{% endif %} />
+            {{ entry_preference_showcase }}</label>
+        </div>{% endif %}
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<style type="text/css">
+.btn-collapse .fa:before {content:"\f103";}
+.btn-collapse.collapsed .fa:before {content:"\f101";}
+</style>
+<script type="text/javascript"><!--
+$('#emailtemplate-preference').each(function() {
+  var $emailtemplate_preference = $(this);
+  var $input_newsletter = $('input[name=newsletter]');
+  if ($emailtemplate_preference.length && $input_newsletter.length) {
+    $emailtemplate_preference.insertAfter($input_newsletter.eq(0).parents('.form-group'));
+  }
+});
+//--></script>{% endif %}]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/*/template/checkout/register.twig">
+        <operation>
+            <search index="0"><![CDATA[name="newsletter"]]></search>
+            <add position="after" offset="1"><![CDATA[{% if module_emailtemplate_newsletter_status %}<div id="emailtemplate-preference">
+  <div class="help-block"><button type="button" class="btn btn-link btn-collapse collapsed" data-toggle="collapse" data-target="#collapse-preference" style="padding:0;"><i class="fa fa-fw"></i> {{ text_preference }}</button></div>
+  <div id="collapse-preference" class="collapse">
+    <div class="form-group row">
+      <div class="col-xs-12">
+        <div class="checkbox disabled text-muted">
+          <label>
+            <input type="checkbox" name="preference_essential" id="input_preference_essential" value="1" checked="checked" disabled="disabled" />
+            {{ entry_preference_essential }}</label>
+        </div>
+        {% if module_emailtemplate_newsletter_notification %}<div class="checkbox">
+          <label>
+            <input type="checkbox" name="preference_notification" id="input_preference_notification" value="1"{% if preference_notification %} checked="checked"{% endif %} />
+            {{ entry_preference_notification }}</label>
+        </div>{% endif %}
+        {% if module_emailtemplate_newsletter_showcase %}<div class="checkbox">
+          <label>
+            <input type="checkbox" name="preference_showcase" id="input_preference_showcase" value="1"{% if preference_showcase %} checked="checked"{% endif %} />
+            {{ entry_preference_showcase }}</label>
+        </div>{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<style type="text/css">
+.btn-collapse .fa:before {content:"\f103";}
+.btn-collapse.collapsed .fa:before {content:"\f101";}
+</style>
+<script type="text/javascript"><!--
+$('#emailtemplate-preference').each(function() {
+  var $emailtemplate_preference = $(this);
+  var $input_newsletter = $('input[name=newsletter]');
+  if ($emailtemplate_preference.length && $input_newsletter.length) {
+    $emailtemplate_preference.insertAfter($input_newsletter.parents('.checkbox'));
+  }
+});
+//--></script>{% endif %}]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/controller/customer/customer.php">
+        <operation>
+            <search index="0"><![CDATA[if (isset($this->request->post['newsletter'])) {]]></search>
+            <add position="before"><![CDATA[        if ($this->config->get('module_emailtemplate_newsletter_status') && $this->config->get('module_emailtemplate_newsletter_preference')) {
+			// Prevent language overwrite
+			// Create new language to prevent overwriting
+			$language_code = !empty($this->session->data['language']) ? $this->session->data['language'] : $this->config->get('config_language');
+
+			$oLanguage = new Language($language_code);
+			$oLanguage->load('extension/module/emailtemplate_newsletter');
+
+			$this->load->model('extension/module/emailtemplate_newsletter');
+
+   			$data['module_emailtemplate_newsletter_status'] = $this->config->get('module_emailtemplate_newsletter_status');
+			$data['module_emailtemplate_newsletter_notification'] = $this->config->get('module_emailtemplate_newsletter_notification');
+			$data['module_emailtemplate_newsletter_showcase'] = $this->config->get('module_emailtemplate_newsletter_showcase');
+
+			$data['entry_preference'] = $oLanguage->get('entry_preference');
+			$data['entry_preference_notification'] = $oLanguage->get('entry_preference_notification');
+			$data['entry_preference_showcase'] = $oLanguage->get('entry_preference_showcase');
+
+            if (isset($this->request->get['customer_id'])) {
+			    $customer_preference_info = $this->model_extension_module_emailtemplate_newsletter->getCustomerPreference($this->request->get['customer_id']);
+            }
+
+			if (isset($this->request->post['preference_notification'])) {
+				$data['preference_notification'] =  $this->request->post['preference_notification'];
+			} elseif (!empty($customer_preference_info)) {
+				$data['preference_notification'] = $customer_preference_info['notification'];
+			} else {
+				$data['preference_notification'] = '';
+			}
+
+			if (isset($this->request->post['preference_showcase'])) {
+				$data['preference_showcase'] =  $this->request->post['preference_showcase'];
+			} elseif (!empty($customer_preference_info)) {
+				$data['preference_showcase'] = $customer_preference_info['showcase'];
+			} else {
+				$data['preference_showcase'] = '';
+			}
+		}
+        ]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/customer/customer_form.twig">
+        <operation>
+            <search index="0"><![CDATA[{{ entry_status }}</label>]]></search>
+            <add position="before" offset="1"><![CDATA[                      {% if module_emailtemplate_newsletter_status %}
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">{{ entry_preference }}</label>
+                          <div class="col-sm-10">
+                            {% if module_emailtemplate_newsletter_notification %}<div class="checkbox">
+                              <label><input type="checkbox" name="preference_notification" value="1"{{ preference_notification ? ' checked="checked"' : '' }} /> {{ entry_preference_notification }}</label>
+                            </div>{% endif %}
+                            {% if module_emailtemplate_newsletter_showcase %}<div class="checkbox">
+                              <label><input type="checkbox" name="preference_showcase" value="1"{{ preference_showcase ? ' checked="checked"' : '' }} /> {{ entry_preference_showcase }}</label>
+                            </div>{% endif %}
+                          </div>
+                        </div>
+                      {% endif %}]]></add>
+        </operation>
+    </file>
+</modification>

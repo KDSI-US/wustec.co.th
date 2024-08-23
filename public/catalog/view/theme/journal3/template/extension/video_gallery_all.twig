@@ -1,0 +1,104 @@
+{{ header }}
+<link href="catalog/view/theme/journal3/stylesheet/video_gallery.css" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"/>
+<ul class="breadcrumb">
+	{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+	{% endfor %}
+</ul>
+{% if j3.settings.get('pageTitlePosition') == 'top' %}
+<h1 class="title page-title"><span>{{ heading_title }}</span></h1>
+{% endif %}
+{{ j3.loadController('journal3/layout', 'top') }}
+<div class="container video-gallery-journal3">
+	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">
+			{% if j3.settings.get('pageTitlePosition') == 'default' %}
+			<h1 class="title page-title">{{ heading_title }}</h1>
+			{% endif %}
+			{{ content_top }}
+			<div class="row">
+				<script>
+					$(document).ready(function () {
+						$("area[rel^='prettyPhoto']").prettyPhoto();
+						$(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({
+							animation_speed: "normal",
+							theme: "light_square",
+							slideshow: 3000,
+							autoplay_slideshow: false,
+						});
+						$(".gallery:gt(0) a[rel^='prettyPhoto']").prettyPhoto({
+							animation_speed: "normal",
+							slideshow: 1000000,
+							hideflash: true,
+						});
+						$("#custom_content a[rel^='prettyPhoto']:first").prettyPhoto({
+							custom_markup:
+								'<div id="map_canvas" style="width:260px; height:265px"></div>',
+							changepicturecallback: function () {
+								initialize();
+							},
+						});
+						$("#custom_content a[rel^='prettyPhoto']:last").prettyPhoto({
+							custom_markup:
+								'<div id="bsap_1259344" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div><div id="bsap_1237859" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6" style="height:260px"></div><div id="bsap_1251710" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div>',
+							changepicturecallback: function () {
+								_bsap.exec();
+							},
+						});
+					});
+				</script>
+				<div class="gallery">
+					{% set i = 0 %}
+					{%  for video_gallery in video_galleries %}
+						<div class="col-sm-4">
+							<div class="box">
+								{% if video_gallery.video_url %}
+									{% set i = i + 1 %}
+									{% if video_gallery.video_image %}
+										<div class="image">
+											<a data-lightbox="imagetrip" data-videogalleryid="{{ video_gallery.video_gallery_id }}" rel="prettyPhoto[video_gallery_category]" href="{{ video_gallery.video_url }}" title="{{ video_gallery.video_title }}">
+												<img src="{{ video_gallery.video_image }}" alt="{{ heading_title }}" class="img-responsive" title="{{ video_gallery.video_title }}" />
+												<div class="iconhover">
+													<i class="fa fa-youtube-play"></i>
+												</div>
+											</a>
+										</div>
+									{% endif %}
+									<h3>{{ video_gallery.video_title }}
+									</h3>
+									{% set i = 6 %}<br style="clear:both;"/>
+									{% set i = 0 %}
+								{% endif %}
+								<div>{{ video_gallery.video_description }}</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% if not video_galleries %}
+			<div class="content">{{ text_empty }}</div>
+			{% endif %}
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+	<div class="row">
+		<div class="col-sm-6 text-left">{{ pagination }}</div>
+		<div class="col-sm-6 text-right">{{ results }}</div>
+	</div>
+</div>
+
+<style>
+.pp_pic_holder{
+	top:60px!important;
+}
+</style>
+{{ footer }}

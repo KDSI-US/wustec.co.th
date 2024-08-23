@@ -1,0 +1,218 @@
+.notLicensedTable > tbody > tr > td {
+    border: none;    
+}
+
+ul.registeredDomains {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 50px;
+    margin: 0 auto;
+    height: 50px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+.loader-small {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 25px;
+    margin: 0 auto;
+    height: 25px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.padding-top {
+    padding-top: 10px;
+}
+
+.img-small {
+    max-height:130px;
+}
+
+.box-content {
+    border-color: #DBDBDB;
+    line-height: 20px;
+}
+
+.box-content p {
+    font-size: 13px;
+    margin-top: 8px;
+    word-break: break-word;
+}
+
+.mainMenuTabs li a {
+    font-size: 12px;
+}
+
+.requests-filter-data.well .form-group, 
+.acceptances-filter-data.well .form-group,
+.deletions-filter-data.well .form-group,
+.optins-filter-data.well .form-group {
+	padding: 10px;
+}
+
+.checklist,.checklist li {
+  list-style:none;
+  padding-left:0;
+  margin-left:0;
+}
+.checklist div {
+  clear: both;
+  overflow: hidden;
+}
+
+.checklist label {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4;
+  font-weight: normal;
+}
+
+.checklist label > p {
+
+}
+
+.checklist label > strong {
+  font-size:16px;
+}
+
+.checklist input[type="radio"]:empty,
+.checklist input[type="checkbox"]:empty {
+  display: none;
+}
+
+.checklist input[type="radio"]:empty ~ label,
+.checklist input[type="checkbox"]:empty ~ label {
+  position: relative;
+  line-height: 1.8em;
+  padding: 0.8em;
+  padding-left: 3.7em;
+  margin-top: 0.5em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.checklist input[type="radio"]:empty ~ label:before,
+.checklist input[type="checkbox"]:empty ~ label:before {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  content: '';
+  width: 2.5em;
+  background: #D1D3D4;
+  border-radius: 3px 0 0 3px;
+}
+
+.checklist input[type="radio"]:hover:not(:checked) ~ label,
+.checklist input[type="checkbox"]:hover:not(:checked) ~ label {
+  color: #888;
+}
+
+.checklist input[type="radio"]:hover:not(:checked) ~ label:before,
+.checklist input[type="checkbox"]:hover:not(:checked) ~ label:before {
+  content: '\2714';
+  text-indent: .9em;
+  color: #C2C2C2;
+  display : flex;
+  align-items : center;
+}
+
+.checklist input[type="radio"]:checked ~ label,
+.checklist input[type="checkbox"]:checked ~ label {
+  color: #777;
+}
+
+.checklist input[type="radio"]:checked ~ label:before,
+.checklist input[type="checkbox"]:checked ~ label:before {
+  content: '\2714';
+  text-indent: .9em;
+  color: #333;
+  background-color: #ccc;
+  display : flex;
+  align-items : center;
+}
+
+.checklist input[type="radio"]:focus ~ label:before,
+.checklist input[type="checkbox"]:focus ~ label:before {
+  box-shadow: 0 0 0 3px #999;
+}
+
+.checklist-default input[type="radio"]:checked ~ label:before,
+.checklist-default input[type="checkbox"]:checked ~ label:before {
+  color: #333;
+  background-color: #ccc;
+}
+
+.checklist-primary input[type="radio"]:checked ~ label:before,
+.checklist-primary input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.checklist-success input[type="radio"]:checked ~ label:before,
+.checklist-success input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5cb85c;
+}
+.checklist-success input[type="radio"]:checked ~ label:before,
+.checklist-success input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5cb85c;
+}
+
+.storeSwitcherWidget {
+    position: absolute;
+    right: 20px;
+    margin: 0px auto;
+}
+
+.storeSwitcherWidget .form-group {
+    margin-bottom: 0;
+    padding-bottom: 2px;
+    padding-top: 0px;
+}
+
+.storeSwitcherWidget .form-group.open .dropdown-menu {
+    right: 0;
+    left: auto;
+    margin: 0px;
+}
+
+html[dir="rtl"] .storeSwitcherWidget {
+    position: absolute;
+    left: 20px;
+    right: auto;
+    margin: 0px auto;
+}

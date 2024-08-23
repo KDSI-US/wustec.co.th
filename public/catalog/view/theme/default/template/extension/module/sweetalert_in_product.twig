@@ -1,0 +1,5 @@
+if (typeof (window.applySweetAlert) === 'undefined' || window.applySweetAlert === false) {
+    $('.breadcrumb').after('<div class="alert alert-success alert-dismissible">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+}else{
+    {{ sweetalert_swal }}
+}

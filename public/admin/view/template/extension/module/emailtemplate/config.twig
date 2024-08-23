@@ -1,0 +1,1855 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div id="emailtemplate">
+    <div class="page-header">
+      <div class="container-fluid clearfix">
+        <div class="pull-right">
+          <button id="submit_form_button" type="submit" form="form-emailtemplate" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-success"><i class="fa fa-save"></i></button>
+          <a href="{{ action_delete }}" data-confirm="{{ text_confirm }}" class="btn btn-danger" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash"></i></a>
+          {% if action_configs is not empty and action_configs|length > 1 %}
+            <div class="btn-group" data-toggle="tooltip" title="{{ button_config }}">
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                {% if action_default is not empty %}
+                  <li><a href="{{ action_default }}" class="dropdown-item">{{ button_default_config }}</a></li>
+                  <li class="divider"></li>
+                {% endif %} {% for row in action_configs %} {% if row.id != 1 %}
+                  <li><a href="{{ row.url|raw }}" class="dropdown-item{{ row.id == emailtemplate_config_id ? ' active' }}">{{ row.name }}</a>
+                  </li>
+                {% endif %} {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <a href="{{ url_insert_config }}" class="btn btn-primary" data-toggle="tooltip" title="{{ text_create_config }}"><i class="fa fa-plus"></i></a>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <h1>{{ emailtemplate_config.name }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item{{ loop.index == breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="container-fluid">
+      {% if error_warning is not empty %}
+        <div class="alert alert-danger">
+          <i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if error_attention is not empty %}
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-circle"></i> {{ error_attention }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %} {% if success is not empty %}
+        <div class="alert alert-success">
+          <i class="fa fa-exclamation-circle"></i> {{ success }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      {% endif %}
+      <div class="panel panel-default mb-3">
+        <div class="panel-body">
+          <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-emailtemplate" class="form-horizontal">
+            <div class="panel-nav-tabs">
+              <ul class="nav nav-tabs" id="config-tabs">
+                <li class="nav-item active"><a href="javascript:void(0)" class="nav-link" data-target="#tab-settings" data-toggle="tab"><i class="fa fa-wrench hidden-xs"></i> {{ heading_settings }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-style" data-toggle="tab"><i class="fa fa-paint-brush hidden-xs"></i> {{ heading_style }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-header" data-toggle="tab"><i class="fa fa-arrow-up hidden-xs"></i> {{ heading_header }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-page" data-toggle="tab"><i class="fa fa-align-justify hidden-xs"></i> {{ heading_page }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-footer" data-toggle="tab"><i class="fa fa-arrow-down hidden-xs"></i> {{ heading_footer }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-product" data-toggle="tab"><i class="fa fa-tags hidden-xs"></i> {{ heading_product }}</a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-target="#tab-showcase" data-toggle="tab"><i class="fa fa-rocket hidden-xs"></i> {{ heading_showcase }}</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane form-horizontal fade in active" id="tab-settings">
+                  <div class="well">
+                    <fieldset>
+                      <legend style="padding-left:20px;padding-right:20px;">{{ heading_condition }}</legend>
+                      {% if emailtemplate_config_id > 1 %}
+                      <div class="form-group">
+                        <label class="col-md-2 control-label" for="language_id">{{ entry_language }}</label>
+                        <div class="col-md-4">
+                          <select class="form-control" name="language_id" id="language_id">
+                            <option value="-1">{{ text_select }}</option>
+                            {% for language in languages %}
+                              <option value="{{ language.language_id }}" {{ language.language_id == emailtemplate_config.language_id ? ' selected="selected" ' }}>
+                                {{ language.name }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      {% endif %}
+                      <div class="form-group">
+                        <label class="col-md-2 control-label" for="store_id">{{ entry_store }}</label>
+                        <div class="col-md-4">
+                          <select class="form-control" name="store_id" id="store_id">
+                            <option value="NULL">{{ text_select }}</option>
+                            {% for store in stores %}
+                              <option value="{{ store.store_id }}"{{ emailtemplate_config.store_id == store.store_id and emailtemplate_config.store_id != '' ? ' selected="selected"' }}>{{ store.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label" for="customer_group_id">{{ entry_customer_group }}</label>
+                        <div class="col-md-4">
+                          <select class="form-control" name="customer_group_id" id="customer_group_id">
+                            <option value="-1">{{ text_select }}</option>
+                            {% for customer_group in customer_groups %}
+                              <option value="{{ customer_group.customer_group_id }}" {{ customer_group.customer_group_id == emailtemplate_config.customer_group_id ? ' selected="selected" ' }}>
+                                {{ customer_group.name }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label" for="emailtemplate_config_admin">{{ entry_admin }}</label>
+                        <div class="col-md-10">
+                          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-default danger {{ emailtemplate_config.admin == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                              <input type="radio" name="emailtemplate_config_admin" value="0" {{ emailtemplate_config.status == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                            </label>
+                            <label class="btn btn-default success {{ emailtemplate_config.admin == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                              <input type="radio" name="emailtemplate_config_admin" value="1" {{ emailtemplate_config.admin == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_name">{{ entry_label }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_name" name="emailtemplate_config_name" value="{{ emailtemplate_config.name }}" required="required" type="text"/>
+                      {% if error_emailtemplate_config_name is defined %}<span class="text-danger">{{ error_emailtemplate_config_name }}</span>{% endif %}
+                    </div>
+                  </div>
+                  {% if id != 1 %}
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_status">{{ entry_status }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.status == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_disabled }}">
+                            <input type="radio" name="emailtemplate_config_status" value="0" {{ emailtemplate_config.status == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.status == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_enabled }}">
+                            <input type="radio" name="emailtemplate_config_status" value="1" {{ emailtemplate_config.status == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  <div class="form-group row">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_wrapper_tpl">{{ entry_wrapper }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_wrapper_tpl" name="emailtemplate_config_wrapper_tpl" value="{{ emailtemplate_config.wrapper_tpl }}" type="text"/>
+                      {% if error_emailtemplate_config_name is not empty %}<span class="text-danger">{{ error_emailtemplate_config_name }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_log">{{ entry_log }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.log == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_log" onchange="jQuery('.collapse-log').collapse('hide');" value="0"{{ emailtemplate_config.log == 0 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.log == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_log" onchange="jQuery('.collapse-log').collapse('show');" value="1"{{ emailtemplate_config.log == 1 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label collapse collapse-log{{ emailtemplate_config.log == 1 ? ' in' }}" for="emailtemplate_config_log_read">{{ entry_log_read }}</label>
+                    <div class="col-md-4 collapse collapse-log{{ emailtemplate_config.log == 1 ? ' in' }}">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.log_read == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_log_read" value="0"{{ emailtemplate_config.log_read == 0 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.log_read == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_log_read" value="1"{{ emailtemplate_config.log_read == 1 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_view_browser">{{ entry_view_browser }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.view_browser == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_view_browser" onchange="jQuery('.collapse-view-browser').collapse('hide');" value="0"{{ emailtemplate_config.view_browser == 0 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.view_browser == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_view_browser" onchange="jQuery('.collapse-view-browser').collapse('show');" value="1"{{ emailtemplate_config.view_browser == 1 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label collapse collapse-view-browser{{ emailtemplate_config.view_browser == 1 ? ' in' }}" for="emailtemplate_config_log_read">{{ entry_view_browser_theme }}</label>
+                    <div class="col-md-4 collapse collapse-view-browser{{ emailtemplate_config.view_browser == 1 ? ' in' }}">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.view_browser_theme == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_view_browser_theme" value="0"{{ emailtemplate_config.view_browser_theme == 0 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.view_browser_theme == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_view_browser_theme" value="1"{{ emailtemplate_config.view_browser_theme == 1 ? ' checked="checked"' }} /><i class="fa  fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_preference_text">{{ entry_preference_text }} <br /><small>&#123;&#123; preference_text &#125;&#125;</small></label>
+                    <div class="col-md-10">
+                      <ul class="nav nav-tabs">
+                        {% for language in config_languages %}
+                          <li class="nav-item{{ loop.first ? ' active' }}"><a href="#" class="nav-link" data-target="#tab-preference-text-{{ language.code }}" data-toggle="tab" title="{{ language.name }}"><img src="language/{{ language.code }}/{{ language.code }}.png"/></a></li>
+                        {% endfor %}
+                      </ul>
+                      <div class="tab-content">
+                        {% for language in config_languages %}
+                          <div class="tab-pane form-horizontal{{ loop.first ? ' active' }}" id="tab-preference-text-{{ language.code }}">
+                            <label for="emailtemplate_config_preference_text_essential_{{ language.language_id }}">{{ text_essential }}</label>
+                            <textarea class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote_language }}" data-height="100" name="emailtemplate_config_preference_text[essential][{{ language.language_id }}]" id="emailtemplate_config_preference_text_essential_{{ language.language_id }}">{{ emailtemplate_config.preference_text.essential[language.language_id] }}</textarea>
+                            <label for="emailtemplate_config_preference_text_notification_{{ language.language_id }}">{{ text_notification }}</label>
+                            <textarea class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote_language }}" data-height="100" name="emailtemplate_config_preference_text[notification][{{ language.language_id }}]" id="emailtemplate_config_preference_text_notification_{{ language.language_id }}">{{ emailtemplate_config.preference_text.notification[language.language_id] }}</textarea>
+                            <label for="emailtemplate_config_preference_text_newsletter_{{ language.language_id }}">{{ text_newsletter }}</label>
+                            <textarea class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote_language }}" data-height="100" name="emailtemplate_config_preference_text[newsletter][{{ language.language_id }}]" id="emailtemplate_config_preference_text_newsletter_{{ language.language_id }}">{{ emailtemplate_config.preference_text.newsletter[language.language_id] }}</textarea>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- #tab-settings -->
+                <div id="tab-style" class="tab-pane form-horizontal fade">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_style">{{ entry_style }}</label>
+                    <div class="col-md-10">
+                      <div><a href="#collapse-style" class="btn btn-info collapsed" data-toggle="collapse"><i class="fa fa-chevron-right fa-fw" ></i> {{ button_settings }}</a></div>
+                      <div class="collapse well mt-2" id="collapse-style">
+                        <label class="form-check-image">
+                          Page with shadow
+                          <input class="form-check-image-input" type="radio" id="emailtemplate_config_style_page" name="emailtemplate_config_style" value="page"{{ emailtemplate_config.style == 'page' ? ' checked' : '' }} />
+                          <span class="form-check-image-label img-preview-style img-style-page" for="emailtemplate_config_style_page"></span>
+                        </label>
+                        <label class="form-check-image">
+                          Page with white body
+                          <input class="form-check-image-input" type="radio" id="emailtemplate_config_style_white" name="emailtemplate_config_style" value="white"{{ emailtemplate_config.style == 'white' ? ' checked' : '' }} />
+                          <span class="form-check-image-label img-preview-style img-style-white" for="emailtemplate_config_style_white"></span>
+                        </label>
+                        <label class="form-check-image">
+                          Page with border
+                          <input class="form-check-image-input" type="radio" id="emailtemplate_config_style_border" name="emailtemplate_config_style" value="border"{{ emailtemplate_config.style == 'border' ? ' checked' : '' }} />
+                          <span class="form-check-image-label img-preview-style img-style-border" for="emailtemplate_config_style_border"></span>
+                        </label>
+                        <label class="form-check-image">
+                          Clean
+                          <input class="form-check-image-input" type="radio" id="emailtemplate_config_style_clean" name="emailtemplate_config_style" value="clean"{{ emailtemplate_config.style == 'clean' ? ' checked' : '' }} />
+                          <span class="form-check-image-label img-preview-style img-style-clean" for="emailtemplate_config_style_clean"></span>
+                        </label>
+                        <label class="form-check-image">
+                          Sections
+                          <input class="form-check-image-input" type="radio" id="emailtemplate_config_style_sections" name="emailtemplate_config_style" value="sections"{{ emailtemplate_config.style == 'sections' ? ' checked' : '' }} />
+                          <span class="form-check-image-label img-preview-style img-style-sections" for="emailtemplate_config_style_sections"></span>
+                        </label>
+                        <label class="form-check-image">
+                          Crisp
+                          <input class="form-check-image-input" type="radio" id="emailtemplate_config_style_crisp" name="emailtemplate_config_style" value="crisp"{{ emailtemplate_config.style == 'crisp' ? ' checked' : '' }} />
+                          <span class="form-check-image-label img-preview-style img-style-crisp" for="emailtemplate_config_style_crisp"></span>
+                        </label>
+                      </div>
+                      {% if error_emailtemplate_config_style is not empty %}<span class="text-danger">{{ error_emailtemplate_config_style }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_email_width">{{ entry_email_width }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_email_width" name="emailtemplate_config_email_width" value="{{ emailtemplate_config.email_width }}" type="text"/>
+                      <small class="help-block text-muted">{{ text_help_email_width }}</small>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_email_responsive">{{ entry_responsive }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.email_responsive == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_email_responsive" value="0" {{ emailtemplate_config.email_responsive == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.email_responsive == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_email_responsive" value="1" {{ emailtemplate_config.email_responsive == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                      {% if error_emailtemplate_config_email_responsive is not empty %}<span class="text-danger">{{ error_emailtemplate_config_email_responsive }}</span>{% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_align">{{ entry_page_align }}</label>
+                    <div class="col-md-4">
+                      <select class="form-control" name="emailtemplate_config_page_align" id="emailtemplate_config_page_align">
+                        <option value="center" {{ emailtemplate_config.page_align == 'center' ? ' selected="selected" ' }}>{{ text_center }}</option>
+                        <option value="left" {{ emailtemplate_config.page_align == 'left' ? ' selected="selected" ' }}>{{ text_left }}</option>
+                        <option value="right" {{ emailtemplate_config.page_align == 'right' ? ' selected="selected" ' }}>{{ text_right }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_text_align">{{ entry_text_align }}</label>
+                    <div class="col-md-4">
+                      <select class="form-control" name="emailtemplate_config_text_align" id="emailtemplate_config_text_align">
+                        <option value="left" {{ emailtemplate_config.text_align == 'left' ? ' selected="selected" ' }}>{{ text_left }}</option>
+                        <option value="right" {{ emailtemplate_config.text_align == 'right' ? ' selected="selected" ' }}>{{ text_right }}</option>
+                        <option value="center" {{ emailtemplate_config.text_align == 'center' ? ' selected="selected" ' }}>{{ text_center }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_font_size">{{ entry_font_size }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" type="number" id="emailtemplate_config_body_font_size" name="emailtemplate_config_body_font_size" value="{{ emailtemplate_config.body_font_size }}"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_font_family">{{ entry_font_family }}</label>
+                    <div class="col-md-4">
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_body_font_family_arial" type="radio" name="emailtemplate_config_body_font_family" value='Arial, Helvetica, sans-serif' {{  emailtemplate_config.body_font_family == 'Arial, Helvetica, sans-serif' ? ' checked="checked" ' }}/>
+                        <label class="form-check-label" for="emailtemplate_config_body_font_family_arial" style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">Arial/Helvetica</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_body_font_family_courier" type="radio" name="emailtemplate_config_body_font_family" value="'Courier New', Courier, monospace" {{ emailtemplate_config.body_font_family == "'Courier New', Courier, monospace" ? ' checked="checked" ' }}/>
+                        <label class="form-check-label" for="emailtemplate_config_body_font_family_courier" style="font-family:'Courier New', Courier, monospace">Courier</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_body_font_family_tahoma" type="radio" name="emailtemplate_config_body_font_family" value="Tahoma, Geneva, sans-serif" {{ emailtemplate_config.body_font_family == "Tahoma, Geneva, sans-serif" ? ' checked="checked" ' }}/>
+                        <label class="form-check-label" for="emailtemplate_config_body_font_family_tahoma" style="font-family:Tahoma, Geneva, sans-serif">Tahoma</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_body_font_family_times" type="radio" name="emailtemplate_config_body_font_family" value="'Times New Roman', Times, serif" {{ emailtemplate_config.body_font_family == "'Times New Roman', Times, serif" ? ' checked="checked" ' }}/>
+                        <label class="form-check-label" for="emailtemplate_config_body_font_family_times" style="font-family:'Times New Roman', Times, serif">Times New Roman</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_body_font_family_trebuchetms" type="radio" name="emailtemplate_config_body_font_family" value="'Trebuchet MS', Helvetica, sans-serif" {{ emailtemplate_config.body_font_family == "'Trebuchet MS', Helvetica, sans-serif" ? ' checked="checked" ' }}/>
+                        <label class="form-check-label" for="emailtemplate_config_body_font_family_trebuchetms" style="font-family:'Trebuchet MS', Helvetica, sans-serif">Trebuchet MS</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_body_font_family_verdana" type="radio" name="emailtemplate_config_body_font_family" value="Verdana, Geneva, sans-serif" {{ emailtemplate_config.body_font_family == "Verdana, Geneva, sans-serif" ? ' checked="checked" ' }}/>
+                        <label class="form-check-label" for="emailtemplate_config_body_font_family_verdana" style="font-family:Verdana, Geneva, sans-serif">Verdana</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <label class="col-md-4 control-label" for="emailtemplate_config_body_font_custom">{{ entry_font_custom }}</label>
+                        <div class="col-md-8">
+                          <small class="help-block text-muted">{{ text_help_font_custom }}</small>
+                          <input class="form-control mb-1" type="text" id="emailtemplate_config_body_font_custom" name="emailtemplate_config_body_font_custom" value="{{ emailtemplate_config.body_font_custom }}" placeholder="{{ text_font_name }}"/>
+                          <input class="form-control mb-1" type="text" id="emailtemplate_config_body_font_url" name="emailtemplate_config_body_font_url" value="{{ emailtemplate_config.body_font_url }}" placeholder="{{ text_url }}"/>
+                          <textarea class="form-control" name="emailtemplate_config_body_font_source" placeholder="{{ text_css_source }}">{{ emailtemplate_config.body_font_source }}</textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_bg_color">{{ entry_bg_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_bg_color %} style="background-color:{{ emailtemplate_config.body_bg_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_body_bg_color" name="emailtemplate_config_body_bg_color" value="{{ emailtemplate_config.body_bg_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label">{{ entry_bg_image }}</label>
+                    <div class="col-md-4">
+                      <div class="row">
+                        <div class="col-xs-12 col-lg-3">
+                          <a href="javascript:void(0)" id="thumb-body-bg" data-toggle="image"><img class="img-thumbnail" src="{{ emailtemplate_config.body_bg_image_thumb }}" alt="" data-placeholder="{{ no_image }}"/></a>
+                          <input type="hidden" name="emailtemplate_config_body_bg_image" value="{{ emailtemplate_config.body_bg_image }}" id="input-body-bg"/>
+                          {% if error_emailtemplate_config_body_bg_image is not empty %}<span class="text-danger">{{ error_emailtemplate_config_body_bg_image }}</span>{% endif %}
+                        </div>
+                        <div class="col-xs-12 col-lg-9">
+                          <select class="form-control" name="emailtemplate_config_body_bg_image_repeat">
+                            <option value="no-repeat" {{ (emailtemplate_config.body_bg_image_repeat == 'no-repeat' or emailtemplate_config.body_bg_image_repeat == '') ? ' selected="selected" ' }}>
+                              No Repeat
+                            </option>
+                            <option value="repeat" {{ emailtemplate_config.body_bg_image_repeat == 'repeat' ? ' selected="selected" ' }}>
+                              Repeat
+                            </option>
+                            <option value="repeat-x" {{ emailtemplate_config.body_bg_image_repeat == 'repeat-x' ? ' selected="selected" ' }}>
+                              Repeat Horizontal
+                            </option>
+                            <option value="repeat-y" {{ emailtemplate_config.body_bg_image_repeat == 'repeat-y' ? ' selected="selected" ' }}>
+                              Repeat Vertical
+                            </option>
+                          </select>
+                          <br/>
+                          <input type="text" class="form-control" name="emailtemplate_config_body_bg_image_position" value="{{ emailtemplate_config.body_bg_image_position }}" placeholder="E.g: center top"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_font_color">{{ entry_body_font_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_body_font_color" name="emailtemplate_config_body_font_color" value="{{ emailtemplate_config.body_font_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_link_color">{{ entry_body_link_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_link_color %} style="background-color:{{ emailtemplate_config.body_link_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_body_link_color" name="emailtemplate_config_body_link_color" value="{{ emailtemplate_config.body_link_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_heading_color">{{ entry_body_heading_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_heading_color %} style="background-color:{{ emailtemplate_config.body_heading_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_body_heading_color" name="emailtemplate_config_body_heading_color" value="{{ emailtemplate_config.body_heading_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_link_style">{{ entry_link_style }}</label>
+                    <div class="col-md-4">
+                      <select name="emailtemplate_config_link_style" id="emailtemplate_config_link_style" class="form-control">
+                        <option value="" {{ emailtemplate_config.link_style == '' ? ' selected="selected" ' }}>{{ text_plain_text }}</option>
+                        <option value="button" {{ emailtemplate_config.link_style == 'button' ? ' selected="selected" ' }}>{{ text_button }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">{{ heading_shadow }}</label>
+                    <div class="col-md-10 controls-page-shadow">
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_page_shadow_none" type="radio" name="emailtemplate_config_page_shadow" value=""{{ emailtemplate_config.page_shadow == '' ? ' checked="checked"' }}>
+                        <label class="form-check-label" for="emailtemplate_config_page_shadow_none">{{ text_none }}</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_page_shadow_css" type="radio" name="emailtemplate_config_page_shadow" value="box-shadow"{{ emailtemplate_config.page_shadow and emailtemplate_config.page_shadow != 'combine-shadow' ? ' checked="checked"' }}>
+                        <label class="form-check-label" for="emailtemplate_config_page_shadow_css">{{ text_css_shadow }}</label>
+                      </div>
+                      <div class="form-check mb-1">
+                        <input class="form-check-input" id="emailtemplate_config_page_shadow_combine" type="radio" name="emailtemplate_config_page_shadow" value="combine-shadow"{{ emailtemplate_config.page_shadow == 'combine-shadow' ? ' checked="checked"' }}>
+                        <label class="form-check-label" for="emailtemplate_config_page_shadow_combine">{{ text_combine_shadow }}</label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 col-md-offset-2">
+                      <div class="collapse{{ emailtemplate_config.page_shadow and emailtemplate_config.page_shadow != 'combine-shadow' ? ' in' }}" id="fieldset-box-shadow" style="margin-bottom: 20px;">
+                        <label class="control-label" style="margin-bottom:5px;">{{ text_box_shadow }}</label>
+                        <input class="form-control" name="emailtemplate_config_page_box_shadow" value="{{ emailtemplate_config.page_shadow }}" type="text" />
+                      </div>
+                      <div class="collapse{{ emailtemplate_config.page_shadow == 'combine-shadow' ? ' in' }}" id="fieldset-combine-shadow" style="margin-bottom: 20px;">
+                        <div class="panel panel-sm">
+                          <div class="panel-body">
+                            <div class="row">
+                              <label class="col-sm-2 control-label">{{ text_top }}</label>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_top_length">{{ entry_height }}</label>
+                                <div class="input-group">
+                                  <input class="form-control" name="emailtemplate_config_shadow_top[length]" id="emailtemplate_config_shadow_top_length" value="{{ emailtemplate_config.shadow_top.length ? emailtemplate_config.shadow_top.length }}" type="number" min="0" step="1"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_top_overlap">{{ entry_overlap }}</label>
+                                <div class="input-group">
+                                  <input class="form-control" name="emailtemplate_config_shadow_top[overlap]" id="emailtemplate_config_shadow_top_overlap" value="{{ emailtemplate_config.shadow_top.overlap ? emailtemplate_config.shadow_top.overlap }}" type="number" min="0" step="1"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-0">
+                                <label for="emailtemplate_config_shadow_top_start">{{ entry_start }}</label>
+                                <div class="input-group input-colorpicker colorpicker-component">
+                                  <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.shadow_top.start %} style="background-color:{{ emailtemplate_config.shadow_top.start }};" {% endif %}></i></span></span>
+                                  <input class="form-control" type="text" id="emailtemplate_config_shadow_top_start" name="emailtemplate_config_shadow_top[start]" value="{{ emailtemplate_config.shadow_top.start }}"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_top_end">{{ entry_end }}</label>
+                                <div class="input-group input-colorpicker colorpicker-component">
+                                  <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                  <input class="form-control" type="text" id="emailtemplate_config_shadow_top_end" name="emailtemplate_config_shadow_top[end]" value="{{ emailtemplate_config.shadow_top.end }}"/>
+                                </div>
+                              </div>
+                            </div>
+                            <br/>
+                            {% if emailtemplate_config.shadow_bottom %}
+                              <div class="row">
+                                <label class="col-sm-2 control-label">{{ text_bottom }}</label>
+                                <div class="col-sm-5 col-lg-2">
+                                  <label for="emailtemplate_config_shadow_bottom_length">{{ entry_height }}</label>
+                                  <div class="input-group">
+                                    <input class="form-control" name="emailtemplate_config_shadow_bottom[length]" id="emailtemplate_config_shadow_bottom_length" value="{{ emailtemplate_config.shadow_bottom.length ? emailtemplate_config.shadow_bottom.length }}" type="number" min="0" step="1"/>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5 col-lg-2">
+                                  <label for="emailtemplate_config_shadow_bottom_overlap">{{ entry_overlap }}</label>
+                                  <div class="input-group">
+                                    <input class="form-control" name="emailtemplate_config_shadow_bottom[overlap]" id="emailtemplate_config_shadow_bottom_overlap" value="{{ emailtemplate_config.shadow_bottom.overlap ? emailtemplate_config.shadow_bottom.overlap }}" type="number" min="0" step="1"/>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-0">
+                                  <label for="emailtemplate_config_shadow_bottom_end">{{ entry_start }}</label>
+                                  <div class="input-group input-colorpicker colorpicker-component">
+                                    <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                    <input class="form-control" type="text" id="emailtemplate_config_shadow_bottom_end" name="emailtemplate_config_shadow_bottom[start]" value="{{ emailtemplate_config.shadow_bottom.start }}"/>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5 col-lg-2">
+                                  <label for="emailtemplate_config_shadow_bottom_end">{{ entry_end }}</label>
+                                  <div class="input-group input-colorpicker colorpicker-component">
+                                    <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                    <input class="form-control" type="text" id="emailtemplate_config_shadow_bottom_end" name="emailtemplate_config_shadow_bottom[end]" value="{{ emailtemplate_config.shadow_bottom.end }}"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <br/>
+                            {% endif %}
+                            <div class="row">
+                              <label class="col-sm-2 control-label">{{ text_left }}</label>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_left_length">{{ entry_width }}</label>
+                                <div class="input-group">
+                                  <input class="form-control" name="emailtemplate_config_shadow_left[length]" id="emailtemplate_config_shadow_left_length" value="{{ emailtemplate_config.shadow_left.length ? emailtemplate_config.shadow_left.length }}" type="number" min="0" step="1"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_left_overlap">{{ entry_overlap }}</label>
+                                <div class="input-group">
+                                  <input class="form-control" name="emailtemplate_config_shadow_left[overlap]" id="emailtemplate_config_shadow_left_overlap" value="{{ emailtemplate_config.shadow_left.overlap ? emailtemplate_config.shadow_left.overlap }}" type="number" min="0" step="1"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-0">
+                                <label for="emailtemplate_config_shadow_left_end">{{ entry_start }}</label>
+                                <div class="input-group input-colorpicker colorpicker-component">
+                                  <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                  <input class="form-control" type="text" id="emailtemplate_config_shadow_left_end" name="emailtemplate_config_shadow_left[start]" value="{{ emailtemplate_config.shadow_left.start }}"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_left_end">{{ entry_end }}</label>
+                                <div class="input-group input-colorpicker colorpicker-component">
+                                  <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                  <input class="form-control" type="text" id="emailtemplate_config_shadow_left_end" name="emailtemplate_config_shadow_left[end]" value="{{ emailtemplate_config.shadow_left.end }}"/>
+                                </div>
+                              </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                              <label class="col-sm-2 control-label">{{ text_right }}</label>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_right_length">{{ entry_width }}</label>
+                                <div class="input-group">
+                                  <input class="form-control" name="emailtemplate_config_shadow_right[length]" id="emailtemplate_config_shadow_right_length" value="{{ emailtemplate_config.shadow_right.length ? emailtemplate_config.shadow_right.length }}" type="number" min="0" step="1"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_right_overlap">{{ entry_overlap }}</label>
+                                <div class="input-group">
+                                  <input class="form-control" name="emailtemplate_config_shadow_right[overlap]" id="emailtemplate_config_shadow_right_overlap" value="{{ emailtemplate_config.shadow_right.overlap ? emailtemplate_config.shadow_right.overlap }}" type="number" min="0" step="1"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-0">
+                                <label for="emailtemplate_config_shadow_right_end">{{ entry_start }}</label>
+                                <div class="input-group input-colorpicker colorpicker-component">
+                                  <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                  <input type="text" class="form-control" id="emailtemplate_config_shadow_right_end" name="emailtemplate_config_shadow_right[start]" value="{{ emailtemplate_config.shadow_right.start }}"/>
+                                </div>
+                              </div>
+                              <div class="col-sm-5 col-lg-2">
+                                <label for="emailtemplate_config_shadow_right_end">{{ entry_end }}</label>
+                                <div class="input-group input-colorpicker colorpicker-component">
+                                  <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_font_color %} style="background-color:{{ emailtemplate_config.body_font_color }};" {% endif %}></i></span></span>
+                                  <input type="text" class="form-control" id="emailtemplate_config_shadow_right_end" name="emailtemplate_config_shadow_right[end]" value="{{ emailtemplate_config.shadow_right.end }}"/>
+                                </div>
+                              </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                              <label class="col-sm-2 control-label">{{ entry_corner_image }}</label>
+                              <div class="col-xs-6 col-md-3 col-lg-2">
+                                <a href="javascript:void(0)" id="thumb-shadow-top-left" data-toggle="image" style="vertical-align:middle; min-height: 20px; min-width: 20px;"><img class="img-thumbnail" src="{{ emailtemplate_config.shadow_top.left_thumb }}" alt="" data-placeholder="{{ no_shadow_image }}"/></a>
+                                <label for="image-shadow-top-left">{{ entry_top_left }}</label>
+                                <input type="hidden" name="emailtemplate_config_shadow_top[left_img]" value="{{ emailtemplate_config.shadow_top.left_img }}" id="image-shadow-top-left"/>
+                              </div>
+                              <div class="col-xs-6 col-md-3 col-lg-2">
+                                <a href="javascript:void(0)" id="thumb-shadow-top-right" data-toggle="image" style="vertical-align:middle; min-height: 20px; min-width: 20px;"><img class="img-thumbnail" src="{{ emailtemplate_config.shadow_top.right_thumb }}" alt="" data-placeholder="{{ no_shadow_image }}"/></a>
+                                <label for="image-shadow-top-right">{{ entry_top_right }}</label>
+                                <input type="hidden" name="emailtemplate_config_shadow_top[right_img]" value="{{ emailtemplate_config.shadow_top.right_img }}" id="image-shadow-top-right"/>
+                              </div>
+                              <div class="col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-0">
+                                <a href="javascript:void(0)" id="thumb-shadow-bottom-left" data-toggle="image" style="vertical-align:middle; min-height: 20px; min-width: 20px;"><img class="img-thumbnail" src="{{ emailtemplate_config.shadow_bottom.left_thumb }}" alt="" data-placeholder="{{ no_shadow_image }}"/></a>
+                                <label for="image-shadow-bottom-left">{{ entry_bottom_left }}</label>
+                                <input type="hidden" name="emailtemplate_config_shadow_bottom[left_img]" value="{{ emailtemplate_config.shadow_bottom.left_img }}" id="image-shadow-bottom-left"/>
+                              </div>
+                              <div class="col-xs-6 col-md-3 col-lg-2">
+                                <a href="javascript:void(0)" id="thumb-shadow-bottom-right" data-toggle="image" style="vertical-align:middle; min-height: 20px; min-width: 20px;"><img class="img-thumbnail" src="{{ emailtemplate_config.shadow_bottom.right_thumb }}" alt="" data-placeholder="{{ no_shadow_image }}"/></a>
+                                <label for="image-shadow-bottom-right">{{ entry_bottom_right }}</label>
+                                <input type="hidden" name="emailtemplate_config_shadow_bottom[right_img]" value="{{ emailtemplate_config.shadow_bottom.right_img }}" id="image-shadow-bottom-right"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_css_custom">{{ entry_css_custom }}</label>
+                    <div class="col-md-4">
+                      <textarea class="form-control" name="emailtemplate_config_css_custom">{{ emailtemplate_config.css_custom }}</textarea>
+                      <small class="help-block text-muted">
+                        {{ text_help_css_custom }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <!-- #tab-style -->
+                <div id="tab-page" class="tab-pane form-horizontal fade">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_footer_text">{{ entry_footer_text }}</label>
+                    <div class="col-md-10">
+                      <ul class="nav nav-tabs">
+                        {% for language in config_languages %}
+                          <li class="nav-item{{ loop.first ? ' active' }}"><a href="#" class="nav-link" data-target="#tab-page-footer-text-{{ language.code }}" data-toggle="tab" title="{{ language.name }}"><img src="language/{{ language.code }}/{{ language.code }}.png"/></a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                      <div class="tab-content">
+                        {% for language in config_languages %}
+                          <div class="tab-pane form-horizontal{{ loop.first ? ' active' }}" id="tab-page-footer-text-{{ language.code }}">
+                            <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote_language }}" name="emailtemplate_config_page_footer_text[{{ language.language_id }}]" id="emailtemplate_config_page_footer_text_{{ language.language_id }}">{{ emailtemplate_config.page_footer_text[language.language_id] }}</textarea>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_padding">{{ entry_spacing }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group mb-1">
+                        <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                        <input class="form-control" name="emailtemplate_config_page_spacing[0]" value="{{ emailtemplate_config.page_spacing[0] }}" type="number" step="1"/>
+                      </div>
+                      <div class="input-group">
+                        <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                        <input class="form-control" name="emailtemplate_config_page_spacing[1]" value="{{ emailtemplate_config.page_spacing[1] }}" type="number" step="1"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_body_section_bg_color">{{ entry_section_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.body_section_bg_color %} style="background-color:{{ emailtemplate_config.body_section_bg_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_body_section_bg_color" name="emailtemplate_config_body_section_bg_color" value="{{ emailtemplate_config.body_section_bg_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_padding">{{ entry_section_padding }}</label>
+                    <div class="col-md-4">
+                      <div class="row mb-1">
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_page_padding[0]" value="{{ emailtemplate_config.page_padding[0] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_page_padding[1]" value="{{ emailtemplate_config.page_padding[1] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_page_padding[2]" value="{{ emailtemplate_config.page_padding[2] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_page_padding[3]" value="{{ emailtemplate_config.page_padding[3] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_bg_color">{{ entry_bg_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.page_bg_color %} style="background-color:{{ emailtemplate_config.page_bg_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_page_bg_color" name="emailtemplate_config_page_bg_color" value="{{ emailtemplate_config.page_bg_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_border_radius">{{ entry_border_radius }}</label>
+                    <div class="col-md-4">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="input-group mb-1">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_page_border_radius[0]" value="{{ emailtemplate_config.page_border_radius[0] }}" type="number" min="0" step="1"/>
+                          </div>
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_page_border_radius[2]" value="{{ emailtemplate_config.page_border_radius[2] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="input-group mb-1">
+                            <input class="form-control" name="emailtemplate_config_page_border_radius[1]" value="{{ emailtemplate_config.page_border_radius[1] }}" type="number" min="0" step="1"/>
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                          </div>
+                          <div class="input-group">
+                            <input class="form-control" name="emailtemplate_config_page_border_radius[3]" value="{{ emailtemplate_config.page_border_radius[3] }}" type="number" min="0" step="1"/>
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_border_top">{{ entry_border_top }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_page_border_top[0]" value="{{ emailtemplate_config.page_border_top[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.page_border_top[1] %} style="background-color:{{ emailtemplate_config.page_border_top[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_page_border_top[1]" id="emailtemplate_config_page_border_top" value="{{ emailtemplate_config.page_border_top[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_border_right">{{ entry_border_right }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_page_border_right[0]" value="{{ emailtemplate_config.page_border_right[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.page_border_right[1] %} style="background-color:{{ emailtemplate_config.page_border_right[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_page_border_right[1]" id="emailtemplate_config_page_border_right" value="{{ emailtemplate_config.page_border_right[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_border_left">{{ entry_border_left }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_page_border_left[0]" value="{{ emailtemplate_config.page_border_left[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.page_border_left[1] %} style="background-color:{{ emailtemplate_config.page_border_left[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_page_border_left[1]" id="emailtemplate_config_page_border_left" value="{{ emailtemplate_config.page_border_left[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_page_border_bottom">{{ entry_border_bottom }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_page_border_bottom[0]" value="{{ emailtemplate_config.page_border_bottom[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.page_border_bottom[1] %} style="background-color:{{ emailtemplate_config.page_border_bottom[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_page_border_bottom[1]" id="emailtemplate_config_page_border_bottom" value="{{ emailtemplate_config.page_border_bottom[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="tab-header" class="tab-pane form-horizontal fade">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_header_status">{{ entry_status }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.header_status == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_disabled }}">
+                          <input type="radio" name="emailtemplate_config_header_status" onchange="jQuery('.collapse-header').collapse('hide');" value="0"{{ emailtemplate_config.header_status == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.header_status == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_enabled }}">
+                          <input type="radio" name="emailtemplate_config_header_status" onchange="jQuery('.collapse-header').collapse('show');" value="1"{{ emailtemplate_config.header_status == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="collapse collapse-header{{ emailtemplate_config.header_status == 1 ? ' in' }}">
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_html">{{ entry_header_html }}</label>
+                      <div class="col-md-10">
+                        <ul class="nav nav-tabs">
+                          {% for language in config_languages %}
+                            <li class="nav-item{{ loop.first ? ' active' }}"><a href="#" class="nav-link" data-target="#tab-header-html-{{ language.code }}" data-toggle="tab" title="{{ language.name }}"><img src="language/{{ language.code }}/{{ language.code }}.png"/></a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in config_languages %}
+                            <div class="tab-pane form-horizontal{{ loop.first ? ' active' }}" id="tab-header-html-{{ language.code }}">
+                              <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote_language }}" name="emailtemplate_config_header_html[{{ language.language_id }}]" id="emailtemplate_config_header_html_{{ language.language_id }}">{{ emailtemplate_config.header_html[language.language_id] }}</textarea>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_spacing">{{ entry_spacing }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group mb-1">
+                          <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                          <input class="form-control" name="emailtemplate_config_header_spacing[0]" value="{{ emailtemplate_config.header_spacing[0] }}" type="number" step="1"/>
+                        </div>
+                        <div class="input-group">
+                          <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                          <input class="form-control" name="emailtemplate_config_header_spacing[1]" value="{{ emailtemplate_config.header_spacing[1] }}" type="number" step="1"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_section_bg_color">{{ entry_section_color }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.header_section_bg_color %} style="background-color:{{ emailtemplate_config.header_section_bg_color }};" {% endif %}></i></span></span>
+                          <input class="form-control" type="text" id="emailtemplate_config_header_section_bg_color" name="emailtemplate_config_header_section_bg_color" value="{{ emailtemplate_config.header_section_bg_color }}"/>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_padding">{{ entry_section_padding }}</label>
+                      <div class="col-md-4">
+                        <div class="row mb-1">
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_header_padding[0]" value="{{ emailtemplate_config.header_padding[0] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_header_padding[1]" value="{{ emailtemplate_config.header_padding[1] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_header_padding[2]" value="{{ emailtemplate_config.header_padding[2] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_header_padding[3]" value="{{ emailtemplate_config.header_padding[3] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_height">{{ entry_height }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control" id="emailtemplate_config_header_height" name="emailtemplate_config_header_height" value="{{ emailtemplate_config.header_height }}" step="1" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_bg_color">{{ entry_bg_color }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.header_bg_color %} style="background-color:{{ emailtemplate_config.header_bg_color }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" id="emailtemplate_config_header_bg_color" name="emailtemplate_config_header_bg_color" value="{{ emailtemplate_config.header_bg_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_bg_image">{{ entry_bg_image }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group">
+                          <a href="javascript:void(0)" id="thumb-header-bg" data-toggle="image"><img class="img-thumbnail" src="{{ emailtemplate_config.header_bg_image_thumb }}" alt="" data-placeholder="{{ no_image }}"/></a>
+                          <input type="hidden" name="emailtemplate_config_header_bg_image" value="{{ emailtemplate_config.header_bg_image }}" id="input-header-bg"/>
+                          {% if error_emailtemplate_config_header_bg_image is not empty %}<span class="text-danger">{{ error_emailtemplate_config_header_bg_image }}</span>{% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_border_radius">{{ entry_border_radius }}</label>
+                      <div class="col-md-4">
+                        <div class="row">
+                          <div class="col-sm-6 col-md-12 col-lg-6">
+                            <div class="input-group mb-1">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_header_border_radius[0]" value="{{ emailtemplate_config.header_border_radius[0] }}" type="number" min="0" step="1"/>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_header_border_radius[2]" value="{{ emailtemplate_config.header_border_radius[2] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                          <div class="col-sm-6 col-md-12 col-lg-6">
+                            <div class="input-group mb-1">
+                              <input class="form-control" name="emailtemplate_config_header_border_radius[1]" value="{{ emailtemplate_config.header_border_radius[1] }}" type="number" min="0" step="1"/>
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            </div>
+                            <div class="input-group">
+                              <input class="form-control" name="emailtemplate_config_header_border_radius[3]" value="{{ emailtemplate_config.header_border_radius[3] }}" type="number" min="0" step="1"/>
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_border_top">{{ entry_border_top }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_header_border_top[0]" value="{{ emailtemplate_config.header_border_top[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.header_border_top[1] %} style="background-color:{{ emailtemplate_config.header_border_top[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_header_border_top[1]" id="emailtemplate_config_header_border_top" value="{{ emailtemplate_config.header_border_top[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_border_bottom">{{ entry_border_bottom }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_header_border_bottom[0]" value="{{ emailtemplate_config.header_border_bottom[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.header_border_bottom[1] %} style="background-color:{{ emailtemplate_config.header_border_bottom[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_header_border_bottom[1]" id="emailtemplate_config_header_border_bottom" value="{{ emailtemplate_config.header_border_bottom[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_border_left">{{ entry_border_left }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_header_border_left[0]" value="{{ emailtemplate_config.header_border_left[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.header_border_left[1] %} style="background-color:{{ emailtemplate_config.header_border_left[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_header_border_left[1]" id="emailtemplate_config_header_border_left" value="{{ emailtemplate_config.header_border_left[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_header_border_right">{{ entry_border_right }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_header_border_right[0]" value="{{ emailtemplate_config.header_border_right[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.header_border_right[1] %} style="background-color:{{ emailtemplate_config.header_border_right[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_header_border_right[1]" id="emailtemplate_config_header_border_right" value="{{ emailtemplate_config.header_border_right[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_logo }}</label>
+                      <div class="col-md-4">
+                        <a href="javascript:void(0)" id="thumb-logo" data-toggle="image"><img class="img-thumbnail" src="{{ emailtemplate_config.logo_thumb }}" alt="" data-placeholder="{{ no_image }}"/></a>
+                        <input type="hidden" name="emailtemplate_config_logo" value="{{ emailtemplate_config.logo }}" id="input-logo"/>
+                        {% if error_emailtemplate_config_logo is not empty %}<span class="text-danger">{{ error_emailtemplate_config_logo }}</span>{% endif %} <small class="help-block text-muted">{{ text_help_logo }}</small>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_logo_align">{{ entry_logo_align }}</label>
+                      <div class="col-md-4">
+                        <select name="emailtemplate_config_logo_align" id="emailtemplate_config_logo_align" class="form-control">
+                          <option value="center" {{ emailtemplate_config.logo_align == 'center' ? ' selected="selected" ' }}>{{ text_center }}</option>
+                          <option value="left" {{ emailtemplate_config.logo_align == 'left' ? ' selected="selected" ' }}>{{ text_left }}</option>
+                          <option value="right" {{ emailtemplate_config.logo_align == 'right' ? ' selected="selected" ' }}>{{ text_right }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_logo_width">{{ entry_logo_size }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-group-sm mb-1">
+                          <span class="input-group-addon add-on"><span class="input-group-text">{{ text_width }} <i class="fa fa-arrows-h fa-fw"></i></span></span>
+                          <input class="form-control" name="emailtemplate_config_logo_width" id="emailtemplate_config_logo_width" value="{{ emailtemplate_config.logo_width }}" type="number" min="0" step="1"/>
+                        </div>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon add-on"><span class="input-group-text">{{ text_height }} <i class="fa fa-arrows-v fa-fw"></i></span></span>
+                          <input class="form-control" name="emailtemplate_config_logo_height" id="emailtemplate_config_logo_height" value="{{ emailtemplate_config.logo_height }}" type="number" min="0" step="1"/>
+                        </div>
+                        <small class="help-block text-muted">{{ text_help_logo_size }}</small>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_logo_resize">{{ entry_logo_resize }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.logo_resize == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_logo_resize" value="0" {{ emailtemplate_config.logo_resize == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.logo_resize == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_logo_resize" value="1" {{ emailtemplate_config.logo_resize == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_logo_font_size">{{ entry_font_size }}</label>
+                      <div class="col-md-4">
+                        <input class="form-control" id="emailtemplate_config_logo_font_size" name="emailtemplate_config_logo_font_size" value="{{ emailtemplate_config.logo_font_size }}" type="number" min="0" step="1"/>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_logo_font_color">{{ text_text_color }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.logo_font_color %} style="background-color:{{ emailtemplate_config.logo_font_color }};" {% endif %}></i></span></span>
+                          <input class="form-control" type="text" id="emailtemplate_config_logo_font_color" name="emailtemplate_config_logo_font_color" value="{{ emailtemplate_config.logo_font_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_head_text">{{ entry_head_text }}</label>
+                      <div class="col-md-10">
+                        <ul class="nav nav-tabs">
+                          {% for language in config_languages %}
+                            <li class="nav-item{{ loop.first ? ' active' }}"><a href="#" class="nav-link" data-target="#tab-head-text-{{ language.code }}" data-toggle="tab" title="{{ language.name }}"><img src="language/{{ language.code }}/{{ language.code }}.png"/></a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in config_languages %}
+                            <div class="tab-pane form-horizontal{{ loop.first ? ' active' }}" id="tab-head-text-{{ language.code }}">
+                              <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote_language }}" name="emailtemplate_config_head_text[{{ language.language_id }}]" id="emailtemplate_config_head_text_{{ language.language_id }}">{{ emailtemplate_config.head_text[language.language_id] }}</textarea>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- #tab-header -->
+                <div id="tab-footer" class="tab-pane form-horizontal fade">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_footer_status">{{ entry_status }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.footer_status == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_disabled }}">
+                          <input type="radio" name="emailtemplate_config_footer_status" onchange="jQuery('.collapse-footer').collapse('hide');" value="0"{{ emailtemplate_config.footer_status == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.footer_status == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_enabled }}">
+                          <input type="radio" name="emailtemplate_config_footer_status" onchange="jQuery('.collapse-footer').collapse('show');" value="1"{{ emailtemplate_config.footer_status == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="collapse collapse-footer{{ emailtemplate_config.footer_status == 1 ? ' in' }}">
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_text">{{ entry_footer_text }}</label>
+                      <div class="col-md-10">
+                        <ul class="nav nav-tabs">
+                          {% for language in config_languages %}
+                            <li class="nav-item{{ loop.first ? ' active' }}"><a href="#" class="nav-link" data-target="#tab-footer-text-{{ language.code }}" data-toggle="tab" title="{{ language.name }}"><img src="language/{{ language.code }}/{{ language.code }}.png"/></a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in config_languages %}
+                            <div class="tab-pane form-horizontal{{ loop.first ? ' active' }}" id="tab-footer-text-{{ language.code }}">
+                              <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote_language }}" name="emailtemplate_config_footer_text[{{ language.language_id }}]" id="emailtemplate_config_footer_text_{{ language.language_id }}">{{ emailtemplate_config.footer_text[language.language_id] }}</textarea>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_spacing  ">{{ entry_spacing }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group mb-1">
+                          <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                          <input class="form-control" name="emailtemplate_config_footer_spacing[0]" value="{{ emailtemplate_config.footer_spacing[0] }}" type="number" step="1"/>
+                        </div>
+                        <div class="input-group">
+                          <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                          <input class="form-control" name="emailtemplate_config_footer_spacing[1]" value="{{ emailtemplate_config.footer_spacing[1] }}" type="number" step="1"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_bg_color">{{ entry_bg_color }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_bg_color %} style="background-color:{{ emailtemplate_config.footer_bg_color }};" {% endif %}></i></span></span>
+                          <input class="form-control" type="text" id="emailtemplate_config_footer_bg_color" name="emailtemplate_config_footer_bg_color" value="{{ emailtemplate_config.footer_bg_color }}"/>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_section_bg_color">{{ entry_section_color }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_section_bg_color %} style="background-color:{{ emailtemplate_config.footer_section_bg_color }};" {% endif %}></i></span></span>
+                          <input class="form-control" type="text" id="emailtemplate_config_footer_section_bg_color" name="emailtemplate_config_footer_section_bg_color" value="{{ emailtemplate_config.footer_section_bg_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_border_top">{{ entry_border_top }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_footer_border_top[0]" value="{{ emailtemplate_config.footer_border_top[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <input type="text" class="form-control" name="emailtemplate_config_footer_border_top[1]" id="emailtemplate_config_footer_border_top" value="{{ emailtemplate_config.footer_border_top[1] }}" placeholder="{{ text_color }}"/>
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_border_top[1] %} style="background-color:{{ emailtemplate_config.footer_border_top[1] }};" {% endif %}></i></span></span>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_border_bottom">{{ entry_border_bottom }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_footer_border_bottom[0]" value="{{ emailtemplate_config.footer_border_bottom[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_border_bottom[1] %} style="background-color:{{ emailtemplate_config.footer_border_bottom[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_footer_border_bottom[1]" id="emailtemplate_config_footer_border_bottom" value="{{ emailtemplate_config.footer_border_bottom[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_border_left">{{ entry_border_left }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_footer_border_left[0]" value="{{ emailtemplate_config.footer_border_left[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_border_left[1] %} style="background-color:{{ emailtemplate_config.footer_border_left[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_footer_border_left[1]" id="emailtemplate_config_footer_border_left" value="{{ emailtemplate_config.footer_border_left[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_border_right">{{ entry_border_right }}</label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control mb-1 col-3 col-lg-2" name="emailtemplate_config_footer_border_right[0]" value="{{ emailtemplate_config.footer_border_right[0] }}" min="0" step="1" placeholder="0"/>
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_border_right[1] %} style="background-color:{{ emailtemplate_config.footer_border_right[1] }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" name="emailtemplate_config_footer_border_right[1]" id="emailtemplate_config_footer_border_right" value="{{ emailtemplate_config.footer_border_right[1] }}" placeholder="{{ text_color }}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_padding">{{ entry_section_padding }}</label>
+                      <div class="col-md-4">
+                        <div class="row mb-1">
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_footer_padding[0]" value="{{ emailtemplate_config.footer_padding[0] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_footer_padding[1]" value="{{ emailtemplate_config.footer_padding[1] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_footer_padding[2]" value="{{ emailtemplate_config.footer_padding[2] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                          <div class="col-xs-6">
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_footer_padding[3]" value="{{ emailtemplate_config.footer_padding[3] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_border_radius">{{ entry_border_radius }}</label>
+                      <div class="col-md-4">
+                        <div class="row">
+                          <div class="col-sm-6 col-md-12 col-lg-6">
+                            <div class="input-group mb-1">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_footer_border_radius[0]" value="{{ emailtemplate_config.footer_border_radius[0] }}" type="number" min="0" step="1"/>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                              <input class="form-control" name="emailtemplate_config_footer_border_radius[2]" value="{{ emailtemplate_config.footer_border_radius[2] }}" type="number" min="0" step="1"/>
+                            </div>
+                          </div>
+                          <div class="col-sm-6 col-md-12 col-lg-6">
+                            <div class="input-group mb-1">
+                              <input class="form-control" name="emailtemplate_config_footer_border_radius[1]" value="{{ emailtemplate_config.footer_border_radius[1] }}" type="number" min="0" step="1"/>
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            </div>
+                            <div class="input-group">
+                              <input class="form-control" name="emailtemplate_config_footer_border_radius[3]" value="{{ emailtemplate_config.footer_border_radius[3] }}" type="number" min="0" step="1"/>
+                              <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_font_color">{{ text_text_color }}</label>
+                      <div class="col-md-4">
+                        <div class="input-group input-colorpicker colorpicker-component">
+                          <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.footer_font_color %} style="background-color:{{ emailtemplate_config.footer_font_color }};" {% endif %}></i></span></span>
+                          <input type="text" class="form-control" id="emailtemplate_config_footer_font_color" name="emailtemplate_config_footer_font_color" value="{{ emailtemplate_config.footer_font_color }}"/>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_footer_font_size">{{ entry_font_size }}</label>
+                      <div class="col-md-4">
+                        <input class="form-control" id="emailtemplate_config_footer_font_size" name="emailtemplate_config_footer_font_size" value="{{ emailtemplate_config.footer_font_size }}" type="number" min="0" step="1"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- #tab-footer -->
+                <div id="tab-product" class="tab-pane form-horizontal fade">
+                  <fieldset class="form-section mb-5">
+                    <legend class="h4">{{ heading_order_confirm }}</legend>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_layout }}</label>
+                      <div class="col-md-10">
+                        <div><a href="#collapse-order-products-type" class="btn btn-info collapsed" data-toggle="collapse"><i class="fa fa-chevron-right fa-fw" ></i> {{ button_settings }}</a></div>
+                        <div class="collapse well mt-2" id="collapse-order-products-type">
+                          {% for order_products_template in order_products_templates %}
+                          <label class="form-check-image">
+                            {% if _context['text_layout_' ~ order_products_template] is defined %}{{ attribute(_context, 'text_layout_' ~ order_products_template) }}{% else %}{{ order_products_template }}{% endif %}
+                            <input class="form-check-image-input" type="radio" id="emailtemplate_config_order_products_{{  order_products_template }}" name="emailtemplate_config_order_products[layout]" value="{{ order_products_template }}"{{ emailtemplate_config.order_products.layout == order_products_template ? ' checked' : '' }} />
+                            <span class="form-check-image-label img-order-style img-style-{{ order_products_template }}" for="emailtemplate_config_order_products_{{ order_products_template }}"></span>
+                          </label>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_image }}</label>
+                      <div class="col-md-10">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.image == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[image]" onchange="jQuery('.collapse-order-products-image').collapse('hide')" value="0" {{ emailtemplate_config.order_products.image == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.image == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[image]" onchange="jQuery('.collapse-order-products-image').collapse('show')" value="1" {{ emailtemplate_config.order_products.image == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                        <div class="btn-group" style="max-width:320px;vertical-align:top;margin-left:10px;">
+                          <div class="collapse collapse-order-products-image{{ emailtemplate_config.order_products.image == 1 ? ' in' }}">
+                            <div class="input-group mb-1">
+                              <span class="input-group-addon"><span class="input-group-text">{{ text_width }}</span></span>
+                              <input class="form-control" name="emailtemplate_config_order_products[image_width]" id="emailtemplate_config_order_products_image_width" value="{{ emailtemplate_config.order_products.image_width }}" placeholder="{{ text_width }}" type="number" step="1" min="0"/>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text">{{ text_height }}</span></span>
+                              <input class="form-control" name="emailtemplate_config_order_products[image_height]" id="emailtemplate_config_order_products_image_height" value="{{ emailtemplate_config.order_products.image_height }}" placeholder="{{ text_height }}" type="number" step="1" min="0"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_order_products_option_length">{{ entry_product_option_length }}</label>
+                      <div class="col-md-4">
+                        <input class="form-control" id="emailtemplate_config_order_products_option_length" name="emailtemplate_config_order_products[option_length]" value="{{ emailtemplate_config.order_products.option_length }}" type="number" min="0" step="1" />
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_option_image }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.option_image == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[option_image]" value="0" {{ emailtemplate_config.order_products.option_image == 0 ? ' checked="checked"' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.option_image == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[option_image]" value="1" {{ emailtemplate_config.order_products.option_image == 1 ? ' checked="checked"' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_order_products_description">{{ entry_product_description }}</label>
+                      <div class="col-md-4">
+                        <input class="form-control" id="emailtemplate_config_order_products_description" name="emailtemplate_config_order_products[description]" value="{{ emailtemplate_config.order_products.description }}" type="number" min="0" step="1"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_price }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.price == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[price]" value="0" {{ emailtemplate_config.order_products.price == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.price == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[price]" value="1" {{ emailtemplate_config.order_products.price == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_rating }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.rating == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[rating]" value="0" {{ emailtemplate_config.order_products.rating == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.rating == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[rating]" value="1" {{ emailtemplate_config.order_products.rating == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_model }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.model == 0 ? ' active' : '' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[model]" value="0" {{ emailtemplate_config.order_products.model == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.model == 1 ? ' active' : '' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[model]" value="1" {{ emailtemplate_config.order_products.model == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_sku }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.sku == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[sku]" value="0" {{ emailtemplate_config.order_products.sku == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.sku == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[sku]" value="1" {{ emailtemplate_config.order_products.sku == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_order_table_quantity_column">{{ entry_quantity_column }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.quantity_column == 0 ? ' active' : '' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[quantity_column]" value="0" {{ emailtemplate_config.order_products.quantity_column == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.quantity_column == 1 ? ' active' : '' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[quantity_column]" value="1" {{ emailtemplate_config.order_products.quantity_column == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label" for="emailtemplate_config_order_table_admin_stock">{{ entry_admin_stock }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_products.admin_stock == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_products[admin_stock]" value="0" {{ emailtemplate_config.order_products.admin_stock == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_products.admin_stock == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_products[admin_stock]" value="1" {{ emailtemplate_config.order_products.admin_stock == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="form-section mb-5">
+                    <legend class="h4">{{ heading_order_update }}</legend>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_layout }}</label>
+                      <div class="col-md-4">
+                        <select name="emailtemplate_config_order_update[layout]" class="form-control">
+                          <option value="">{{ text_select }}</option>
+                          {% for order_products_template in order_products_templates %}
+                            <option value="{{ order_products_template }}" {{ emailtemplate_config.order_update.layout == order_products_template ? ' selected="selected" ' : '' }}>
+                              {% if _context['text_layout_' ~ order_products_template] is defined %}{{ attribute(_context, 'text_layout_' ~ order_products_template) }}{% else %}{{ order_products_template }}{% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_image }}</label>
+                      <div class="col-md-10">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_update.image == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_update[image]" onchange="jQuery('.collapse-order-setting-image').collapse('hide')" value="0" {{ emailtemplate_config.order_update.image == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_update.image == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_update[image]" onchange="jQuery('.collapse-order-setting-image').collapse('show')" value="1" {{ emailtemplate_config.order_update.image == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                        <div class="btn-group" style="max-width:320px;vertical-align:top;margin-left:10px;">
+                          <div class="collapse collapse-order-setting-image{{ emailtemplate_config.order_update.image == 1 ? ' in' }}">
+                            <div class="input-group mb-1">
+                              <span class="input-group-addon"><span class="input-group-text">{{ text_width }}</span></span>
+                              <input class="form-control" name="emailtemplate_config_order_update[image_width]" id="emailtemplate_config_order_update_image_width" value="{{ emailtemplate_config.order_update.image_width }}" placeholder="{{ text_width }}" type="number" step="1" min="0"/>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text">{{ text_height }}</span></span>
+                              <input class="form-control" name="emailtemplate_config_order_update[image_height]" id="emailtemplate_config_order_update_image_height" value="{{ emailtemplate_config.order_update.image_height }}" placeholder="{{ text_height }}" type="number" step="1" min="0"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_order_update_description">{{ entry_product_description }}</label>
+                      <div class="col-md-4">
+                        <input class="form-control" id="emailtemplate_config_order_update_description" name="emailtemplate_config_order_update[description]" value="{{ emailtemplate_config.order_update.description }}" type="number" min="0" step="1"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_price }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_update.price == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_update[price]" value="0" {{ emailtemplate_config.order_update.price == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_update.price == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_update[price]" value="1" {{ emailtemplate_config.order_update.price == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_rating }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_update.rating == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_update[rating]" value="0" {{ emailtemplate_config.order_update.rating == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_update.rating == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_update[rating]" value="1" {{ emailtemplate_config.order_update.rating == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_model }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_update.model == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_update[model]" value="0" {{ emailtemplate_config.order_update.model == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_update.model == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_update[model]" value="1" {{ emailtemplate_config.order_update.model == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_sku }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_update.sku == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_update[sku]" value="0" {{ emailtemplate_config.order_update.sku == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_update.sku == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_update[sku]" value="1" {{ emailtemplate_config.order_update.sku == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_option }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.order_update.option == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_order_update[option]" value="0" {{ emailtemplate_config.order_update.option == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.order_update.option == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_order_update[option]" value="1" {{ emailtemplate_config.order_update.option == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="form-section">
+                    <legend class="h4">{{ heading_cart_product }}</legend>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_layout }}</label>
+                      <div class="col-md-4">
+                        <select name="emailtemplate_config_cart_setting[layout]" class="form-control">
+                          <option value="">{{ text_select }}</option>
+                          {% for order_products_template in order_products_templates %}
+                            <option value="{{ order_products_template }}" {{ emailtemplate_config.cart_setting.layout == order_products_template ? ' selected="selected" ' : '' }}>
+                              {% if _context['text_layout_' ~ order_products_template] is defined %}{{ attribute(_context, 'text_layout_' ~ order_products_template) }}{% else %}{{ order_products_template }}{% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_image }}</label>
+                      <div class="col-md-10">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.cart_setting.image == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[image]" onchange="jQuery('.collapse-cart-setting-image').collapse('hide')" value="0" {{ emailtemplate_config.cart_setting.image == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.cart_setting.image == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[image]" onchange="jQuery('.collapse-cart-setting-image').collapse('show')" value="1" {{ emailtemplate_config.cart_setting.image == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                        <div class="btn-group" style="max-width:320px;vertical-align:top;margin-left:10px;">
+                          <div class="collapse collapse-cart-setting-image{{ emailtemplate_config.cart_setting.image == 1 ? ' in' }}">
+                            <div class="input-group mb-1">
+                              <span class="input-group-addon"><span class="input-group-text">{{ text_width }}</span></span>
+                              <input class="form-control" name="emailtemplate_config_cart_setting[image_width]" id="emailtemplate_config_cart_setting_image_width" value="{{ emailtemplate_config.cart_setting.image_width }}" placeholder="{{ text_width }}" type="number" step="1" min="0"/>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon"><span class="input-group-text">{{ text_height }}</span></span>
+                              <input class="form-control" name="emailtemplate_config_cart_setting[image_height]" id="emailtemplate_config_cart_setting_image_height" value="{{ emailtemplate_config.cart_setting.image_height }}" placeholder="{{ text_height }}" type="number" step="1" min="0"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label" for="emailtemplate_config_cart_setting_description">{{ entry_product_description }}</label>
+                      <div class="col-md-4">
+                        <input class="form-control" id="emailtemplate_config_cart_setting_description" name="emailtemplate_config_cart_setting[description]" value="{{ emailtemplate_config.cart_setting.description }}" type="number" min="0" step="1"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_price }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.cart_setting.price == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[price]" value="0" {{ emailtemplate_config.cart_setting.price == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.cart_setting.price == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[price]" value="1" {{ emailtemplate_config.cart_setting.price == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_rating }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.cart_setting.rating == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[rating]" value="0" {{ emailtemplate_config.cart_setting.rating == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.cart_setting.rating == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[rating]" value="1" {{ emailtemplate_config.cart_setting.rating == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_model }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.cart_setting.model == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[model]" value="0" {{ emailtemplate_config.cart_setting.model == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.cart_setting.model == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[model]" value="1" {{ emailtemplate_config.cart_setting.model == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <label class="col-md-2 control-label">{{ entry_product_sku }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.cart_setting.sku == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[sku]" value="0" {{ emailtemplate_config.cart_setting.sku == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.cart_setting.sku == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[sku]" value="1" {{ emailtemplate_config.cart_setting.sku == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 control-label">{{ entry_product_option }}</label>
+                      <div class="col-md-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-default danger {{ emailtemplate_config.cart_setting.option == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[option]" value="0" {{ emailtemplate_config.cart_setting.option == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                          </label>
+                          <label class="btn btn-default success {{ emailtemplate_config.cart_setting.option == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                            <input type="radio" name="emailtemplate_config_cart_setting[option]" value="1" {{ emailtemplate_config.cart_setting.option == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div id="tab-showcase" class="tab-pane form-horizontal fade">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">{{ entry_title }}</label>
+                    <div class="col-md-4">
+                      {% for language in config_languages %}
+                        <div class="input-group"{{ not loop.first ? ' style="margin-top:10px;"' : '' }}>
+                          <span class="input-group-addon"><span class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span></span>
+                          <input type="text" name="emailtemplate_config_showcase_title[{{ language.language_id }}]" value="{% if emailtemplate_config.showcase_title[language.language_id] is defined %}{{ emailtemplate_config.showcase_title[language.language_id] }}{% endif %}" placeholder="{{ entry_title }}" class="form-control"/>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_setting_limit">{{ entry_limit }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_showcase_setting_limit" name="emailtemplate_config_showcase_setting[limit]" value="{{ emailtemplate_config.showcase_setting.limit }}" type="number" min="0" step="1"/>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_setting_per_row">{{ entry_per_row }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_showcase_setting_per_row" name="emailtemplate_config_showcase_setting[per_row]" value="{{ emailtemplate_config.showcase_setting.per_row }}" type="number" min="0" step="1"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase">{{ entry_showcase }}</label>
+                    <div class="col-md-4">
+                      <select class="form-control" name="emailtemplate_config_showcase" id="emailtemplate_config_showcase">
+                        <option value="">{{ text_select }}</option>
+                        <option value="none"{{ emailtemplate_config.showcase == 'none' ? ' selected="selected"' }}>{{ text_disabled }}</option>
+                        <option value="products"{{ emailtemplate_config.showcase == 'products' ? ' selected="selected"' }}>{{ text_custom }}</option>
+                        <option value="latest"{{ emailtemplate_config.showcase == 'latest' ? ' selected="selected"' }}>{{ text_latest }}</option>
+                        <option value="bestsellers"{{ emailtemplate_config.showcase == 'bestsellers' ? ' selected="selected"' }}>{{ text_bestsellers }}</option>
+                        <option value="popular"{{ emailtemplate_config.showcase == 'popular' ? ' selected="selected"' }}>{{ text_popular }}</option>
+                        <option value="specials"{{ emailtemplate_config.showcase == 'specials' ? ' selected="selected"' }}>{{ text_specials }}</option>
+                        <option value="random"{{ emailtemplate_config.showcase == 'random' ? ' selected="selected"' }}>{{ text_random }}</option>
+                      </select>
+                      <input type="hidden" name="emailtemplate_config_showcase_selection" value="{{ emailtemplate_config.showcase_selection }}" />
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group collapse-showcase showcase_products collapse{% if emailtemplate_config.showcase == 'products' %} in{% endif %}" style="margin-top:0;margin-bottom:0;">
+                        <label class="col-md-4 control-label" for="emailtemplate_config_showcase_selection">{{ entry_product }}</label>
+                        <div class="col-md-8">
+                          <div class="input-group">
+                            <input class="form-control input-autocomplete-product" id="emailtemplate_config_showcase_selection" data-field="input[name=emailtemplate_config_showcase_selection]" data-output="#emailtemplate_config_showcase_output" type="text" name="" value="" autocomplete="off" placeholder="{{ text_search }}" />
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-fw fa-search"></i></span></span>
+                          </div>
+                          <div id="emailtemplate_config_showcase_output">
+                            <ul class="list-group list-group-small" style="margin-top:6px;">
+                              {% if showcase_selection is not empty %}
+                                {% for row in showcase_selection %}
+                                  <li class="list-group-item" data-id="{{ row.product_id }}"><a href="javascript:void(0)" class="badge remove list-group-item-danger" data-toggle="tooltip" title="{{ button_remove }}"><i class="fa fa-fw fa-times"></i></a> {{ row.name }}</li>
+                                {% endfor %}
+                              {% endif %}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">{{ entry_showcase_cycle }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.showcase_setting.cycle == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[cycle]" value="0" {{ emailtemplate_config.showcase_setting.cycle == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.showcase_setting.cycle == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[cycle]" value="1" {{ emailtemplate_config.showcase_setting.cycle == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label">{{ entry_showcase_related }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.showcase_setting.related == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[related]" value="0" {{ emailtemplate_config.showcase_setting.related == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.showcase_setting.related == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[related]" value="1" {{ emailtemplate_config.showcase_setting.related == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">{{ entry_product_price }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.showcase_setting.price == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[price]" value="0" {{ emailtemplate_config.showcase_setting.price == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.showcase_setting.price == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[price]" value="1" {{ emailtemplate_config.showcase_setting.price == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label">{{ entry_product_price_tax }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.showcase_setting.price_tax == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[price_tax]" value="0" {{ emailtemplate_config.showcase_setting.price_tax == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.showcase_setting.price_tax == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[price_tax]" value="1" {{ emailtemplate_config.showcase_setting.price_tax == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">{{ entry_product_image }}</label>
+                    <div class="col-md-10">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.showcase_setting.image == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[image]" onchange="jQuery('.collapse-showcase-setting-image').collapse('hide')" value="0" {{ emailtemplate_config.showcase_setting.image == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.showcase_setting.image == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[image]" onchange="jQuery('.collapse-showcase-setting-image').collapse('show')" value="1" {{ emailtemplate_config.showcase_setting.image == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                      <div class="btn-group" style="max-width:320px;vertical-align:top;margin-left:10px;">
+                        <div class="collapse collapse-showcase-setting-image{{ emailtemplate_config.showcase_setting.image == 1 ? ' in' }}">
+                          <div class="input-group mb-1">
+                            <span class="input-group-addon"><span class="input-group-text">{{ text_width }}</span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_setting[image_width]" id="emailtemplate_config_showcase_setting_image_width" value="{{ emailtemplate_config.showcase_setting.image_width }}" placeholder="{{ text_width }}" type="number" step="1" min="0"/>
+                          </div>
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text">{{ text_height }}</span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_setting[image_height]" id="emailtemplate_config_showcase_setting_image_height" value="{{ emailtemplate_config.showcase_setting.image_height }}" placeholder="{{ text_height }}" type="number" step="1" min="0"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">{{ entry_product_rating }}</label>
+                    <div class="col-md-4">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default danger {{ emailtemplate_config.showcase_setting.rating == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[rating]" value="0" {{ emailtemplate_config.showcase_setting.rating == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                        </label>
+                        <label class="btn btn-default success {{ emailtemplate_config.showcase_setting.rating == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                          <input type="radio" name="emailtemplate_config_showcase_setting[rating]" value="1" {{ emailtemplate_config.showcase_setting.rating == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                        </label>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" id="emailtemplate_config_showcase_setting_min_stock">{{ entry_product_min_stock }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_showcase_setting_min_stock" name="emailtemplate_config_showcase_setting[min_stock]" value="{{ emailtemplate_config.showcase_setting.min_stock }}" type="number" min="0" step="1"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_setting_description">{{ entry_product_description }}</label>
+                    <div class="col-md-4">
+                      <input class="form-control" id="emailtemplate_config_showcase_setting_description" name="emailtemplate_config_showcase_setting[description]" value="{{ emailtemplate_config.showcase_setting.description }}" type="number" min="0" step="1"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_padding">{{ entry_section_padding }}</label>
+                    <div class="col-md-4">
+                      <div class="row mb-1">
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_padding[0]" value="{{ emailtemplate_config.showcase_padding[0] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_padding[1]" value="{{ emailtemplate_config.showcase_padding[1] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_padding[2]" value="{{ emailtemplate_config.showcase_padding[2] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_padding[3]" value="{{ emailtemplate_config.showcase_padding[3] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_border_radius">{{ entry_border_radius }}</label>
+                    <div class="col-md-4">
+                      <div class="row">
+                        <div class="col-sm-6 col-md-12 col-lg-6">
+                          <div class="input-group mb-1">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-up fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_border_radius[0]" value="{{ emailtemplate_config.showcase_border_radius[0] }}" type="number" min="0" step="1"/>
+                          </div>
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-left fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_border_radius[3]" value="{{ emailtemplate_config.showcase_border_radius[3] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 col-md-12 col-lg-6">
+                          <div class="input-group mb-1">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-right fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_border_radius[1]" value="{{ emailtemplate_config.showcase_border_radius[1] }}" type="number" min="0" step="1"/>
+                          </div>
+                          <div class="input-group">
+                            <span class="input-group-addon"><span class="input-group-text"><i class="fa fa-arrow-down fa-fw" style="transform: rotate(-45deg);"></i></span></span>
+                            <input class="form-control" name="emailtemplate_config_showcase_border_radius[2]" value="{{ emailtemplate_config.showcase_border_radius[2] }}" type="number" min="0" step="1"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_bg_color">{{ entry_bg_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.showcase_bg_color %} style="background-color:{{ emailtemplate_config.showcase_bg_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_showcase_bg_color" name="emailtemplate_config_showcase_bg_color" value="{{ emailtemplate_config.showcase_bg_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_section_bg_color">{{ entry_section_color }}</label>
+                    <div class="col-md-4">
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.showcase_section_bg_color %} style="background-color:{{ emailtemplate_config.showcase_section_bg_color }};" {% endif %}></i></span></span>
+                        <input class="form-control" type="text" id="emailtemplate_config_showcase_section_bg_color" name="emailtemplate_config_showcase_section_bg_color" value="{{ emailtemplate_config.showcase_section_bg_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_border_top">{{ entry_border_top }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1" name="emailtemplate_config_showcase_border_top[0]" value="{{ emailtemplate_config.showcase_border_top[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.showcase_border_top[1] %} style="background-color:{{ emailtemplate_config.showcase_border_top[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_showcase_border_top[1]" id="emailtemplate_config_showcase_border_top" value="{{ emailtemplate_config.showcase_border_top[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_border_right">{{ entry_border_right }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1" name="emailtemplate_config_showcase_border_right[0]" value="{{ emailtemplate_config.showcase_border_right[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.showcase_border_right[1] %} style="background-color:{{ emailtemplate_config.showcase_border_right[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_showcase_border_right[1]" id="emailtemplate_config_showcase_border_right" value="{{ emailtemplate_config.showcase_border_right[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_border_left">{{ entry_border_left }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1" name="emailtemplate_config_showcase_border_left[0]" value="{{ emailtemplate_config.showcase_border_left[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.showcase_border_left[1] %} style="background-color:{{ emailtemplate_config.showcase_border_left[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_showcase_border_left[1]" id="emailtemplate_config_showcase_border_left" value="{{ emailtemplate_config.showcase_border_left[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                    <label class="col-md-2 control-label" for="emailtemplate_config_showcase_border_bottom">{{ entry_border_bottom }}</label>
+                    <div class="col-md-4">
+                      <input type="number" class="form-control mb-1" name="emailtemplate_config_showcase_border_bottom[0]" value="{{ emailtemplate_config.showcase_border_bottom[0] }}" min="0" step="1" placeholder="0"/>
+                      <div class="input-group input-colorpicker colorpicker-component">
+                        <span class="input-group-addon add-on"><span class="input-group-text"><i{% if emailtemplate_config.showcase_border_bottom[1] %} style="background-color:{{ emailtemplate_config.showcase_border_bottom[1] }};" {% endif %}></i></span></span>
+                        <input type="text" class="form-control" name="emailtemplate_config_showcase_border_bottom[1]" id="emailtemplate_config_showcase_border_bottom" value="{{ emailtemplate_config.showcase_border_bottom[1] }}" placeholder="{{ text_color }}"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- #tab-showcase -->
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="preview-mail" class="panel panel-default panel-inbox">
+        <div class="panel-heading">
+          <i class="fa fa-eye"></i> {{ heading_preview }}
+          <div class="panel-heading-action">
+            {% if emailtemplate_config.language_id == 0 and languages|length > 1 %}
+              <div class="btn-group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><img src="language/{{ languages|first['code'] }}/{{ languages|first['code'] }}.png" title="{{ languages|first['name'] }}"/></button>
+                <ul class="dropdown-menu dropdown-menu-right" id="preview-language" role="menu">
+                  {% for language in languages %}
+                    <li class="{{ loop.first ? ' active' }}"><a href="#" class="dropdown-item" data-language="{{ language.language_id }}"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/> <span>{{ language.name }}</span></a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+            <div class="btn-group">
+              <button class="btn btn-default media-icon selected" data-width="100%" data-toggle="tooltip" title="{{ text_desktop }}"><i data-width="100%" class="fa fa-desktop"></i></button>
+              <button class="btn btn-default media-icon" data-width="768px" data-toggle="tooltip" title="{{ text_tablet }}"><i class="fa fa-tablet"></i></button>
+              <button class="btn btn-default media-icon" data-width="320px"  data-toggle="tooltip" title="{{ text_mobile }}"><i class="fa fa-mobile"></i></button>
+            </div>
+            <button class="btn btn-default preview-image" data-toggle="tooltip" title="{{ button_withimages }}"><i class="fa fa-toggle-on"></i></button>
+            <button class="btn btn-default preview-image preview-no-image hide" data-toggle="tooltip" title="{{ button_withoutimages }}"><i class="fa fa-toggle-off"></i></button>
+            <button class="btn btn-default template-update" data-toggle="tooltip" title="{{ button_update_preview }}"><i class="fa fa-refresh"></i></button>
+            <button type="button" data-target="#send-test-email-modal" data-toggle="modal" class="btn btn-default"><i class="fa fa-envelope" data-toggle="tooltip" title="{{ button_test }}"></i></button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="preview-with" class="preview-frame ajax-loading">
+            <i class="fa fa-spinner fa-spin fa-5x" style="color:#009afd"></i>
+          </div>
+          <div id="preview-without" class="preview-frame" style="display:none">
+          </div>
+        </div>
+        <div class="panel-footer">
+          <p>{{ text_help_preview }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="send-test-email-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h5 class="modal-title">{{ button_test }}</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="field-send-test-email">{{ entry_email }}</label>
+          <input type="email" class="form-control" value="{{ config_email }}" id="field-send-test-email" autofocus required/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="send-test-email" type="button" class="btn btn-success" data-loading-text="{{ text_loading }}">{{ button_send }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

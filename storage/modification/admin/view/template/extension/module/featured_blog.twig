@@ -1,0 +1,191 @@
+{{ header }}{{ git_hidden_tag }}
+<link href="view/javascript/blog/bootstrap-switch.css" rel="stylesheet">
+<script src="view/javascript/blog/bootstrap-switch.js"></script>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-featured" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-featured" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+                {% if error_name %}
+              <div class="text-danger">{{ error_name }}</div>
+				{% endif %}
+            </div>
+          </div>   
+		  <div class="form-group">
+			<label class="col-sm-2 control-label" for="input-blog_per_page">{{ entry_blog_per_row }}</label>
+			<div class="col-sm-10">
+				<select name="limit_row" class="form-control">
+						{% for i in [1, 2, 3, 4] %}
+						{% if limit_row is not empty and i==limit_row %}
+							{% set check = 'selected=selected' %}
+							{% else %}
+							{% set check = '' %}
+						{% endif %}
+					<option {{ check }} value="{{ i }}">{{ i }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		  </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-limit">{{ entry_limit }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="limit" value="{{ limit }}" placeholder="{{ entry_limit }}" id="input-limit" class="form-control" />
+            </div>
+          </div>
+		  
+		  
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-post">{{ entry_post }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="post" value="" placeholder="{{ entry_post }}" id="input-post" class="form-control" />
+              <div id="featured-post" class="well well-sm" style="height: 150px; overflow: auto;">
+                {% for post in posts %}
+                <div id="featured-post{{ post.post_id }}"><i class="fa fa-minus-circle"></i> {{ post.name }}
+                  <input type="hidden" name="post[]" value="{{ post.post_id }}" />
+                </div>
+               {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-width">{{ entry_width }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="width" value="{{ width }}" placeholder="{{ entry_width }}" id="input-width" class="form-control" />
+             {% if error_width %}
+              <div class="text-danger">{{ error_width }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-height">{{ entry_height }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="height" value="{{ height }}" placeholder="{{ entry_height }}" id="input-height" class="form-control" />
+			   {% if error_height %}
+              <div class="text-danger">{{ error_height }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-slider">{{ entry_show_slider }}</label>
+            <div class="col-sm-10">
+              <input {% if show_slider %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_slider" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-comment">{{ entry_comment }}</label>
+            <div class="col-sm-10">
+              <input {% if show_comment %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_comment" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-author">{{ entry_author }}</label>
+            <div class="col-sm-10">
+              <input {% if show_author %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_author" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-publish">{{ entry_publish }}</label>
+            <div class="col-sm-10">
+              <input {% if show_publish %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_publish" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-like">{{ entry_likes }}</label>
+            <div class="col-sm-10">
+              <input {% if show_like %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_like" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-like">{{ entry_viewed }}</label>
+            <div class="col-sm-10">
+              <input {% if show_viewed %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_viewed" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>
+            <div class="col-sm-10">
+              <input {% if show_image %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_image" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>
+            <div class="col-sm-10">
+              <input {% if show_title %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_title" value="1"/>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-short_description">{{ entry_short_description }}</label>
+            <div class="col-sm-10">
+              <input {% if show_short_description %}checked="checked" {% endif %} class="switcher" type="checkbox" name="show_short_description" value="1"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+				<input type="checkbox" {% if status %}checked="checked" {% endif %} class="switcher" name="status" value="1"/>
+            </div>
+          </div>
+		  
+        </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+$(".switcher").bootstrapSwitch();
+</script>
+  <script type="text/javascript"><!--
+$('input[name=\'post\']').autocomplete({
+	source: function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/post/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['post_id']
+					}
+				}));
+			}
+		});
+	},
+	select: function(item) {
+		$('input[name=\'post\']').val('');
+		
+		$('#featured-post' + item['value']).remove();
+		
+		$('#featured-post').append('<div id="featured-post' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="post[]" value="' + item['value'] + '" /></div>');	
+	}
+});
+	
+$('#featured-post').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+//--></script></div>
+{{ footer }}

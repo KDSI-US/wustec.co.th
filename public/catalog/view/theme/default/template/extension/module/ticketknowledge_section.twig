@@ -1,0 +1,11 @@
+<div class="knwledge-wrap">
+  <div class="side-nav list-unstyled">
+  {% for ticketknowledge_section in ticketknowledge_sections %}
+  {% set class = '' %}
+  {% if ticketknowledge_section.ticketknowledge_section_id == ticketknowledge_section_id %}
+  {% set class = 'active' %}
+  {% endif %}
+  <li class="{{ class }}"><a href="{{ ticketknowledge_section.href }}"><i class="fa {{ ticketknowledge_section.icon_class }}"></i> {{ ticketknowledge_section.title }}</a></li>  
+  {% endfor %}
+</div>
+</div>

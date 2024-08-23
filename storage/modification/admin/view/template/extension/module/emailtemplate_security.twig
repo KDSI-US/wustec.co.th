@@ -1,0 +1,151 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li class="breadcrumb-item{{ loop.index == breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if error_event %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_event }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if error_template %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_template }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if error_modification %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_modification }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if success %}
+      <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading"><i class="fa fa-pencil"></i> {{ text_edit }}</div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10 col-md-4">
+              <select name="module_emailtemplate_security_status" id="input-status" class="form-control">
+                <option value="1"{{ module_emailtemplate_security_status ? ' selected="selected"' }}>{{ text_enabled }}</option>
+                <option value="0"{{ not module_emailtemplate_security_status ? ' selected="selected"' }}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row form-group-radio">
+            <label class="col-sm-2 control-label" for="module_emailtemplate_security_password_changed">{{ entry_password_changed }}</label>
+            <div class="col-sm-10">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-default danger {{ module_emailtemplate_security_password_changed == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                  <input type="radio" name="module_emailtemplate_security_password_changed" value="0"{{ module_emailtemplate_security_password_changed == 0 ? ' checked="checked"' }} /><i class="fa fa-fw fa-times"></i>
+                </label>
+                <label class="btn btn-default success {{ module_emailtemplate_security_password_changed == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                  <input type="radio" name="module_emailtemplate_security_password_changed" value="1"{{ module_emailtemplate_security_password_changed == 1 ? ' checked="checked"' }} /><i class="fa fa-fw fa-check"></i>
+                </label>
+              </div>
+              {% if event_emailtemplate_password_changed %}
+                <button type="button" data-toggle="modal" data-target="#modal-event-password-charged" class="btn btn-info"><i class="fa fa-info-circle"></i></button>
+                <div id="modal-event-password-charged" class="modal text-left">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{{ text_event_info }}</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p><strong>{{ text_trigger }}</strong></p>
+                        <p>{{ event_emailtemplate_password_changed.trigger }}</p>
+                        <p><strong>{{ text_action }}</strong></p>
+                        <p>{{ event_emailtemplate_password_changed.action }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              {% if edit_emailtemplate_security_password_changed %}
+                <a href="{{ edit_emailtemplate_security_password_changed }}" data-toggle="tooltip" title="customer.password_changed" class="btn btn-info"><i class="fa fa-fw fa-pencil"></i></a>
+              {% endif %}
+              <div class="help-block">{{ text_password_changed }}</div>
+            </div>
+          </div>
+          <div class="form-group row form-group-radio">
+            <label class="col-sm-2 control-label" for="module_emailtemplate_security_ip_changed">{{ entry_ip_changed }}</label>
+            <div class="col-sm-10">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-default danger {{ module_emailtemplate_security_ip_changed == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                  <input type="radio" name="module_emailtemplate_security_ip_changed" value="0"{{ module_emailtemplate_security_ip_changed == 0 ? ' checked="checked"' }} /><i class="fa fa-fw fa-times"></i>
+                </label>
+                <label class="btn btn-default success {{ module_emailtemplate_security_ip_changed == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                  <input type="radio" name="module_emailtemplate_security_ip_changed" value="1"{{ module_emailtemplate_security_ip_changed == 1 ? ' checked="checked"' }} /><i class="fa fa-fw fa-check"></i>
+                </label>
+              </div>
+              {% if edit_emailtemplate_security_ip_changed %}
+                <a href="{{ edit_emailtemplate_security_ip_changed}}" data-toggle="tooltip" title="customer.ip_changed" class="btn btn-info"><i class="fa fa-fw fa-pencil"></i></a>
+              {% endif %}
+              <div class="help-block">{{ text_ip_changed }}</div>
+            </div>
+          </div>
+          <div class="form-group row form-group-radio">
+            <label class="col-sm-2 control-label" for="module_emailtemplate_security_login_limit">{{ entry_login_limit }}</label>
+            <div class="col-sm-10">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-default danger {{ module_emailtemplate_security_login_limit == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                  <input type="radio" name="module_emailtemplate_security_login_limit" value="0"{{ module_emailtemplate_security_login_limit == 0 ? ' checked="checked"' }} /><i class="fa fa-fw fa-times"></i>
+                </label>
+                <label class="btn btn-default success {{ module_emailtemplate_security_login_limit == 1 ? ' active' }}">
+                  <input type="radio" name="module_emailtemplate_security_login_limit" value="1"{{ module_emailtemplate_security_login_limit == 1 ? ' checked="checked"' }} /><i class="fa fa-fw fa-check"></i>
+                </label>
+              </div>
+              {% if event_emailtemplate_login_limit %}
+                <button type="button" data-toggle="modal" data-target="#modal-event-login-limit" class="btn btn-info"><i class="fa fa-info-circle"></i></button>
+                <div id="modal-event-login-limit" class="modal text-left">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{{ text_event_info }}</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p><strong>{{ text_trigger }}</strong></p>
+                        <p>{{ event_emailtemplate_login_limit.trigger }}</p>
+                        <p><strong>{{ text_action }}</strong></p>
+                        <p>{{ event_emailtemplate_login_limit.action }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              {% if edit_emailtemplate_security_login_limit %}
+                <a href="{{ edit_emailtemplate_security_login_limit}}" data-toggle="tooltip" title="customer.max_login_admin" class="btn btn-info"><i class="fa fa-fw fa-pencil"></i></a>
+              {% endif %}
+              <div class="help-block">{{ text_customer_max_login }}</div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<style type="text/css">
+  .btn-group-toggle > .btn-default.active.success .fa { color: #3c763d; }
+  .btn-group-toggle > .btn-default.active.danger .fa { color: #a94442; }
+</style>
+{{ footer }}

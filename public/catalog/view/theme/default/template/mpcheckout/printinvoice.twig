@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ heading_title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content= "{{ keywords }}" />
+{% endif %}
+<link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div style="padding: 10px;">
+      {% if logo %}
+      <a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>
+      {% else %}
+      <h1><a href="{{ home }}">{{ name }}</a></h1>
+      {% endif %}
+    <br/>
+    <div class="mpt-success">
+    {{ text_message }}
+    </div>
+  </div>
+<style type="text/css">
+{% if background_success_table %}
+.mpt-success .thead-inverse th {
+  background: {{ background_success_table }};
+}
+{% endif %}
+
+{% if font_success_table %}
+.mpt-success .thead-inverse th {
+  color: {{ font_success_table }};
+}
+{% endif %}
+</style>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+ setTimeout(function() { window.print(); }, 1000);
+});
+//--></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<div style="position:relative; {{ width_in_cm }} {{ height_in_cm }} {{ font_size_in_pt }} {{ margin_bottom_in_cm }}">
+
+    {% for field in fields if field.slug != 'product_loop' %}
+
+        <span style="position: absolute; {{ field.top_in_cm }} {{ field.left_or_right_in_cm }}">
+            {% if field.slug == 'freetext' %}
+                {{ field.payload | raw }}
+            {% else %}
+                {{ field.payload }}
+            {% endif %}
+        </span>
+
+    {% endfor %}
+
+
+    {% for field in fields if field.slug == 'product_loop' %}
+        {{ field.payload }}
+    {% endfor %}
+
+
+    {# <div style='page-break-after: always;'></div> #}
+
+</div>

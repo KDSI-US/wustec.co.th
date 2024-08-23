@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{{ text_approve_deletion_subject }}</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; text-align:center;">
+<div style="width: 680px; text-align: center;"><a href="{{ store_url }}" title="{{ store_name }}"><img src="{{ logo }}" alt="{{ store_name }}" style="margin-bottom: 20px; border: none;" /></a>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_main_message }}</p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_greeting }}</p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_customer_data }} - <strong>{{ data['customer_data'] ? text_yes : text_no }}</strong></p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_address_data }} - <strong>{{ data['address_data'] ? text_yes : text_no }}</strong></p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_order_data }} - <strong>{{ data['order_data'] ? text_yes : text_no }}</strong></p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_gdpr_data }} - <strong>{{ data['gdpr_data'] ? text_yes : text_no }}</strong></p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ text_column_deletion_date }} - <strong>{{ data['date_deletion'] }}</strong></p>
+  <p style="margin-top: 0px; margin-bottom: 20px;text-align: left;">{{ data['message'] is not empty ? text_custom_message ~ ' - <strong>' ~ data['message'] ~ '</strong>' : '' }}</p>
+</div>
+</body>
+</html>

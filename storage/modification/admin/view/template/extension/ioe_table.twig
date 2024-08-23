@@ -1,0 +1,296 @@
+<table id="ioe-table" class="table table-bordered table-hover">
+	<thead>
+		<tr class="main-row">
+			<th>
+				<i id="ioe-loading-indicator" class="fa fa-circle-o-notch fa-spin fa-fw hidden"></i>
+			</th>
+			<th data-column="o.order_id">
+				<a href="#sort">{{ column_order_id }}</a>
+			</th>
+			<th data-column="o.store_name">
+				<a href="#sort">{{ column_store }}</a>
+			</th>
+			<th data-column="o.currency_id">
+				<a href="#sort">{{ column_currency_id }}</a>
+			</th>
+			<th data-column="o.customer_group_id">
+				<a href="#sort">{{ column_customer_group_id }}</a>
+			</th>
+			<th data-column="o.customer_name">
+				<a href="#sort">{{ column_customer_name }}</a>
+			</th>
+			<th data-column="o.payment_address">
+				<a href="#sort">{{ column_payment_address }}</a>
+			</th>
+			<th data-column="o.shipping_address">
+				<a href="#sort">{{ column_shipping_address }}</a>
+			</th>
+			<th title="{{ column_product_no_order_explanation }}">
+				{{ column_products }}
+			</th>
+			<th data-column="os.name">
+				<a href="#sort">{{ column_status }}</a>
+			</th>
+			<th data-column="o.total">
+				<a href="#sort">{{ column_total }}</a>
+			</th>
+			<th data-column="o.date_added">
+				<a href="#sort">{{ column_date_added }}</a>
+			</th>
+			<th data-column="o.date_modified">
+				<a href="#sort">{{ column_date_modified }}</a>
+			</th>
+			<th data-column="o.tracking_no">
+				<a href="#sort">{{ column_tracking_no }}</a>
+			</th>
+			<th>{{ column_action }}</th>
+		</tr>
+		<tr id="ioe-filter" class="main-row">
+			<td></td>
+			<td>
+				<input type="text" name="o.order_id" class="form-control">
+			</td>
+			<td>
+				<select type="text" name="o.store_id" class="form-control">
+					<option value=""></option>
+					<option value="0">{{ label_default_store }}</option>
+					{% for store in stores %}
+						<option value="{{ store.store_id }}">{{ store.name }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<select type="text" name="o.currency_id" class="form-control">
+					<option value=""></option>
+					{% for currency in currencies %}
+						<option value="{{ currency.currency_id }}">{{ currency.title }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<select type="text" name="o.customer_group_id" class="form-control">
+					<option value=""></option>
+					{% for customer_group in customer_groups %}
+						<option value="{{ customer_group.customer_group_id }}">{{ customer_group.name }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<input type="text" name="o.customer_id" class="form-control ioe-autocomplete no-autosubmit" data-url="{{ customer_autocomplete_url }}" data-request-field="filter_name" data-response-value="customer_id" data-response-label="name">
+			</td>
+			<td>
+				<input type="text" name="o.payment_address" class="form-control">
+			</td>
+			<td>
+				<input type="text" name="o.shipping_address" class="form-control">
+			</td>
+			<td>
+				<input type="text" name="op.product_id" class="form-control ioe-autocomplete no-autosubmit" data-url="{{ product_autocomplete_url }}" data-request-field="filter_name" data-response-value="product_id" data-response-label="name"/>
+			</td>
+			<td>
+				<select type="text" name="o.order_status_id" class="form-control">
+					<option value=""></option>
+					{% for order_status in order_statuses %}
+						<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<input type="text" name="o.total" class="form-control">
+			</td>
+			<td>
+				<input type="text" name="o.date_added" class="form-control ioe-datepicker no-autosubmit">
+			</td>
+			<td>
+				<input type="text" name="o.date_modified" class="form-control ioe-datepicker no-autosubmit">
+			</td>
+			<td>
+				<input type="text" name="o.tracking_no" class="form-control" disabled>
+			</td>
+			<td>
+				<button id="ioe-clear-filter" class="btn btn-primary">{{ label_clear_filter }}</button>
+			</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if orders %}
+			{% for order in orders %}
+				<tr data-id="{{ order.order_id }}" class="main-row">
+					<td>
+						<input type="checkbox"/>
+					</td>
+					<td>{{ order.order_id }}</td>
+					<td data-store-id="{{ order.store_id }}">{{ order.store_name }}</td>
+					<td>{{ order.currency_name }}</td>
+					<td>{{ order.customer_group_name }}</td>
+					<td>
+						{% if order.customer_id %}
+							{{ order.customer_name }}
+						{% endif %}
+					</td>
+					<td>
+						<div title="{{ label_user_name }}">
+							<i class="fa fa-user" aria-hidden="true"></i>
+							<strong>
+								{{ order.payment_firstname }}
+								{{ order.payment_lastname }}
+							</strong>
+						</div>
+						{% if order.payment_company %}
+							<div title="{{ label_company }}">
+								<i class="fa fa-building-o" aria-hidden="true"></i>
+								{{ order.payment_company }}
+							</div>
+						{% endif %}
+						{% if order.payment_address_1 %}
+							<div title="{{ label_address_1 }}">
+								{{ order.payment_address_1 }}
+							</div>
+						{% endif %}
+						{% if order.payment_address_2 %}
+							<div title="{{ label_address_2 }}">
+								{{ order.payment_address_2 }}
+							</div>
+						{% endif %}
+						{% if order.payment_city %}
+							<div title="{{ label_city }}">
+								{{ order.payment_city }}
+							</div>
+						{% endif %}
+						{% if order.payment_postcode %}
+							<div title="{{ label_postcode }}">
+								{{ order.payment_postcode }}
+							</div>
+						{% endif %}
+						{% if order.payment_zone %}
+							<div title="{{ label_zone }}">
+								{{ order.payment_zone }}
+							</div>
+						{% endif %}
+						{% if order.payment_country %}
+							<div title="{{ label_country }}">
+								<em>{{ order.payment_country }}</em>
+							</div>
+						{% endif %}
+					</td>
+					<td>
+						{% if order.shipping_firstname and order.shipping_lastname %}
+							<div title="{{ label_user_name }}">
+								<i class="fa fa-user" aria-hidden="true"></i>
+								<strong>
+									{{ order.shipping_firstname }}
+									{{ order.shipping_lastname }}
+								</strong>
+							</div>
+						{% endif %}
+						{% if order.shipping_company %}
+							<div title="{{ label_company }}">
+								<i class="fa fa-building-o" aria-hidden="true"></i>
+								{{ order.shipping_company }}
+							</div>
+						{% endif %}
+						{% if order.shipping_address_1 %}
+							<div title="{{ label_address_1 }}">
+								{{ order.shipping_address_1 }}
+							</div>
+						{% endif %}
+						{% if order.shipping_address_2 %}
+							<div title="{{ label_address_2 }}">
+								{{ order.shipping_address_2 }}
+							</div>
+						{% endif %}
+						{% if order.shipping_city %}
+							<div title="{{ label_city }}">
+								{{ order.shipping_city }}
+							</div>
+						{% endif %}
+						{% if order.shipping_postcode %}
+							<div title="{{ label_postcode }}">
+								{{ order.shipping_postcode }}
+							</div>
+						{% endif %}
+						{% if order.shipping_zone %}
+							<div title="{{ label_zone }}">
+								{{ order.shipping_zone }}
+							</div>
+						{% endif %}
+						{% if order.shipping_country %}
+							<div title="{{ label_country }}">
+								<em>{{ order.shipping_country }}</em>
+							</div>
+						{% endif %}
+					</td>
+					<td class="ioe-products">
+						<table class="ioe-products-table">
+							<tr>
+								<th>{{ label_name }}</th>
+								<th class="text-right">{{ label_price }}</th>
+								<th class="text-right">{{ label_qty }}</th>
+							</tr>
+							{% for product in order.products %}
+								<tr title="{{ product.product_id }}">
+									<td class="ioe-products-name">
+										{{ product.name }}
+									</td>
+									<td class="text-right ioe-products-price">
+										{{ product.price }}
+									</td>
+									<td class="text-right ioe-products-qty">
+										&times;{{ product.quantity }}
+									</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</td>
+					<td>
+						<div class="click_order_status">
+							<select type="text" name="order_status_id" class="ordsts" rel="{{ link }}&type=change_order_status&order_id={{ order.order_id }}" style="display: none">
+								<option value=""></option>
+								{% for order_status in order_statuses %}
+									<option value="{{ order_status.order_status_id }}" {% if order.order_status_name == order_status.name %} selected {% endif %}>{{ order_status.name }}</option>
+								{% endfor %}
+							</select>
+							<span class="show_status_name">{{ order.order_status_name }}</span>
+						</div>
+					</td>
+					<td class="text-right" {% if order.total != order.amount %} title="{{ order.total }}" {% endif %}>
+						{{ order.amount }}
+					</td>
+					<td class="text-center" title="{{ order.date_added }}">{{ order.added_date }}</td>
+					<td class="text-center" title="{{ order.date_modified }}">{{ order.modified_date }}</td>
+					<td class="text-center trn" title="{{ order.tracking_no }}">
+						<input style="border:0;outline:0;background-color:#f5f5f5" type="text" orig="{{ order.tracking_no }}" rel="{{ link }}&type=change_trackingno&order_id={{ order.order_id }}" name="tracking_no" value="{{ order.tracking_no }}" readonly/>
+					</td>
+					<td class="actions">
+						<a href="{{ url }}&route=sale/order/shipping&order_id={{ order.order_id }}" target="_blank" 
+							class="shipping btn btn-info btn-xs	{% if not order.shipping_code %} disabled {% endif %} 
+						" {% if not order.shipping_code %} disabled title="{{ label_shipping_disabled }}" {% else %} title="{{ label_shipping }}" {% endif %}>
+							<i class="fa fa-truck" aria-hidden="true"></i>
+						</a>
+						<a href="{{ url }}&route=sale/order/invoice&order_id={{ order.order_id }}" target="_blank" title="{{ label_invoice }}" class="invoice btn btn-info btn-xs">
+							<i class="fa fa-print" aria-hidden="true"></i>
+						</a>
+						<a href="{{ url }}&route=sale/order/info&order_id={{ order.order_id }}" data-edit-url="{{ url }}&route=sale/order/edit&order_id={{ order.order_id }}" title="{{ label_view }}" class="view btn btn-default btn-xs">
+							<i class="fa fa-search" aria-hidden="true"></i>
+						</a>
+
+						<a href="{{ url }}&route=sale/order/edit&order_id={{ order.order_id }}" title="{{ label_edit }}" class="edit btn btn-warning btn-xs">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</a>
+						<a href="#" data-api-route="api/order/delete" title="{{ label_delete }}" data-confirm="{{ label_confirm }}" class="delete btn btn-danger btn-xs">
+							<i class="fa fa-times" aria-hidden="true"></i>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+			<tr>
+				<td class="text-center" colspan="80">{{ text_no_results }}</td>
+			</tr>
+		{% endif %}
+	</tbody>
+</table>
+<div class="row">
+	<div class="col-sm-6 text-left">{{ pagination }}</div>
+	<div class="col-sm-6 text-right">{{ results }}</div>
+</div>

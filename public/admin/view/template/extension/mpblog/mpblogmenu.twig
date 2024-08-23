@@ -1,0 +1,108 @@
+<div class="mp-left-content clearfix">
+	<div class="mpblog-title">
+		<h3><i class="fa {{ menus.icon }} fw"></i> {{ menus.name }}</h3>
+	</div>
+	<ul id="mpblog-menu">
+		{% for menu in menus.children %}
+			{% if menu.id != 'mpblog-extension' %}
+			<li id="{{ menu.id }}">
+				{% if not menu.children %}
+				<a class="clearfix" href="{{ menu.href }}"><i class="fa {{ menu.icon }} fw"></i> <span>{{ menu.name }}</span></a>
+				{% else %}
+				<a class="parent"><i class="fa {{ menu.icon }} fw"></i> <span>{{ menu.name }}</span></a>
+				{% endif %}
+				{% if menu.children %}
+				<ul>
+					{% for children_1 in menu.children %}
+					<li>
+						{% if children_1.href %}
+						<a href="{{ children_1.href }}">{{ children_1.name }}</a>
+						{% else %}
+						<a class="parent">{{ children_1.name }}</a>
+						{% endif %}
+						{% if children_1.children %}
+						<ul>
+							{% for children_2 in children_1.children %}
+							<li>
+								{% if children_2.href %}
+								<a href="{{ children_2.href }}">{{ children_2.name }}</a>
+								{% else %}
+								<a class="parent">{{ children_2.name }}</a>
+								{% endif %}
+								{% if children_2.children %}
+								<ul>
+									{% for children_3 in children_2.children %}
+									<li><a href="{{ children_3.href }}">{{ children_3.name }}</a></li>
+									{% endfor %}
+								</ul>
+								{% endif %}
+							</li>
+							{% endfor %}
+						</ul>
+						{% endif %}
+					</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</li>
+			{% endif %}
+			{% endfor %}
+	</ul>                  
+</div>
+<script type="text/javascript">
+
+	// $(document).ready(function() {
+
+	// 	// Set last page opened on the menu
+	// 	$('#mpblog-menu a[href]').on('click', function() {
+	// 		sessionStorage.setItem('mpblog_menu', $(this).attr('href'));
+	// 	});
+
+	// 	if (!sessionStorage.getItem('mpblog_menu')) {
+	// 		$('#mpblog-menu #dashboard').addClass('active');
+	// 	} else {
+	// 		// Sets active and open to selected page in the left column menu.
+	// 		$('#mpblog-menu a[href=\'' + sessionStorage.getItem('mpblog_menu') + '\']').parents('li').addClass('active open');
+	// 	}
+
+	// 	// check menu from url and make it active
+	// 	if(sessionStorage.getItem('mpblog_menu') != window.location) {
+	// 		$.each($('#mpblog-menu a'), function() {
+	// 			if($(this).attr('href') == window.location) {
+	// 				$('#mpblog-menu a[href=\'' + sessionStorage.getItem('mpblog_menu') + '\']').parents('li').removeClass('active open');
+	// 				$(this).parents('li').addClass('active open');
+	// 				sessionStorage.setItem('mpblog_menu', $(this).attr('href'));
+	// 			}
+	// 		});
+	// 	}
+
+
+	// 	$('#mpblog-menu li li.active').has('ul').children('ul').addClass('collapse in');
+	// 	$('#mpblog-menu li li').not('.active').has('ul').children('ul').addClass('collapse');
+
+
+	// 	// Menu
+	// 	$('#mpblog-menu').find('li').has('ul').children('a').on('click', function() {
+	// 		 if (!$(this).parent().parent().is('#mpblog-menu')) {
+	// 			$(this).parent('li').toggleClass('open').children('ul').collapse('toggle');
+	// 			$(this).parent('li').siblings().removeClass('open').children('ul.in').collapse('hide');
+	// 		}
+	// 	});
+	// });
+
+  // Set last page opened on the menu
+  $('.mp-left-content a[href]').on('click', function() {
+    if ($(this).attr('href') != '#') {
+      sessionStorage.setItem('menu', $(this).attr('href'));
+    }
+  });
+  if (sessionStorage.getItem('menu') && sessionStorage.getItem('menu') != '#') {
+    $('.mp-left-content a[href=\'' + sessionStorage.getItem('menu') + '\']').parent().addClass('active');
+
+    $('.mp-left-content a[href=\'' + sessionStorage.getItem('menu') + '\']').parents('li > a').removeClass('collapsed');
+
+    $('.mp-left-content a[href=\'' + sessionStorage.getItem('menu') + '\']').parents('ul').addClass('in');
+
+    $('.mp-left-content a[href=\'' + sessionStorage.getItem('menu') + '\']').parents('li').addClass('active');
+  }
+</script>

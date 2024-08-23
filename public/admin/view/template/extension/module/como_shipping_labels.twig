@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <base href="{{ base }}" />
+    <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ como_shipping_labels_css }}" />
+    <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+</head>
+
+{# QR CODE #}
+	
+{% set size_qr = 150 %}
+{# http://goqr.me/api/, serviceprovider_qrcode = 'https://api.qrserver.com/v1/create-qr-code/?size={size}x{size}&charset-source=UTF-8ecc=L&data={data}' #}
+{# our generator #}
+{% set serviceprovider_qrcode = url_qrcode %}
+
+{# BARCODE #}
+{# https://www.barcodesinc.com/generator/ #}
+{# our generator #}
+{% set bc_margin_to_text = 0 %}
+{% set serviceprovider_barcode = url_barcode %}
+
+<body style="margin-left: {{ margin_left }}{{ labelbox_unit }}; margin-top: {{ margin_top }}{{ labelbox_unit }};">
+{% if orders %}
+    {% for key, order in orders %}
+    <div>
+        <div class="labelbox" style="width: {{ labelbox_width }}{{ labelbox_unit }}; height: {{ labelbox_height }}{{ labelbox_unit }}; margin-right: {{ distance_x }}{{ labelbox_unit }}; margin-bottom: {{ distance_y }}{{ labelbox_unit }};">
+            <table class="labelbox1">
+              <tr>
+                <td class="senderaddress">
+                    <span class="kindlabel">{{ text_sender }}:</span>
+                    {% if senderlogo %}
+                    <img class="logo" src="{{ senderlogo }}" style="height: {{ logo_height }}px;" />
+                    {% else %}
+                    <br />
+                    {% endif %}
+                    {{ order.sender_address }}
+                </td>
+                {% if showqrcodeaddress or showqrcodephone %}
+                <td class="qrcode">
+                    <div class="qrcode1">
+                        {% if showqrcodeaddress %}
+                        <i class="fa fa-envelope-o"></i> <br />
+                        <img src="{{ serviceprovider_qrcode|replace({'{data}': order.sender_address_clean|url_encode(true), '{size}': size_qr}) }}" alt="" style="width: {{ qrcode_size }}px; height: {{ qrcode_size }}px;" />
+                        {% endif %}
+                    </div>
+                    <div class="qrcode1">
+                        {% if showqrcodephone and order.store_telephone %}
+                        <i class="fa fa-phone"></i> <br />
+                        <img src="{{ serviceprovider_qrcode|replace({'{data}': order.store_telephone|url_encode(true), '{size}': size_qr}) }}" alt="" style="width: {{ qrcode_size }}px; height: {{ qrcode_size }}px;" />
+                        {% endif %}
+                    </div>
+                </td>
+                {% endif %}
+              </tr>
+            </table>
+        </div>
+        <div class="labelbox" style="width: {{ labelbox_width }}px; height: {{ labelbox_height }}px; margin-right: {{ distance_x }}px; margin-bottom: {{ distance_y }}px;">
+            <table class="labelbox1">
+              <tr>
+                <td class="shippingaddress">
+                    <span class="kindlabel">{{ text_recipient }}:</span><br />
+                    {{ order.shipping_address }}<br />
+                    {% if showorderphone and order.telephone %}
+                    <br />
+                    <span class="phone"><i class="fa fa-phone"></i> {{ order.telephone }}</span>
+                    {% endif %}
+                    {% if showorderbarcode %}
+                    <br />
+                    <span class="barcode">
+                        <img class="barcodeimg" src="{{ serviceprovider_barcode|replace({'{data}': order.order_barcode|url_encode(true), '{width}': orderbarcode_width, '{height}': orderbarcode_height}) }}" alt="{{ order.order_barcode }}" />
+                        <span class="barcodetxt"{% if not bc_margin_to_text == 0 %} style="margin-top: {{ bc_margin_to_text }}px;"{% endif %}>{{ order.order_barcode }}</span>
+                    </span>
+                    {% endif %}
+                </td>
+                {% if showqrcodeaddress or showqrcodephone %}
+                <td class="qrcode">
+                    <div class="qrcode1">
+                        {% if showqrcodeaddress %}
+                        <i class="fa fa-envelope-o"></i> <br />
+                        <img src="{{ serviceprovider_qrcode|replace({'{data}': order.shipping_address_clean|url_encode(true), '{size}': size_qr}) }}" alt="" style="width: {{ qrcode_size }}px; height: {{ qrcode_size }}px;" />
+                        {% endif %}
+                    </div>
+                    <div class="qrcode1">
+                        {% if showorderphone and showqrcodephone and order.telephone %}
+                        <i class="fa fa-phone"></i> <br />
+                        <img src="{{ serviceprovider_qrcode|replace({'{data}': order.telephone|url_encode(true), '{size}': size_qr}) }}" alt="" style="width: {{ qrcode_size }}px; height: {{ qrcode_size }}px;" />
+                        {% endif %}
+                    </div>
+                </td>
+                {% endif %}
+              </tr>
+            </table>
+        </div>
+    </div>
+    {% if labelsperpage > 0 and (key + 1) < orders|length and (key + 1) is divisible by(labelsperpage) %}<p style="overflow: hidden; float: none; display: block; page-break-before: always; page-break-after: always;"></p>{% endif %}
+    {% endfor %}
+{% else %}
+    <div class="message">
+        <strong>{{ text_selectorders }}</strong>
+    </div>
+{% endif %}
+
+{{ include_print }}
+
+</body>
+</html>

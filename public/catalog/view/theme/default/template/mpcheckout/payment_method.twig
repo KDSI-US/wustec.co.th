@@ -1,0 +1,34 @@
+<div class="panel panel-default payment-method-panel">
+  <div class="panel-heading">
+    <h4 class="panel-title"><i class="fa fa-credit-card"></i> {{ panel_payment_method }} </h4>
+  </div>
+  <div class="panel-body">
+    {% if payment_methods %}
+      {% set pay_counts = 1 %}
+      {% for payment_method in payment_methods %}
+      <div class="radio">
+        <label>
+          {% set pay_class = pay_counts == 1 ? 'pay_one' : '' %}
+          {% if payment_method.code == code or not code %}
+          {% set code = payment_method.code %}
+          <input type="radio" class="{{ pay_class }}"  name="payment_method" value="{{ payment_method.code }}" checked="checked" />
+          {% else %}
+          <input type="radio" class="{{ pay_class }}"  name="payment_method" value="{{ payment_method.code }}" />
+          {% endif %}
+          
+          {% if mpcheckout_payment_method_tables[payment_method.code].thumb %}
+          <img src="{{ mpcheckout_payment_method_tables[payment_method.code].thumb }}"> &nbsp;
+          {% endif %}
+
+          {{ payment_method.title }}
+          {% if payment_method.terms %}
+          ({{ payment_method.terms }})
+          {% endif %}
+        </label>
+      </div>
+      {% set pay_counts = pay_counts + 1 %}
+      {% endfor %}
+    {% endif %}
+    <div class="paymentmethod-loader"></div>
+  </div>
+</div>

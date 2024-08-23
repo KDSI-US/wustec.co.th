@@ -1,0 +1,14 @@
+.tooltip-inner { text-align: left; max-width: 400px !important; font-size: 14px; }
+.well { padding-top: 0; padding-bottom: 0; }
+
+.group-field { cursor: pointer; }
+.group-field:hover { color: red !important; }
+
+#loadlist li { padding: 5px; display: block; }
+#loadlist li a { color: #2f2f2f; }
+#loadlist .well { padding-top: 9px; padding-bottom: 9px; }
+#form-event td span { cursor: pointer; }
+
+@media(min-width:991px) {
+  .cell_trigger, .cell_action { word-break: break-word; }
+}

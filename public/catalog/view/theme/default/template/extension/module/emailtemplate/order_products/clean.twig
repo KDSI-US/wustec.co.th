@@ -1,0 +1,237 @@
+<table cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td height="30" style="font-size:30px; line-height:30px; height:30px;"></td>
+  </tr>
+</table>
+{% if key and (key == 'order_product' and emailtemplate.order_title) or (key == 'cart_product' and emailtemplate.cart_title) %}
+<table border="0" cellpadding="0" cellspacing="0" class="tableHeading" style="width:auto;float: none;margin-left: auto;margin-right: auto;">
+  <tbody>
+  <tr>
+    <td width="2">
+      &nbsp;
+    </td>
+    <td class="heading3">
+      {% if (key == 'order_product' and emailtemplate.order_title) %}{{ emailtemplate.order_title }}{% elseif (key == 'cart_product' and emailtemplate.cart_title) %}{{ emailtemplate.cart_title }}{% endif %}
+    </td>
+  </tr>
+  <tr>
+    <td height="3" style="font-size:1px; line-height:3px; height:3px;" width="2">
+      &nbsp;
+    </td>
+    <td height="3" style="font-size:1px; line-height:3px; height:3px;">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#e8e8e8" height="1" style="font-size:1px; line-height:1px; height:1px;" width="2">
+      &nbsp;
+    </td>
+    <td bgcolor="#e8e8e8" height="1" style="font-size:1px; line-height:1px; height:1px;">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td height="5" style="font-size:5px; line-height:5px; height:5px;" width="2">
+      &nbsp;
+    </td>
+    <td height="5" style="font-size:5px; line-height:5px; height:5px;">
+      &nbsp;
+    </td>
+  </tr>
+  </tbody>
+</table>
+{% endif %}
+<div class="table-responsive">
+  <table border="0" cellspacing="0" cellpadding="0" width="100%" class="table-orderClean" style="table-layout: auto;">
+    <tr>
+      <td>
+        <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td class="mobile-hide" style="font-size:1px;line-height:0;width:2%;padding:0;">
+              &nbsp;
+            </td>
+            <td>
+              <table cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                {% for product in products %} {% if not loop.first %}
+                  <tr>
+                    <td style="height:10px;line-height:10px;padding:0;font-size:1px;">
+                      &nbsp;
+                    </td>
+                  </tr>
+                  <tr>
+                    <td bgcolor="#EEEEEE" style="font-size:1px; line-height:1px;height:1px;padding:0;background:#EEEEEE">
+                      &nbsp;
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="height:10px;line-height:10px;padding:0;font-size:1px;">
+                      &nbsp;
+                    </td>
+                  </tr>
+                {% endif %}
+                  <tr>
+                    <td>
+                      <table border="0" cellspacing="0" cellpadding="0" width="100%" class="product-table" style="table-layout: auto !important;">
+                        <tr>
+                          {% if product.image %}
+                            <td class="emailProductImage" style="width:1px;vertical-align:top;text-align:center;">
+                              <a href="{{ product.url|replace({'&amp;':'&'}) }}">
+                                <img src="{{ product.image }}" alt="" style="margin:0 auto;max-width:none !important;"/>
+                              </a>
+                            </td>
+                            <td style="width:5%">
+                            </td>
+                          {% endif %}
+                          <td>
+                            <table cellpadding="0" cellspacing="0" width="100%" style="vertical-align: middle;table-layout:auto !important;">
+                              <tr>
+                                <td class="emailProductData">
+                                  <table cellpadding="0" cellspacing="0" width="100%" style="vertical-align: middle;">
+                                    <tr>
+                                      <td>
+                                        <a href="{{ product.url|replace({'&amp;':'&'}) }}">
+                                          <strong style="font-size:15px;font-weight:bold;">{{ product.name }} </strong>
+                                        </a>
+                                        {% if product.model %} <br/><span class="list-product-options" title="{{ text_model }}" style="font-size:12px;line-height:16px;">{{ product.model }} </span>
+                                        {% endif %}
+                                      </td>
+                                    </tr>
+                                    {% if product.sku %}
+                                      <tr>
+                                        <td class="list-product-options" style="font-size:12px;line-height:16px;">{{ text_sku }} <b>{{ product.sku }}</b></td>
+                                      </tr>
+                                    {% endif %}
+                                    {% if product.rating %}
+                                      <tr>
+                                        <td class="rating" style="font-size:13px;color:#ca8f00;text-align:center;" title="{{ text_rating }}">
+                                           <span>{% for i in 1..5 %} <small>{{ product.rating < i ? '&#9734;' : '&#9733;' }}</small>{% endfor %} </span>
+                                          <small> ({{ product.reviews }})</small>
+                                        </td>
+                                      </tr>
+                                    {% endif %} {% if product.option %}
+                                      <tr>
+                                        <td class="list-product-options" style="font-size:12px;line-height:16px;">
+                                          {% for option in product.option %} &raquo; <strong>{{ option.name }}:</strong>&nbsp;{{ option.value }} {% if option.price > 0 %} ({{ option.price }}){% endif %}<br/>
+                                          {% endfor %}
+                                        </td>
+                                      </tr>
+                                    {% endif %} {% if product.description %}
+                                      <tr>
+                                        <td height="5" style="font-size:1px;line-height:5px;mso-margin-top-alt:1px;">
+                                          &nbsp;
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="font-size: 12px;line-height: 16px;">
+                                          {{ product.description }}
+                                        </td>
+                                      </tr>
+                                    {% endif %}
+                                    {% if product.stock_quantity is defined %}
+                                      <tr>
+                                        <td style="font-size: 12px;line-height: 16px;">
+                                          <div>
+                                            <b style="font-size:0.9em">{{ text_stock_quantity }}</b>
+                                            <span style="font-size:0.85em;color:{% if product.stock_quantity <= 0 %}#FF0000{% elseif product.stock_quantity <= 5 %}#FFA500{% else %}#008000{% endif %}">{{ product.stock_quantity }}</span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    {% endif %}
+                                  </table>
+                                </td>
+                                {% if products[0].price is defined %}
+                                  <td class="price" style="font-size:18px;letter-spacing:0.5px;word-spacing:1px;vertical-align:top;text-align:right;white-space: nowrap;width:1px;">
+                                    {{ product.quantity }} <b>x</b> {{ product.price }}
+                                  </td>
+                                {% endif %}
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td style="height:10px;line-height:10px;padding:0;font-size:1px;">
+                    &nbsp;
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td class="mobile-hide" style="font-size:1px;line-height:0;width:2%;padding:0;">
+              &nbsp;
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    {% if vouchers or totals %}
+    <tr>
+      <td style="font-size:20px;line-height:20px;height:20px;">
+        &nbsp;
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td class="mobile-hide" style="font-size:1px;line-height:0;width:2%;padding:0;">
+              &nbsp;
+            </td>
+            <td>
+              <table cellpadding="0" cellspacing="0" class="orderTotal" align="right" style="width:40%;float:right;background:#fafafa;border:1px solid #e0e0e0;padding:10px;">
+                <tbody>
+                <tr>
+                  <td style="background:#fafafa;font-size:10px;height:10px;line-height:10px;"></td>
+                  <td style="background:#fafafa;font-size:10px;height:10px;line-height:10px;"></td>
+                </tr>
+                {% if vouchers %}
+                  {% for voucher in vouchers %}
+                    <tr>
+                      <td style="background:#fafafa;padding:4px 6px 4px 14px;font-size:14px;">
+                        <b style="font-size:13px;line-height:16px;">{{ voucher.description }} </b>
+                      </td>
+                      <td class="emailPrice" style="background:#fafafa;padding:4px 14px 4px 6px;text-align:right;font-size:14px;line-height:16px;">
+                        {{ voucher.amount }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% endif %}
+                </tbody>
+                <tfoot>
+                {% if totals %}
+                  {% for total in totals %}
+                    <tr>
+                      <td style="background:#fafafa;padding:4px 6px 4px 14px;font-size:14px;line-height:16px;">
+                        <b>{{ total.title }}</b>
+                      </td>
+                      <td class="emailPrice" style="background:#fafafa;padding:4px 14px 4px 6px;text-align:right;font-size:14px;line-height:16px;">
+                        {{ total.text }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% endif %}
+                <tr>
+                  <td style="background:#fafafa;font-size:10px;height:10px;line-height:10px;"></td>
+                  <td style="background:#fafafa;font-size:10px;height:10px;line-height:10px;"></td>
+                </tr>
+                </tfoot>
+              </table>
+            </td>
+            <td class="mobile-hide" style="font-size:1px;line-height:0;width:2%;padding:0;">
+              &nbsp;
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td height="20" style="font-size:20px; line-height:0">
+        &nbsp;
+      </td>
+    </tr>
+  </table>
+</div>

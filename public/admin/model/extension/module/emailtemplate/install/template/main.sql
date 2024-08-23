@@ -1,0 +1,5 @@
+INSERT INTO `oc_emailtemplate` (`emailtemplate_id`, `emailtemplate_key`, `emailtemplate_label`, `emailtemplate_type`, `emailtemplate_template`, `emailtemplate_mail_to`, `emailtemplate_mail_cc`, `emailtemplate_mail_bcc`, `emailtemplate_mail_from`, `emailtemplate_mail_html`, `emailtemplate_mail_plain_text`, `emailtemplate_mail_sender`, `emailtemplate_mail_replyto`, `emailtemplate_mail_replyto_name`, `emailtemplate_mail_attachment`, `emailtemplate_language_files`, `emailtemplate_wrapper_tpl`, `emailtemplate_status`, `emailtemplate_default`, `emailtemplate_shortcodes`, `emailtemplate_showcase`, `emailtemplate_condition`, `emailtemplate_modified`, `emailtemplate_config_id`, `store_id`, `customer_group_id`, `order_status_id`) VALUES
+(1, 'main', 'Default', '', '', '', '', '', '', 1, 0, '', '', '', '', 'extension/module/emailtemplate/emailtemplate', '', 1, 1, 1, 1, '', NOW(), 0, NULL, 0, 0);
+
+INSERT INTO `oc_emailtemplate_description` (`emailtemplate_id`, `language_id`, `emailtemplate_description_subject`, `emailtemplate_description_preview`) VALUES
+(1, 0, '', '');

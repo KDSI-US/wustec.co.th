@@ -1,0 +1,41 @@
+<div class="table-responsive">
+  <h3>{{ text_plan_history }}</h3>
+  <table class="table table-bordered table-hover list">
+    <thead>
+      <tr>
+        <td>{{ text_history_planname }}</td>
+        <td>{{ text_history_start_date }}</td>
+        <td>{{ text_history_expired_date }}</td>
+        <td>{{ text_history_status }}</td>
+        <td class="text-right">{{ text_history_action }}</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% if old_plans %}
+      {% for old_plan in old_plans %}
+      <tr id="pricingcontent-{{ old_plan.mpplan_id }}">
+        <td>{{ old_plan.plan_name }}</td>
+        <td>{{ old_plan.start_date }}</td>
+        <td>{{ old_plan.end_date }}</td>
+        <td>{{ old_plan.status }}</td>
+        <td class="text-right">
+          {% if old_plan.reorder %}
+          <button type="button" onclick="MPMEMBERSHIP.add('{{ old_plan.product_id }}','{{ old_plan.mpplan_id }}')" class="btn btn-primary button plan_buy plan_buy{{ old_plan.mpplan_id }}">{{ button_renew }}</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td class="text-center" colspan="6">{{ text_no_results }}</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% if pagination %}
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+</div>
+{% endif %}

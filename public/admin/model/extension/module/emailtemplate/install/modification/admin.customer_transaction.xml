@@ -1,0 +1,66 @@
+<file path="admin/controller/mail/transaction.php" email_template="admin.customer_transaction">
+	<operation>
+		<search index="0"><![CDATA[$mail = new Mail(]]></search>
+		<add position="before"><![CDATA[
+			// Prepare mail: admin.customer_transaction
+			$this->load->model('customer/customer');
+			$this->load->model('sale/order');
+			$this->load->model('extension/module/emailtemplate');
+
+			$template_load = array(
+			    'key' =>'admin.customer_transaction',
+			    'customer_id' => $customer_info['customer_id'],
+				'customer_group_id' => $customer_info['customer_group_id'],
+				'language_id' => $customer_info['language_id'],
+				'store_id' => $customer_info['store_id']
+            );
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+            if ($template) {
+                $template->data['amount'] = $amount;
+                $template->data['description'] = $description;
+
+                $template->addData($customer_info, 'customer');
+
+                if ($order_id) {
+                    $order_info = $this->model_sale_order->getOrder($order_id);
+
+                    $template->addData($order_info, 'order');
+                }
+
+                $affiliate_info = $this->model_customer_customer->getAffiliate($customer_info['customer_id']);
+
+                if ($affiliate_info) {
+                    $template->addData($affiliate_info, 'affiliate');
+                }
+
+                $template->data['customer_transaction_received'] = $this->currency->format($amount, $this->config->get('config_currency'));
+                $template->data['customer_transaction_total'] = $this->currency->format($this->model_customer_customer->getTransactionTotal($customer_id), $this->config->get('config_currency'));
+
+                $template->data['transaction_received'] = sprintf($template->data['text_transaction_received'], $template->data['customer_transaction_received']);
+                $template->data['transaction_total'] = sprintf($template->data['text_transaction_total'], $template->data['customer_transaction_total']);
+			    // Prepared mail: admin.customer_transaction
+            }
+		]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[
+			// Send mail: admin.customer_transaction
+            if ($template && $template->check()) {
+                $template->build();
+			    $template->hook($mail);
+
+                $mail->send();
+
+                $this->model_extension_module_emailtemplate->sent();
+            }]]></add>
+	</operation>
+    <operation error="skip">
+        <search><![CDATA[$mail->setHtml($this->load->view('mail/transaction', $data));]]></search>
+        <ignoreif><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/transaction', $data));]]></ignoreif>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/transaction', $data));]]></add>
+    </operation>
+</file>
+

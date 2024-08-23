@@ -1,0 +1,95 @@
+<div class="ajax-filter">
+  {% if templates|length %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-row-check" id="template_list">
+        <thead class="thead-light">
+        <tr>
+          <th width="45" class="text-center"><input type="checkbox" data-checkall="input[name^='selected']"/><th><a href="{{ sort_label }}" {{ sort=='label' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_label }}</a> / <a href="{{ sort_key }}" {{ sort=='key' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_key }}</a></th>
+          <th class="text-center"><a href="{{ sort_config }}" {{ sort=='config' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_config }}</a></th>
+          <th class="text-center"><a href="{{ sort_modified }}" {{ sort=='modified' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_modified }}</a></th>
+          {% if sent_logging_enabled %}<th class="text-center"><a href="{{ sort_last_sent }}" {{ sort=='last_sent' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_sent }}</a></th>{% endif %}
+          <th class="text-center" width="80"><a href="{{ sort_shortcodes }}" {{ sort=='shortcodes' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_shortcodes }}</a></th>
+          <th class="text-center" width="90"><a href="{{ sort_status }}" {{ sort=='status' ? ' class="' ~ order|lower ~ '" ' }}>{{ column_status }}</a></th>
+          <th class="text-center" width="60">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for template in templates %}
+          <tr data-id="{{ template.id }}" data-key="{{ template.key }}">
+            <td class="text-center"><input type="checkbox" name="selected[]" value="{{ template.id }}" {% if template.selected %} checked="checked" {% endif %}/></td>
+            <td>
+              <a href="{{ template.action }}" style="color:inherit">{{ template.label }}{{ template.custom_templates|length ? ' (' ~ (template.custom_templates|length + 1) ~ ')' }}</a>
+              <br /><b>{{ template.key }}</b>
+            </td>
+            <td class="text-center">{% if template.config is defined %}<a href="{{ template.config_url }}" style="text-decoration:none; color:inherit">{{ template.config }}</a>{% endif %}</td>
+            <td class="text-center">{{ template.modified }}</td>
+            {% if sent_logging_enabled %}<td class="text-center">
+              {% if template.total_sent %}<a href="{{ template.url_sent }}" style="color:inherit">{{ template.last_sent }} ({{ template.total_sent }})</a>
+              {% endif %}
+            </td>{% endif %}
+            <td class="text-center">{% if template.shortcodes %}
+            <button data-update="clear_shortcodes" data-msg-confirm="{{ text_confirm }}" type="button" class="btn btn-sm btn-default"><i class="fa fa-thumbs-up text-success fa-2x"></i></button>
+            {% else %}
+            <i class="fa fa-thumbs-down text-warning fa-2x"></i>
+            {% endif %}</td>
+            <td class="text-center">{% if template.status %}
+              <button data-update="disable" data-msg-confirm="{{ text_confirm }}" type="button" class="btn btn-sm btn-default"><i class="fa fa-check-circle text-success fa-2x"></i></button>
+            {% else %}
+              <button data-update="enable" data-msg-confirm="{{ text_confirm }}" type="button" class="btn btn-sm btn-default"><i class="fa fa-times-circle text-warning fa-2x"></i></button>
+            {% endif %}</td>
+            <td class="text-center">
+              {% if template.action %}
+                <div class="btn-group">
+                  {% if template.custom_templates %} <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-fw fa-caret-down"></i>
+                  </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                      <li><a href="{{ template.action }}" class="dropdown-item">{{ button_default }}</a>
+                      </li>
+                      <li role="presentation" class="divider"></li>
+                      {% for row_custom in template.custom_templates %}
+                        <li><a href="{{ row_custom.action }}" class="dropdown-item">{{ row_custom.emailtemplate_label }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %} <a href="{{ template.action }}" class="btn btn-primary"><i class="fa fa-fw fa-pencil"></i></a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="{{ sent_logging_enabled ? 5 : 4 }}" class="text-center">
+          </td>
+          <td class="text-center">
+            <div class="btn-group">
+              <button class="btn btn-warning" data-action="{{ action }}&action=delete_shortcode" data-toggle="tooltip" title="{{ button_clear }}"><i class="fa fa-thumbs-down"></i></button>
+            </div>
+          </td>
+          <td class="text-center">
+            <div class="btn-group" style="font-size:0">
+              <button class="btn btn-success" data-action="{{ action }}&action=enable" data-toggle="tooltip" title="{{ button_enable }}" style="float:none"><i class="fa fa-check-circle"></i></button>
+              <button class="btn btn-warning" data-action="{{ action }}&action=disable" data-toggle="tooltip" title="{{ button_disable }}" style="float:none"><i class="fa fa-times-circle"></i></button>
+            </div>
+          </td>
+          <td class="text-center">
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-6 text-left">
+        {{ pagination }}
+      </div>
+      <div class="col-sm-6 text-right">
+        {{ pagination_results }}
+      </div>
+    </div>
+  {% else %}
+    <div class="text-center"><p>{{ text_no_templates }} <a href="{{ reset }}" class="btn btn-warning" data-toggle="tooltip" title="{{ button_reset }}"><i class="fa fa-times"></i></a></p></div>
+  {% endif %}
+</div>

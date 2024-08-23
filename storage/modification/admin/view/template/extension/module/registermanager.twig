@@ -1,0 +1,1083 @@
+{{ header }}{{ git_hidden_tag }}
+<link href="view/javascript/bootstrap/css/bootstrap-select.css" rel="stylesheet">		
+<link href="view/javascript/bootstrap/css/bootstrap-switch.css" rel="stylesheet">		
+<script src="view/javascript/bootstrap/js/bootstrap-switch.js"></script>
+<script src="view/javascript/bootstrap/js/highlight.js"></script>
+<script src="view/javascript/bootstrap/js/main.js"></script>
+<script src="view/javascript/bootstrap/js/bootstrap-select.js"></script>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+		<a class="btn btn-primary" title="Shortcut" data-toggle="modal" data-target="#myModal">Shortcut</a>
+		<!--update work-->
+		<button type="submit" form="form-module" onclick="$('#form-module').attr('action','{{ staysave }}');$('#form-module').submit(); " data-toggle="tooltip" title="{{ button_stay }}" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_stay }}</button>
+		<!--update work-->
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <div class="modal fade" id="myModal">
+				<div class="modal-dialog">
+				  <div class="modal-content">
+				  
+					<!-- Modal Header -->
+					<div class="modal-header">
+					  <h4 class="modal-title">Shortcuts</h4>
+					  <button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					
+					<!-- Modal body -->
+					<div class="modal-body">
+					 <ul class="list-unstyled">
+					
+						<li><p>{firstname} </p>        = Customer First Name</li>
+						<li><p>{lastname} </p>         = Customer Last Name</li>
+						<li><p>{email}  </p>           = Customer Email</li>
+						<li><p>{telephone} </p>  	   = Customer Telephone</li>
+						<li><p>{address1} </p>         = Customer Address1</li>
+						<li><p>{city}</p>              = Customer City</li>
+						<li><p>{postcode} </p>         = Customer PostCode</li>
+						<li><p>{countryname} </p>      = Customer Country</li>
+						<li><p>{tax_id} </p>      		 = Tax ID</li>
+						<li><p>{sellerpermit} </p>     = Seller's Permit</li>
+					 </ul>
+					</div>
+					
+					
+				  </div>
+				</div>
+			</div>
+      <h1>{{ tmdheading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+	  {% if error_keynotfound %}
+				<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_keynotfound }}
+				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+				</div>
+			{% endif %} 
+			<!--div class="loadlicensekey"></div-->
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+				<li class="hide"><a href="#tab-language" data-toggle="tab">{{ tab_language }}</a></li>
+				<li><a href="#tab-success" data-toggle="tab">{{ tab_success }}</a></li>
+				<li><a href="#tab-email" data-toggle="tab">{{ tab_email }}</a></li>
+			</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab-general">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-register-status">{{ entry_status }}</label>
+					<div class="col-sm-10">
+						<input type="radio" name="registermanager_status" id="input-register-status" value="1" {% if registermanager_status %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"  />
+					</div>
+				</div>
+				<div class="form-group">
+					
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-4">
+								<label class="col-sm-12" for="input-registerstatus">{{ text_register }}</label>
+								<div class="col-sm-12">
+									<input type="radio" name="registermanager_arstatus" id="input-registerstatus" value="1" {% if registermanager_arstatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"  />
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<label class="col-sm-12" for="input-checkregister">{{ text_checkregister }}</label>
+								<div class="col-sm-12">
+									<input type="radio" name="registermanager_checkregister" id="input-checkregister" value="1" {% if registermanager_checkregister %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"  />
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<label class="col-sm-12" for="input-guestregister">{{ text_guestregister }}</label>
+								<div class="col-sm-12">
+									<input type="radio" name="registermanager_guestregister" id="input-guestregister" value="1" {% if registermanager_guestregister %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"  />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="table-responsive">
+                <table id="register" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-left">{{ entry_fieldname }}</td>
+                      <td class="text-left">{{ entry_label }}</td>
+                      <td class="text-left">{{ entry_error }}</td>
+                      <td class="text-left">{{ entry_required }}</td>
+					  <td class="text-left">{{ entry_status }}</td>
+                      <td class="text-left">{{ entry_sort }}</td>
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+					<tr>
+						<td class="text-left"><label>{{ entry_firstname }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.firstnamelabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[firstnamelabel][{{ language.language_id }}]" placeholder="{{ entry_firstname }}" value="{{ registermanager_register.firstnamelabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[firstnamelabel][{{ language.language_id }}]" placeholder="{{ entry_firstname }}" value="" /></div>
+						{% endif %}
+	
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.firstnamerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[firstnamerror][{{ language.language_id }}]" placeholder="{{ entry_firstname_missing }}" value="{{ registermanager_register.firstnamerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[firstnamerror][{{ language.language_id }}]" placeholder="{{ entry_firstname_missing }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_fnamerequired" id="input-status" value="1" {% if  registermanager_fnamerequired %} checked  {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_fnamestatus" id="input-status" value="1" {% if registermanager_fnamestatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_fnamesortorder" value="{{ registermanager_fnamesortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_lastname }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.lastnamelabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[lastnamelabel][{{ language.language_id }}]" placeholder="{{ entry_lastname }}" value="{{ registermanager_register.lastnamelabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[lastnamelabel][{{ language.language_id }}]" placeholder="{{ entry_lastname }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.lastnamerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[lastnamerror][{{ language.language_id }}]" placeholder="{{ entry_lastname_missing }}" value="{{ registermanager_register.lastnamerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[lastnamerror][{{ language.language_id }}]" placeholder="{{ entry_lastname_missing }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_lastnamerequired" id="input-status" value="1" {% if  registermanager_lastnamerequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_lastnamestatus" id="input-status" value="1" {% if  registermanager_lastnamestatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						
+						</td>
+						<td class="text-left">
+						<input type="text" name="registermanager_lastnamesortorder" value="{{ registermanager_lastnamesortorder }}" placeholder="" class="form-control" />	
+						</td>
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_email }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.emaillabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[emaillabel][{{ language.language_id }}]" placeholder="{{ entry_email }}" value="{{ registermanager_register.emaillabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[emaillabel][{{ language.language_id }}]" placeholder="{{ entry_email }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.emailerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[emailerror][{{ language.language_id }}]" placeholder="{{ entry_email_missing }}" value="{{ registermanager_register.emailerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[emailerror][{{ language.language_id }}]" placeholder="{{ entry_email_missing }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left" style="opacity:0.5">
+						<input type="radio" name="registermanager_emailrequired" id="input-status" value="1" {% if  registermanager_emailrequired %} checked {% endif %}data-radio-all-off="false" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="opacity:0.5">
+						<input type="radio" name="registermanager_emailstatus" id="input-status" value="1" {% if  registermanager_emailstatus %} checked {% endif %} data-radio-all-off="false" class="switch-radio2" />
+						</td>
+						<td class="text-left">
+						<input type="text" name="registermanager_emailsortorder" value="{{ registermanager_emailsortorder }}" placeholder="" class="form-control" />
+						</td>
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_telephone }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.phonelabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[phonelabel][{{ language.language_id }}]" placeholder="{{ entry_telephone }}" value="{{ registermanager_register.phonelabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[phonelabel][{{ language.language_id }}]" placeholder="{{ entry_telephone }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.phonerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[phonerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.phonerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[phonerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_phonerequired" id="input-status" value="1" {% if registermanager_phonerequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_phonestatus" id="input-status" value="1" {% if registermanager_phonestatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						<td class="text-left">
+						<input type="text" name="registermanager_phonesortorder" value="{{ registermanager_phonesortorder }}" placeholder="" class="form-control" />
+						</td>
+                    </tr>
+					
+					<tr>
+						<td class="text-left"><label>{{ entry_address1 }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.add1label[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[add1label][{{ language.language_id }}]" placeholder="{{ entry_address1 }}" value="{{ registermanager_register.add1label[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[add1label][{{ language.language_id }}]" placeholder="{{ entry_address1 }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.add1error[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[add1error][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.add1error[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[add1error][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_add1required" id="input-status" value="1" {% if registermanager_add1required %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_add1status" id="input-status" value="1" {% if registermanager_add1status %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						
+						</td>
+						<td class="text-left">
+						<input type="text" name="registermanager_add1sortorder" value="{{ registermanager_add1sortorder }}" placeholder="" class="form-control" />
+						</td>
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_address2 }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.add2label[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[add2label][{{ language.language_id }}]" placeholder="{{ entry_address2 }}" value="{{ registermanager_register.add2label[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[add2label][{{ language.language_id }}]" placeholder="{{ entry_address2 }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.add2error[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[add2error][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.add2error[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[add2error][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_add2required" id="input-status" value="1" {% if registermanager_add2required %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+							<input type="radio" name="registermanager_add2status" id="input-status" value="1" {% if registermanager_add2status %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						<td class="text-left">
+							<input type="text" name="registermanager_add2sortorder" value="{{ registermanager_add2sortorder }}" placeholder="" class="form-control" />
+						</td>
+                    </tr>
+					
+					<tr>
+						<td class="text-left"><label>{{ entry_city }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.citylabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[citylabel][{{ language.language_id }}]" placeholder="{{ entry_city }}" value="{{ registermanager_register.citylabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[citylabel][{{ language.language_id }}]" placeholder="{{ entry_city }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.cityerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[cityerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.cityerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[cityerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_cityrequired" id="input-status" value="1" {% if registermanager_cityrequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_citystatus" id="input-status" value="1" {% if registermanager_citystatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_citysortorder" value="{{ registermanager_citysortorder }}" placeholder="" class="form-control" />
+						</td>
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_postcode }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.postcodelabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[postcodelabel][{{ language.language_id }}]" placeholder="{{ entry_postcode }}" value="{{ registermanager_register.postcodelabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[postcodelabel][{{ language.language_id }}]" placeholder="{{ entry_postcode }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.postcoderror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[postcoderror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.postcoderror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[postcoderror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_postcodrequired" id="input-status" value="1" {% if registermanager_postcodrequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_postcodstatus" id="input-status" value="1" {% if registermanager_postcodstatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_postcodsortorder" value="{{ registermanager_postcodsortorder }}" placeholder="" class="form-control" />
+						</td>
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_country }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.countrylabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[countrylabel][{{ language.language_id }}]" placeholder="{{ entry_country }}" value="{{ registermanager_register.countrylabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[countrylabel][{{ language.language_id }}]" placeholder="{{ entry_country }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.countryerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[countryerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.countryerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[countryerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_countryrequired" id="input-status" value="1" {% if registermanager_countryrequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_countrystatus" id="input-status" value="1" {% if registermanager_countrystatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_countrysortorder" value="{{ registermanager_countrysortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_zone }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.zonelabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[zonelabel][{{ language.language_id }}]" placeholder="{{ entry_zone }}" value="{{ registermanager_register.zonelabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[zonelabel][{{ language.language_id }}]" placeholder="{{ entry_zone }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.zonerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[zonerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.zonerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[zonerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_zonerequired" id="input-required" value="1" {% if registermanager_zonerequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_zonestatus" id="input-status" value="1" {% if registermanager_zonestatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_zonesortorder" value="{{ registermanager_zonesortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_password }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.pwdlabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[pwdlabel][{{ language.language_id }}]" placeholder="{{ entry_password }}" value="{{ registermanager_register.pwdlabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[pwdlabel][{{ language.language_id }}]" placeholder="{{ entry_password }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.pwderror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[pwderror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.pwderror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[pwderror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_pwdrequired" id="input-required" value="1" {% if registermanager_pwdrequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_pwdstatus" id="input-status" value="1" {% if registermanager_pwdstatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_pwdsortorder" value="{{ registermanager_pwdsortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+					<tr>
+						<td class="text-left"><label>{{ entry_confirm_password }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.cpwdlabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[cpwdlabel][{{ language.language_id }}]" placeholder="{{ entry_confirm_password }}" value="{{ registermanager_register.cpwdlabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[cpwdlabel][{{ language.language_id }}]" placeholder="{{ entry_confirm_password }}" value="" /></div>
+						{% endif %}
+							{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.cpwderror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[cpwderror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.cpwderror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[cpwderror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+							{% endfor %}
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_cpwdrequired" id="input-required" value="1" {% if registermanager_cpwdrequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_cpwdstatus" id="input-status" value="1" {% if registermanager_cpwdstatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_cpwdsortorder" value="{{ registermanager_cpwdsortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+					
+					<tr>
+						<td class="text-left"><label>{{ entry_tax_id }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.taxidlabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[taxidlabel][{{ language.language_id }}]" placeholder="{{ entry_tax_id }}" value="{{ registermanager_register.taxidlabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[taxidlabel][{{ language.language_id }}]" placeholder="{{ entry_tax_id }}" value="" /></div>
+						{% endif %}
+	
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.taxiderror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[taxiderror][{{ language.language_id }}]" placeholder="{{ entry_tax_id_missing }}" value="{{ registermanager_register.taxiderror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[taxiderror][{{ language.language_id }}]" placeholder="{{ entry_tax_id_missing }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_taxid_required" id="input-status" value="1" {% if  registermanager_taxid_required %} checked  {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_taxidstatus" id="input-status" value="1" {% if registermanager_taxidstatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_taxidorder" value="{{ registermanager_taxidorder }}" placeholder="" class="form-control" />
+						</td>
+						
+          </tr>
+
+					<tr>
+						<td class="text-left"><label>{{ entry_seller_permit }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.sellerpermitlabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[sellerpermitlabel][{{ language.language_id }}]" placeholder="{{ entry_seller_permit }}" value="{{ registermanager_register.sellerpermitlabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[sellerpermitlabel][{{ language.language_id }}]" placeholder="{{ entry_seller_permit }}" value="" /></div>
+						{% endif %}
+	
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.sellerpermiterror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[sellerpermiterror][{{ language.language_id }}]" placeholder="{{ entry_seller_permit_missing }}" value="{{ registermanager_register.sellerpermiterror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[sellerpermiterror][{{ language.language_id }}]" placeholder="{{ entry_seller_permit_missing }}" value="" /></div>
+						{% endif %}
+						
+						{% endfor %}
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_sellerpermit_required" id="input-status" value="1" {% if  registermanager_sellerpermit_required %} checked  {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_sellerpermitstatus" id="input-status" value="1" {% if registermanager_sellerpermitstatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_sellerpermitorder" value="{{ registermanager_sellerpermitorder }}" placeholder="" class="form-control" />
+						</td>
+						
+          </tr> 
+
+					<tr>
+						<td class="text-left"><label>{{ entry_privacy }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.privacylabel[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[privacylabel][{{ language.language_id }}]" placeholder="{{ entry_privacy }}" value="{{ registermanager_register.privacylabel[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[privacylabel][{{ language.language_id }}]" placeholder="{{ entry_privacy }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.privacyerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[privacyerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.privacyerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[privacyerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+					
+						{% endfor %}
+						</td>
+						<td class="text-left">
+						<input type="radio" name="registermanager_privacyrequired" id="input-status" value="1" {% if registermanager_privacyrequired %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_privacystatus" id="input-status" value="1" {% if registermanager_privacystatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_privacysortorder" value="{{ registermanager_privacysortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+                    <tr>
+						<td class="text-left"><label>{{ entry_subscribe }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.subscribe[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[subscribe][{{ language.language_id }}]" placeholder="{{ entry_subscribe }}" value="{{ registermanager_register.subscribe[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[subscribe][{{ language.language_id }}]" placeholder="{{ entry_subscribe }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.subscribeerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[subscribeerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.subscribeerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[subscribeerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_subscribestatus" id="input-status" value="1" {% if registermanager_subscribestatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_subscribesortorder" value="{{ registermanager_subscribesortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+                    <tr>
+						<td class="text-left"><label>{{ entry_captcha }}</label></td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.captcha[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[captcha][{{ language.language_id }}]" placeholder="{{ entry_captcha }}" value="{{ registermanager_register.captcha[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[captcha][{{ language.language_id }}]" placeholder="{{ entry_captcha }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">{% for language in languages %}
+						{% if registermanager_register.captchaerror[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[captchaerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="{{ registermanager_register.captchaerror[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[captchaerror][{{ language.language_id }}]" placeholder="{{ entry_error }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+						</td>
+						<td class="text-left">
+						
+						</td>
+						
+						<td class="text-left">
+						<input type="radio" name="registermanager_captchastatus" id="input-status" value="1" {% if registermanager_captchastatus %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+						</td>
+						
+						<td class="text-left" style="width:8%;">
+							<input type="text" name="registermanager_captchasortorder" value="{{ registermanager_captchasortorder }}" placeholder="" class="form-control" />
+						</td>
+						
+                    </tr>
+                  </tbody>
+                </table>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-title">{{ entry_privacyautochk }}</label>
+					<div class="col-sm-10">
+					 <input type="radio" name="registermanager_privacyautochk" id="input-status" value="1" {% if registermanager_privacyautochk %} checked {% endif %} data-radio-all-off="true" class="switch-radio2"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-title">{{ entry_title }}</label>
+					<div class="col-sm-10">
+					 {% for language in languages %}
+					 {% if registermanager_register.accounttitle[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[accounttitle][{{ language.language_id }}]" placeholder="{{ entry_title }}" value="{{ registermanager_register.accounttitle[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[accounttitle][{{ language.language_id }}]" placeholder="{{ entry_title }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+					 
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-already">{{ entry_already }}</label>
+					<div class="col-sm-10">
+					 {% for language in languages %}
+					 {% if registermanager_register.alreadytitle[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[alreadytitle][{{ language.language_id }}]" placeholder="{{ entry_already }}" value="{{ registermanager_register.alreadytitle[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[alreadytitle][{{ language.language_id }}]" placeholder="{{ entry_already }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-personal">{{ entry_personal }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						{% if registermanager_register.personaltitle[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[personaltitle][{{ language.language_id }}]" placeholder="{{ entry_personal }}" value="{{ registermanager_register.personaltitle[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[personaltitle][{{ language.language_id }}]" placeholder="{{ entry_personal }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-addtitle">{{ entry_addtitle }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						{% if registermanager_register.addtitle[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[addtitle][{{ language.language_id }}]" placeholder="{{ entry_addtitle }}" value="{{ registermanager_register.addtitle[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[addtitle][{{ language.language_id }}]" placeholder="{{ entry_addtitle }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-passtitle">{{ entry_passtitle }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						{% if registermanager_register.passtitle[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[passtitle][{{ language.language_id }}]" placeholder="{{ entry_passtitle }}" value="{{ registermanager_register.passtitle[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[passtitle][{{ language.language_id }}]" placeholder="{{ entry_passtitle }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-account-newsletter">{{ entry_newsletter }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						{% if registermanager_register.newsletter[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[newsletter][{{ language.language_id }}]" placeholder="{{ entry_newsletter }}" value="{{ registermanager_register.newsletter[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[newsletter][{{ language.language_id }}]" placeholder="{{ entry_newsletter }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-submit-button">{{ entry_submit_button }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						{% if registermanager_register.submitbutton[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[submitbutton][{{ language.language_id }}]" placeholder="{{ entry_title }}" value="{{ registermanager_register.submitbutton[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[submitbutton][{{ language.language_id }}]" placeholder="{{ entry_title }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-email-exist">{{ entry_email_warning }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						{% if registermanager_register.emailexist[language.language_id] is not empty  %}		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input  class="form-control" type="text" name="registermanager_register[emailexist][{{ language.language_id }}]" placeholder="{{ entry_title }}" value="{{ registermanager_register.emailexist[language.language_id] }}" /></div>
+		                {% else %}
+		
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							 <input  class="form-control" type="text" name="registermanager_register[emailexist][{{ language.language_id }}]" placeholder="{{ entry_title }}" value="" /></div>
+						{% endif %}
+						{% endfor %}
+						
+					</div>
+				</div>
+			</div>
+		  <div class="tab-pane" id="tab-success">
+			  <ul class="nav nav-tabs" id="language">
+                {% for language in languages %}
+                <li><a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }} </a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="language{{ language['language_id'] }}">
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-title{{ language['language_id'] }}">{{ entry_title }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="registermanager_title[{{ language.language_id }}][title]" value="{% if registermanager_title[language.language_id].title %}{{registermanager_title[language.language_id].title}}{% endif %}" placeholder="{{ entry_title }}" id="input-title{{ language.language_id }}" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-success{{ language['language_id'] }}">{{ entry_success }}</label>
+						<div class="col-sm-10">
+							<textarea type="text" name="registermanager_success[{{ language.language_id }}][success]" placeholder="{{ entry_success }}" id="input-success{{ language.language_id }}" data-toggle="summernote" class="form-control">
+								{{ registermanager_success[language.language_id] ? registermanager_success[language.language_id].success }}
+							</textarea>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-unapprovesuccess{{ language['language_id'] }}">{{ entry_unapprovesuccess }}</label>
+						<div class="col-sm-10">
+							<textarea type="text" name="registermanager_unapprovesuccess[{{ language['language_id'] }}][unapprovesuccess]" placeholder="{{ entry_unapprovesuccess }}" id="input-unapprovesuccess{{ language['language_id'] }}" data-toggle="summernote" class="form-control">
+								{{ registermanager_unapprovesuccess[language.language_id] ? registermanager_unapprovesuccess[language.language_id].unapprovesuccess }}
+							</textarea>
+						</div>
+					</div>
+					
+				</div>
+               {% endfor %}
+			  </div>
+		    </div>
+		    <div class="tab-pane" id="tab-email">		
+				<ul class="nav nav-tabs" id="language-email">
+					{% for language in languages %}
+					<li><a href="#language-email{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }} </a></li>
+					{% endfor %}
+				</ul>
+				<div class="tab-content">
+					{% for language in languages %}		
+					<div class="tab-pane" id="language-email{{ language['language_id'] }}">					
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-subject">{{ entry_subject }}</label>
+							<div class="col-sm-10">
+								<input type="text" name="registermanager_email[{{ language.language_id }}][subject]" value="{% if registermanager_email[language.language_id].subject %}{{ registermanager_email[language.language_id].subject }}{% endif %}" placeholder="{{ entry_subject }}" id="input-subject{{ language.language_id }}" class="form-control"/>							
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-emailmessage">{{ entry_emailtemplate }}</label>
+							<div class="col-sm-10">
+								<textarea type="text" name="registermanager_email[{{ language.language_id }}][emailmessage]" placeholder="{{ entry_emailtemplate }}" id="input-emailmessage{{ language.language_id }}" data-toggle="summernote" class="form-control">
+								{{ registermanager_email[language.language_id] ? registermanager_email[language.language_id].emailmessage }}
+								</textarea>
+							</div>
+						</div>
+					</div>					
+					{% endfor %}
+				</div>
+		    </div>
+		</div>
+			  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+
+<script>
+$('#language a:first').tab('show');
+$('#language-email a:first').tab('show');
+</script>
+
+<script>
+$(document).ready(function() {
+	$('.loadlicensekey').load('index.php?route=extension/module/keysubmit/loadfrom&user_token={{user_token}}');
+});
+</script>
+
+{{ footer }}
+
+<style>
+#myModal ul li p{
+	width:25%;
+	display:inline-block;
+}	
+#myModal .close {
+    color: #000;
+    font-size: 25px;
+    margin: -25px 0 0 !important;
+    opacity: 1;
+    position: absolute;
+    right: 5px;
+    top: auto;
+}
+.modal-title {
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#form-module ul li.active > a,#form-module ul li.active > a:hover,#form-module ul li.active > a:focus{
+	background: #00a4e4 none repeat scroll 0 0 !important;
+	color:#fff;
+}
+#form-module .nav-tabs li a{
+	background:#E4E6EA;
+}
+#form-module .nav-tabs > li.active > a, #form-module .nav-tabs > li.active > a:hover,#form-module .nav-tabs > li.active > a:focus{
+	color:#fff;
+}
+#tab-email ul li.active > a,#tab-email ul li.active > a:hover,#tab-email ul li.active > a:focus, #tab-success ul li.active > a,#tab-success ul li.active > a:hover,#tab-success ul li.active > a:focus{
+	background: #fff !important;
+	color: #333 !important;
+}
+</style>
+
+<script>
+$('input').on('switchChange.bootstrapSwitch', function (event, state) {
+	if (state == true) {
+		this.value = "1";
+		this.checked = true;
+	} else {
+		this.value = "0";
+		this.checked = true;
+	}
+});
+</script>

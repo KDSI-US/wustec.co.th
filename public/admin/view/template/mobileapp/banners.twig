@@ -1,0 +1,304 @@
+{{ header }}{{ column_left }}
+<div id="content">
+ 	 <div class="page-header">
+		    <div class="container-fluid">
+		     <div class="pull-right">
+        <button type="submit" form="form-banner" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+       </div>
+		      <h1>{{ heading_title }}</h1>
+		      <ul class="breadcrumb">
+		        {% for breadcrumb in breadcrumbs %}
+		        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		        {% endfor %}
+		      </ul>
+		    </div>
+ 	 </div>
+	  <div class="container-fluid">
+		    <div class="panel panel-default">
+		      <div class="panel-heading">
+		       
+		      </div>
+		      	<div class="panel-body">
+			        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-attribute" class="form-horizontal">
+			          	<div class="table-responsive">
+				             	<table class="table table-bordered table-hover" id="images">
+				               	 	<thead>
+					                  	<tr>
+						                    <th class=" bg-primary text-center">{{ text_image }}</th>
+						                    <th class="bg-primary text-center">{{ text_title }}</th>
+						                    <th class="bg-primary text-center">{{ text_subtitle }}</th>
+						                    <th class="bg-primary text-center">{{ text_link }}</th>
+						                    <th class="bg-primary text-center">{{ text_button_label }}</th>
+						                    <th class="bg-primary text-center">{{ text_action }}</th>
+					                  	</tr>
+				                	</thead>
+				                <tbody>
+
+				                	
+				                	{% set image_row = 0 %}
+				                	{% if banner_data %}
+				                	
+				                	{% for banner in banner_data %}
+				                	<tr id="image-row{{ image_row }}">
+				                			
+										<td>
+											<a href="" id="image-row{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ banner.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" width="100%"/></a>
+                                         <input type="hidden" name="banner_image[{{image_row}}][image]" value="{{banner.image}}" id="input-image{{ image_row }}" />
+					  					</td>
+					  		
+				                		<td class="text-center"><input type="text" name="banner_image[{{image_row}}][title]" value="{{banner.title}}" id="image-row{{ image_row }}" class="form-control title"></td>
+				                		<td class="text-center"><input type="text" name="banner_image[{{image_row}}][subtitle]" value="{{banner.subtitle}}" id="image-row{{ image_row }}" class="form-control subtitle"></td>
+				                		<td class="let-align-middle">
+											<select class="select-link-type form-control " name="banner_image[{{image_row}}][link_type]" value=""id="image-row{{ image_row }}">
+
+												{% if banner.type == 'product' %}
+												<option value="{{banner.type}}" selected="selected">{{text_product}}</option>
+												{% else %}
+												<option value="product">{{text_product}}</option>
+												{% endif %}
+												{% if banner.type =='product_category'%}
+												<option value="{{banner.type}}" selected="selected">{{text_category}}</option>
+												{% else %}
+												<option value="product_category">{{text_category}}</option>
+												{% endif %}
+											</select>
+												{% if banner.type=='product'%}
+												<div class="product-input">
+												<input type="text" name="banner_image[{{image_row}}][product_name]" value="{{banner.name}}" class="product_items form-control"> 
+												<input type="hidden" name="banner_image[{{image_row}}][product_id]" value="{{banner.id}}"  class="form-control"> 
+												
+								                </div>
+								                {% else %}
+								                <div class="product-input">
+												<input type="text" name="banner_image[{{image_row}}][product_name]" value="{{banner.name}}" class="product_items form-control"> 
+												<input type="hidden" name="banner_image[{{image_row}}][product_id]" value=""  class="form-control"> 
+												
+								                </div>
+								                {% endif %}
+												{% if banner.type=='product_category'%}
+												<div class="product-cat-input" style="display: none;">
+												<input type="text" name="banner_image[{{image_row}}][product_cat_name]" value="{{banner.name}}" class="product_cat_items form-control"> 
+												<input type="hidden" name="banner_image[{{image_row}}][product_cat_id]" value="{{banner.id}}"  class="form-control"> 
+								                </div>
+								                {% else %}
+								                <div class="product-cat-input" style="display: none;">
+												<input type="text" name="banner_image[{{image_row}}][product_cat_name]" value="{{banner.name}}" class="product_cat_items form-control"> 
+												<input type="hidden" name="banner_image[{{image_row}}][product_cat_id]" value=""  class="form-control"> 
+								                </div>
+								                {% endif %}
+										</td>
+										<td class="text-center"><input type="text" name="banner_image[{{image_row}}][button_label]" value="{{banner.button_label}}" id="image-row{{ image_row }}" class="form-control button_label"></td>
+										<td class="text-left"><button type="button" onclick="$('#image-row{{ image_row}}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+				           				</tr>
+				           				{% set image_row = image_row + 1 %}
+				              			{% endfor %}
+				              	{% else %}
+				              	
+				              	<tr id="image-row{{ image_row }}">
+				                			
+										<td>
+											<a href="" id="image-row{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{% if default_thumb %}{{ default_thumb }}{% endif %}" alt="" title="" data-placeholder="{{ placeholder }}" width="100%"/></a>
+                                         <input type="hidden" name="banner_image[{{image_row}}][image]" value="" id="input-image{{ image_row }}" />
+					  					</td>
+			
+					  					
+				                		<td class="text-center"><input type="text" name="banner_image[{{image_row}}][title]" value="" id="image-row{{ image_row }}" class="form-control title"></td>
+				                		<td class="text-center"><input type="text" name="banner_image[{{image_row}}][subtitle]" value="" id="image-row{{ image_row }}" class="form-control subtitle"></td>
+				                		<td class="let-align-middle">
+											<select class="select-link-type form-control " name="banner_image[{{image_row}}][link_type]" value=""id="image-row{{ image_row }}">
+
+												
+												<option value="product">{{text_product}}</option>
+												
+												<option value="product_category">{{text_category}}</option>
+											
+											</select>
+												
+												
+								               
+								                <div class="product-input">
+												<input type="text" name="banner_image[{{image_row}}][product_name]" value="{{banner.name}}" class="product_items form-control"> 
+												<input type="hidden" name="banner_image[{{image_row}}][product_id]" value=""  class="form-control"> 
+												
+								                </div>
+								              
+								                <div class="product-cat-input" style="display: none;">
+												<input type="text" name="banner_image[{{image_row}}][product_cat_name]" value="{{banner.name}}" class="product_cat_items form-control"> 
+												<input type="hidden" name="banner_image[{{image_row}}][product_cat_id]" value=""  class="form-control"> 
+								                </div>
+								              
+										</td>
+										<td class="text-center"><input type="text" name="banner_image[{{image_row}}][button_label]" value="" id="image-row{{ image_row }}" class="form-control button_label"></td>
+				           
+                    					<td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+				                	</tr>
+				                	{% set image_row = image_row + 1 %}
+				                	{% endif %}
+				                </tbody>
+				                <tfoot>
+				                	<tr>
+                    					<td colspan="6" class="text-right"><button type="button" onclick="addImage();" data-toggle="tooltip" title="{{ button_banner_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+				                	</tr>
+				                	</tfoot>
+				                	
+				                </tbody>
+				        	 </table>
+			     		</div>
+			        
+			        </form>
+		      	</div>
+		    </div>
+	  </div>
+</div>
+
+ 
+<script type="text/javascript">
+
+	(function($) {
+	$.each($(document).find('input.product_items'),function(){
+	
+	$(this).autocomplete({
+	'source': function(request, response) {
+		var pi= $(this);
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+					$(pi.parent()).find('.dropdown-menu li').on('click',function(e){
+					$(pi.parent()).find('input[type="text"]').val($(this).find('a').text());
+					$(pi.parent()).find('input[type="hidden"]').val($(this).data('value'));
+				})
+			}
+		});
+	}
+});
+})
+
+
+$('select.select-link-type').on('change',function(e){
+	if($(this).val()=='product_category')
+	{
+		$('.product-input').hide();
+		$('.product-cat-input').show();
+	}else{
+
+		$('.product-cat-input').hide();
+		$('.product-input').show();
+	}
+});
+
+$.each($(document).find('input.product_cat_items'),function(){
+	
+	$(this).autocomplete({
+	'source': function(request, response) {
+		var pi= $(this);
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+
+					$(pi.parent()).find('.dropdown-menu li').on('click',function(e){
+						pi.val($(this).find('a').text());
+						$(pi.parent()).find('input[type="hidden"]').val($(this).data('value'));
+					})
+			}
+		});
+	}
+});
+})
+
+})(jQuery);
+	</script> 
+ <script type="text/javascript"><!--
+var image_row = {{ image_row }};
+var default_thumb = '{{default_thumb}}';
+function addImage() {
+	html  = '<tr id="image-row' + image_row + '">';
+	html += ' <td><a href="" id="image-row'+image_row+'" data-toggle="image" class="img-thumbnail"><img src="'+default_thumb+'" alt="" title="" data-placeholder="{{ placeholder }}" width="100%"/></a><input type="hidden" name="banner_image['+image_row+'][image]" value="{{ image }}" id="input-image'+image_row+'"/></td>';	
+	html += '<td class="text-center"><input type="text" name="banner_image['+image_row+'][title]" value="" id="image-row'+image_row+'" class="form-control title"></td>';
+	html += '<td class="text-center"><input type="text" name="banner_image['+image_row+'][subtitle]" value="" id="image-row'+image_row+'" class="form-control subtitle"></td>';
+	html += '<td class="let-align-middle"><select class="select-link-type form-control " name="banner_image['+image_row+'][link_type]"><option value="product">{{text_product}}</option><option value="product_category">{{text_category}}</option></select><div class="product-input"><input type="text" name="banner_image['+image_row+'][product_name]" value="" class="product_items form-control"><input type="hidden" name="banner_image['+image_row+'][product_id]" value=""  class="form-control"></div><div class="product-cat-input" style="display: none;"><input type="text" name="banner_image['+image_row+'][product_cat_name]" value=""  class="product_cat_items form-control"><input type="hidden" name="banner_image['+image_row+'][product_cat_id]" value="" class="form-control"></div></td>';
+	html += '<td class="text-center"><input type="text" name="banner_image['+image_row+'][button_label]" value="" id="image-row'+ image_row +'" class="form-control button_label"></td>';
+
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+	
+	$('#images tbody').append(html);
+	
+	image_row++;
+	//console.log($(document).find('input.product_items');
+	$.each($(document).find('input.product_items'),function(){
+	
+	$(this).autocomplete({
+	'source': function(request, response) {
+		var pi= $(this);
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+					$(pi.parent()).find('.dropdown-menu li').on('click',function(e){
+					pi.val($(this).find('a').text());
+					$(pi.parent()).find('input[type="hidden"]').val($(this).data('value'));
+				})
+			}
+		});
+	}
+});
+})
+	$('select.select-link-type').on('change',function(e){
+	if($(this).val()=='product_category')
+	{
+		$('.product-input').hide();
+		$('.product-cat-input').show();
+	}else{
+
+		$('.product-cat-input').hide();
+		$('.product-input').show();
+	}
+});
+$.each($(document).find('input.product_cat_items'),function(){
+	
+	$(this).autocomplete({
+	'source': function(request, response) {
+		var pi= $(this);
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+
+					$(pi.parent()).find('.dropdown-menu li').on('click',function(e){
+						pi.val($(this).find('a').text());
+						$(pi.parent()).find('input[type="hidden"]').val($(this).data('value'));
+					})
+			}
+		});
+	}
+});
+})
+}
+//--></script> 
+{{ footer }}

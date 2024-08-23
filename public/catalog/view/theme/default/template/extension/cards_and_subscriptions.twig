@@ -1,0 +1,346 @@
+<?php
+//==============================================================================
+// Braintree Payment Gateway Pro v2022-7-12
+// 
+// Author: Clear Thinking, LLC
+// E-mail: johnathan@getclearthinking.com
+// Website: http://www.getclearthinking.com
+// 
+// All code within this file is copyright Clear Thinking, LLC.
+// You may not copy or reuse code within this file without written permission.
+//==============================================================================
+?>
+
+<?php echo $header; ?>
+
+<style type="text/css">
+	hr {
+		border: 0;
+		border-top: 1px solid #EEE;
+		margin: 20px 0;
+	}
+	.pull-right {
+		float: right;
+	}
+	.card-block, .input-block-name, .input-block, .subscription-block {
+		display: inline-block;
+	}
+	.card-block {
+		margin: 7.5px;
+	}
+	.input-block-name {
+		padding: 8px 10px 16px 0;
+		text-align: right;
+		width: 200px;
+		vertical-align: top;
+	}
+	.hosted-field {
+		background: white;
+		border: 1px solid #DDD;
+		border-radius: 5px;
+		height: 32px;
+		padding-left: 10px;
+	}
+	#card-name, #card-number {
+		width: 200px;
+	}
+	#card-expiration, #card-postcode {
+		width: 100px;
+	}
+	#card-security {
+		width: 60px;
+	}
+	.subscription-block {
+		margin: 0 7.5px;
+	}
+	.subscription-block + .pull-right {
+		text-align: right;
+	}
+	.subscription-block + .pull-right select {
+		margin-bottom: 5px;
+	}
+	/* Journal fixes */
+	body > .container {
+		background: white;
+		margin: 0 auto;
+	}
+	.extended-container .container {
+		max-width: 1140px;
+	}
+	#content {
+		padding: 20px;
+	}
+</style>
+
+<div class="container">
+	<ul class="breadcrumb">
+		<?php foreach ($breadcrumbs as $breadcrumb) { ?>
+			<li class="breadcrumb-item">
+				<a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
+			</li>
+		<?php } ?>
+	</ul>
+	
+	<?php if (!empty($error_warning)) { ?>
+		<div class="warning alert alert-danger"><i class="fa fa-exclamation-triangle"></i> &nbsp; <?php echo $error_warning; ?></div>
+	<?php } ?>
+	
+	<div class="row">
+		<?php echo $column_left; ?>
+		
+		<?php if ($column_left && $column_right) { ?>
+			<?php $class = 'col-sm-6'; ?>
+		<?php } elseif ($column_left || $column_right) { ?>
+			<?php $class = 'col-sm-9'; ?>
+		<?php } else { ?>
+			<?php $class = 'col-sm-12'; ?>
+		<?php } ?>
+		
+		<div id="content" class="<?php echo $class; ?>">
+			<?php echo $content_top; ?>
+			
+			<?php if ($settings['allow_stored_cards']) { ?>
+				<h1><?php echo html_entity_decode($settings['cards_page_heading_' . $language], ENT_QUOTES, 'UTF-8'); ?></h1>
+				<hr>
+				
+				<?php if ($cards) { ?>
+					<?php foreach ($cards as $card) { ?>
+						<div>
+							<div class="card-block">
+								<img width="40" src="https://assets.braintreegateway.com/payment_method_logo/<?php echo strtolower(str_replace(' ', '_', $card['type'])); ?>.png" alt="<?php echo str_replace(' ', '_', $card['type']); ?>" />
+								&nbsp;
+								<?php echo $card['text']; ?>
+							</div>
+							
+							<div class="pull-right">
+								<?php if ($card['default']) { ?>
+									<?php echo html_entity_decode($settings['cards_page_default_card_' . $language], ENT_QUOTES, 'UTF-8'); ?> &nbsp; &nbsp; &nbsp;
+								<?php } else { ?>
+									<a class="button btn btn-primary" onclick="modifyCard('make_default', $(this), '<?php echo $card['id']; ?>')">
+										<?php echo $settings['cards_page_make_default_' . $language]; ?>
+									</a>
+								<?php } ?>
+								<a class="button btn btn-danger" onclick="modifyCard('delete_card', $(this), '<?php echo $card['id']; ?>')">
+									<?php echo $settings['cards_page_delete_' . $language]; ?>
+								</a>
+							</div>
+						</div>
+						<hr>
+					<?php } ?>
+				<?php } else { ?>
+					<?php echo html_entity_decode($settings['cards_page_none_' . $language], ENT_QUOTES, 'UTF-8'); ?>
+					<hr>
+				<?php } ?>
+				
+				<div id="new-card" style="display: none">
+					<div class="input-block-name"><?php echo html_entity_decode($settings['text_card_number_' . $language], ENT_QUOTES, 'UTF-8'); ?></div>
+					<div class="input-block"><div id="card-number" class="hosted-field"></div></div>
+					<br>
+					<div class="input-block-name"><?php echo html_entity_decode($settings['text_card_expiry_' . $language], ENT_QUOTES, 'UTF-8'); ?></div>
+					<div class="input-block"><div id="card-expiration" class="hosted-field"></div></div>
+					<br>
+					<div class="input-block-name"><?php echo html_entity_decode($settings['text_card_security_' . $language], ENT_QUOTES, 'UTF-8'); ?></div>
+					<div class="input-block"><div id="card-security" class="hosted-field"></div></div>
+					<br>
+					<div class="input-block-name"><?php echo html_entity_decode($settings['cards_page_card_address_' . $language], ENT_QUOTES, 'UTF-8'); ?></div>
+					<div class="input-block">
+						<input type="text" id="card-address1" class="form-control" value="" placeholder="<?php echo str_replace(':', '', $entry_address_1); ?>" /><br>
+						<input type="text" id="card-address2" class="form-control" value="" placeholder="<?php echo str_replace(':', '', $entry_address_2); ?>" /><br>
+						<input type="text" id="card-city" class="form-control" value="" placeholder="<?php echo str_replace(':', '', $entry_city); ?>" /><br>
+						<input type="text" id="card-postcode" class="form-control" value="" placeholder="<?php echo str_replace(':', '', $entry_postcode); ?>" /><br>
+						<select id="card-country" class="<?php echo (version_compare(VERSION, '4.0', '<')) ? 'form-control' : 'form-select'; ?>">
+							<?php foreach ($countries as $iso_code => $country) { ?>
+								<option value="<?php echo $iso_code; ?>"><?php echo $country; ?></option>
+							<?php } ?>
+						</select><br>
+						<select id="card-zone" class="<?php echo (version_compare(VERSION, '4.0', '<')) ? 'form-control' : 'form-select'; ?>"></select>
+					</div>
+				</div>
+				
+				<div class="input-block-name">
+					<a class="button btn btn-success" onclick="$('#new-card').slideDown(); $(this).next().show(); $(this).remove();"><?php echo $settings['cards_page_add_card_' . $language]; ?></a>
+					<a class="button btn btn-success" id="add-new-card" style="display: none"><?php echo $settings['cards_page_add_card_' . $language]; ?></a>
+				</div>
+				
+				<br><br>
+			<?php } ?>
+			
+			<?php if ($settings['subscriptions'] && $settings['allow_customers_to_cancel']) { ?>
+				<h1><?php echo html_entity_decode($settings['subscriptions_page_heading_' . $language], ENT_QUOTES, 'UTF-8'); ?></h1>
+				<hr>
+				
+				<?php if ($subscriptions) { ?>
+					<?php foreach ($subscriptions as $subscription) { ?>
+						<div>
+							<div class="subscription-block">
+								<strong><?php echo $subscription['plan']; ?></strong>
+								<br>
+								<?php echo html_entity_decode($settings['subscriptions_page_card_' . $language], ENT_QUOTES, 'UTF-8'); ?>
+								<?php echo $subscription['card']; ?>
+								<br>
+								<?php echo html_entity_decode($settings['subscriptions_page_last_' . $language], ENT_QUOTES, 'UTF-8'); ?>
+								<?php echo $subscription['last']; ?>
+								<br>
+								<?php echo html_entity_decode($settings['subscriptions_page_next_' . $language], ENT_QUOTES, 'UTF-8'); ?>
+								<?php echo $subscription['next']; ?>
+							</div>
+							
+							<div class="pull-right">
+								<span></span>
+								<?php if ($subscription['card'] != 'PayPal') { ?>
+									<select class="<?php echo (version_compare(VERSION, '4.0', '<')) ? 'form-control' : 'form-select'; ?>" onchange="if ($(this).val()) modifyCard('edit_subscription', $(this), '<?php echo $subscription['id']; ?>|' + $(this).val())">
+										<option value=""><?php echo $settings['subscriptions_page_switch_' . $language]; ?></option>
+										<?php foreach ($cards as $card) { ?>
+											<option value="<?php echo $card['id']; ?>"><?php echo $card['text']; ?></option>
+										<?php } ?>
+									</select>
+								<?php } ?>
+								<a class="button btn btn-danger" onclick="modifyCard('cancel_subscription', $(this), '<?php echo $subscription['id']; ?>')">Cancel</a>
+							</div>
+						</div>
+						<hr>
+					<?php } ?>
+				<?php } else { ?>
+					<?php echo html_entity_decode($settings['subscriptions_page_none_' . $language], ENT_QUOTES, 'UTF-8'); ?>
+					<hr>
+				<?php } ?>
+			<?php } ?>
+			
+			<div class="buttons clearfix">
+				<div class="left pull-left"><a href="<?php echo $back; ?>" class="button btn btn-default btn-light"><?php echo $button_back; ?></a></div>
+			</div>
+			<?php echo $content_bottom; ?>
+		</div>
+		
+	</div>
+</div>
+
+<script>
+	<?php if ($settings['server_mode'] == 'production') { ?>
+		if (window.location.protocol != 'https:') {
+			$('.breadcrumb').after('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> &nbsp; You are in LIVE mode but are not on a secure (https) connection! Payment info is not secure!</div>');
+		}
+	<?php } ?>
+	
+	<?php if (!empty($cards)) { ?>
+		$.getScript('https://js.braintreegateway.com/web/3.27.0/js/client.min.js', function(){
+			braintree.client.create({
+				authorization: '<?php echo $client_token; ?>'
+			}, function(clientErr, clientInstance) {
+				if (clientErr) {
+					alert(clientErr.message);
+					return;
+				}
+				
+				// Hosted Fields
+				$.getScript('https://js.braintreegateway.com/web/3.27.0/js/hosted-fields.min.js', function(){
+					braintree.hostedFields.create({
+						client: clientInstance,
+						styles: {
+							'input': {
+								'font-size': '12pt',
+							},
+							'input.invalid': {
+								'color': 'red'
+							},
+							'input.valid': {
+								'color': 'green'
+							}
+						},
+						fields: {
+							number: {
+								selector: '#card-number',
+								placeholder: '•••• •••• •••• ••••'
+							},
+							cvv: {
+								selector: '#card-security',
+								placeholder: '•••'
+							},
+							expirationDate: {
+								selector: '#card-expiration',
+								placeholder: 'MM/YYYY'
+							},
+						}
+					}, function(hostedFieldsErr, hostedFieldsInstance) {
+						if (hostedFieldsErr) {
+							alert(hostedFieldsErr.message);
+							return;
+						}
+						
+						hostedFieldsInstance.on('cardTypeChange', function(event) {
+							if (event.cards.length === 1) {
+								$('#card-type img').css('opacity', 0.3);
+								$('#card-type img[alt="' + event.cards[0].type + '"]').css('opacity', 1);
+								if (event.cards[0].code.size === 4) {
+									hostedFieldsInstance.setPlaceholder('cvv', '••••');
+								} 
+							} else {
+								hostedFieldsInstance.setPlaceholder('cvv', '•••');
+							}
+						});
+						
+						$('#add-new-card').on('click', function(event) {
+							element = $(this);
+							event.preventDefault();
+							hostedFieldsInstance.tokenize(function(tokenizeErr, payload) {
+								if (tokenizeErr) {
+									alert(tokenizeErr.message);
+									return;
+								}
+								modifyCard('add_card', element, payload.nonce);
+							});
+						});
+					});
+				});
+				
+			});
+		});
+	<?php } ?>
+	
+	function modifyCard(request, element, id) {
+		if (request == 'cancel_subscription') {
+			if (prompt('<?php echo $settings['subscriptions_page_confirm_' . $language]; ?>') != 'CANCEL') return;
+		} else if (request == 'delete_card') {
+			if (!confirm('<?php echo $settings['cards_page_confirm_' . $language]; ?>')) return;
+		}
+		
+		element.attr('disabled', 'disabled').addClass('disabled');
+		
+		if (request == 'edit_subscription') {
+			element = element.prev();
+		}
+		
+		var text = element.text();
+		element.html('<?php echo $settings['text_please_wait_' . $language]; ?>');
+		
+		var address = '';
+		if (request == 'add_card') {
+			var address = '&address1=' + $('#card-address1').val();
+			address += '&address2=' + $('#card-address2').val();
+			address += '&city=' + $('#card-city').val();
+			address += '&zone=' + $('#card-zone').val();
+			address += '&postcode=' + $('#card-postcode').val();
+			address += '&country=' + $('#card-country').val();
+		}
+		
+		$.get('index.php?route=<?php echo $settings['extension_route']; ?>/modifyCard&request=' + request + '&id=' + id + address,
+			function(data) {
+				if (data.trim()) {
+					console.log(data.trim());
+					alert(data.trim());
+					element.html(text).removeAttr('disabled').removeClass('disabled');
+					if (request == 'edit_subscription') element.next().removeAttr('disabled').removeClass('disabled');
+				} else {
+					alert('<?php echo $settings['cards_page_success_' . $language]; ?>');
+					location.reload();
+				}
+			}
+		);
+	}
+	
+	$('#card-country').change(function(){
+		$('#card-zone').load('index.php?route=<?php echo $settings['extension_route']; ?>/getZones&country=' + $(this).val());
+	}).change();
+</script>
+
+<?php echo $footer; ?>

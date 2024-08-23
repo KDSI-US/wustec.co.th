@@ -1,0 +1,45 @@
+<div class="tab-pane active" id="tab-troubleshooting">
+    <h4>Troubleshooting</h4>
+    <hr />
+    <div class="form-group">
+        <label class="col-sm-3 control-label" style="padding-top: 0"
+               for="powerslip_cfg_extension_status">Module status</label>
+        <div class="col-sm-9">
+            <div style="border: none; box-shadow: none;">
+
+                <label style="margin-right: 11px;">
+                    <input style="vertical-align: top;" type="radio" name="powerslip_cfg_extension_status"
+                           value="1" {{ powerslip_cfg_extension_status ? 'checked' : '' }}
+                           id="powerslip_cfg_extension_status"/>
+                    {{ "Enabled" }}
+                </label>
+                <label style="margin-right: 11px;">
+                    <input style="vertical-align: top;" type="radio" name="powerslip_cfg_extension_status"
+                           value="0" {{ powerslip_cfg_extension_status ? '' : 'checked' }} />
+                    {{ "Disabled" }}
+                </label>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="powerslip_cfg_log"><span data-toggle="tooltip" title="Verbose logs will be printed to the opencart log file. Useful when you need to figure out what is going on.">Enable verbose logs:</span></label>
+        <div class="col-sm-9">
+            <div class="radio">
+
+                <label style="margin-right: 11px;">
+                    <input style="vertical-align: top;" type="radio" name="powerslip_cfg_log" value="1" {{ powerslip_cfg_log ? 'checked' : '' }} id="powerslip_cfg_log" />
+                    {{ text_yes }}
+                </label>
+                <span style="display: inline-block; width: 33px"></span>
+                <label style="margin-right: 11px;">
+                    <input style="vertical-align: top;" type="radio" name="powerslip_cfg_log" value="0" {{ powerslip_cfg_log ? '' : 'checked' }} />
+                    {{ text_no }}
+                </label>
+
+            </div>
+        </div>
+    </div>
+
+</div>

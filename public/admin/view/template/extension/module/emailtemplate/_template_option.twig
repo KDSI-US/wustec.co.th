@@ -1,0 +1,69 @@
+{% if stores is not empty %}
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="store_id">{{ entry_store }}</label>
+    <div class="col-md-10">
+      <select name="store_id" id="store_id" class="form-control">
+        <option value="NULL">{{ text_select }}</option>
+        {% for store in stores %}
+          <option value="{{ store.store_id }}" {{ emailtemplate.store_id is same as(store.store_id) ? ' selected="selected" ' }}>{{ store.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{% endif %}
+
+{% if customer_groups is not empty %}
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="customer_group_id">{{ entry_customer_group }}</label>
+    <div class="col-md-10">
+      <select name="customer_group_id" id="customer_group_id" class="form-control">
+        <option value="">{{ text_select }}</option>
+        {% for row in customer_groups %}
+          <option value="{{ row.customer_group_id }}">{{ row.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{% endif %}
+
+{% if order_statuses is not empty %}
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="order_status_id">{{ entry_order_status }}</label>
+    <div class="col-md-10">
+      <select name="order_status_id" id="order_status_id" class="form-control">
+        <option value="">{{ text_select }}</option>
+        {% for row in order_statuses %}
+          <option value="{{ row.order_status_id }}">{{ row.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{% endif %}
+
+{% if payment_methods is not empty %}
+  <div class="form-group row">
+    <label class="col-md-2 control-label" for="payment_method">{{ entry_payment_method }}</label>
+    <div class="col-md-10">
+      <select name="payment_method" id="payment_method" class="form-control">
+        <option value="">{{ text_select }}</option>
+        {% for payment_method in payment_methods %}
+          <option value="{{ payment_method.code }}">{{ payment_method.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{% endif %}
+
+{% if shipping_methods is not empty %}
+  <div class="form-group row">
+    <label class="col-md-2 control-label" for="shipping_method">{{ entry_shipping_method }}</label>
+    <div class="col-md-10">
+      <select name="shipping_method" id="shipping_method" class="form-control">
+        <option value="">{{ text_select }}</option>
+        {% for shipping_method in shipping_methods %}
+          <option value="{{ shipping_method.code }}">{{ shipping_method.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,1912 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+<div id="content" class="mp-content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" name="savetype" value="savechanges" form="form-mpcheckout" data-toggle="tooltip" title="{{ button_savechanges }}" class="btn btn-primary"><i class="fa fa-refresh"></i> {{ button_savechanges }}</button>        
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> {{ text_edit }}</h3>
+        <div class="pull-right">
+          <span>{{ text_store }}</span>
+          <button type="button" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span>{{ store_name }} &nbsp; &nbsp; </span> <i class="fa fa-angle-down"></i></button>
+          <ul class="dropdown-menu pull-right">
+            <li><a href="index.php?route=mpcheckout/mpcheckout&user_token={{ user_token }}&store_id=0">{{ text_default }}</a></li>
+            {% for store in stores %}
+              <li><a href="index.php?route=mpcheckout/mpcheckout&user_token={{ user_token }}&store_id={{ store.store_id }}">{{ store.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="bs-callout bs-callout-info"> 
+          <h4>ModulePoints Quick Checkout</h4> 
+          <p><center><strong>MP-QC Version 1.0 </strong></center> <br/> 
+          ModulePoints Team Offer excellent quick checkout solution for your online business. Most appealing feature of this extension is that Panels on checkout page is not flickers or jump in-out while selected checkout options by customers. Enjoy all its benefits right now.
+           </p> 
+        </div>
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mpcheckout" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i> {{ tab_general }}</a></li>
+            <li><a href="#tab-panel" data-toggle="tab"><i class="fa fa-bolt" aria-hidden="true"></i> {{ tab_panel }}</a></li>
+            <li><a href="#tab-langsetting" data-toggle="tab"><i class="fa fa-language" aria-hidden="true"></i> {{ tab_langsetting }}</a></li>
+            <li><a href="#tab-mpdesign" data-toggle="tab"><i class="fa fa-pencil" aria-hidden="true"></i> {{ tab_mpdesign }}</a></li>
+            <li><a href="#tab-theme" data-toggle="tab"><i class="fa fa-desktop" aria-hidden="true"></i> {{ tab_theme }}</a></li>
+            <li><a href="#tab-successpage" data-toggle="tab"><i class="fa fa-file" aria-hidden="true"></i> {{ tab_successpage }}</a></li>
+            <li><a href="#tab-support" data-toggle="tab"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ tab_modulepoints }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="mpcheckout_status" id="input-status" class="form-control">
+                    {% if mpcheckout_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-country"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_country }}">{{ entry_country }}</span></label>
+                <div class="col-sm-10">
+                  <select name="mpcheckout_country_id" id="input-country" class="form-control">
+                    {% for country in countries %}
+                    {% if country.country_id == mpcheckout_country_id %}
+                    <option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+                    {% else %}
+                    <option value="{{ country.country_id }}">{{ country.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                  {% if error_country %}
+                  <div class="text-danger">{{ error_country }}</div>
+                  {% endif %}
+                </div>
+              </div>              
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-zone"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_zone }}">{{ entry_zone }}</span></label>
+                <div class="col-sm-10">
+                  <select name="mpcheckout_zone_id" id="input-zone" class="form-control"></select>
+                  {% if error_zone %}
+                  <div class="text-danger">{{ error_zone }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-postcode"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_postcode }}">{{ entry_postcode }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="mpcheckout_postcode" id="input-postcode" class="form-control" value="{{ mpcheckout_postcode }}" />
+                </div>
+              </div>
+              <div class="form-group mp-buttons">
+                <label class="col-sm-2 control-label">{{ entry_stopcartpage }}</label>
+                <div class="col-sm-3">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary {{ mpcheckout_stopcartpage ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_stopcartpage" value="1" {{ mpcheckout_stopcartpage ? 'checked="checked"' : '' }} />
+                      {{ text_yes }}                            
+                    </label>
+                    <label class="btn btn-primary {{ not mpcheckout_stopcartpage ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_stopcartpage" value="0" {{ not mpcheckout_stopcartpage ? 'checked="checked"' : '' }} />
+                      {{ text_no }}                            
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-panel">
+              <div class="row">
+                <div class="col-sm-3">
+                  <ul class="nav nav-pills nav-stacked ostab" id="panels">
+                    <li><a class="text-left" href="#navtab-account-buttons" data-toggle="tab"><i class="fa fa-thumb-tack" aria-hidden="true"></i> {{ navtabs_account_buttons }}</a></li>
+                    <li><a class="text-left" href="#navtab-account-panel" data-toggle="tab"><i class="fa fa-user" aria-hidden="true"></i> {{ navtabs_account_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-social-panel" data-toggle="tab"><i class="fa fa-external-link" aria-hidden="true"></i> {{ navtabs_social_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-payment-address" data-toggle="tab"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{ navtabs_payment_address }}</a></li>
+                    <li><a class="text-left" href="#navtab-shipping-address" data-toggle="tab"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ navtabs_shipping_address }}</a></li>
+                    <li><a class="text-left" href="#navtab-payment-methods" data-toggle="tab"><i class="fa fa-credit-card" aria-hidden="true"></i> {{ navtabs_payment_methods }}</a></li>
+                    <li><a class="text-left" href="#navtab-shipping-methods" data-toggle="tab"><i class="fa fa-truck" aria-hidden="true"></i> {{ navtabs_shipping_methods }}</a></li>
+                    <li><a class="text-left" href="#navtab-date-panel" data-toggle="tab"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ navtabs_date_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-shoppingcart" data-toggle="tab"><i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ navtabs_shoppingcart }}</a></li>
+                    <li><a class="text-left" href="#navtab-checkout-order" data-toggle="tab"><i class="fa fa-check-circle" aria-hidden="true"></i> {{ navtabs_checkout_order }}</a></li>
+                  </ul>
+                </div>
+                <div class="col-sm-9">
+                  <div class="tab-content">
+                    <div class="tab-pane" id="navtab-account-buttons">
+                      <div class="bs-callout bs-callout-info"> 
+                        <h4>{{ info_accountbutton }}</h4> 
+                        <p>{{ info_accountbutton_info }}</p> 
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_account_buttons }}">{{ entry_account_buttons }}</span></label>
+                        <div class="col-sm-5">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ 'register' in mpcheckout_account_button.account_buttons_status ? 'active' : '' }}">
+                              <input type="checkbox" name="mpcheckout_account_button[account_buttons_status][]" value="register" {{ 'register' in  mpcheckout_account_button.account_buttons_status ? 'checked="checked"' : '' }} />
+                              <i class="fa fa-user-plus" aria-hidden="true"></i> {{ text_register }}
+                            </label>
+                            <label class="btn btn-primary {{ 'guest' in mpcheckout_account_button.account_buttons_status ? 'active' : '' }}">                            
+                              <input type="checkbox" name="mpcheckout_account_button[account_buttons_status][]" value="guest" {{ 'guest' in mpcheckout_account_button.account_buttons_status ? 'checked="checked"' : '' }} /> <i class="fa fa-user-secret" aria-hidden="true"></i> {{ text_guest }}
+                            </label>
+                            <label class="btn btn-primary {{ 'login' in mpcheckout_account_button.account_buttons_status ? 'active' : '' }}">                            
+                              <input type="checkbox" name="mpcheckout_account_button[account_buttons_status][]" value="login" {{ 'login' in mpcheckout_account_button.account_buttons_status ? 'checked="checked"' : '' }}  /> <i class="fa fa-sign-in" aria-hidden="true"></i> {{ text_login }}
+                            </label>
+                          </div>
+                          {% if error_account_buttons_status %}
+                          <br/>
+                          <div class="text-danger">{{ error_account_buttons_status }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_default_account_button }}">{{ entry_default_account_button }}</span></label>
+                        <div class="col-sm-5">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_account_button.default_account_button and mpcheckout_account_button.default_account_button == 'register' ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_button[default_account_button]" value="register" {{ mpcheckout_account_button.default_account_button and mpcheckout_account_button.default_account_button == 'register' ? 'checked="checked"' : '' }} />
+                              <i class="fa fa-user-plus" aria-hidden="true"></i> {{ text_register }}
+                            </label>
+                            <label class="btn btn-primary {{ mpcheckout_account_button.default_account_button and mpcheckout_account_button.default_account_button == 'guest' ? 'active' : '' }}">                            
+                              <input type="radio" name="mpcheckout_account_button[default_account_button]" value="guest" {{ mpcheckout_account_button.default_account_button and mpcheckout_account_button.default_account_button == 'guest' ? 'checked="checked"' : '' }} /> <i class="fa fa-user-secret" aria-hidden="true"></i> {{ text_guest }}
+                            </label>
+                            <label class="btn btn-primary {{ mpcheckout_account_button.default_account_button and mpcheckout_account_button.default_account_button == 'login' ? 'active' : '' }}">                            
+                              <input type="radio" name="mpcheckout_account_button[default_account_button]" value="login" {{ mpcheckout_account_button.default_account_button and mpcheckout_account_button.default_account_button == 'login' ? 'checked="checked"' : '' }} /> <i class="fa fa-sign-in" aria-hidden="true"></i> {{ text_login }}
+                            </label>
+                          </div>
+                          {% if error_default_account_button %}
+                          <br/>
+                          <div class="text-danger">{{ error_default_account_button }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-account-panel">
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label" for="input-customer-group"><span data-toggle="tooltip" title="{{ help_customer_group }}">{{ entry_customer_group }}</span></label>
+                        <div class="col-sm-12">
+                          <select name="mpcheckout_account_panel[customer_group_id]" id="input-customer-group" class="form-control">
+                            {% for customer_group in customer_groups %}
+                            {% if mpcheckout_account_panel.customer_group_id and customer_group.customer_group_id == mpcheckout_account_panel.customer_group_id %}
+                            <option value="{{ customer_group.customer_group_id }}" selected="selected">{{ customer_group.name }}</option>
+                            {% else %}
+                            <option value="{{ customer_group.customer_group_id }}">{{ customer_group.name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_account_terms }}">{{ entry_account_terms }}</span></label>
+                        <div class="col-sm-12">
+                          <select name="mpcheckout_account_panel[account_id]" class="form-control">
+                            <option value="0">{{ text_none }}</option>
+                            {% for information in informations %}
+                            {% if mpcheckout_account_panel.account_id and information.information_id == mpcheckout_account_panel.account_id %}
+                            <option value="{{ information.information_id }}" selected="selected">{{ information.title }}</option>
+                            {% else %}
+                            <option value="{{ information.information_id }}">{{ information.title }}</option>
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_default_account_id }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_account_panel.default_account_id ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[default_account_id]" value="1" {{ mpcheckout_account_panel.default_account_id ? 'checked="checked"' : '' }} />
+                            {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_account_panel.default_account_id ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[default_account_id]" value="0" {{ not mpcheckout_account_panel.default_account_id ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_newsletter_subscribe }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_account_panel.newsletter_subscribe ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[newsletter_subscribe]" value="1" {{ mpcheckout_account_panel.newsletter_subscribe ? 'checked="checked"' : '' }} />
+                            {{ text_enabled }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_account_panel.newsletter_subscribe ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[newsletter_subscribe]" value="0" {{ not mpcheckout_account_panel.newsletter_subscribe ? 'checked="checked"' : '' }} />
+                              {{ text_disabled }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_newsletter_subscribe_check }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_account_panel.newsletter_subscribe_check ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[newsletter_subscribe_check]" value="1" {{ mpcheckout_account_panel.newsletter_subscribe_check ? 'checked="checked"' : '' }} />
+                            {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_account_panel.newsletter_subscribe_check ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[newsletter_subscribe_check]" value="0" {{ not mpcheckout_account_panel.newsletter_subscribe_check ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_delivery_address_check }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_account_panel.delivery_address_check ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[delivery_address_check]" value="1" {{ mpcheckout_account_panel.delivery_address_check ? 'checked="checked"' : '' }} />
+                            {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_account_panel.delivery_address_check ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_account_panel[delivery_address_check]" value="0" {{ not mpcheckout_account_panel.delivery_address_check ? 'checked="checked"' : '' }} />
+                              {{ text_no }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <br/>
+                      <fieldset>
+                        <legend>{{ legend_account_fields }}</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <td class="text-left">{{ column_field_name }}</td>
+                              <td class="text-right">{{ column_status }}</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for field in account_fields %}
+                            {% if field.code == 'email' or field.code == 'password' %}
+                              {% set hide_class = 'hide' %}
+                            {% else %}
+                              {% set hide_class = '' %}
+                            {% endif %}
+                            <tr class="{{ hide_class }}">
+                              <td class="text-left">{{ field.title }}</td>
+                              <td class="text-right">
+                                <div class="btn-group" data-toggle="buttons">
+                                  <label class="btn btn-primary {{ mpcheckout_account_panel.fields[field.code] and mpcheckout_account_panel.fields[field.code] == '1' ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_account_panel[fields][{{ field.code }}]" autocomplete="off" value="1" {{ mpcheckout_account_panel.fields[field.code] and mpcheckout_account_panel.fields[field.code] == '1' ? 'checked' : '' }} />{{ text_display_yes_required }}
+                                  </label>
+                                  <label class="btn btn-primary {{ mpcheckout_account_panel.fields[field.code] and mpcheckout_account_panel.fields[field.code] == '2' ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_account_panel[fields][{{ field.code }}]" autocomplete="off" value="2" {{ mpcheckout_account_panel.fields[field.code] and mpcheckout_account_panel.fields[field.code] == '2' ? 'checked' : '' }} />{{ text_display_yes }}
+                                  </label>
+                                  <label class="btn btn-primary {{ not mpcheckout_account_panel.fields[field.code] ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_account_panel[fields][{{ field.code }}]" autocomplete="off" value="0" {{ not mpcheckout_account_panel.fields[field.code] ? 'checked' : '' }} />{{ text_display_no }}
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </fieldset>
+                      <fieldset>
+                        <div class="form-group mp-buttons">
+                          <label class="col-sm-12 control-label">{{ entry_captcha }}</label>
+                          <div class="col-sm-4">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                              <label class="btn btn-primary {{ mpcheckout_captcha ? 'active' : '' }}">
+                                <input type="radio" name="mpcheckout_captcha" value="1" {{ mpcheckout_captcha ? 'checked="checked"' : '' }} />
+                              {{ text_enabled }}                            
+                              </label>
+                              <label class="btn btn-primary {{ not mpcheckout_captcha ? 'active' : '' }}">
+                                <input type="radio" name="mpcheckout_captcha" value="0" {{ not mpcheckout_captcha ? 'checked="checked"' : '' }} />
+                                {{ text_disabled }}                            
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="tab-pane" id="navtab-social-panel">
+                     <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab-google" data-toggle="tab"><i class="fa fa-google" aria-hidden="true"></i> {{ tab_google }}</a></li>
+                        <li><a href="#tab-facebook" data-toggle="tab"><i class="fa fa-facebook" aria-hidden="true"></i> {{ tab_facebook }}</a></li>
+                        <li><a href="#tab-linkedin" data-toggle="tab"><i class="fa fa-linkedin" aria-hidden="true"></i> {{ tab_linkedin }}</a></li>
+                        <!-- /*new updates 28032018 starts*/ --><li><a href="#tab-instagram" data-toggle="tab"><i class="fa fa-instagram"></i> {{ tab_instagram }}</a></li>
+                        <li><a href="#tab-twitter" data-toggle="tab"><i class="fa fa-twitter"></i> {{ tab_twitter }}</a></li><!-- /*new updates 28032018 ends*/ -->
+                      </ul>
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="tab-google">
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                            <div class="col-sm-10">
+                              <select name="mpcheckout_social_panel[google][status]"class="form-control">
+                                {% if mpcheckout_social_panel.google.status %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_appid }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[google][appid]" class="form-control" value="{{ mpcheckout_social_panel.google.appid ? mpcheckout_social_panel.google.appid : '' }}" />
+                              {% if error_google_appid %}
+                              <div class="text-danger">{{ error_google_appid }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_secret }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[google][secret]" class="form-control" value="{{ mpcheckout_social_panel.google.secret ? mpcheckout_social_panel.google.secret : '' }}" />
+                              {% if error_google_secret %}
+                              <div class="text-danger">{{ error_google_secret }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_redirect }}</label>
+                            <div class="col-sm-10">
+                              <div class="alert alert-info"><b>{{ link_google_uri }}</b></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="tab-facebook">
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                            <div class="col-sm-10">
+                              <select name="mpcheckout_social_panel[facebook][status]"class="form-control">
+                                {% if mpcheckout_social_panel.facebook.status %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_appid }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[facebook][appid]" class="form-control" value="{{ mpcheckout_social_panel.facebook.appid ? mpcheckout_social_panel.facebook.appid : '' }}" />
+                              {% if error_facebook_appid %}
+                              <div class="text-danger">{{ error_facebook_appid }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_secret }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[facebook][secret]" class="form-control" value="{{ mpcheckout_social_panel.facebook.secret ? mpcheckout_social_panel.facebook.secret : '' }}" />
+                              {% if error_facebook_secret %}
+                              <div class="text-danger">{{ error_facebook_secret }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_redirect }}</label>
+                            <div class="col-sm-10">
+                              <div class="alert alert-info"><b>{{ link_facebook_uri }}</b></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="tab-linkedin">
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                            <div class="col-sm-10">
+                              <select name="mpcheckout_social_panel[linkedin][status]"class="form-control">
+                                {% if mpcheckout_social_panel.linkedin.status %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_appid }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[linkedin][appid]" class="form-control" value="{{ mpcheckout_social_panel.linkedin.appid ? mpcheckout_social_panel.linkedin.appid : '' }}" />
+                              {% if error_linkedin_appid %}
+                              <div class="text-danger">{{ error_linkedin_appid }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_secret }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[linkedin][secret]" class="form-control" value="{{ mpcheckout_social_panel.linkedin.secret ? mpcheckout_social_panel.linkedin.secret : '' }}" />
+                              {% if error_linkedin_secret %}
+                              <div class="text-danger">{{ error_linkedin_secret }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_redirect }}</label>
+                            <div class="col-sm-10">
+                              <div class="alert alert-info"><b>{{ link_linkedin_uri }}</b></div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /*new updates 28032018 starts*/ -->
+                        <div id="tab-instagram" class="tab-pane">
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                            <div class="col-sm-10">
+                              <select name="mpcheckout_social_panel[instagram][status]"class="form-control">
+                                {% if mpcheckout_social_panel.instagram.status %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_appid }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[instagram][appid]" class="form-control" value="{{ (mpcheckout_social_panel.instagram.appid) ? mpcheckout_social_panel.instagram.appid : '' }}" />
+                              {% if error_instagram_appid %}
+                              <div class="text-danger">{{ error_instagram_appid }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_secret }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[instagram][secret]" class="form-control" value="{{ (mpcheckout_social_panel.instagram.secret) ? mpcheckout_social_panel.instagram.secret : '' }}" />
+                              {% if error_instagram_secret %}
+                              <div class="text-danger">{{ error_instagram_secret }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_redirect }}</label>
+                            <div class="col-sm-10">
+                              <div class="alert alert-info"><b>{{ link_instagram_uri }}</b></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="tab-twitter" class="tab-pane">
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                            <div class="col-sm-10">
+                              <select name="mpcheckout_social_panel[twitter][status]"class="form-control">
+                                {% if mpcheckout_social_panel.twitter.status %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_appid }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[twitter][appid]" class="form-control" value="{{ (mpcheckout_social_panel.twitter.appid) ? mpcheckout_social_panel.twitter.appid : '' }}" />
+                              {% if error_twitter_appid %}
+                              <div class="text-danger">{{ error_twitter_appid }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-sm-2 control-label">{{ entry_secret }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="mpcheckout_social_panel[twitter][secret]" class="form-control" value="{{ (mpcheckout_social_panel.twitter.secret) ? mpcheckout_social_panel.twitter.secret : '' }}" />
+                              {% if error_twitter_secret %}
+                              <div class="text-danger">{{ error_twitter_secret }}</div>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ entry_redirect }}</label>
+                            <div class="col-sm-10">
+                              <div class="alert alert-info"><b>{{ link_twitter_uri }}</b></div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /*new updates 28032018 ends*/ -->
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-date-panel">
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_date_status }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_date_panel.status ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_date_panel[status]" value="1" {{ mpcheckout_date_panel.status ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_date_panel.status ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_date_panel[status]" value="0" {{ not mpcheckout_date_panel.status ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_date_required }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_date_panel.required ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_date_panel[required]" value="1" {{ mpcheckout_date_panel.required ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_date_panel.required ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_date_panel[required]" value="0" {{ not mpcheckout_date_panel.required ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                        <label class="col-sm-12 control-label" for="input-minimum-days">{{ entry_minimum_maximum_days }}</label>
+                        <div class="col-sm-12">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="input-group">
+                                <input type="text" name="mpcheckout_date_panel[minimum_days]" value="{{ mpcheckout_date_panel.minimum_days ? mpcheckout_date_panel.minimum_days : '' }}" id="input-minimum-days" class="form-control" />
+                                <span class="input-group-addon">{{ text_minimum }}</span>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="input-group">
+                              <input type="text" name="mpcheckout_date_panel[maximum_days]" value="{{ mpcheckout_date_panel.maximum_days ? mpcheckout_date_panel.maximum_days : '' }}" class="form-control" />
+                              <span class="input-group-addon">{{ text_maximum }}</span>
+                              </div>
+                            </div>
+                          </div>                          
+                          {% if error_days %}
+                          <div class="text-danger">{{ error_days }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <br/>
+
+                      <fieldset>
+                        <legend>{{ legend_disabled_dates }}</legend>
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label" for="input-disables-dates">{{ entry_disabled_dates }}</label>
+                          <div class="col-sm-12">
+                              <textarea rows="8" name="mpcheckout_date_panel[disabled_dates]" id="input-minimum-days" class="form-control font-size16">{{ mpcheckout_date_panel.disabled_dates ? mpcheckout_date_panel.disabled_dates : '' }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label">{{ entry_disables_weeks }}</label>
+                          <div class="col-sm-12">
+                            <select name="mpcheckout_date_panel[disables_weeks][]" class="form-control font-size16" multiple size="10">
+                              {% for week in weeks %}
+                              {% if week.week_number in mpcheckout_date_panel.disables_weeks %}
+                              <option value="{{ week.week_number }}" selected="selected">{{ week.week_title }}</option>
+                              {% else %}
+                              <option value="{{ week.week_number }}">{{ week.week_title }}</option>
+                              {% endif %}
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="tab-pane" id="navtab-payment-address">
+                      <br/>
+                      <fieldset>
+                        <legend>{{ legend_payment_fields }}</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <td class="text-left">{{ column_field_name }}</td>
+                              <td class="text-right">{{ column_status }}</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for field in address_fields %}
+                            <tr>
+                              <td class="text-left">{{ field.title }}</td>
+                              <td class="text-right">
+                                <div class="btn-group" data-toggle="buttons">
+                                  <label class="btn btn-primary {{ mpcheckout_payment_address_panel.fields[field.code] and mpcheckout_payment_address_panel.fields[field.code] == '1' ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_payment_address_panel[fields][{{ field.code }}]" autocomplete="off" value="1" {{ mpcheckout_payment_address_panel.fields[field.code] and mpcheckout_payment_address_panel.fields[field.code] == '1' ? 'checked' : '' }} />{{ text_display_yes_required }}
+                                  </label>
+                                  <label class="btn btn-primary {{ mpcheckout_payment_address_panel.fields[field.code] and mpcheckout_payment_address_panel.fields[field.code] == '2' ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_payment_address_panel[fields][{{ field.code }}]" autocomplete="off" value="2" {{ mpcheckout_payment_address_panel.fields[field.code] and mpcheckout_payment_address_panel.fields[field.code] == '2' ? 'checked' : '' }} />{{ text_display_yes }}
+                                  </label>
+                                  <label class="btn btn-primary {{ not mpcheckout_payment_address_panel.fields[field.code] ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_payment_address_panel[fields][{{ field.code }}]" autocomplete="off" value="0" {{ not mpcheckout_payment_address_panel.fields[field.code] ? 'checked' : '' }} />{{ text_display_no }}
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </fieldset>
+                    </div>
+                    <div class="tab-pane" id="navtab-shipping-address">
+                      <br/>
+                      <fieldset>
+                        <legend>{{ legend_shipping_fields }}</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <td class="text-left">{{ column_field_name }}</td>
+                              <td class="text-right">{{ column_status }}</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for field in address_fields %}
+                            <tr>
+                              <td class="text-left">{{ field.title }}</td>
+                              <td class="text-right">
+                                <div class="btn-group" data-toggle="buttons">
+                                  <label class="btn btn-primary {{ mpcheckout_shipping_address_panel.fields[field.code] and mpcheckout_shipping_address_panel.fields[field.code] == '1' ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_shipping_address_panel[fields][{{ field.code }}]" autocomplete="off" value="1" {{ mpcheckout_shipping_address_panel.fields[field.code] and mpcheckout_shipping_address_panel.fields[field.code] == '1' ? 'checked' : '' }} />{{ text_display_yes_required }}
+                                  </label>
+                                  <label class="btn btn-primary {{ mpcheckout_shipping_address_panel.fields[field.code] and mpcheckout_shipping_address_panel.fields[field.code] == '2' ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_shipping_address_panel[fields][{{ field.code }}]" autocomplete="off" value="2" {{ mpcheckout_shipping_address_panel.fields[field.code] and mpcheckout_shipping_address_panel.fields[field.code] == '2' ? 'checked' : '' }} />{{ text_display_yes }}
+                                  </label>
+                                  <label class="btn btn-primary {{ not mpcheckout_shipping_address_panel.fields[field.code] ? 'active' : '' }}">
+                                    <input type="radio" name="mpcheckout_shipping_address_panel[fields][{{ field.code }}]" autocomplete="off" value="0" {{ not mpcheckout_shipping_address_panel.fields[field.code] ? 'checked' : '' }} />{{ text_display_no }}
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </fieldset>
+                    </div>
+                    <div class="tab-pane" id="navtab-payment-methods">
+                      {% if payment_methods %}
+                      <br/>
+                      <fieldset>
+                        <legend>{{ legend_paymentmethod_image }}</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <td class="text-left">{{ column_icon }}</td>
+                              <td class="text-left">{{ column_payment_method }}</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for payment_method in payment_methods %}
+                            <tr>
+                              <td class="text-left">
+                                  <a href="" id="thumb-icon-{{ payment_method.code }}" data-toggle="image" class="img-thumbnail"><img src="{{ mpcheckout_payment_method_tables[payment_method.code].thumb ? mpcheckout_payment_method_tables[payment_method.code].thumb : placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                    <input type="hidden" name="mpcheckout_payment_method_table[{{ payment_method.code }}][image]" value="{{ mpcheckout_payment_method_tables[payment_method.code].image ? mpcheckout_payment_method_tables[payment_method.code].image : '' }}" id="input-icon-{{ payment_method.code }}" />
+                              </td>
+                              <td class="text-left">{{ payment_method.name }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </fieldset>
+                      {% endif %}
+                    </div>
+                    <div class="tab-pane" id="navtab-shipping-methods">
+                      {% if shipping_methods %}
+                      <br/>
+                      <fieldset>
+                        <legend>{{ legend_shippingmethod_image }}</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <td class="text-left">{{ column_icon }}</td>
+                              <td class="text-left">{{ column_shipping_method }}</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for shipping_method in shipping_methods %}
+                            <tr>
+                              <td class="text-left">
+                                  <a href="" id="thumb-icon-{{ shipping_method.code }}" data-toggle="image" class="img-thumbnail"><img src="{{ mpcheckout_shipping_method_tables[shipping_method.code].thumb ? mpcheckout_shipping_method_tables[shipping_method.code].thumb : placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                    <input type="hidden" name="mpcheckout_shipping_method_table[{{ shipping_method.code }}][image]" value="{{ mpcheckout_shipping_method_tables[shipping_method.code].image ? mpcheckout_shipping_method_tables[shipping_method.code].image : '' }}" id="input-icon-{{ shipping_method.code }}" />
+                              </td>
+                              <td class="text-left">{{ shipping_method.name }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </fieldset>
+                      {% endif %}
+                    </div>
+                    <div class="tab-pane" id="navtab-shoppingcart">
+                      <div class="bs-callout bs-callout-info"> 
+                        <h4>{{ info_shoppingcart }}</h4> 
+                        <p>{{ info_shoppingcart_info }}</p> 
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_cart_status }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_shoppingcart_panel.cart_status ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[cart_status]" value="1" {{ mpcheckout_shoppingcart_panel.cart_status ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_shoppingcart_panel.cart_status ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[cart_status]" value="0" {{ not mpcheckout_shoppingcart_panel.cart_status ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_show_weight }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_shoppingcart_panel.show_weight ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[show_weight]" value="1" {{ mpcheckout_shoppingcart_panel.show_weight ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_shoppingcart_panel.show_weight ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[show_weight]" value="0" {{ not mpcheckout_shoppingcart_panel.show_weight ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_qty_update }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_shoppingcart_panel.qty_update ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[qty_update]" value="1" {{ mpcheckout_shoppingcart_panel.qty_update ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_shoppingcart_panel.qty_update ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[qty_update]" value="0" {{ not mpcheckout_shoppingcart_panel.qty_update ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_show_product_image }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_shoppingcart_panel.show_product_image ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[show_product_image]" value="1" {{ mpcheckout_shoppingcart_panel.show_product_image ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_shoppingcart_panel.show_product_image ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_shoppingcart_panel[show_product_image]" value="0" {{ not mpcheckout_shoppingcart_panel.show_product_image ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                        <label class="col-sm-12 control-label" for="input-image-category-width">{{ entry_product_image_size }}</label>
+                        <div class="col-sm-12">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="input-group">
+                                <input type="text" name="mpcheckout_shoppingcart_panel[product_image_width]" value="{{ mpcheckout_shoppingcart_panel.product_image_width ? mpcheckout_shoppingcart_panel.product_image_width : '' }}" placeholder="{{ entry_width }}" id="input-image-category-width" class="form-control" />
+                                <span class="input-group-addon">{{ text_width }}</span>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="input-group">
+                              <input type="text" name="mpcheckout_shoppingcart_panel[product_image_height]" value="{{ mpcheckout_shoppingcart_panel.product_image_height ? mpcheckout_shoppingcart_panel.product_image_height : '' }}" placeholder="{{ entry_height }}" class="form-control" />
+                              <span class="input-group-addon">{{ text_height }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          {% if error_image_cart %}
+                          <div class="text-danger">{{ error_image_cart }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-checkout-order">
+                      <div class="bs-callout bs-callout-info"> 
+                        <h4>{{ info_autotrigger }}</h4> 
+                        <p>{{ info_autotrigger_info }}</p> 
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_confirm_autotrigger_order }}">{{ entry_confirm_autotrigger_order }}</span></label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_confirm_panel.autotrigger_order ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[autotrigger_order]" value="1" {{ mpcheckout_confirm_panel.autotrigger_order ? 'checked="checked"' : '' }} />
+                              {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_confirm_panel.autotrigger_order ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[autotrigger_order]" value="0" {{ not mpcheckout_confirm_panel.autotrigger_order ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label"><span data-toggle="tooltip" data-container="#tab-general" title="{{ help_auto_trigger_payment_method }}">{{ entry_auto_trigger_payment_method }}</span></label>
+                        <div class="col-sm-12">
+                          <select multiple name="mpcheckout_confirm_panel[autotrigger_payments][]" class="form-control font-size16" size="10">
+                            {% for payment_method in payment_methods %}
+                            {% if payment_method.code in mpcheckout_confirm_panel.autotrigger_payments %}
+                            <option value="{{ payment_method.code }}" selected="selected">{{ payment_method.name }}</option>
+                            {% else %}
+                            <option value="{{ payment_method.code }}">{{ payment_method.name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_chekout_terms }}">{{ entry_chekout_terms }}</span></label>
+                        <div class="col-sm-12">
+                          <select name="mpcheckout_confirm_panel[checkout_id]" class="form-control">
+                            <option value="0">{{ text_none }}</option>
+                            {% for information in informations %}
+                            {% if mpcheckout_confirm_panel.checkout_id and information.information_id == mpcheckout_confirm_panel.checkout_id %}
+                            <option value="{{ information.information_id }}" selected="selected">{{ information.title }}</option>
+                            {% else %}
+                            <option value="{{ information.information_id }}">{{ information.title }}</option>
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_default_checkout_id }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_confirm_panel.default_checkout_id ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[default_checkout_id]" value="1" {{ mpcheckout_confirm_panel.default_checkout_id ? 'checked="checked"' : '' }} />
+                            {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_confirm_panel.default_checkout_id ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[default_checkout_id]" value="0" {{ not mpcheckout_confirm_panel.default_checkout_id ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_continue_shopping }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_confirm_panel.continue_shopping_button ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[continue_shopping_button]" value="1" {{ mpcheckout_confirm_panel.continue_shopping_button ? 'checked="checked"' : '' }} />
+                                {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_confirm_panel.continue_shopping_button ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[continue_shopping_button]" value="0" {{ not mpcheckout_confirm_panel.continue_shopping_button ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_show_comment }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_confirm_panel.show_comment ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[show_comment]" value="1" {{ mpcheckout_confirm_panel.show_comment ? 'checked="checked"' : '' }} />
+                                {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_confirm_panel.show_comment ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[show_comment]" value="0" {{ not mpcheckout_confirm_panel.show_comment ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mp-buttons">
+                        <label class="col-sm-12 control-label">{{ entry_overlay }}</label>
+                        <div class="col-sm-4">
+                          <div class="btn-group btn-group-justified" data-toggle="buttons">
+                            <label class="btn btn-primary {{ mpcheckout_confirm_panel.overlay ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[overlay]" value="1" {{ mpcheckout_confirm_panel.overlay ? 'checked="checked"' : '' }} />
+                                {{ text_yes }}                            
+                            </label>
+                            <label class="btn btn-primary {{ not mpcheckout_confirm_panel.overlay ? 'active' : '' }}">
+                              <input type="radio" name="mpcheckout_confirm_panel[overlay]" value="0" {{ not mpcheckout_confirm_panel.overlay ? 'checked="checked"' : '' }} />
+                              {{ text_no }}                            
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-langsetting">
+              <div class="row">
+                <div class="col-sm-3">
+                  <ul class="nav nav-pills nav-stacked ostab" id="lang-panels">
+                    <li><a class="text-left" href="#navtab-lang-page" data-toggle="tab"><i class="fa fa-file-o" aria-hidden="true"></i> {{ navtabs_lang_page }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-account-buttons" data-toggle="tab"><i class="fa fa-thumb-tack" aria-hidden="true"></i> {{ navtabs_lang_account_buttons }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-account-panel" data-toggle="tab"><i class="fa fa-user" aria-hidden="true"></i> {{ navtabs_lang_account_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-login-panel" data-toggle="tab"><i class="fa fa-sign-in" aria-hidden="true"></i> {{ navtabs_lang_login_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-social-panel" data-toggle="tab"><i class="fa fa-external-link" aria-hidden="true"></i> {{ navtabs_social_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-payment-address" data-toggle="tab"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{ navtabs_lang_payment_address }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-shipping-address" data-toggle="tab"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ navtabs_lang_shipping_address }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-payment-method" data-toggle="tab"><i class="fa fa-credit-card" aria-hidden="true"></i> {{ navtabs_lang_payment_methods }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-shipping-method" data-toggle="tab"><i class="fa fa-truck" aria-hidden="true"></i> {{ navtabs_lang_shipping_methods }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-date-panel" data-toggle="tab"><i class="fa fa-external-link" aria-hidden="true"></i> {{ navtabs_date_panel }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-cart" data-toggle="tab"><i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ navtabs_lang_shoppingcart }}</a></li>
+                    <li><a class="text-left" href="#navtab-lang-confirm-order" data-toggle="tab"><i class="fa fa-check-circle" aria-hidden="true"></i> {{ navtabs_lang_checkout_order }}</a></li>
+                  </ul>
+                </div>
+                <div class="col-sm-9">
+                  <div class="tab-content">
+                      <div class="tab-pane" id="navtab-lang-page">
+                        <div class="bs-callout bs-callout-info"> 
+                          <h4>{{ info_checkoutpage }}</h4> 
+                          <p>{{ info_checkoutpage_info }}</p> 
+                        </div>
+                        <ul class="nav nav-tabs" id="language-page">
+                          {% for language in languages %}
+                            <li><a href="#language-page{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-page{{ language.language_id }}">
+                            <div class="form-group required">
+                              <label class="col-sm-12 control-label">{{ entry_lang_heading_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_page_description[{{ language.language_id }}][heading_title]" value="{{ mpcheckout_page_description[language.language_id] ? mpcheckout_page_description[language.language_id].heading_title }}" placeholder="{{ entry_lang_heading_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label" for="input-message_register{{ language.language_id }}">{{ entry_lang_message_register }}</label>
+                              <div class="col-sm-12">
+                                <textarea name="mpcheckout_page_description[{{ language.language_id }}][message_register]" placeholder="{{ entry_lang_message_register }}" id="input-message_register{{ language.language_id }}" class="form-control" data-toggle="summernote">{{ mpcheckout_page_description[language.language_id] ? mpcheckout_page_description[language.language_id].message_register }}</textarea>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label" for="input-message_logged{{ language.language_id }}">{{ entry_lang_message_logged }}</label>
+                              <div class="col-sm-12">
+                                <textarea name="mpcheckout_page_description[{{ language.language_id }}][message_logged]" placeholder="{{ entry_lang_message_logged }}" id="input-message_logged{{ language.language_id }}" class="form-control" data-toggle="summernote" data-lang="">{{ mpcheckout_page_description[language.language_id] ? mpcheckout_page_description[language.language_id].message_logged }}</textarea>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-account-buttons">
+                        <ul class="nav nav-tabs" id="language-account-buttons">
+                          {% for language in languages %}
+                          <li><a href="#language-account-buttons{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-account-buttons{{ language.language_id }}">
+                            <div class="form-group required">
+                              <label class="col-sm-12 control-label">{{ entry_lang_register_panel }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_button_description[{{ language.language_id }}][register_panel]" value="{{ mpcheckout_account_button_description[language.language_id] ? mpcheckout_account_button_description[language.language_id].register_panel }}" placeholder="{{ entry_lang_register_panel }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group required">
+                              <label class="col-sm-12 control-label">{{ entry_lang_guest_panel }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_button_description[{{ language.language_id }}][guest_panel]" value="{{ mpcheckout_account_button_description[language.language_id] ? mpcheckout_account_button_description[language.language_id].guest_panel }}" placeholder="{{ entry_lang_guest_panel }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group required">
+                              <label class="col-sm-12 control-label">{{ entry_lang_login_panel }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_button_description[{{ language.language_id }}][login_panel]" value="{{ mpcheckout_account_button_description[language.language_id] ? mpcheckout_account_button_description[language.language_id].login_panel }}" placeholder="{{ entry_lang_login_panel }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-account-panel">
+                        <ul class="nav nav-tabs" id="language-account-panel">
+                          {% for language in languages %}
+                          <li><a href="#language-account-panel{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-account-panel{{ language.language_id }}">
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_personal_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_panel_description[{{ language.language_id }}][personal_title]" value="{{ mpcheckout_account_panel_description[language.language_id] ? mpcheckout_account_panel_description[language.language_id].personal_title }}" placeholder="{{ entry_lang_personal_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_personal_guest_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_panel_description[{{ language.language_id }}][personal_guest_title]" value="{{ mpcheckout_account_panel_description[language.language_id] ? mpcheckout_account_panel_description[language.language_id].personal_guest_title }}" placeholder="{{ entry_lang_personal_guest_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_password }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_panel_description[{{ language.language_id }}][password]" value="{{ mpcheckout_account_panel_description[language.language_id] ? mpcheckout_account_panel_description[language.language_id].password }}" placeholder="{{ entry_lang_password }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_more_details }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_account_panel_description[{{ language.language_id }}][more_details]" value="{{ mpcheckout_account_panel_description[language.language_id] ? mpcheckout_account_panel_description[language.language_id].more_details }}" placeholder="{{ entry_lang_more_details }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-login-panel">
+                        <ul class="nav nav-tabs" id="language-login-panel">
+                          {% for language in languages %}
+                          <li><a href="#language-login-panel{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-login-panel{{ language.language_id }}">
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_login_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_login_panel_description[{{ language.language_id }}][title]" value="{{ mpcheckout_login_panel_description[language.language_id] ? mpcheckout_login_panel_description[language.language_id].title }}" placeholder="{{ entry_lang_login_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_login_button }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_login_panel_description[{{ language.language_id }}][login_button]" value="{{ mpcheckout_login_panel_description[language.language_id] ? mpcheckout_login_panel_description[language.language_id].login_button }}" placeholder="{{ entry_lang_login_button }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>                      
+                      <div class="tab-pane" id="navtab-lang-payment-address">
+                        <ul class="nav nav-tabs" id="language-payment-address">
+                          {% for language in languages %}
+                          <li><a href="#language-payment-address{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-payment-address{{ language.language_id }}">
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_payment_address_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_payment_address_description[{{ language.language_id }}][title]" value="{{ mpcheckout_payment_address_description[language.language_id] ? mpcheckout_payment_address_description[language.language_id].title }}" placeholder="{{ entry_lang_payment_address_title }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>                    
+                      <div class="tab-pane" id="navtab-lang-shipping-address">
+                        <ul class="nav nav-tabs" id="language-shipping-address">
+                          {% for language in languages %}
+                          <li><a href="#language-shipping-address{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-shipping-address{{ language.language_id }}">                            
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_shipping_address_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_shipping_address_description[{{ language.language_id }}][title]" value="{{ mpcheckout_shipping_address_description[language.language_id] ? mpcheckout_shipping_address_description[language.language_id].title }}" placeholder="{{ entry_lang_shipping_address_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_address_not_required }}</label>
+                              <div class="col-sm-12">
+                                <textarea name="mpcheckout_shipping_address_description[{{ language.language_id }}][address_not_required]" placeholder="{{ entry_lang_address_not_required }}" class="form-control">{{ mpcheckout_shipping_address_description[language.language_id] ? mpcheckout_shipping_address_description[language.language_id].address_not_required }}</textarea>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-payment-method">
+                        <ul class="nav nav-tabs" id="language-payment-method">
+                          {% for language in languages %}
+                          <li><a href="#language-payment-method{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-payment-method{{ language.language_id }}">                            
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_payment_method_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_payment_method_description[{{ language.language_id }}][title]" value="{{ mpcheckout_payment_method_description[language.language_id] ? mpcheckout_payment_method_description[language.language_id].title }}" placeholder="{{ entry_lang_payment_method_title }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>                      
+                      <div class="tab-pane" id="navtab-lang-shipping-method">
+                        <ul class="nav nav-tabs" id="language-shipping-method">
+                          {% for language in languages %}
+                          <li><a href="#language-shipping-method{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-shipping-method{{ language.language_id }}">                            
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_shipping_method_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_shipping_method_description[{{ language.language_id }}][title]" value="{{ mpcheckout_shipping_method_description[language.language_id] ? mpcheckout_shipping_method_description[language.language_id].title }}" placeholder="{{ entry_lang_shipping_method_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_method_not_required }}</label>
+                              <div class="col-sm-12">
+                                <textarea name="mpcheckout_shipping_method_description[{{ language.language_id }}][method_not_required]" placeholder="{{ entry_lang_method_not_required }}" class="form-control">{{ mpcheckout_shipping_method_description[language.language_id] ? mpcheckout_shipping_method_description[language.language_id].method_not_required }}</textarea>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-social-panel">
+                        <ul class="nav nav-tabs" id="language-social">
+                          {% for language in languages %}
+                          <li><a href="#language-social{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-social{{ language.language_id }}">                            
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_social_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_social_description[{{ language.language_id }}][title]" value="{{ mpcheckout_social_description[language.language_id] ? mpcheckout_social_description[language.language_id].title }}" placeholder="{{ entry_lang_social_title }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-date-panel">
+                        <ul class="nav nav-tabs" id="language-date">
+                          {% for language in languages %}
+                          <li><a href="#language-date{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-date{{ language.language_id }}">
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_date_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_date_description[{{ language.language_id }}][title]" value="{{ mpcheckout_date_description[language.language_id] ? mpcheckout_date_description[language.language_id].title }}" placeholder="{{ entry_lang_date_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_date_field }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_date_description[{{ language.language_id }}][field_title]" value="{{ mpcheckout_date_description[language.language_id] ? mpcheckout_date_description[language.language_id].field_title }}" placeholder="{{ entry_lang_date_field }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-cart">
+                        <ul class="nav nav-tabs" id="language-cart">
+                          {% for language in languages %}
+                          <li><a href="#language-cart{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-cart{{ language.language_id }}">                            
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_cart_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_cart_description[{{ language.language_id }}][title]" value="{{ mpcheckout_cart_description[language.language_id] ? mpcheckout_cart_description[language.language_id].title }}" placeholder="{{ entry_lang_cart_title }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="navtab-lang-confirm-order">
+                        <ul class="nav nav-tabs" id="language-confirm-order">
+                          {% for language in languages %}
+                          <li><a href="#language-confirm-order{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                          {% for language in languages %}
+                          <div class="tab-pane" id="language-confirm-order{{ language.language_id }}">
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_confirm_order_title }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_confirm_order_description[{{ language.language_id }}][title]" value="{{ mpcheckout_confirm_order_description[language.language_id] ? mpcheckout_confirm_order_description[language.language_id].title }}" placeholder="{{ entry_lang_confirm_order_title }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_confirm_order_comment }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_confirm_order_description[{{ language.language_id }}][comment_placeholder]" value="{{ mpcheckout_confirm_order_description[language.language_id] ? mpcheckout_confirm_order_description[language.language_id].comment_placeholder }}" placeholder="{{ entry_lang_confirm_order_comment }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_confirm_order_continue_button }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_confirm_order_description[{{ language.language_id }}][continue_button]" value="{{ mpcheckout_confirm_order_description[language.language_id] ? mpcheckout_confirm_order_description[language.language_id].continue_button }}" placeholder="{{ entry_lang_confirm_order_continue_button }}" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-12 control-label">{{ entry_lang_confirm_order_button }}</label>
+                              <div class="col-sm-12">
+                                <input type="text" name="mpcheckout_confirm_order_description[{{ language.language_id }}][button]" value="{{ mpcheckout_confirm_order_description[language.language_id] ? mpcheckout_confirm_order_description[language.language_id].button }}" placeholder="{{ entry_lang_confirm_order_button }}" class="form-control" />
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-successpage">
+              <div class="bs-callout bs-callout-info"> 
+                <h4>{{ info_success_page }}</h4> 
+                <p>{{ info_success_page_info }}</p> 
+              </div>
+              <div class="form-group mp-buttons">
+                <label class="col-sm-2 control-label">{{ entry_success_status }}</label>
+                <div class="col-sm-3">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary {{ mpcheckout_success_status ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_success_status" value="1" {{ mpcheckout_success_status ? 'checked="checked"' : '' }} />
+                      {{ text_yes }}                            
+                    </label>
+                    <label class="btn btn-primary {{ not mpcheckout_success_status ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_success_status" value="0" {{ not mpcheckout_success_status ? 'checked="checked"' : '' }} />
+                      {{ text_no }}                            
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-12 codes">
+                  <div class="buttons text-right">
+                  <a data-toggle="collapse" class="btn btn-primary" href="#collapse" aria-expanded="false" aria-controls="collapse">Short Codes</a>
+                  </div>
+                  <div class="collapse" id="collapse" style="background: #eee;">
+                    <div class="card card-block">
+                    <ul class="list-unstyled">
+                      <li>{firstname} - Firstname</li>
+                      <li>{lastname} - Lastname</li>
+                      <li>{order_id} - Order ID        </li>
+                      <li>{order_status} - Order Status        </li>
+                      <li>{order_details} - Order Details with products</li>
+                      <li>{order_total_amount} - Order Total Amount</li>
+                    </ul> 
+                    </div>
+                  </div>    
+                </div>
+              </div>
+
+              <ul class="nav nav-tabs" id="language-success">
+                {% for language in languages %}
+                <li><a href="#language-success{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                  <div class="tab-pane" id="language-success{{ language.language_id }}">
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_success_title }}</label>
+                      <div class="col-sm-10">
+                         <input type="text" name="mpcheckout_success_description[{{ language.language_id }}][heading_title]" value="{{ mpcheckout_success_description[language.language_id] ? mpcheckout_success_description[language.language_id].heading_title }}" placeholder="{{ entry_success_title }}" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_success_customer_message }}</label>
+                      <div class="col-sm-10">
+                        <textarea name="mpcheckout_success_description[{{ language.language_id }}][customer_message]" placeholder="{{ entry_success_customer_message }}" class="form-control" data-toggle="summernote" data-lang="" id="input-success-customer{{ language.language_id }}">{{ mpcheckout_success_description[language.language_id] ? mpcheckout_success_description[language.language_id].customer_message }}</textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_success_guest_message }}</label>
+                      <div class="col-sm-10">
+                        <textarea name="mpcheckout_success_description[{{ language.language_id }}][guest_message]" placeholder="{{ entry_success_guest_message }}" class="form-control" data-toggle="summernote" data-lang="" id="input-success-guest{{ language.language_id }}">{{ mpcheckout_success_description[language.language_id] ? mpcheckout_success_description[language.language_id].guest_message }}</textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_success_continue_button }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="mpcheckout_success_description[{{ language.language_id }}][continue_button]" value="{{ mpcheckout_success_description[language.language_id] ? mpcheckout_success_description[language.language_id].continue_button }}" placeholder="{{ entry_success_continue_button }}" class="form-control" />
+                        </div>
+                    </div>       
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_success_print_button }}</label>
+                      <div class="col-sm-10">
+                        <input type="text" name="mpcheckout_success_description[{{ language.language_id }}][print_button]" value="{{ mpcheckout_success_description[language.language_id] ? mpcheckout_success_description[language.language_id].print_button }}" placeholder="{{ entry_success_print_button }}" class="form-control" />
+                      </div>
+                    </div>           
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="form-group mp-buttons">
+                <label class="col-sm-2 control-label">{{ entry_print_status }}</label>
+                <div class="col-sm-3">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary {{ mpcheckout_print_status ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_print_status" value="1" {{ mpcheckout_print_status ? 'checked="checked"' : '' }} />
+                      {{ text_yes }}
+                    </label>
+                    <label class="btn btn-primary {{ not mpcheckout_print_status ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_print_status" value="0" {{ not mpcheckout_print_status ? 'checked="checked"' : '' }} />
+                      {{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="bs-callout bs-callout-info"> 
+                <h4>{{ info_success_promote }}</h4> 
+                <p>{{ info_success_promote_info }}</p> 
+              </div>
+              <div class="form-group mp-buttons">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_success_promote }}">{{ entry_success_promote }}</span></label>
+                <div class="col-sm-3">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary {{ mpcheckout_success_promote ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_success_promote" value="1" {{ mpcheckout_success_promote ? 'checked="checked"' : '' }} />
+                      {{ text_yes }}                            
+                    </label>
+                    <label class="btn btn-primary {{ not mpcheckout_success_promote ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_success_promote" value="0" {{ not mpcheckout_success_promote ? 'checked="checked"' : '' }} />
+                      {{ text_no }}                            
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_success_promote_title }}</label>
+                <div class="col-sm-10">
+                  {% for language in languages %}
+                    <div class="input-group">
+                      <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <input type="text" name="mpcheckout_success_promote_title[{{ language.language_id }}][title]" value="{{ mpcheckout_success_promote_title[language.language_id] ? mpcheckout_success_promote_title[language.language_id].title }}" placeholder="{{ entry_success_promote_title }}" class="form-control" />
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-product"><span data-toggle="tooltip" title="{{ help_success_product }}">{{ entry_success_product }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="product" value="" placeholder="{{ entry_success_product }}" id="input-product" class="form-control" />
+                  <div id="product-product" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for product_product in product_products %}
+                    <div id="product-product{{ product_product.product_id }}"><i class="fa fa-minus-circle"></i> {{ product_product.name }}
+                      <input type="hidden" name="mpcheckout_success_product[]" value="{{ product_product.product_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-length">{{ entry_succees_image_size }}</label>
+                <div class="col-sm-10">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                      <input type="text" name="mpcheckout_success_width" value="{{ mpcheckout_success_width }}" placeholder="{{ entry_width }}" id="input-mpcheckout-width" class="form-control" />
+                      <span class="input-group-addon">{{ text_width }}</span>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                      <input type="text" name="mpcheckout_success_height" value="{{ mpcheckout_success_height }}" placeholder="{{ entry_height }}" id="input-mpcheckout-height" class="form-control" />
+                      <span class="input-group-addon">{{ text_height }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  {% if error_success_image_size %}
+                  <div class="text-danger">{{ error_success_image_size }}</div>
+                  {% endif %}
+                </div>
+              </div> 
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_background_success_table }}</label>
+                <div class="col-sm-10">
+                  <div class="input-group colorpicker colorpicker-component"> 
+                    <input type="text" name="mpcheckout_color[background_success_table]" value="{{ mpcheckout_color.background_success_table ? mpcheckout_color.background_success_table : '' }}" class="form-control" /> 
+                    <span class="input-group-addon"><i></i></span> 
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_font_success_table }}</label>
+                <div class="col-sm-10">
+                  <div class="input-group colorpicker colorpicker-component"> 
+                    <input type="text" name="mpcheckout_color[font_success_table]" value="{{ mpcheckout_color.font_success_table ? mpcheckout_color.font_success_table : '' }}" class="form-control" /> 
+                    <span class="input-group-addon"><i></i></span> 
+                  </div>
+                </div>
+              </div>
+              <div class="bs-callout bs-callout-info"> 
+                <h4>{{ info_googleanalytics }}</h4>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_googleanalytics }}</label>
+                <div class="col-sm-10">
+                  <textarea name="mpcheckout_googleanalytics" class="form-control" rows="8">{{ mpcheckout_googleanalytics }}</textarea>
+                </div>
+              </div>          
+            </div>
+            <div class="tab-pane" id="tab-theme">
+              <div class="form-group mp-buttons">
+                <label class="col-sm-2 control-label">{{ entry_template }}</label>
+                <div class="col-sm-5">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary {{ mpcheckout_template and mpcheckout_template == 'checkout_1' ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_template" value="checkout_1" {{ mpcheckout_template and mpcheckout_template == 'checkout_1' ? 'checked="checked"' : '' }} />
+                       {{ text_checkout_1 }}
+                    </label>
+                    <label class="btn btn-primary {{ mpcheckout_template and mpcheckout_template == 'checkout_2' ? 'active' : '' }}">
+                      <input type="radio" name="mpcheckout_template" value="checkout_2" {{ mpcheckout_template and mpcheckout_template == 'checkout_2' ? 'checked="checked"' : '' }} />
+                       {{ text_checkout_2 }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-mpdesign">
+              <div class="bs-callout bs-callout-info"> 
+                <h4>{{ info_color_heading }}</h4> 
+                <p>{{ info_color_description }}</p> 
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <ul class="nav nav-pills nav-stacked ostab" id="color-tabs">                      
+                    <li><a class="text-left" href="#navtab-color-container" data-toggle="tab"><i class="fa fa-bolt" aria-hidden="true"></i> {{ navtabs_color_container }}</a></li>                      
+                    <li><a class="text-left" href="#navtab-color-account" data-toggle="tab"><i class="fa fa-user" aria-hidden="true"></i> {{ navtabs_color_account }}</a></li>                      
+                    <li><a class="text-left" href="#navtab-color-panels" data-toggle="tab"><i class="fa fa-cube" aria-hidden="true"></i> {{ navtabs_color_panels }}</a></li>
+                    <li><a class="text-left" href="#navtab-color-tables" data-toggle="tab"><i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ navtabs_color_tables }}</a></li>
+                    <li><a class="text-left" href="#navtab-color-buttons" data-toggle="tab"><i class="fa fa-key" aria-hidden="true"></i> {{ navtabs_color_buttons }}</a></li>
+                  </ul>
+                </div>
+                <div class="col-sm-8">
+                  <div class="tab-content">
+                    <div class="tab-pane" id="navtab-color-container">
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_container }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_container]" value="{{ mpcheckout_color.background_container ? mpcheckout_color.background_container : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_container_heading }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_container_heading]" value="{{ mpcheckout_color.background_container_heading ? mpcheckout_color.background_container_heading : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_container_heading }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_container_heading]" value="{{ mpcheckout_color.font_container_heading ? mpcheckout_color.font_container_heading : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-color-account">
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_account_panel }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_account_panel]" value="{{ mpcheckout_color.background_account_panel ? mpcheckout_color.background_account_panel : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_account_panel }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_account_panel]" value="{{ mpcheckout_color.font_account_panel ? mpcheckout_color.font_account_panel : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_hover_account_panel }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_hover_account_panel]" value="{{ mpcheckout_color.background_hover_account_panel ? mpcheckout_color.background_hover_account_panel : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_hover_account_panel }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_hover_account_panel]" value="{{ mpcheckout_color.font_hover_account_panel ? mpcheckout_color.font_hover_account_panel : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-color-panels">
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_panel }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_panel]" value="{{ mpcheckout_color.background_panel ? mpcheckout_color.background_panel : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_panel_default }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_panel_default]" value="{{ mpcheckout_color.border_panel_default ? mpcheckout_color.border_panel_default : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_panel }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_panel]" value="{{ mpcheckout_color.font_panel ? mpcheckout_color.font_panel : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_panel_heading }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_panel_heading]" value="{{ mpcheckout_color.background_panel_heading ? mpcheckout_color.background_panel_heading : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_panel_body }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_panel_body]" value="{{ mpcheckout_color.font_panel_body ? mpcheckout_color.font_panel_body : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_panel_body }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_panel_body]" value="{{ mpcheckout_color.border_panel_body ? mpcheckout_color.border_panel_body : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_panel_icon }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_panel_icon]" value="{{ mpcheckout_color.background_panel_icon ? mpcheckout_color.background_panel_icon : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_panel_icon }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_panel_icon]" value="{{ mpcheckout_color.font_panel_icon ? mpcheckout_color.font_panel_icon : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_panel_confirm }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_panel_confirm]" value="{{ mpcheckout_color.border_panel_confirm ? mpcheckout_color.border_panel_confirm : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-color-tables">                      
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_table }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_table]" value="{{ mpcheckout_color.background_table ? mpcheckout_color.background_table : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_table_data }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_table_data]" value="{{ mpcheckout_color.font_table_data ? mpcheckout_color.font_table_data : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_top_table_data }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_top_table_data]" value="{{ mpcheckout_color.border_top_table_data ? mpcheckout_color.border_top_table_data : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_table_data }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_table_data]" value="{{ mpcheckout_color.border_table_data ? mpcheckout_color.border_table_data : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_order_total_color }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[order_total_color]" value="{{ mpcheckout_color.order_total_color ? mpcheckout_color.order_total_color : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_order_total_color }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_order_total_color]" value="{{ mpcheckout_color.font_order_total_color ? mpcheckout_color.font_order_total_color : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="navtab-color-buttons">
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_button }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_button]" value="{{ mpcheckout_color.background_button ? mpcheckout_color.background_button : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>                      
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_background_hover_button }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[background_hover_button]" value="{{ mpcheckout_color.background_hover_button ? mpcheckout_color.background_hover_button : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_button }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_button]" value="{{ mpcheckout_color.font_button ? mpcheckout_color.font_button : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_font_hover_button }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[font_hover_button]" value="{{ mpcheckout_color.font_hover_button ? mpcheckout_color.font_hover_button : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_button }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_button]" value="{{ mpcheckout_color.border_button ? mpcheckout_color.border_button : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-12 control-label">{{ entry_border_hover_button }}</label>
+                        <div class="col-sm-5">
+                          <div class="input-group colorpicker colorpicker-component"> 
+                            <input type="text" name="mpcheckout_color[border_hover_button]" value="{{ mpcheckout_color.border_hover_button ? mpcheckout_color.border_hover_button : '' }}" class="form-control" /> 
+                            <span class="input-group-addon"><i></i></span> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bs-callout bs-callout-info"> 
+                <h4>{{ info_css_heading }}</h4> 
+                <p>{{ info_css_description }}</p> 
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_css }}</label>
+                <div class="col-sm-10">
+                  <textarea name="mpcheckout_css" class="form-control" rows="8">{{ mpcheckout_css }}</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-support">
+              <fieldset>
+                <div class="form-group">
+                  <div class="col-md-12 col-xs-12">
+                    <h4 class="text-mpsuccess text-center"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Thanks For Choosing Our Extension</h4>
+                     <ul class="list-group">
+                      <li class="list-group-item clearfix">Installed Version <span class="badge"><i class="fa fa-gg" aria-hidden="true"></i> V.1.0</span></li>
+                    </ul>
+                    <h4 class="text-mpsuccess text-center"><i class="fa fa-phone" aria-hidden="true"></i> Please Contact Us In Case Any Issue OR Give Feedback!</h4>
+                    <ul class="list-group">
+                      <li class="list-group-item clearfix">support@modulepoints.com <span class="badge"><a href="mailto:support@modulepoints.com?Subject=Request Support: Quick Checkout Extension"><i class="fa fa-envelope"></i> Contact Us</a></span></li> 
+                    </ul>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+  $('select[name=\'mpcheckout_country_id\']').on('change', function() {
+    $.ajax({
+      url: 'index.php?route=mpcheckout/mpcheckout/country&user_token={{ user_token }}&country_id=' + this.value,
+      dataType: 'json',
+      beforeSend: function() {
+        $('select[name=\'mpcheckout_country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+      },
+      complete: function() {
+        $('.fa-spin').remove();
+      },
+      success: function(json) {
+        html = '<option value="">{{ text_select }}</option>';
+
+        if (json['zone'] && json['zone'] != '') {
+          for (i = 0; i < json['zone'].length; i++) {
+                  html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+            if (json['zone'][i]['zone_id'] == '{{ mpcheckout_zone_id }}') {
+                    html += ' selected="selected"';
+            }
+
+            html += '>' + json['zone'][i]['name'] + '</option>';
+          }
+        } else {
+          html += '<option value="0" selected="selected">{{ text_none }}</option>';
+        }
+
+        $('select[name=\'mpcheckout_zone_id\']').html(html);
+        
+        $('#button-save').prop('disabled', false);
+      }
+    });
+  });
+
+  $('select[name=\'mpcheckout_country_id\']').trigger('change');
+  //--></script>  
+  <script type="text/javascript"><!--
+  $('#panels a:first').tab('show');
+  $('#lang-panels a:first').tab('show');
+  $('#color-tabs a:first').tab('show');
+
+  $('#language-page a:first').tab('show');
+  $('#language-account-buttons a:first').tab('show');
+  $('#language-account-panel a:first').tab('show');
+  $('#language-login-panel a:first').tab('show');
+  $('#language-payment-address a:first').tab('show');
+  $('#language-shipping-address a:first').tab('show');
+  $('#language-payment-method a:first').tab('show');
+  $('#language-shipping-method a:first').tab('show');
+  $('#language-social a:first').tab('show');
+  $('#language-cart a:first').tab('show');
+  $('#language-confirm-order a:first').tab('show');
+  $('#language-success a:first').tab('show');
+  $('#language-date a:first').tab('show');
+  //--></script>
+<script type="text/javascript"><!--
+// Category
+$('input[name=\'product\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'product\']').val('');
+
+    $('#product-product' + item['value']).remove();
+
+    $('#product-product').append('<div id="product-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="mpcheckout_success_product[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#product-product').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+//--></script>
+<script type="text/javascript"><!--
+// Color Picker
+$(function() { $('.colorpicker').colorpicker(); }); 
+//--></script>
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+</div>
+{{ footer }}

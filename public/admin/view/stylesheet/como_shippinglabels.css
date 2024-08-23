@@ -1,0 +1,21 @@
+﻿.breadcrumb li a {
+    color: #1e91cf;
+}
+.nav-tabs > li > a {
+    color: #333;
+    font-weight: bold;
+    background: #eceeeb;
+}
+fieldset legend, .module_name {
+    background: #dbfff0;
+}
+
+.module_name {
+    font-weight: bold;
+}
+
+.form-text {
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #6c757d;
+}

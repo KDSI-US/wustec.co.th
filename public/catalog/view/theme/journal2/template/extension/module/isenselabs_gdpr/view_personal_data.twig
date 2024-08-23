@@ -1,0 +1,265 @@
+{{ header }} 
+<div id="container" class="container j-container">
+  <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+    {% for breadcrumb in breadcrumbs %}
+      <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{ breadcrumb.href }}" itemprop="item"><span itemprop="name">{{ breadcrumb.text }}</span></a><meta itemprop="position" content="{{ loop.index }}" /></li>
+    {% endfor %}
+  </ul>
+  <div class="row">
+    {{ column_left }} 
+    {% if (column_left and column_right) %} 
+    {% set class = 'col-sm-6' %} 
+    {% elseif (column_left or column_right) %} 
+    {% set class = 'col-sm-9' %} 
+    {% else %} 
+    {% set class = 'col-sm-12' %} 
+    {% endif %} 
+    <div id="content" class="{{ class }}">{{ content_top }} 
+	  {% if (not show_data) %} 
+		<h2>{{ text_view_personal_data }}</h2>
+		<p>{{ text_hash_error }}</p>
+		<div class="buttons clearfix">
+		  <div class="pull-right">
+			<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+		  </div>
+		</div>
+	  {% else %} 
+		<h2>{{ text_view_personal_data }}</h2>
+		<br />
+		<h3>{{ text_customer_information }}</h3>
+		{% if (customer_info is not empty) %} 
+		<table class="table table-hover list">
+			<tr>
+				<td>{{ text_firstname }}</td>
+				<td>{{ customer_info['firstname'] }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_lastname }}</td>
+				<td>{{ customer_info['lastname'] }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_email }}</td>
+				<td>{{ customer_info['email'] }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_telephone }}</td>
+				<td>{{ customer_info['telephone'] }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_fax }}</td>
+				<td>{{ customer_info['fax'] }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_newsletter_subscription }}</td>
+				<td>{{ customer_info['newsletter_subscription'] }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_ip }}</td>
+				<td>{{ customer_info['ip'] }}</td>
+			</tr>
+		</table>
+		{% else %} 
+			<p>{{ text_no_data }}</p>
+			<br />
+		{% endif %} 
+
+		<h3>{{ text_saved_addresses }}</h3>
+		{% if (customer_addresses is not empty) %} 
+			{% for index,customer_address in customer_addresses %} 
+			<h4>{{ text_address ~ ' ' ~ (index + 1) }}</h4>
+			<table class="table table-hover list">
+				<tr>
+					<td>{{ text_firstname }}</td>
+					<td>{{ customer_address['firstname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_lastname }}</td>
+					<td>{{ customer_address['lastname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_company }}</td>
+					<td>{{ customer_address['company'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_address_1 }}</td>
+					<td>{{ customer_address['address_1'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_address_2 }}</td>
+					<td>{{ customer_address['address_2'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_city }}</td>
+					<td>{{ customer_address['city'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_zone }}</td>
+					<td>{{ customer_address['zone'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_postcode }}</td>
+					<td>{{ customer_address['postcode'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_country }}</td>
+					<td>{{ customer_address['country'] }}</td>
+				</tr>
+			</table>
+			<br />
+			{% endfor %} 
+		{% else %} 
+			<p>{{ text_no_data }}</p>
+			<br />
+		{% endif %} 
+		
+		{% if (guest_orders is not empty) %} 
+		
+		<h3>{{ text_personal_data }}</h3>
+		<p>{{ text_personal_data_helper }}</p>
+			{% for index,order in guest_orders %} 
+			<h4>{{ text_order ~ ' ' ~ order['order_id'] }}</h4>
+			<table class="table table-hover list">
+				<tr>
+					<td colspan="2"><strong>{{ text_order_view_data }}</strong></td>
+				</tr>
+				<tr>
+					<td>{{ text_firstname }}</td>
+					<td>{{ order['firstname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_lastname }}</td>
+					<td>{{ order['lastname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_email }}</td>
+					<td>{{ order['email'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_telephone }}</td>
+					<td>{{ order['telephone'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_fax }}</td>
+					<td>{{ order['fax'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_ip }}</td>
+					<td>{{ order['ip'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_user_agent }}</td>
+					<td>{{ order['user_agent'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_accept_language }}</td>
+					<td>{{ order['accept_language'] }}</td>
+				</tr>
+				<tr>
+					<td colspan="2"><strong>{{ text_payment_view_data }}</strong></td>
+				</tr>
+				<tr>
+					<td>{{ text_firstname }}</td>
+					<td>{{ order['payment_firstname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_lastname }}</td>
+					<td>{{ order['payment_lastname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_company }}</td>
+					<td>{{ order['payment_company'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_address_1 }}</td>
+					<td>{{ order['payment_address_1'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_address_2 }}</td>
+					<td>{{ order['payment_address_2'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_city }}</td>
+					<td>{{ order['payment_city'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_zone }}</td>
+					<td>{{ order['payment_zone'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_postcode }}</td>
+					<td>{{ order['payment_postcode'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_country }}</td>
+					<td>{{ order['payment_country'] }}</td>
+				</tr>
+				<tr>
+					<td colspan="2"><strong>{{ text_shipping_view_data }}</strong></td>
+				</tr>
+				<tr>
+					<td>{{ text_firstname }}</td>
+					<td>{{ order['shipping_firstname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_lastname }}</td>
+					<td>{{ order['shipping_lastname'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_company }}</td>
+					<td>{{ order['shipping_company'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_address_1 }}</td>
+					<td>{{ order['shipping_address_1'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_address_2 }}</td>
+					<td>{{ order['shipping_address_2'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_city }}</td>
+					<td>{{ order['shipping_city'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_zone }}</td>
+					<td>{{ order['shipping_zone'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_postcode }}</td>
+					<td>{{ order['shipping_postcode'] }}</td>
+				</tr>
+				<tr>
+					<td>{{ text_country }}</td>
+					<td>{{ order['shipping_country'] }}</td>
+				</tr>
+			</table>
+			<br />
+			{% endfor %} 
+		{% endif %} 
+		
+		<h3>{{ text_data_third_party }}</h3>
+		<p>{{ text_data_third_party_helper }}</p>
+		<table class="table table-hover list">
+			<tr>
+				<td>{{ text_third_party_services }}</td>
+				<td>{{ third_party_services }}</td>
+			</tr>
+			<tr>
+				<td>{{ text_other }}</td>
+				<td>{{ other_services }}</td>
+			</tr>
+		</table>
+		<br />
+
+		<div class="buttons clearfix">
+		  <div class="pull-right">
+			<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+		  </div>
+		</div>
+      {% endif %} 
+      {{ content_bottom }} 
+    </div>
+    {{ column_right }} 
+  </div>
+</div>
+{{ footer }}

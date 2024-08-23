@@ -1,0 +1,55 @@
+<div class="container-fluid deny-form">
+    <div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h3 class="step">{{ text_cancel_deletion_header }}</h3>
+		</div>
+    </div>    
+    <br />    
+    {% if (not deny_form) %} 
+    	<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h4>{{ text_unexpected_error }}</h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="pull-right">
+					<a onclick="goBack(this);" class="btn btn-danger">{{ text_go_back }}</a>
+				</div>
+			</div>
+		</div>  
+    {% else %} 
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h5><strong>{{ text_email_request }}</strong>: {{ deletion_data['email'] }}</h5>
+				<h5><strong>{{ text_date_time_request }}</strong>: {{ deletion_data['date_added'] }}</h5>
+				<h5><strong>{{ text_language_request }}</strong>: {{ language_data['name'] }}</h5>
+				<h5><strong>{{ text_store_request }}</strong>: {{ store_data['name'] }}</h5>
+				<br />
+
+				<h5>{{ text_deletion_deny_helper }} <strong>{{ deletion_data['email'] }}</strong></h5>
+				<h5>{{ text_data_deletion_helper }}</h5>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<br />
+				<input name="deletion_id" type="hidden" value="{{ deletion_data['deletion_id'] }}" />
+				<textarea name="deny_request_text" rows="7" id="deny_request_text" placeholder="{{ text_message }}" class="form-control"></textarea>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="pull-right">
+					<br />
+					<a onclick="denyDeletionRequest(this);" class="btn btn-primary">{{ text_cancel_deletion }}</a>&nbsp;&nbsp;<a onclick="goBack(this);" class="btn btn-danger">{{ text_go_back }}</a>
+				</div>
+			</div>
+		</div>
+    {% endif %} 
+</div>

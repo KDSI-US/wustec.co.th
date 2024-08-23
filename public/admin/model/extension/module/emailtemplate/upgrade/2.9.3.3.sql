@@ -1,0 +1,1 @@
+ALTER TABLE `oc_emailtemplate_config` ADD `emailtemplate_config_showcase_per_row` TINYINT(1) NOT NULL DEFAULT '4' AFTER `emailtemplate_config_showcase_section_bg_color`;

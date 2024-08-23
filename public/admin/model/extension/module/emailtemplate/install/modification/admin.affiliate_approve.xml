@@ -1,0 +1,93 @@
+<file path="admin/controller/mail/affiliate.php" email_template="admin.affiliate_approve">
+	<operation>
+		<search index="0"><![CDATA[$mail = new Mail(]]></search>
+		<add position="before"><![CDATA[
+			// Prepare mail: admin.affiliate_approve
+			$this->load->model('extension/module/emailtemplate');
+
+			$template_load = array(
+				'key' => 'admin.affiliate_approve',
+				'customer_id' => $customer_info['customer_id'],
+				'customer_group_id' => $customer_info['customer_group_id'],
+				'language_id' => $customer_info['language_id'],
+				'store_id' => $customer_info['store_id']
+			);
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+            if ($template) {
+                $template->addData($customer_info);
+
+                if (!empty($args[0]['custom_field'])) {
+                    $this->load->model('account/custom_field');
+
+                    $custom_fields = $this->model_account_custom_field->getCustomFields($customer_info['customer_group_id']);
+
+                    foreach ($custom_fields as $custom_field) {
+                        if (isset($args[0]['custom_field'][$custom_field['location']][$custom_field['custom_field_id']])) {
+                            $custom_field_key = 'custom_field_' . ($custom_field['location'] != 'account' ? $custom_field['location'] . '_' : '') . $custom_field['custom_field_id'];
+                            $custom_field_value = $args[0]['custom_field'][$custom_field['location']][$custom_field['custom_field_id']];
+
+                            $template->data[$custom_field_key . '_name'] = $custom_field['name'];
+                            $template->data[$custom_field_key . '_value'] = '';
+
+                            if ($custom_field['custom_field_value']) {
+                                foreach ($custom_field['custom_field_value'] as $custom_field_value_info) {
+                                    if (is_array($custom_field_value)) {
+                                        if (in_array($custom_field_value_info['custom_field_value_id'], $custom_field_value)) {
+                                            $template->data[$custom_field_key . '_value_' . $custom_field_value_info['custom_field_value_id']] = $custom_field_value_info['name'];
+                                        }
+                                    } else {
+                                        if ($custom_field_value_info['custom_field_value_id'] == $custom_field_value) {
+                                            $template->data[$custom_field_key . '_value'] = $custom_field_value_info['name'];
+                                        }
+                                    }
+                                }
+                            } else {
+                                $template->data[$custom_field_key . '_value'] = $custom_field_value;
+                            }
+                        }
+                    }
+                }
+
+                if ($store_info) {
+                    $store_url = $store_info['url'] . 'index.php?route=affiliate/login';
+                } else {
+                    $store_url = HTTP_CATALOG . 'index.php?route=affiliate/login';
+                }
+
+                $template->data['account_login'] = $store_url . '&amp;email=' . $customer_info['email'];
+
+                if (!empty($template->data['button_account_login'])) {
+                    $template->data['account_login_text'] = $template->data['button_account_login'];
+                } else {
+                    $template->data['account_login_text'] = $template->data['account_login'];
+                }
+			    // Prepared mail: admin.affiliate_approve
+            }
+		]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[
+		// Send mail: admin.affiliate_approve
+		if ($template && $template->check()) {
+		    $template->build();
+		    $template->hook($mail);
+        }
+
+		$mail->send();
+
+		$this->model_extension_module_emailtemplate->sent();]]></add>
+	</operation>
+    <operation error="skip">
+        <search><![CDATA[$mail->setText($this->load->view('mail/affiliate_approve', $data));]]></search>
+        <ignoreif><![CDATA[if (empty($template)) $mail->setText($this->load->view('mail/affiliate_approve', $data));]]></ignoreif>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setText($this->load->view('mail/affiliate_approve', $data));]]></add>
+    </operation>
+    <operation error="skip">
+        <search><![CDATA[$mail->setHtml($this->load->view('mail/affiliate_approve', $data));]]></search>
+        <ignoreif><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/affiliate_approve', $data));]]></ignoreif>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/affiliate_approve', $data));]]></add>
+    </operation>
+</file>

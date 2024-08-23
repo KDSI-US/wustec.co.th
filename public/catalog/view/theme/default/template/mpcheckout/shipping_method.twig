@@ -1,0 +1,44 @@
+<div class="panel panel-default shipping-method-panel">
+  <div class="panel-heading">
+    <h4 class="panel-title"><i class="fa fa-truck fa-flip-horizontal"></i> {{ panel_shipping_method }} </h4>
+  </div>
+  <div class="panel-body">
+    {% if shipping_required %}
+    {% if shipping_methods %}
+      {% set ship_counts = 1 %}
+      {% for key, shipping_method in shipping_methods %}
+      <p><strong>{{ shipping_method.title }}</strong></p>
+      {% if not shipping_method.error %}
+      {% for quote in shipping_method.quote %}
+      <div class="radio">
+        <label>
+          {% set ship_class = ship_counts == 1 ? 'ship_one' : '' %}
+          {% if quote.code == code or not code %}
+          {% set code = quote.code %}
+          <input type="radio" class="{{ ship_class }}" name="shipping_method" value="{{ quote.code }}" checked="checked" />
+          {% else %}
+          <input type="radio" class="{{ ship_class }}" name="shipping_method" value="{{ quote.code }}" />
+          {% endif %}
+
+          {% if mpcheckout_shipping_method_tables[key].thumb %}
+          <img src="{{ mpcheckout_shipping_method_tables[key].thumb }}"> &nbsp;
+          {% endif %}
+
+          {{ quote.title }} - {{ quote.text }}</label>
+      </div>
+      {% set ship_counts = ship_counts + 1 %}
+      {% endfor %}
+      {% else %}
+      <div class="alert alert-danger warning">{{ shipping_method.error }}</div>
+      {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% else %}
+      <div class="mp-alert">
+        <i class="fa fa-bell-o" aria-hidden="true"></i>
+        <div class="malert-text">{{ text_norequire_smethod }}</div>
+      </div>
+    {% endif %}
+    <div class="shippingmethod-loader"></div>
+  </div>
+</div>

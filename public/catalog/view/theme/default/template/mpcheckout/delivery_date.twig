@@ -1,0 +1,55 @@
+<div class="panel panel-default delivery-date-panel">
+  <div class="panel-heading">
+    <h4 class="panel-title"><i class="fa fa-clock-o"></i> {{ panel_delivery_date }} </h4>
+  </div>
+  <div class="panel-body">
+    <div class="form-group {{ delivery_date_required ? 'required' : '' }}">
+        <div class="row">
+          <label class="control-label {{ mpcheckout_template == 'checkout_1' ? 'col-sm-3' : 'col-sm-4' }}" for="input-delivery-date">{{ entry_delivery_date }}</label>
+          <div class="{{ mpcheckout_template == 'checkout_1' ? 'col-sm-5' : 'col-sm-8' }}">
+            <div class="input-group">
+              <input type="text" name="delivery_date" value="" data-date-format="YYYY-MM-DD" class="form-control delivery-datetimepicker" />
+              {% if delivery_date_required %}
+              <span class="input-group-btn">
+                <button class="btn btn-default clear-date" type="button"><i class="fa fa-times"></i></button>
+              </span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+var disables_weeks = [];
+{% for disables_week in disables_weeks %}
+  disables_weeks.push({{ disables_week }});
+{% endfor %}
+
+var disabled_dates = [];
+{% for disabled_date in disabled_dates %}
+  disabled_dates.push('{{ disabled_date }}');
+{% endfor %}
+  
+$('.delivery-datetimepicker').datetimepicker({
+    format: 'yyyy-mm-dd',
+    pickTime: false,
+    minDate: moment().add('{{ minimum_days }}', 'days'),
+    maxDate: moment().add('{{ maximum_days }}', 'days'),
+    autoclose: 1,
+    daysOfWeekDisabled: disables_weeks,
+    disabledDates: disabled_dates,
+    defaultDate: '{{ estimate_date }}',
+    useCurrent: false,
+});
+
+$('input[name=\'delivery_date\']').keypress(function(event) {
+  event.preventDefault();
+});
+
+$('.clear-date').click(function() {
+  $('input[name=\'delivery_date\']').val('');
+});
+});
+</script>

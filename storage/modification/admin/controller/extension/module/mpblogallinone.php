@@ -1,0 +1,208 @@
+<?php
+/* This file is under Git Control by KDSI. */
+class ControllerExtensionModuleMpBlogAllInOne extends Controller {
+	use mpblog\trait_mpblog;
+	private $error = [];
+
+	public function __construct($registry) {
+		parent :: __construct($registry);
+		$this->igniteTraitMpBlog($registry);
+	}
+
+	public function index() {
+		$this->load->language('extension/module/mpblogallinone');
+
+		$this->document->setTitle(strip_tags($this->language->get('heading_title')));
+
+		$this->load->model('setting/module');
+
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+			if (!isset($this->request->get['module_id'])) {
+				$this->model_setting_module->addModule('mpblogallinone', $this->request->post);
+			} else {
+				$this->model_setting_module->editModule($this->request->get['module_id'], $this->request->post);
+			}
+
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link($this->extension_page_path, $this->token.'=' . $this->session->data[$this->token] . '&type=module', true));
+		}
+
+		$data['heading_title'] = strip_tags($this->language->get('heading_title'));
+
+		$data['text_edit'] = $this->language->get('text_edit');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
+
+		$data['entry_name'] = $this->language->get('entry_name');
+		$data['entry_mpblogpost'] = $this->language->get('entry_mpblogpost');
+		$data['entry_sort_order'] = $this->language->get('entry_sort_order');
+		$data['entry_limit'] = $this->language->get('entry_limit');
+		$data['entry_image_size'] = $this->language->get('entry_image_size');
+		$data['entry_width'] = $this->language->get('entry_width');
+		$data['entry_height'] = $this->language->get('entry_height');
+		$data['entry_status'] = $this->language->get('entry_status');
+
+		$data['help_mpblogpost'] = $this->language->get('help_mpblogpost');
+
+		
+		$data['tab_featured'] = $this->language->get('tab_featured');
+		$data['tab_latest'] = $this->language->get('tab_latest');
+		$data['tab_popular'] = $this->language->get('tab_popular');
+		$data['tab_trending'] = $this->language->get('tab_trending');
+
+		$data['button_save'] = $this->language->get('button_save');
+		$data['button_cancel'] = $this->language->get('button_cancel');
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+
+		if (isset($this->error['name'])) {
+			$data['error_name'] = $this->error['name'];
+		} else {
+			$data['error_name'] = '';
+		}
+
+		if (isset($this->error['image_size'])) {
+			$data['error_image_size'] = $this->error['image_size'];
+		} else {
+			$data['error_image_size'] = '';
+		}
+
+		$data['breadcrumbs'] = [];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', $this->token.'=' . $this->session->data[$this->token], true)
+		];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link($this->extension_page_path, $this->token.'=' . $this->session->data[$this->token] . '&type=module', true)
+		];
+
+		if (!isset($this->request->get['module_id'])) {
+			$data['breadcrumbs'][] = [
+				'text' => strip_tags($this->language->get('heading_title')),
+				'href' => $this->url->link('extension/module/mpblogallinone', $this->token.'=' . $this->session->data[$this->token], true)
+			];
+		} else {
+			$data['breadcrumbs'][] = [
+				'text' => strip_tags($this->language->get('heading_title')),
+				'href' => $this->url->link('extension/module/mpblogallinone', $this->token.'=' . $this->session->data[$this->token] . '&module_id=' . $this->request->get['module_id'], true)
+			];
+		}
+
+		if (!isset($this->request->get['module_id'])) {
+			$data['action'] = $this->url->link('extension/module/mpblogallinone', $this->token.'=' . $this->session->data[$this->token], true);
+		} else {
+			$data['action'] = $this->url->link('extension/module/mpblogallinone', $this->token.'=' . $this->session->data[$this->token] . '&module_id=' . $this->request->get['module_id'], true);
+		}
+
+		$data['cancel'] = $this->url->link($this->extension_page_path, $this->token.'=' . $this->session->data[$this->token] . '&type=module', true);
+
+		if (isset($this->request->get['module_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$module_info = $this->model_setting_module->getModule($this->request->get['module_id']);
+		}
+
+		$data['get_token'] = $this->token;
+		$data['token'] = $this->session->data[$this->token];
+
+		if (isset($this->request->post['name'])) {
+			$data['name'] = $this->request->post['name'];
+		} elseif (!empty($module_info)) {
+			$data['name'] = $module_info['name'];
+		} else {
+			$data['name'] = '';
+		}
+
+		$this->load->model('extension/mpblog/mpblogpost');
+
+		$data['mpblogposts'] = [];
+
+		if (!empty($this->request->post['mpblogpost'])) {
+			$mpblogposts = $this->request->post['mpblogpost'];
+		} elseif (!empty($module_info['mpblogpost'])) {
+			$mpblogposts = $module_info['mpblogpost'];
+		} else {
+			$mpblogposts = [];
+		}
+
+		foreach ($mpblogposts as $mpblogpost_id) {
+			$mpblogpost_info = $this->model_extension_mpblog_mpblogpost->getMpBlogPost($mpblogpost_id);
+
+			if ($mpblogpost_info) {
+				$data['mpblogposts'][] = [
+					'mpblogpost_id' => $mpblogpost_info['mpblogpost_id'],
+					'name'       => $mpblogpost_info['name']
+				];
+			}
+		}
+
+		if (isset($this->request->post['sort_order'])) {
+			$data['sort_order'] = $this->request->post['sort_order'];
+		} elseif (!empty($module_info)) {
+			$data['sort_order'] = (array)$module_info['sort_order'];
+		} else {
+			$data['sort_order'] = ['featured' => 1, 'latest' => 2, 'popular' => 3, 'trending' => 4];
+		}
+
+		if (isset($this->request->post['limit'])) {
+			$data['limit'] = $this->request->post['limit'];
+		} elseif (!empty($module_info)) {
+			$data['limit'] = (array)$module_info['limit'];
+		} else {
+			$data['limit'] = ['featured' => 5, 'latest' => 5, 'popular' => 5, 'trending' => 5];
+		}
+
+		if (isset($this->request->post['width'])) {
+			$data['width'] = $this->request->post['width'];
+		} elseif (!empty($module_info)) {
+			$data['width'] = $module_info['width'];
+		} else {
+			$data['width'] = 200;
+		}
+
+		if (isset($this->request->post['height'])) {
+			$data['height'] = $this->request->post['height'];
+		} elseif (!empty($module_info)) {
+			$data['height'] = $module_info['height'];
+		} else {
+			$data['height'] = 200;
+		}
+
+		if (isset($this->request->post['status'])) {
+			$data['status'] = $this->request->post['status'];
+		} elseif (!empty($module_info)) {
+			$data['status'] = $module_info['status'];
+		} else {
+			$data['status'] = '';
+		}
+
+		$data['mpblogmenu'] = $this->load->controller('extension/mpblog/mpblogmenu');
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->viewLoad('extension/module/mpblogallinone', $data));
+	}
+
+	protected function validate() {
+		if (!$this->user->hasPermission('modify', 'extension/module/mpblogallinone')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+
+		if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 64)) {
+			$this->error['name'] = $this->language->get('error_name');
+		}
+
+		if (!$this->request->post['width'] || !$this->request->post['height']) {
+			$this->error['image_size'] = $this->language->get('error_image_size');
+		}
+
+		return !$this->error;
+	}
+}

@@ -1,0 +1,186 @@
+{{ header }}
+<style>
+.pp_pic_holder{
+  top:60px !important;
+}
+#pastor-column-OPC100246 {
+  width: 80%;
+}
+@media only screen and (max-width: 767px) {
+  #pastor-column-OPC100246 {
+    width: 98%;
+  }
+}
+.pastor-column-title {
+  color: #434343;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 5px auto 10px auto;
+  text-align: center;
+}
+.pastor-column-image {
+  width: 100%;
+  text-align: center;
+}
+.pastor-column-description {
+  text-align: left;
+}
+#pastor-column-OPC100246 .pagination a {
+  color: #434343;
+}
+.pagination li a {
+  color: #434343;
+}
+.pagination li a:hover {
+  color: #f0f9c7;
+  background-color: #b1db07;
+}
+</style>
+<link href="catalog/view/theme/OPC100246/stylesheet/pastor_column.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,600,700" rel="stylesheet" type="text/css" />
+<link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/50598/jquery.fancybox-three.min.css" rel="stylesheet" />
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/50598/jquery.fancybox-three.min.js"></script>
+<div id="pastor-column-OPC100246" class="container-fluid">
+  <div class="row">
+		<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+		</ul>
+		{# <h1 class="page-title">{{ heading_title }}</h1> #}
+		{# <h3>{{ text_location }}</h3> #}
+		<div class="panel-default">
+			<div class="panel-body">
+				<div class="row content-all">
+					{# Start: column_left + content + column_right #}
+					<div class="row">
+
+						{{ column_left }}
+
+						{% if column_left and column_right %}
+							{% set class = 'col-sm-6' %}
+						{% elseif column_left or column_right %}
+							{% set class = 'col-sm-9' %}
+						{% else %}
+							{% set class = 'col-sm-12' %}
+						{% endif %}
+						{# Start: content_top + content_body + content_bottom #}
+						<div id="content" class="{{ class }}">
+							{% if j3.settings.get('pageTitlePosition') == 'default' %}
+							<h1 class="title page-title">{{ heading_title }}</h1>
+							{% endif %}
+
+							{{ content_top }}
+
+
+							<div class="row">
+							{% if current_data %}
+								<div>
+									<p class="pastor-column-title" style="font-family: 'Malgun Gothic', Arial; font-size: 36px; margin: 30px;">{{ current_data.title }}</p>
+									<p class="pastor-column-description">
+										{{ current_data.description }}
+									</p>
+								</div>
+							{% else %}
+								{% for pastor_column in pastor_columns %}
+								{% if loop.first %}
+								<div>
+									<p class="pastor-column-title" style="font-family: 'Malgun Gothic', Arial; font-size: 36px; margin: 30px;">{{ pastor_column.title }}</p>
+									<p class="pastor-column-description">
+										{{ pastor_column.description }}
+									</p>
+								</div>
+								{% endif %}
+								{% endfor %}
+							{% endif %}
+							</div>
+							<br />
+							<br />
+							<div class="row">
+								<div class="category_filter">
+									<div class="col-md-4 btn-list-grid">
+										<div class="btn-group">
+											<button type="button" id="grid-view" class="btn btn-default grid"  title="{{ button_grid }}"><i class="fa fa-th"></i></button>
+											<button type="button" id="list-view" class="btn btn-default list" title="{{ button_list }}"><i class="fa fa-th-list"></i></button>
+										</div>
+									</div>
+									<div class="compare-total"><a href="{{ compare }}" id="compare-total">{{ text_compare }}</a></div>
+									<div class="pagination-right">
+										<div class="sort-by-wrapper">
+											<div class="col-md-2 text-right sort-by">
+												<label class="control-label" for="input-sort">{{ text_sort }}</label>
+											</div>
+											<div class="col-md-3 text-right sort">
+												<select id="input-sort" class="form-control" onchange="location = this.value;">
+												{% for sorts in sorts %}
+												{% if sorts.value == '%s-%s'|format(sort, order) %}
+													<option value="{{ sorts.href }} " selected="selected">{{ sorts.text }}</option>
+												{% else %}
+													<option value="{{ sorts.href }} ">{{ sorts.text }} </option>
+												{% endif %}
+												{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="show-wrapper">
+											<div class="col-md-1 text-right show">
+												<label class="control-label" for="input-limit">{{ text_limit }}</label>
+											</div>
+											<div class="col-md-2 text-right limit">
+												<select id="input-limit" class="form-control" onchange="location = this.value;">
+												{% for limits in limits %}
+												{% if limits.value == limit %}
+													<option value="{{ limits.href }} " selected="selected">{{ limits.text }}</option>
+												{% else %}
+													<option value="{{ limits.href }} ">{{ limits.text }} </option>
+												{% endif %}
+												{% endfor %}
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							    <div class="product_combine">
+								{% for pastor_column in pastor_columns %}
+								<div class="product-layout product-list col-xs-12">
+									<div class="product-block product-thumb">
+										<div class="product-block-inner">
+													<div class="image">
+														<a href="pastor-column?pastor_column_category_id={{ category_id }}&pastor_column_id={{ pastor_column.pastor_column_id }}" title="{{ pastor_column.title }}">
+															<p class="pastor-column-title">{{ pastor_column.title }}</p>
+															<p><img src="/image/{{ pastor_column.image }}" class="pastor-column-image" /></p>
+															<p class="pastor-column-description">
+															</p>
+														</a>
+													</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							    </div>
+							</div>
+							{% if not pastor_columns %}
+							<div class="content">{{ text_empty }}</div>
+							{% endif %}
+
+							{{ content_bottom }}
+
+						</div>{# End: content_top + content-body + content-bottom #}
+						
+						{{ column_right }}
+
+					</div>{# End: column_left + content + column_right #}
+
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ pagination }}</div>
+						<div class="col-sm-6 text-right">{{ results }}</div>
+					</div>
+
+				</div>{# End of class: content-all #}
+			</div>{# End of class: panel-body #}
+		</div>{# End of class: panel-default #}
+  </div>
+</div>
+
+<div class="clear-fix"></div>
+{{ footer }}

@@ -1,0 +1,44 @@
+{{ header }} 
+<div id="container" class="container j-container">
+  <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+    {% for breadcrumb in breadcrumbs %}
+      <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{ breadcrumb.href }}" itemprop="item"><span itemprop="name">{{ breadcrumb.text }}</span></a><meta itemprop="position" content="{{ loop.index }}" /></li>
+    {% endfor %}
+  </ul>
+  <div class="row">
+    {{ column_left }} 
+    {% if (column_left and column_right) %} 
+    {% set class = 'col-sm-6' %} 
+    {% elseif (column_left or column_right) %} 
+    {% set class = 'col-sm-9' %} 
+    {% else %} 
+    {% set class = 'col-sm-12' %} 
+    {% endif %} 
+    <div id="content" class="{{ class }}">{{ content_top }} 
+	  {% if (not show_data) %} 
+		<h2>{{ text_personal_data_deletion }}</h2>
+		<p>{{ text_hash_error_delete }}</p>
+		<div class="buttons clearfix">
+		  <div class="pull-right">
+			<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+		  </div>
+		</div>
+	  {% else %} 
+		<h2>{{ text_personal_data_deletion }}</h2>
+		<br />
+		<h3>{{ text_confirm_the_action }}</h3>
+		<p>{{ text_confirm_the_action_helper }}</p>
+		<div class="buttons clearfix">
+		  <div class="text-center" style="text-align:center">
+			<a href="{{ accept_deletion }}" class="btn btn-lg btn-danger">{{ text_button_confirm_deletion }}</a>
+			<br /><br />
+			<a href="{{ cancel_deletion }}" class="btn btn-lg btn-primary">{{ text_button_cancel_deletion }}</a>
+		  </div>
+		</div>
+      {% endif %} 
+      {{ content_bottom }} 
+    </div>
+    {{ column_right }} 
+  </div>
+</div>
+{{ footer }}

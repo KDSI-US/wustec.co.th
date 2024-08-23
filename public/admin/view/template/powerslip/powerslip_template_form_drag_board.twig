@@ -1,0 +1,18 @@
+
+{% verbatim %}
+<h4 style="text-align: center;">Live preview</h4>
+
+<div class="preview-box" id="preview-box">
+    <p class="text-template-width">Width {{ width }}</p>
+    <p class="text-template-height">Height {{ height }}</p>
+    <div class="draggable"
+         v-for="(field, index) in fields"
+         v-bind:key="field.uuid"
+         v-bind:data-index="index">
+
+        <p>{{ field.slug }}</p>
+
+    </div>
+
+</div>
+{% endverbatim %}

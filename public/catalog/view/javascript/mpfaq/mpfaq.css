@@ -1,0 +1,122 @@
+.mpfaq h3 {
+	background: #F5F5F5;
+	color: #000;
+	text-align: left;
+	border-radius: 4px;
+	padding: 5px 12px;
+	cursor: pointer;
+	margin-top: 0;
+	margin-bottom: 9px;
+	padding-right: 40px;
+	transition: 0.25s all;
+	position: relative;
+	font-size: 16px;
+	line-height: normal;
+}
+.mpfaq h3.active {
+	margin-bottom: 21px;
+	background: #dadada;
+}
+/*.mpfaq h3::before {
+	content: attr(data-prefix);
+	font-size: 18px;
+	margin-right: 9px;
+}
+*/.mpfaq h3.alignLeft {
+	padding-left: 35px;
+}
+.mpfaq .mpfaq-ans {
+	display: none;
+	background: #fff;
+	border-radius: 4px;
+	border: 1px solid #cdcdcd;
+	text-align: left;
+	padding: 5px 15px;
+	margin-bottom: 9px;
+	font-size: 14px;
+	line-height: 24px;
+	text-align: justify;
+}
+.mpfaq .arrowDown {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 13.0px 7.5px 0 7.5px;
+	border-color: #272e35 transparent transparent transparent;
+	position: absolute;
+	bottom: 0;
+	left: 40px;
+	transition: 0.25s all;
+	opacity: 0;
+}
+.mpfaq .active .arrowDown {
+	bottom: -13px;
+	border-color: #dadada transparent transparent transparent;
+	opacity: 1;
+}
+.mpfaq .collapseIcon i{
+	font-size: 16px;
+}
+.mpfaq .collapseIcon {
+	position: absolute;
+	right: 20px;
+	top: 45%;
+	-ms-transform: translate(0, -50%);
+	    transform: translate(0, -50%);
+}
+.mpfaq .collapseIcon.alignLeft {
+	right: initial;
+	left: 20px;
+}
+.mpfaq-wrap h1{
+	margin-bottom: 35px;
+	font-size: 24px;
+	font-weight: normal;
+	text-align: center
+}
+.mpfaq h2{
+	text-transform: uppercase;
+	font-size: 16px;
+	margin-bottom: 15px;
+	line-height: normal;
+}
+.mpfaq .mpfaq-que, .mpfaq .mpfaq-ans{
+	margin-left: 15px;
+}
+.mpfaq .mpfaq-inner{
+	margin-bottom: 35px;
+}
+.mpfaq-extend {
+    border: 1px solid #ddd;
+    padding: 0 10px;
+}
+.mpfaq-extend h1{
+	background: #666;
+	color: #fff;
+	margin: 0 -10px;
+	padding: 8px;
+}
+.mpfaq-extend .mpfaq .mpfaq-que, .mpfaq-extend .mpfaq .mpfaq-ans{
+	margin-left: 0;
+}
+.mpfaq-extend .mpfaq h2{
+	margin-bottom: 10px;
+}
+.mpfaq .mpfaq-inner:last-child{
+	margin-bottom: 10px;
+}
+.mpfaq-extend.category{
+	padding: 0;
+	border: none;
+}
+.mpfaq-extend.category h1{
+	margin: 0;
+	font-size: 20px;
+}
+.mpfaq-extend .mpfaq h3{
+	font-size: 14px;
+}
+.mpfaq-extend .mpfaq-ans{
+	font-size: 12px;
+	line-height: 22px;
+}

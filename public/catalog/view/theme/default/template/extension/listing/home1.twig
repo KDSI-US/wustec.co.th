@@ -1,0 +1,100 @@
+<div class="row layout3">
+	<!-- Blog Content Start --->
+	{% set l = 0 %}
+		{% for blog in blogs %}
+			{% if l%limit_row == 0 %}
+				<div class='clearfix'></div>
+			{% endif %}
+		<div class="{{ listing_row }}">
+			<div class="blogs_post">
+				{% if show_thumb %}
+				{% if blog.post_type ==1 %}
+						<div class="image">
+						   <a href="{{ blog.href }}"><img src="{{ blog.image }}" class="img-responsive" width="100%" alt="" /></a>
+						</div>
+					 {% endif %}
+					{% if blog.post_type ==2 %}
+					<div class="image">
+						{% if blog.video_url %}
+						  <div class="videoWrapper">
+							<iframe width="{{ thumbsize_w }}" height="{{ thumbsize_h }}" src="{{ blog.video_url }}" frameborder="0" allowfullscreen></iframe>
+						 </div>
+						 {% endif %}
+					</div>
+					 {% endif %}
+				 {% endif %}
+				<div class="inner_content">
+					{% if showtitle %}
+					<a href="{{ blog.href }}"><h3>{{ blog.name }}</h3></a>
+					{% endif %}
+					{% if blog.short_description is not empty %}
+						<p class="description">{{ blog.short_description }}</p>
+					{% endif %}
+					<a href="{{ blog.href }}" class="btn btn-primary">{{ blogsetting_readmore }} <i class="fa fa-long-arrow-right"></i></a>
+				</div>
+				
+				{% if show_totalview or show_like or comment or show_publishdate or show_author %}
+				<div class="bottom_content">
+					<div class="row">
+						<div class="col-sm-6 text-left">
+							{% if show_publishdate or show_author %}
+							<p class="post_date_blog">
+								{% if show_author %}
+								<span class="posted_by">{{ blogsetting_postby }}</span>
+								<span><a>{{ blog.username }}</a></span>
+								{% endif %}
+								{% if show_publishdate %}
+								<span class="date_blog">{{ blogsetting_on }} <a>{{ blog.date }}</a></span>
+								{% endif %}
+							</p>
+							{% endif %}
+						</div>
+						<div class="col-sm-6 text-right">
+							{% if show_totalview or show_like or comment %}
+							<div class="view_like">
+								{% if show_totalview %}<span><i class="fa fa-eye"></i> {{ blog.viewed }}</span>{% endif %}
+								{% if show_like %}<span><i class="fa fa-heart"></i> {{ blog.likes }}</span>{% endif %}
+								{% if comment %}<span><i class="fa fa-comments"></i> {{ blog.comments }}</span>{% endif %}
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		{% set l= l+1 %}{% endfor %}
+	<div class="clearfix"></div>
+</div>
+<script>
+$(function() {
+
+    var $allVideos = $("iframe[src^='//player.vimeo.com'], iframe[src^='//www.youtube.com'], object, embed"),
+    $fluidEl = $("figure");
+
+ $allVideos.each(function() {
+
+   $(this)
+     // jQuery .data does not work on object/embed elements
+     .attr('data-aspectRatio', this.height / this.width)
+     .removeAttr('height')
+     .removeAttr('width');
+
+ });
+
+ $(window).resize(function() {
+
+   var newWidth = $fluidEl.width();
+   $allVideos.each(function() {
+
+     var $el = $(this);
+     $el
+         .width(newWidth)
+         .height(newWidth * $el.attr('data-aspectRatio'));
+
+   });
+
+ }).resize();
+
+});
+</script>

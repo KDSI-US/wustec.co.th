@@ -1,0 +1,37 @@
+<file path="admin/controller/customer/customer.php" email_template="admin.customer_create">
+	<operation>
+		<search index="0"><![CDATA[if (isset($this->request->post['status'])) {]]></search>
+		<add position="before"><![CDATA[
+		$this->load->language('extension/module/emailtemplate/customer');
+
+		$data['entry_notify'] = $this->language->get('entry_notify');
+
+		if (isset($this->request->post['notify'])) {
+			$data['notify'] = $this->request->post['notify'];
+		} else {
+			$data['notify'] = true;
+		}
+		]]></add>
+	</operation>
+</file>
+
+<file path="admin/view/template/customer/customer_form.twig" email_template="admin.customer_create">
+	<operation>
+        <search index="0"><![CDATA[<legend>{{ text_other }}</legend>]]></search>
+		<add position="after"><![CDATA[                          {% if not customer_id %}
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-notify">{{ entry_notify }}</label>
+                          <div class="col-sm-10">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                              <label class="btn btn-default danger{{ notify == 0 ? ' active' }}" data-toggle="tooltip" title="{{ text_no }}">
+                                <input type="radio" name="notify" value="0" {{ notify == 0 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-times"></i>
+                              </label>
+                              <label class="btn btn-default success{{ notify == 1 ? ' active' }}" data-toggle="tooltip" title="{{ text_yes }}">
+                                <input type="radio" name="notify" value="1" {{ notify == 1 ? ' checked="checked" ' }}/><i class="fa fa-fw fa-check"></i>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}]]></add>
+	</operation>
+</file>

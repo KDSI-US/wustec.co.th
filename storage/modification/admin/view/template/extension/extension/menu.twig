@@ -1,0 +1,54 @@
+{{ promotion }}{{ git_hidden_tag }}
+<fieldset id="listFilter">
+  <legend>{{ heading_title }}</legend>
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  <div class="table-responsive">
+
+		<div class="input-group">
+			<input id="typefilter" class="search form-control" placeholder="{{ text_filter }}" title="{{ text_filter }}" autofocus />
+			<span class="input-group-btn"><button class="btn btn-default" type="button" data-state="1" id="toglechild" title="{{ text_togglechild }}"><i class="fa fa-arrow-up"></i></button></span>
+			<span class="input-group-btn"><button class="btn btn-default sort" type="button" data-sort="name" title="{{ text_sortname }}"><i class="fa fa-sort-alpha-asc"></i></button></span>
+			<span class="input-group-btn"><button class="btn btn-default sort" type="button" data-sort="status" title="{{ text_sortstatus }}"><i class="fa fa-toggle-on "></i></button></span>
+			<span class="input-group-btn"><button class="btn btn-default" type="button" id="refreshlist" title="{{ text_refresh }}"><i class="fa fa-refresh"></i></button></span>
+		</div>
+		<script src="view/javascript/admin_extension_advanced_features.js"></script>
+         	
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-left">{{ column_name }}</td>
+          <td class="text-left">{{ column_status }}</td>
+          <td class="text-right text-nowrap">{{ column_action }}</td>
+        </tr>
+      </thead>
+      <tbody class="list">
+        {% if extensions %}
+        {% for extension in extensions %}
+        <tr>
+          <td class="text-left name">{{ extension.name }}</b></td>
+          <td class="text-left status">{{ extension.status }}</td>
+          <td class="text-right text-nowrap">{% if not extension.installed %}
+            <a href="{{ extension.install }}" data-toggle="tooltip" title="{{ button_install }}" class="btn btn-success"><i class="fa fa-plus-circle"></i></a>
+            {% else %}
+            <a href="{{ extension.uninstall }}" data-toggle="tooltip" title="{{ button_uninstall }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></a>
+            {% endif %}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td class="text-center" colspan="3">{{ text_no_results }}</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</fieldset>

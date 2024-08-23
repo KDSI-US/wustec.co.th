@@ -1,0 +1,63 @@
+<file path="catalog/controller/journal3/form.php" error="skip">
+    <operation>
+        <search index="0"><![CDATA[$params = array(]]></search>
+        <add position="after"><![CDATA[					'emailtemplate_key' => 'journal.form.' . $this->module_id,
+					'email_data' => $email_data,]]></add>
+    </operation>
+    <operation>
+        <search index="0"><![CDATA[$this->load->controller('journal3/mail/send', $params);]]></search>
+        <add position="after"><![CDATA[
+				// Admin mail
+				$admin_template_key = 'journal.form_admin.' . $this->module_id;
+				$admin_template = $this->model_extension_module_emailtemplate->load($admin_template_key);
+
+				if ($admin_template) {
+					$params['emailtemplate_key'] = $admin_template_key;
+
+					$this->load->controller('journal3/mail/send', $params);
+				}]]></add>
+    </operation>
+</file>
+
+<file path="catalog/controller/journal3/mail.php" error="skip">
+<operation>
+    <search index="0"><![CDATA[$mail->setTo(]]></search>
+    <ignoreif><![CDATA[$this->load->model('extension/module/emailtemplate');]]></ignoreif>
+    <add position="before"><![CDATA[        if (!empty($data['emailtemplate_key'])) {
+            $this->load->model('extension/module/emailtemplate');
+
+            if (isset($data['email_data'])) {
+                $template_data = $data['email_data'];
+            } else {
+                $template_data = $data;
+            }
+
+            $template = $this->model_extension_module_emailtemplate->load($data['emailtemplate_key'], $template_data);
+
+            if (!$template) {
+                // Remove key .index
+                $emailtemplate_key = preg_replace('/.[0-9]*$/', '', $data['emailtemplate_key']);
+
+                if ($emailtemplate_key && $emailtemplate_key != $data['emailtemplate_key']) {
+                    $template = $this->model_extension_module_emailtemplate->load($emailtemplate_key, $template_data);
+                }
+            }
+        }
+        ]]></add>
+</operation>
+<operation>
+    <search index="0"><![CDATA[$mail->send();]]></search>
+    <ignoreif><![CDATA[$this->model_extension_module_emailtemplate->sent();]]></ignoreif>
+    <add position="replace"><![CDATA[
+        if (!empty($data['emailtemplate_key']) && $template) {
+    			$template->hook($mail);
+    		}
+
+        $mail->send();
+
+        if (!empty($data['emailtemplate_key']) && $template) {
+            $this->model_extension_module_emailtemplate->sent();
+        }
+        ]]></add>
+</operation>
+</file>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <base href="{{ base }}" />
+    <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ como_shipping_labels_css }}" />
+    <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+</head>
+
+{# QR CODE #}
+	
+{% set size_qr = 150 %}
+{# http://goqr.me/api/, serviceprovider_qrcode = 'https://api.qrserver.com/v1/create-qr-code/?size={size}x{size}&charset-source=UTF-8ecc=L&data={data}' #}
+{# our generator #}
+{% set serviceprovider_qrcode = url_qrcode %}
+
+{# BARCODE #}
+{# https://www.barcodesinc.com/generator/ #}
+{# our generator #}
+{% set bc_margin_to_text = 0 %}
+{% set serviceprovider_barcode = url_barcode %}
+
+<body style="margin-left: {{ margin_left }}{{ labelbox_unit }}; margin-top: {{ margin_top }}{{ labelbox_unit }};">
+{% if orders %}
+    {% for key, order in orders %}
+    <div >
+    <div class="label-box" style="width: {{ labelbox_width }}{{ labelbox_unit }}; height: {{ labelbox_height }}{{ labelbox_unit }}; margin-right: {{ distance_x }}{{ labelbox_unit }}; margin-bottom: {{ distance_y }}{{ labelbox_unit }}{% if labelbox_rotate %} -ms-transform: rotate({{ labelbox_rotate }}deg); -webkit-transform: rotate({{ labelbox_rotate }}deg); transform: rotate({{ labelbox_rotate }}deg);{% endif %}">
+        {% if showorderbarcode %}
+        <span class="barcode-box" style="top: 4mm; left: 0mm;">
+            <img class="barcodeimg" src="{{ serviceprovider_barcode|replace({'{data}': order.order_barcode|url_encode(true), '{width}': orderbarcode_width, '{height}': orderbarcode_height}) }}" alt="{{ order.order_barcode }}" />
+            <span class="barcodetxt-box"{% if not bc_margin_to_text == 0 %} style="margin-top: {{ bc_margin_to_text }}px;"{% endif %}>{{ order.order_barcode }}</span>
+        </span>
+        <span class="barcode-box" style="top: 115mm; left: 0mm;">
+            <img class="barcodeimg" src="{{ serviceprovider_barcode|replace({'{data}': order.order_barcode|url_encode(true), '{width}': orderbarcode_width, '{height}': orderbarcode_height}) }}" alt="{{ order.order_barcode }}" />
+            <span class="barcodetxt-box"{% if not bc_margin_to_text == 0 %} style="margin-top: {{ bc_margin_to_text }}px;"{% endif %}>{{ order.order_barcode }}</span>
+        </span>
+        {% endif %}
+        {% if showqrcodephone and order.store_telephone %}
+        <span class="barcode-box" style="top: 22mm; left: 0mm;">
+            <i class="fa fa-phone"></i> <br />
+            <img src="{{ serviceprovider_qrcode|replace({'{data}': order.store_telephone|url_encode(true), '{size}': size_qr}) }}" alt="" style="width: {{ qrcode_size }}px; height: {{ qrcode_size }}px;" />
+        </span>
+        {% endif %}
+        {% if showqrcodeorder %}
+        <span class="barcode-box" style="top: 55mm; left: 0mm;">
+            <span style="font-size: 60%;">{{ order.order_barcode }}</span><br />
+            <img src="{{ serviceprovider_qrcode|replace({'{data}': order.order_barcode|url_encode(true), '{size}': size_qr}) }}" alt="" style="width: {{ qrcode_size }}px; height: {{ qrcode_size }}px;" />
+        </span>
+        {% endif %}
+        <span class="content-box" style="top: 10mm;">
+<span style="text-decoration: underline; font-weight: bold;">1. DESCRIPTION OF CONTENT</span><br />
+  Content: {{ order.content }}<br />
+  Weight: {{ order.weight_formatted }}<br />
+  Value: {{ order.total_formatted }}
+        </span>
+        <span class="content-box" style="top: 30mm;">
+<span style="text-decoration: underline; font-weight: bold;">2. BILLING ADDRESS</span><br />
+{{ order.shipping_address_p }}
+{% if showorderphone and order.telephone %}
+<br />
+<i class="fa fa-phone"></i> {{ order.telephone }}
+{% endif %}
+        </span>
+        <span class="content-box" style="top: 55mm;">
+<span style="text-decoration: underline; font-weight: bold;">3. (TO) RECEIVER</span><br />
+{{ order.shipping_address_s }}
+{% if showorderphone and order.telephone %}
+<br />
+<i class="fa fa-phone"></i> {{ order.telephone }}
+{% endif %}
+        </span>
+        <span class="content-box" style="top: 83mm; left: 55mm;">
+<span style="font-size: 80%;">Postcode:</span>
+<span style="font-size: 170%; font-weight: bold; ; letter-spacing: -0.3mm;">{{ order.shipping_address_s_parts.postcode }}</span>
+        </span>
+        <hr style="margin-top: 102mm; width: 92%;" />
+        <span class="content-box" style="top: 100mm;">
+<span style="text-align: center; font-weight: normal; width: 90mm; display: block;">Courier's copy</span>
+<span style="font-weight: bold;">RECEIVER DETAILS:</span><br /><br />
+{{ order.shipping_address_s }}
+{% if showorderphone and order.telephone %}
+<br />
+<i class="fa fa-phone"></i> {{ order.telephone }}
+{% endif %}
+        </span>
+    </div>
+    </div>
+    {% if labelsperpage > 0 and (key + 1) < orders|length and (key + 1) is divisible by(labelsperpage) %}<p style="overflow: hidden; float: none; display: block; page-break-before: always; page-break-after: always;"></p>{% endif %}
+    {% endfor %}
+{% else %}
+    <div class="message">
+        <strong>{{ text_selectorders }}</strong>
+    </div>
+{% endif %}
+
+{{ include_print }}
+
+</body>
+</html>

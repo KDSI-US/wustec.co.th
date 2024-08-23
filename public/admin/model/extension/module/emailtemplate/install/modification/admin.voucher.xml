@@ -1,0 +1,109 @@
+<file path="admin/controller/sale/voucher.php" email_template="admin.voucher">
+	<operation>
+	    <search index="0,1"><![CDATA[$mail->setHtml($this->load->view('mail/voucher', $data));]]></search>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/voucher', $data));]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail = new Mail(]]></search>
+	    <add position="before"><![CDATA[							// Prepare mail: admin.voucher
+	    					$this->load->model('extension/module/emailtemplate');
+
+							$template_load = array(
+							    'key' => 'admin.voucher',
+							    'customer_id' => $order_info['customer_id'],
+							    'customer_group_id' => $order_info['customer_group_id'],
+							    'language_id' => $order_info['language_id'],
+							    'store_id' => $order_info['store_id'],
+                                'payment_method' => $order_info['payment_code'],
+                                'shipping_method' => $order_info['shipping_code']
+                            );
+
+							$template = $this->model_extension_module_emailtemplate->load($template_load, $data);
+
+                            if ($template) {
+                                $template->addData($order_info);
+
+                                $template->data['store_id'] = $order_info['store_id'];
+                                $template->data['language_id'] = $order_info['language_id'];
+
+                                $template->addData($voucher_info);
+
+                                $template->addData($voucher_theme_info);
+
+                                if ($voucher_theme_info['image'] && file_exists(DIR_IMAGE . $voucher_theme_info['image'])) {
+                                    $template->data['image'] = $template->data['store_url'] . 'image/' . $voucher_theme_info['image'];
+
+                                    list($template->data['image_width'], $template->data['image_height']) = getimagesize(DIR_IMAGE . $voucher_theme_info['image']);
+                                }
+
+                                $template->data['amount'] = $this->currency->format($voucher_info['amount'], $order_info['currency_code'], $order_info['currency_value']);
+
+                                $template->data['text_heading'] = sprintf($template->data['text_heading'], $template->data['store_name']);
+
+                                $template->data['voucher_url'] = $template->data['store_url'];
+
+                                if (!empty($template->data['button_voucher_url'])) {
+                                    $template->data['voucher_url_text'] = $template->data['button_voucher_url'];
+                                } else {
+                                    $template->data['voucher_url_text'] = $template->data['voucher_url'];
+                                }
+							}]]></add>
+	</operation>
+	<operation>
+	    <search index="0"><![CDATA[$mail->send();]]></search>
+	    <add position="replace"><![CDATA[// Send mail: admin.voucher
+	    					if ($template && $template->check()) {
+	    					    $template->build();
+							    $template->hook($mail);
+                            }
+
+							$mail->send();
+
+							$this->model_extension_module_emailtemplate->sent();]]></add>
+	</operation>
+	<operation>
+	    <search index="1"><![CDATA[$mail = new Mail(]]></search>
+	    <add position="before"><![CDATA[	    					$this->load->model('extension/module/emailtemplate');
+
+							$template_load = array('key' => 'admin.voucher');
+
+							$template = $this->model_extension_module_emailtemplate->load($template_load, $data);
+
+							if ($template) {
+                                $template->addData($voucher_info);
+
+                                $template->addData($voucher_theme_info);
+
+                                if ($voucher_theme_info['image'] && file_exists(DIR_IMAGE . $voucher_theme_info['image'])) {
+                                    $template->data['image'] = $template->data['store_url'] . 'image/' . $voucher_theme_info['image'];
+
+                                    list($template->data['image_width'], $template->data['image_height']) = getimagesize(DIR_IMAGE . $voucher_theme_info['image']);
+                                }
+
+                                $template->data['amount'] = $this->currency->format($voucher_info['amount'], $this->config->get('config_currency'), $this->currency->getValue($this->config->get('config_currency')));
+
+                                $template->data['text_heading'] = sprintf($template->data['text_heading'], $template->data['store_name']);
+
+                                $template->data['voucher_url'] = $template->data['store_url'];
+
+                                if (!empty($template->data['button_voucher_url'])) {
+                                    $template->data['voucher_url_text'] = $template->data['button_voucher_url'];
+                                } else {
+                                    $template->data['voucher_url_text'] = $template->data['voucher_url'];
+                                }
+							    // Prepared mail: admin.voucher
+							}
+		]]></add>
+	</operation>
+	<operation>
+	    <search index="1"><![CDATA[$mail->send();]]></search>
+	    <add position="replace"><![CDATA[if ($template) {
+	                            $template->build();
+							    $template->hook($mail);
+
+                                $mail->send();
+
+                                $this->model_extension_module_emailtemplate->sent();
+				            }]]></add>
+	</operation>
+</file>

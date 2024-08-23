@@ -1,0 +1,1686 @@
+{{ header }}{{ column_left }}
+<div id="content" class="mp-content">
+	{{ mpblogmenu }}
+	<div class="mpblog-body">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="pull-right">
+					<button type="submit" id="button-save" form="form-setting" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+					<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+				</div>
+				<h1>{{ heading_title }}</h1>
+				<ul class="breadcrumb">
+					{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="container-fluid">
+			{% if error_warning %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+			{% endif %}
+			{% if success %}
+			<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+			{% endif %}
+			{% if configuration %}
+			<div class="alert alert-info"><i class="fa fa-check-circle"></i> {{ configuration }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+			{% endif %}
+			<div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_add_layouts }}
+				<ul class="list list-unstyled">
+					{% for layout_info in layouts_info %}
+					<li><strong>{{ text_layout_name }}</strong> {{ layout_info.name }}</li>
+					<li><strong>{{ text_layout_route }}</strong> {{ layout_info.path }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+
+			{% if files %}
+	    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ text_files_permission }}
+	      <button type="button" class="close" data-dismiss="alert">&times;</button>
+	      <button type="button" class="btn btn-primary" id="addfiles"><i class="fa fa-plus-circle" data-class="fa fa-plus-circle"></i> {{ button_files_permission }}</button>
+	    </div>
+	    <script type="text/javascript">
+	      $('#addfiles').on('click', function() {
+	        var button = this;
+	        $.ajax({
+	          url: 'index.php?route=extension/module/mpblogsettings/updatePermissions&{{ get_token }}={{ token }}',
+	          type: 'get',
+	          data: '',
+	          dataType: 'json',
+	          beforeSend: function() {
+	            $(button).attr('disabled','disabled');
+	            $(button).find('i').attr('class', 'fa fa-refresh fa-spin');
+	          },
+	          complete: function() {
+	            $(button).removeAttr('disabled');
+	            $(button).find('i').attr('class', $(button).find('i').attr('data-class'));
+	          },
+	          success: function(json) {
+	            $('.alert-dismissible, .text-danger').remove();
+
+	            if (json['redirect']) {
+	              location = json['redirect'];
+	            }
+
+	            if (json['success']) {
+	              $('#content').parent().before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+	            }
+	          },
+	          error: function(xhr, ajaxOptions, thrownError) {
+	            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	          }
+	        });
+	      });
+	    </script>
+	    {% endif %}
+	    {% if layouts %}
+	    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ text_add_layouts }}
+	      <button type="button" class="close" data-dismiss="alert">&times;</button>
+	      <button type="button" class="btn btn-primary" id="addlayouts"><i class="fa fa-plus-circle" data-class="fa fa-plus-circle"></i> {{ button_add_layouts }}</button>
+	    </div>
+	    <script type="text/javascript">
+	      $('#addlayouts').on('click', function() {
+	        var button = this;
+	        $.ajax({
+	          url: 'index.php?route=extension/module/mpblogsettings/updateLayouts&{{ get_token }}={{ token }}',
+	          type: 'get',
+	          data: '',
+	          dataType: 'json',
+	          beforeSend: function() {
+	            $(button).attr('disabled','disabled');
+	            $(button).find('i').attr('class', 'fa fa-refresh fa-spin');
+	          },
+	          complete: function() {
+	            $(button).removeAttr('disabled');
+	            $(button).find('i').attr('class', $(button).find('i').attr('data-class'));
+	          },
+	          success: function(json) {
+	            $('.alert-dismissible, .text-danger').remove();
+
+	            if (json['redirect']) {
+	              location = json['redirect'];
+	            }
+
+	            if (json['success']) {
+	              $('#content').parent().before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+	            }
+	          },
+	          error: function(xhr, ajaxOptions, thrownError) {
+	            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	          }
+	        });
+	      });
+	    </script>
+	    {% endif %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+					<div class="pull-right">
+						<span>{{ text_store }}</span>
+						<button type="button" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span>{{ store_name }} &nbsp; &nbsp; </span> <i class="fa fa-angle-down"></i></button>
+						<ul class="dropdown-menu pull-right">
+							<li><a href="index.php?route=mpblog/mpblog&user_token={{ user_token }}&store_id=0">{{ text_default }}</a></li>
+							{% for store in stores %}
+							<li><a href="index.php?route=mpblog/mpblog&user_token={{ user_token }}&store_id={{ store.store_id }}">{{ store.name }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div class="panel-body">
+					<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-setting" class="form-horizontal">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab-setting" data-toggle="tab"> <i class="fa fa-cog"></i> {{ tab_setting }}</a></li>
+							<li><a href="#tab-category" data-toggle="tab"> <i class="fa fa-list"></i> {{ tab_mpblogcategory }}</a></li>
+							<li><a href="#tab-post" data-toggle="tab"> <i class="fa fa-file-text-o"></i> {{ tab_mpblogpost }}</a></li>
+							<li><a href="#tab-module" data-toggle="tab"> <i class="fa fa fa-puzzle-piece fw"></i> {{ tab_mpblogmodule }}</a></li>
+							
+							<li><a href="#tab-subscribers" data-toggle="tab"> <i class="fa fa-users fw"></i> {{ tab_subscribers }}</a></li>
+							<li><a href="#tab-emails" data-toggle="tab"> <i class="fa fa-envelope fw"></i> {{ tab_emails }}</a></li>
+							
+							<li><a href="#tab-comments" data-toggle="tab"> <i class="fa fa-comments"></i> {{ tab_mpblogcomments }}</a></li>
+							<li><a href="#tab-rss" data-toggle="tab"> <i class="fa fa-rss"></i> {{ tab_mpblogrss }}</a></li>
+							<li><a href="#tab-mpsupport" data-toggle="tab"> <i class="fa fa-thumbs-up"></i> {{ tab_mpsupport }}</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab-setting">
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-status" class="btn btn-primary {% if mpblog_status %} active {% endif %}"><input id="input-status" type="radio" name="mpblog_status" value="1" {% if mpblog_status %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-status_0" class="btn btn-primary {% if not mpblog_status %} active {% endif %}"><input id="input-status_0" type="radio" name="mpblog_status" value="0" {% if not mpblog_status %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_viewwishlist">{{ text_blog_show_viewwishlist }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_viewwishlist" class="btn btn-primary {% if mpblog_blog_viewwishlist %} active {% endif %}"><input id="input-blog_viewwishlist" type="radio" name="mpblog_blog_viewwishlist" value="1" {% if mpblog_blog_viewwishlist %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_viewwishlist_0" class="btn btn-primary {% if not mpblog_blog_viewwishlist %} active {% endif %}"><input id="input-blog_viewwishlist_0" type="radio" name="mpblog_blog_viewwishlist" value="0" {% if not mpblog_blog_viewwishlist %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_author">{{ text_blog_show_author }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_author" class="btn btn-primary {% if mpblog_blog_author %} active {% endif %}"><input id="input-blog_author" type="radio" name="mpblog_blog_author" value="1" {% if mpblog_blog_author %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_author_0" class="btn btn-primary {% if not mpblog_blog_author %} active {% endif %}"><input id="input-blog_author_0" type="radio" name="mpblog_blog_author" value="0" {% if not mpblog_blog_author %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_show_rating">{{ text_blog_show_rating }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_show_rating" class="btn btn-primary {% if mpblog_blog_show_rating %} active {% endif %}"><input id="input-blog_show_rating" type="radio" name="mpblog_blog_show_rating" value="1" {% if mpblog_blog_show_rating %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_show_rating_0" class="btn btn-primary {% if not mpblog_blog_show_rating %} active {% endif %}"><input id="input-blog_show_rating_0" type="radio" name="mpblog_blog_show_rating" value="0" {% if not mpblog_blog_show_rating %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_allow_rating">{{ text_blog_allow_rating }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_allow_rating" class="btn btn-primary {% if mpblog_blog_allow_rating %} active {% endif %}"><input id="input-blog_allow_rating" type="radio" name="mpblog_blog_allow_rating" value="1" {% if mpblog_blog_allow_rating %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_allow_rating_0" class="btn btn-primary {% if not mpblog_blog_allow_rating %} active {% endif %}"><input id="input-blog_allow_rating_0" type="radio" name="mpblog_blog_allow_rating" value="0" {% if not mpblog_blog_allow_rating %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_approve_rating">{{ text_blog_approve_rating }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_approve_rating" class="btn btn-primary {% if mpblog_blog_approve_rating %} active {% endif %}"><input id="input-blog_approve_rating" type="radio" name="mpblog_blog_approve_rating" value="1" {% if mpblog_blog_approve_rating %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_approve_rating_0" class="btn btn-primary {% if not mpblog_blog_approve_rating %} active {% endif %}"><input id="input-blog_approve_rating_0" type="radio" name="mpblog_blog_approve_rating" value="0" {% if not mpblog_blog_approve_rating %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_guest_rating">{{ text_blog_guest_rating }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_guest_rating" class="btn btn-primary {% if mpblog_blog_guest_rating %} active {% endif %}"><input id="input-blog_guest_rating" type="radio" name="mpblog_blog_guest_rating" value="1" {% if mpblog_blog_guest_rating %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_guest_rating_0" class="btn btn-primary {% if not mpblog_blog_guest_rating %} active {% endif %}"><input id="input-blog_guest_rating_0" type="radio" name="mpblog_blog_guest_rating" value="0" {% if not mpblog_blog_guest_rating %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_show_comment">{{ text_blog_show_comment }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_show_comment" class="btn btn-primary {% if mpblog_blog_show_comment %} active {% endif %}"><input id="input-blog_show_comment" type="radio" name="mpblog_blog_show_comment" value="1" {% if mpblog_blog_show_comment %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_show_comment_0" class="btn btn-primary {% if not mpblog_blog_show_comment %} active {% endif %}"><input id="input-blog_show_comment_0" type="radio" name="mpblog_blog_show_comment" value="0" {% if not mpblog_blog_show_comment %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_use_comment">{{ text_blog_use_comment }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_use_comment" class="btn btn-primary {% if mpblog_blog_use_comment %} active {% endif %}"><input id="input-blog_use_comment" type="radio" name="mpblog_blog_use_comment" value="1" {% if mpblog_blog_use_comment %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_use_comment_0" class="btn btn-primary {% if not mpblog_blog_use_comment %} active {% endif %}"><input id="input-blog_use_comment_0" type="radio" name="mpblog_blog_use_comment" value="0" {% if not mpblog_blog_use_comment %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_viewcount">{{ text_blog_show_viewcount }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_viewcount" class="btn btn-primary {% if mpblog_blog_viewcount %} active {% endif %}"><input id="input-blog_viewcount" type="radio" name="mpblog_blog_viewcount" value="1" {% if mpblog_blog_viewcount %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_viewcount_0" class="btn btn-primary {% if not mpblog_blog_viewcount %} active {% endif %}"><input id="input-blog_viewcount_0" type="radio" name="mpblog_blog_viewcount" value="0" {% if not mpblog_blog_viewcount %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_show_tags">{{ text_blog_show_tags }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_show_tags" class="btn btn-primary {% if mpblog_blog_show_tags %} active {% endif %}"><input id="input-blog_show_tags" type="radio" name="mpblog_blog_show_tags" value="1" {% if mpblog_blog_show_tags %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_show_tags_0" class="btn btn-primary {% if not mpblog_blog_show_tags %} active {% endif %}"><input id="input-blog_show_tags_0" type="radio" name="mpblog_blog_show_tags" value="0" {% if not mpblog_blog_show_tags %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-blog_date">{{ text_blog_show_date }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-blog_date" class="btn btn-primary {% if mpblog_blog_date %} active {% endif %}"><input id="input-blog_date" type="radio" name="mpblog_blog_date" value="1" {% if mpblog_blog_date %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-blog_date_0" class="btn btn-primary {% if not mpblog_blog_date %} active {% endif %}"><input id="input-blog_date_0" type="radio" name="mpblog_blog_date" value="0" {% if not mpblog_blog_date %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mpblog_show_date" style="{% if mpblog_blog_date == '0' %} display: none {% endif %}">
+									<label class="col-sm-2 control-label" for="input-blog_date_format">{{ text_blog_date_format }}</label>
+									<div class="col-sm-10">
+										<input id="input-blog_date_format" type="text" name="mpblog_blog_date_format" value="{{ mpblog_blog_date_format }}" placeholder="{{ text_blog_date_format }}" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-category">
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-home_category">{{ text_category_home }}</label>
+									<div class="col-sm-10">
+										<select class="form-control" name="mpblog_home_category">
+											<option value="">{{ text_select }}</option>
+											{% for mpblog_category in mpblog_categories %}
+											{% set sel = '' %}
+											{% if mpblog_category.mpblogcategory_id == mpblog_home_category %}
+											{% set sel = 'selected="selected"' %}
+											{% endif %}
+											<option {{ sel }} value="{{ mpblog_category.mpblogcategory_id }}">{{ mpblog_category.name }}</option>
+											{% endfor %}
+										</select>
+										<div class="help">{{ help_category_home }}</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-category_post_count">{{ text_category_post_count }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-category_post_count" class="btn btn-primary {% if mpblog_category_post_count %} active {% endif %}"><input id="input-category_post_count" type="radio" name="mpblog_category_post_count" value="1" {% if mpblog_category_post_count %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-category_post_count_0" class="btn btn-primary {% if not mpblog_category_post_count %} active {% endif %}"><input id="input-category_post_count_0" type="radio" name="mpblog_category_post_count" value="0" {% if not mpblog_category_post_count %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-category_image">{{ text_category_show_image }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-category_image" class="btn btn-primary {% if mpblog_category_image %} active {% endif %}"><input id="input-category_image" type="radio" name="mpblog_category_image" value="1" {% if mpblog_category_image %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-category_image_0" class="btn btn-primary {% if not mpblog_category_image %} active {% endif %}"><input id="input-category_image_0" type="radio" name="mpblog_category_image" value="0" {% if not mpblog_category_image %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-category_description">{{ text_category_show_description }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-category_description" class="btn btn-primary {% if mpblog_category_description %} active {% endif %}"><input id="input-category_description" type="radio" name="mpblog_category_description" value="1" {% if mpblog_category_description %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+	                    <label for="input-category_description_0" class="btn btn-primary {% if not mpblog_category_description %} active {% endif %}"><input id="input-category_description_0" type="radio" name="mpblog_category_description" value="0" {% if not mpblog_category_description %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+                  	</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-blog_page_limit">{{ text_category_page_limit }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="mpblog_category_page_limit" value="{{ mpblog_category_page_limit }}" placeholder="{{ text_category_page_limit }}" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-category_view">{{ text_category_view }}</label>
+									<div class="col-sm-3">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-category_view" class="btn btn-primary {% if mpblog_category_view == 'LIST' %} active {% endif %}"><input id="input-category_view" type="radio" name="mpblog_category_view" value="LIST" {% if mpblog_category_view == 'LIST' %}checked="checked"{% endif %} /> {{ text_list }}</label>
+	                    <label for="input-category_view_0" class="btn btn-primary {% if not mpblog_category_view or mpblog_category_view == 'GRID' %} active {% endif %}"><input id="input-category_view_0" type="radio" name="mpblog_category_view" value="GRID" {% if not mpblog_category_view or mpblog_category_view == 'GRID' %}checked="checked"{% endif %} /> {{ text_grid }}</label>
+                  	</div>
+									</div>
+								</div>
+								<fieldset class="mpblog_category_view_grid" {% if mpblog_category_view=='LIST' %} style = "display: none;" {% endif %}>
+									<legend>{{ legend_design }}</legend>
+									<div class="bs-callout bs-callout-info"> 
+										<h4>{{ text_column_title }}</h4> 
+										<p>{{ text_column_defination }}</p>
+									</div>
+
+									<div class="form-group mp-buttons">
+										<label class="col-sm-2 control-label" for="input-category_design">{{ text_category_design }}</label>
+										<div class="col-sm-10">
+											<div class="btn-group btn-group-justified" data-toggle="buttons">
+												{% set continue = true %}
+												{% for i in 1..6 %}
+													{% if i == 5 %} {% set continue = false %} {% endif %}
+													{% if continue or ( not continue and i > 5 ) %}
+	                    			<label for="input-category_design-{{ i }}" class="btn btn-primary {% if mpblog_category_design == i %} active {% endif %}"><input id="input-category_design-{{ i }}" type="radio" name="mpblog_category_design" value="{{ i }}" {% if mpblog_category_design == i %}checked="checked"{% endif %} /> {{  i ~ '  ' ~ text_column }}</label>
+													{% endif %}
+												{% endfor %}
+	                  	</div>
+										</div>
+									</div>
+								</fieldset>
+								<fieldset>
+									<legend>{{ legend_image_sizes }}</legend>
+									<div class="bs-callout bs-callout-info"> 
+										<h4>{{ text_cimg_size_title }}</h4> 
+										<p>{{ text_cimg_size_defination }}</p>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-category-width">{{ entry_image_category }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_category_width" value="{{ mpblog_image_category_width }}" placeholder="{{ entry_width }}" id="input-image-category-width" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_category_height" value="{{ mpblog_image_category_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_category %}
+											<div class="text-danger">{{ error_image_category }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-category-thumb-width">{{ entry_image_category_thumb }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_category_thumb_width" value="{{ mpblog_image_category_thumb_width }}" placeholder="{{ entry_width }}" id="input-image-category-thumb-width" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_category_thumb_height" value="{{ mpblog_image_category_thumb_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_category_thumb %}
+											<div class="text-danger">{{ error_image_category_thumb }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div class="tab-pane" id="tab-post">
+								<div class="row">
+									<div class="col-sm-3">
+										<ul class="nav nav-pills nav-stacked ostab" id="mpblogs">
+											<li class="active"><a class="text-left" href="#tab-s-view" data-toggle="tab"><i class="fa fa-comment" aria-hidden="true"></i> {{ tab_mpblogs_view }}</a></li>
+											<li><a class="text-left" href="#tab-s-listing" data-toggle="tab"><i class="fa fa-comment" aria-hidden="true"></i> {{ tab_mpblogs_listing }}</a></li>
+										</ul>
+									</div>  
+									<div class="col-sm-9">
+										<div class="tab-content">
+											<div class="tab-pane" id="tab-s-listing">
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_view">{{ text_blog_view }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_view" class="btn btn-primary {% if not mpblog_blog_view or mpblog_blog_view == 'GRID' %} active {% endif %}"><input id="input-blog_view" type="radio" name="mpblog_blog_view" value="GRID" {% if not mpblog_blog_view or mpblog_blog_view == 'GRID' %}checked="checked"{% endif %} /> {{ text_grid }}</label>
+					                    <label for="input-blog_view_list" class="btn btn-primary {% if mpblog_blog_view == 'LIST' %} active {% endif %}"><input id="input-blog_view_list" type="radio" name="mpblog_blog_view" value="LIST" {% if mpblog_blog_view == 'LIST'  %}checked="checked"{% endif %} /> {{ text_list }}</label>
+				                  	</div>
+													</div>
+												</div>
+											<fieldset class="mpblog_blog_view_grid" {% if mpblog_blog_view == 'LIST' %}style="display: none;" {% endif %} >
+												<legend>{{ legend_design }}</legend>
+												<div class="bs-callout bs-callout-info"> 
+													<h4>{{ text_column_title }}</h4> 
+													<p>{{ text_column_defination }}</p>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_design">{{ text_blog_design }}</label>
+													<div class="col-sm-10">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+															{% set continue = true %}
+															{% for i in 1..6 %}
+															{% if i == 5 %} {% set continue = false %} {% endif %}
+															{% if continue or ( not continue and i > 5 ) %}
+					                    <label for="input-blog_design-{{ i }}" class="btn btn-primary {% if mpblog_blog_design == i %} active {% endif %}"><input id="input-blog_design-{{ i }}" type="radio" name="mpblog_blog_design" value="{{ i }}" {% if mpblog_blog_design == i %}checked="checked"{% endif %} /> {{ i ~ ' ' ~ text_column }}</label>
+															{% endif %}
+															{% endfor %}
+				                  	</div>
+													</div>
+												</div>
+											</fieldset>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_sdescription">{{ text_blog_show_sdescription }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_sdescription" class="btn btn-primary {% if mpblog_blog_sdescription %} active {% endif %}"><input id="input-blog_sdescription" type="radio" name="mpblog_blog_sdescription" value="1" {% if mpblog_blog_sdescription %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-blog_sdescription_0" class="btn btn-primary {% if not mpblog_blog_sdescription %} active {% endif %}"><input id="input-blog_sdescription_0" type="radio" name="mpblog_blog_sdescription" value="0" {% if not mpblog_blog_sdescription %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-blog_sdescription_length">{{ text_blog_sdescription_length }}</label>
+													<div class="col-sm-10">
+														<input type="text" name="mpblog_blog_sdescription_length" value="{{ mpblog_blog_sdescription_length }}" placeholder="{{ text_blog_sdescription_length }}" class="form-control" />
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-blog_page_limit">{{ text_blog_page_limit }}</label>
+													<div class="col-sm-10">
+														<input type="text" name="mpblog_blog_page_limit" value="{{ mpblog_blog_page_limit }}" placeholder="{{ text_blog_page_limit }}" class="form-control" />
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_show_readmore">{{ text_blog_show_readmore }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_show_readmore" class="btn btn-primary {% if mpblog_blog_show_readmore %} active {% endif %}"><input id="input-blog_show_readmore" type="radio" name="mpblog_blog_show_readmore" value="1" {% if mpblog_blog_show_readmore %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-blog_show_readmore_0" class="btn btn-primary {% if not mpblog_blog_show_readmore %} active {% endif %}"><input id="input-blog_show_readmore_0" type="radio" name="mpblog_blog_show_readmore" value="0" {% if not mpblog_blog_show_readmore %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+											</div>
+											<div class="tab-pane active" id="tab-s-view">
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_image">{{ text_blog_show_image }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_image" class="btn btn-primary {% if mpblog_blog_image %} active {% endif %}"><input id="input-blog_image" type="radio" name="mpblog_blog_image" value="1" {% if mpblog_blog_image %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+					                    <label for="input-blog_image_0" class="btn btn-primary {% if not mpblog_blog_image %} active {% endif %}"><input id="input-blog_image_0" type="radio" name="mpblog_blog_image" value="0" {% if not mpblog_blog_image %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_image_popup">{{ text_blog_show_image_popup }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_image_popup" class="btn btn-primary {% if mpblog_blog_image_popup %} active {% endif %}"><input id="input-blog_image_popup" type="radio" name="mpblog_blog_image_popup" value="1" {% if mpblog_blog_image_popup %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+					                    <label for="input-blog_image_popup_0" class="btn btn-primary {% if not mpblog_blog_image_popup %} active {% endif %}"><input id="input-blog_image_popup_0" type="radio" name="mpblog_blog_image_popup" value="0" {% if not mpblog_blog_image_popup %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_description">{{ text_blog_show_description }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_description" class="btn btn-primary {% if mpblog_blog_description %} active {% endif %}"><input id="input-blog_description" type="radio" name="mpblog_blog_description" value="1" {% if mpblog_blog_description %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+					                    <label for="input-blog_description_0" class="btn btn-primary {% if not mpblog_blog_description %} active {% endif %}"><input id="input-blog_description_0" type="radio" name="mpblog_blog_description" value="0" {% if not mpblog_blog_description %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_nextprev">{{ text_blog_show_nextprev }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_nextprev" class="btn btn-primary {% if mpblog_blog_nextprev %} active {% endif %}"><input id="input-blog_nextprev" type="radio" name="mpblog_blog_nextprev" value="1" {% if mpblog_blog_nextprev %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+					                    <label for="input-blog_nextprev_0" class="btn btn-primary {% if not mpblog_blog_nextprev %} active {% endif %}"><input id="input-blog_nextprev_0" type="radio" name="mpblog_blog_nextprev" value="0" {% if not mpblog_blog_nextprev %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_nextprev_title">{{ text_blog_show_nextprev_title }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_nextprev_title" class="btn btn-primary {% if mpblog_blog_nextprev_title %} active {% endif %}"><input id="input-blog_nextprev_title" type="radio" name="mpblog_blog_nextprev_title" value="1" {% if mpblog_blog_nextprev_title %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+					                    <label for="input-blog_nextprev_title_0" class="btn btn-primary {% if not mpblog_blog_nextprev_title %} active {% endif %}"><input id="input-blog_nextprev_title_0" type="radio" name="mpblog_blog_nextprev_title" value="0" {% if not mpblog_blog_nextprev_title %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+				                  	</div>
+													</div>
+												</div>	
+											</div>
+										</div>
+									</div>
+								</div>	
+								<fieldset>
+									<legend>{{ legend_image_sizes }}</legend>
+									<div class="bs-callout bs-callout-info"> 
+										<h4>{{ text_img_size_title }}</h4> 
+										<p>{{ text_img_size_defination }}</p>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-post-width">{{ entry_image_post }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_width" value="{{ mpblog_image_post_width }}" placeholder="{{ entry_width }}" id="input-image-post-width" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_height" value="{{ mpblog_image_post_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_post %}
+											<div class="text-danger">{{ error_image_post }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-post-additional-width">{{ entry_image_post_additional }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_additional_width" value="{{ mpblog_image_post_additional_width }}" placeholder="{{ entry_width }}" id="input-image-post-additional-width" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_additional_height" value="{{ mpblog_image_post_additional_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_post_additional %}
+											<div class="text-danger">{{ error_image_post_additional }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-post-popup-width">{{ entry_image_post_popup }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_popup_width" value="{{ mpblog_image_post_popup_width }}" placeholder="{{ entry_width }}" id="input-image-post-popup-width" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_popup_height" value="{{ mpblog_image_post_popup_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_post_popup %}
+											<div class="text-danger">{{ error_image_post_popup }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-post-related">{{ entry_image_post_related }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_related_width" value="{{ mpblog_image_post_related_width }}" placeholder="{{ entry_width }}" id="input-image-post-related" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_related_height" value="{{ mpblog_image_post_related_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_post_related %}
+											<div class="text-danger">{{ error_image_post_related }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="input-image-post-thumb-width">{{ entry_image_post_thumb }}</label>
+										<div class="col-sm-10">
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_thumb_width" value="{{ mpblog_image_post_thumb_width }}" placeholder="{{ entry_width }}" id="input-image-post-thumb-width" class="form-control" />
+												</div>
+												<div class="col-sm-6">
+													<input type="text" name="mpblog_image_post_thumb_height" value="{{ mpblog_image_post_thumb_height }}" placeholder="{{ entry_height }}" class="form-control" />
+												</div>
+											</div>
+											{% if error_image_post_thumb %}
+											<div class="text-danger">{{ error_image_post_thumb }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</fieldset>		
+							</div>
+							
+							<div class="tab-pane" id="tab-subscribers">
+								<div class="form-group mp-buttons">
+									<label class="col-sm-2 control-label" for="input-subscribeapprove">{{ entry_subscribeapprove }}</label>
+									<div class="col-sm-10">
+										<div class="btn-group btn-group-justified" data-toggle="buttons">
+	                    <label for="input-subscribeapprove_auto" class="btn btn-primary {% if mpblog_subscribeapprove == 'AUTO' %} active {% endif %}"><input id="input-subscribeapprove_auto" type="radio" name="mpblog_subscribeapprove" value="AUTO" {% if mpblog_subscribeapprove == 'AUTO' %}checked="checked"{% endif %} /> {{ text_autoapprove }}</label>
+	                    <label for="input-subscribeapprove_admin" class="btn btn-primary {% if mpblog_subscribeapprove == 'ADMIN' %} active {% endif %}"><input id="input-subscribeapprove_admin" type="radio" name="mpblog_subscribeapprove" value="ADMIN" {% if mpblog_subscribeapprove == 'ADMIN' %}checked="checked"{% endif %} /> {{ text_adminapprove }}</label>
+	                    <label for="input-subscribeapprove_code" class="btn btn-primary {% if mpblog_subscribeapprove == 'CODE' %} active {% endif %}"><input id="input-subscribeapprove_code" type="radio" name="mpblog_subscribeapprove" value="CODE" {% if mpblog_subscribeapprove == 'CODE' %}checked="checked"{% endif %} /> {{ text_confirmapprove }}</label>
+                  	</div>
+									</div>
+								</div>
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#tab-email_subscribeadmin" data-toggle="tab">{{ tab_email_subscribeadmin }}</a></li>
+									<li><a href="#tab-email_subscribeapproval" data-toggle="tab">{{ tab_email_subscribeapproval }}</a></li>
+									<li><a href="#tab-email_subscribepending" data-toggle="tab">{{ tab_email_subscribepending }}</a></li>
+									<li><a href="#tab-email_subscribeconfirm" data-toggle="tab">{{ tab_email_subscribeconfirm }}</a></li>
+									<li><a href="#tab-email_unsubscribe" data-toggle="tab">{{ tab_email_unsubscribe }}</a></li>
+									<li><a href="#tab-email_invalidurl" data-toggle="tab">{{ tab_email_invalidurl }}</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab-email_subscribeadmin">
+										<div class="form-group mp-buttons">
+											<label class="col-sm-2 control-label" for="input-subscribeadminmail_status">{{ entry_mail_send }}</label>
+											<div class="col-sm-3">
+												<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-subscribeadminmail_status" class="btn btn-primary {% if mpblog_subscribeadminmail_status %} active {% endif %}"><input id="input-subscribeadminmail_status" type="radio" name="mpblog_subscribeadminmail_status" value="1" {% if mpblog_subscribeadminmail_status %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+			                    <label for="input-subscribeadminmail_status_0" class="btn btn-primary {% if not mpblog_subscribeadminmail_status %} active {% endif %}"><input id="input-subscribeadminmail_status_0" type="radio" name="mpblog_subscribeadminmail_status" value="0" {% if not mpblog_subscribeadminmail_status %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+		                  	</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-subscribeadminmail">{{ entry_subscribeadminmail }}</label>
+											<div class="col-sm-10">
+												<input id="input-subscribeadminmail" type="text" name="mpblog_subscribeadminmail" value="{{ mpblog_subscribeadminmail }}" placeholder="{{ entry_subscribeadminmail }}" class="form-control" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="subscribeadminmaillanguage">
+					                {% for language in languages %}
+					                <li><a href="#subscribeadminmaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="subscribeadminmaillanguage{{ language.language_id }}">
+					                	<div class="form-group required">
+															<label class="col-sm-2 control-label" for="input-subscribeadminsubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+															<div class="col-sm-10">
+																<input id="input-subscribeadminsubject{{ language.language_id }}" type="text" name="mpblog_subscribemail[admin][{{ language.language_id }}][subject]" value="{{ (mpblog_subscribemail.admin[language.language_id]) ? mpblog_subscribemail.admin[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+																{% if error_subscribemail.admin[language.language_id].subject %}
+					                      <div class="text-danger">{{ error_subscribemail.admin[language.language_id].subject }}</div>
+					                      {% endif %}
+															</div>
+														</div>
+														<div class="form-group">
+					                    <label class="col-sm-2 control-label" for="input-subscribeadminmsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+					                    <div class="col-sm-10">
+					                      <textarea name="mpblog_subscribemail[admin][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-subscribeadminmsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.admin[language.language_id]) ? mpblog_subscribemail.admin[language.language_id].message : '' }}</textarea>
+					                      {% if error_subscribemail.admin[language.language_id].message %}
+					                      <div class="text-danger">{{ error_subscribemail.admin[language.language_id].message }}</div>
+					                      {% endif %}
+					                    </div>
+					                  </div>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+	                        <table class="table table-bordered table-striped">
+	                        	<thead>
+	                          	<tr>
+		                          	<td>{{ sh_code }}</td>
+		                          	<td>{{ sh_name }}</td>
+	                          	</tr>
+	                        	</thead>
+	                        	<tbody>
+		                          <tr>
+		                          	<td>[LOGO]</td>
+		                          	<td>{{ sh_logo }}</td>
+		                          </tr>
+		                          <tr>
+		                          	<td>[STORE_NAME]</td>
+		                          	<td>{{ sh_storename }}</td>
+		                          </tr>
+		                          <tr>
+		                          	<td>[STORE_LINK]</td>
+		                          	<td>{{ sh_storelink }}</td>
+		                          </tr>
+		                          <tr>
+		                          	<td>[EMAIL]</td>
+		                          	<td>{{ sh_email }}</td>
+		                          </tr>
+	                        	</tbody>
+	                        </table>
+                        </div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab-email_subscribeapproval">
+										<div class="alert alert-info">{{ info_subscribe_approval }}</div>
+										<div class="form-group mp-buttons">
+											<label class="col-sm-2 control-label" for="input-subscribeapproval_status">{{ entry_mail_send }}</label>
+											<div class="col-sm-3">
+												<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-subscribeapproval_status" class="btn btn-primary {% if mpblog_subscribeapproval_status %} active {% endif %}"><input id="input-subscribeapproval_status" type="radio" name="mpblog_subscribeapproval_status" value="1" {% if mpblog_subscribeapproval_status %}checked="checked"{% endif %} /> {{ text_enabled }}</label>
+			                    <label for="input-subscribeapproval_status_0" class="btn btn-primary {% if not mpblog_subscribeapproval_status %} active {% endif %}"><input id="input-subscribeapproval_status_0" type="radio" name="mpblog_subscribeapproval_status" value="0" {% if not mpblog_subscribeapproval_status %}checked="checked"{% endif %} /> {{ text_disabled }}</label>
+		                  	</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="subscribeapprovalmaillanguage">
+					                {% for language in languages %}
+					                <li><a href="#subscribeapprovalmaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="subscribeapprovalmaillanguage{{ language.language_id }}">
+					                	<div class="form-group required">
+															<label class="col-sm-2 control-label" for="input-subscribeapprovalsubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+															<div class="col-sm-10">
+																<input id="input-subscribeapprovalsubject{{ language.language_id }}" type="text" name="mpblog_subscribemail[approval][{{ language.language_id }}][subject]" value="{{ (mpblog_subscribemail.approval[language.language_id]) ? mpblog_subscribemail.approval[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+																{% if error_subscribemail.approval[language.language_id].subject %}
+					                      <div class="text-danger">{{ error_subscribemail.approval[language.language_id].subject }}</div>
+					                      {% endif %}
+															</div>
+														</div>
+														<div class="form-group">
+					                    <label class="col-sm-2 control-label" for="input-subscribeapprovalmsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+					                    <div class="col-sm-10">
+					                      <textarea name="mpblog_subscribemail[approval][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-subscribeapprovalmsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.approval[language.language_id]) ? mpblog_subscribemail.approval[language.language_id].message : '' }}</textarea>
+					                      {% if error_subscribemail.approval[language.language_id].message %}
+					                      <div class="text-danger">{{ error_subscribemail.approval[language.language_id].message }}</div>
+					                      {% endif %}
+					                    </div>
+					                  </div>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+                          <table class="table table-bordered table-striped">
+                          	<thead>
+	                            <tr>
+	                            	<td>{{ sh_code }}</td>
+	                            	<td>{{ sh_name }}</td>
+	                            </tr>
+                          	</thead>
+                          	<tbody>
+	                            <tr>
+	                            	<td>[LOGO]</td>
+	                            	<td>{{ sh_logo }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_NAME]</td>
+	                            	<td>{{ sh_storename }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_LINK]</td>
+	                            	<td>{{ sh_storelink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[EMAIL]</td>
+	                            	<td>{{ sh_email }}</td>
+	                            </tr>
+                          	</tbody>
+                          </table>
+                        </div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab-email_subscribepending">
+										<div class="alert alert-info">{{ info_subscribe_pending }}</div>
+										<div class="form-group mp-buttons">
+											<label class="col-sm-2 control-label" for="input-subscribepending_status">{{ entry_mail_send }}</label>
+											<div class="col-sm-3">
+												<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-subscribepending_status" class="btn btn-primary {% if mpblog_subscribepending_status %} active {% endif %}"><input id="input-subscribepending_status" type="radio" name="mpblog_subscribepending_status" value="1" {% if mpblog_subscribepending_status %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+			                    <label for="input-subscribepending_status_0" class="btn btn-primary {% if not mpblog_subscribepending_status %} active {% endif %}"><input id="input-subscribepending_status_0" type="radio" name="mpblog_subscribepending_status" value="0" {% if not mpblog_subscribepending_status %}checked="checked"{% endif %} /> {{ text_no }}</label>
+		                  	</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="subscribependingmaillanguage">
+					                {% for language in languages %}
+					                <li><a href="#subscribependingmaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="subscribependingmaillanguage{{ language.language_id }}">
+					                	<div class="form-group required">
+															<label class="col-sm-2 control-label" for="input-subscribependingsubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+															<div class="col-sm-10">
+																<input id="input-subscribependingsubject{{ language.language_id }}" type="text" name="mpblog_subscribemail[pending][{{ language.language_id }}][subject]" value="{{ (mpblog_subscribemail.pending[language.language_id]) ? mpblog_subscribemail.pending[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+																{% if error_subscribemail.pending[language.language_id].subject %}
+					                      <div class="text-danger">{{ error_subscribemail.pending[language.language_id].subject }}</div>
+					                      {% endif %}
+															</div>
+														</div>
+														<div class="form-group">
+					                    <label class="col-sm-2 control-label" for="input-subscribependingmsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+					                    <div class="col-sm-10">
+					                      <textarea name="mpblog_subscribemail[pending][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-subscribependingmsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.pending[language.language_id]) ? mpblog_subscribemail.pending[language.language_id].message : '' }}</textarea>
+					                      {% if error_subscribemail.pending[language.language_id].message %}
+					                      <div class="text-danger">{{ error_subscribemail.pending[language.language_id].message }}</div>
+					                      {% endif %}
+					                    </div>
+					                  </div>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+                          <table class="table table-bordered table-striped">
+                          	<thead>
+                            	<tr>
+                            		<td>{{ sh_code }}</td>
+                            		<td>{{ sh_name }}</td>
+                            	</tr>
+                          	</thead>
+                          	<tbody>
+	                            <tr>
+	                            	<td>[LOGO]</td>
+	                            	<td>{{ sh_logo }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_NAME]</td>
+	                            	<td>{{ sh_storename }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_LINK]</td>
+	                            	<td>{{ sh_storelink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[EMAIL]</td>
+	                            	<td>{{ sh_email }}</td>
+	                            </tr>
+                          	</tbody>
+                          </table>
+                        </div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab-email_subscribeconfirm">
+										<div class="alert alert-info">{{ info_subscribe_confirm }}</div>
+										<div class="form-group mp-buttons">
+											<label class="col-sm-2 control-label" for="input-subscribeconfirm_status">{{ entry_mail_send }}</label>
+											<div class="col-sm-3">
+												<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-subscribeconfirm_status" class="btn btn-primary {% if mpblog_subscribeconfirm_status %} active {% endif %}"><input id="input-subscribeconfirm_status" type="radio" name="mpblog_subscribeconfirm_status" value="1" {% if mpblog_subscribeconfirm_status %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+			                    <label for="input-subscribeconfirm_status_0" class="btn btn-primary {% if not mpblog_subscribeconfirm_status %} active {% endif %}"><input id="input-subscribeconfirm_status_0" type="radio" name="mpblog_subscribeconfirm_status" value="0" {% if not mpblog_subscribeconfirm_status %}checked="checked"{% endif %} /> {{ text_no }}</label>
+		                  	</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="subscribeconfirmmaillanguage">
+					                {% for language in languages %}
+					                <li><a href="#subscribeconfirmmaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="subscribeconfirmmaillanguage{{ language.language_id }}">
+					                	<div class="form-group required">
+															<label class="col-sm-2 control-label" for="input-subscribeconfirmsubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+															<div class="col-sm-10">
+																<input id="input-subscribeconfirmsubject{{ language.language_id }}" type="text" name="mpblog_subscribemail[confirm][{{ language.language_id }}][subject]" value="{{ (mpblog_subscribemail.confirm[language.language_id]) ? mpblog_subscribemail.confirm[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+																{% if error_subscribemail.confirm[language.language_id].subject %}
+					                      <div class="text-danger">{{ error_subscribemail.confirm[language.language_id].subject }}</div>
+					                      {% endif %}
+															</div>
+														</div>
+														<div class="form-group">
+					                    <label class="col-sm-2 control-label" for="input-subscribeconfirmmsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+					                    <div class="col-sm-10">
+					                      <textarea name="mpblog_subscribemail[confirm][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-subscribeconfirmmsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.confirm[language.language_id]) ? mpblog_subscribemail.confirm[language.language_id].message : '' }}</textarea>
+					                      {% if error_subscribemail.confirm[language.language_id].message %}
+					                      <div class="text-danger">{{ error_subscribemail.confirm[language.language_id].message }}</div>
+					                      {% endif %}
+					                    </div>
+					                  </div>
+					                  <fieldset>
+													    <legend>{{ legend_msg_confirm }}</legend>
+													    <div class="alert alert-info">{{ info_subscribe_confirm_page }}</div>
+													    <div class="form-group required">
+													        <label class="col-sm-2 control-label" for="input-confirmtitle{{ language.language_id }}">{{ entry_page_title }}</label>
+													        <div class="col-sm-10">
+													            <input id="input-confirmtitle{{ language.language_id }}" type="text" name="mpblog_subscribemail[confirm][{{ language.language_id }}][title]" value="{{ (mpblog_subscribemail.confirm[language.language_id]) ? mpblog_subscribemail.confirm[language.language_id].title : '' }}" placeholder="{{ entry_page_title }}" class="form-control" />
+													            {% if error_subscribemail.confirm[language.language_id].title %}
+													                <div class="text-danger">{{ error_subscribemail.confirm[language.language_id].title }}</div>
+													            {% endif %}
+													        </div>
+													    </div>
+													    <div class="form-group">
+													        <label class="col-sm-2 control-label" for="input-confirmcontent{{ language.language_id }}">{{ entry_page_content }}</label>
+													        <div class="col-sm-10">
+													            <textarea name="mpblog_subscribemail[confirm][{{ language.language_id }}][content]" placeholder="{{ entry_page_content }}" id="input-confirmcontent{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.confirm[language.language_id]) ? mpblog_subscribemail.confirm[language.language_id].content : '' }}</textarea>
+													            {% if error_subscribemail.confirm[language.language_id].content %}
+													                <div class="text-danger">{{ error_subscribemail.confirm[language.language_id].content }}</div>
+													            {% endif %}
+													        </div>
+													    </div>
+													</fieldset>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+                          <table class="table table-bordered table-striped">
+                          	<thead>
+                            	<tr>
+                            		<td>{{ sh_code }}</td>
+                            		<td>{{ sh_name }}</td>
+                            	</tr>
+                          	</thead>
+                          	<tbody>
+	                            <tr>
+	                            	<td>[LOGO]</td>
+	                            	<td>{{ sh_logo }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_NAME]</td>
+	                            	<td>{{ sh_storename }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_LINK]</td>
+	                            	<td>{{ sh_storelink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[EMAIL]</td>
+	                            	<td>{{ sh_email }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[CONFIRMATION_LINK]</td>
+	                            	<td>{{ sh_confirmlink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[CONFIRMATION_CODE]</td>
+	                            	<td>{{ sh_confirmcode }}</td>
+	                            </tr>
+                          	</tbody>
+                          </table>
+                        </div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab-email_unsubscribe">
+										<div class="alert alert-info">{{ info_unsubscribe }}</div>
+										<div class="form-group mp-buttons">
+											<label class="col-sm-2 control-label" for="input-unsubscribe_status">{{ entry_mail_send }}</label>
+											<div class="col-sm-3">
+												<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-unsubscribe_status" class="btn btn-primary {% if mpblog_unsubscribe_status %} active {% endif %}"><input id="input-unsubscribe_status" type="radio" name="mpblog_unsubscribe_status" value="1" {% if mpblog_unsubscribe_status %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+			                    <label for="input-unsubscribe_status_0" class="btn btn-primary {% if not mpblog_unsubscribe_status %} active {% endif %}"><input id="input-unsubscribe_status_0" type="radio" name="mpblog_unsubscribe_status" value="0" {% if not mpblog_unsubscribe_status %}checked="checked"{% endif %} /> {{ text_no }}</label>
+		                  	</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="unsubscribemaillanguage">
+					                {% for language in languages %}
+					                <li><a href="#unsubscribemaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="unsubscribemaillanguage{{ language.language_id }}">
+					                	<div class="form-group required">
+															<label class="col-sm-2 control-label" for="input-unsubscribesubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+															<div class="col-sm-10">
+																<input id="input-unsubscribesubject{{ language.language_id }}" type="text" name="mpblog_subscribemail[unsubscribe][{{ language.language_id }}][subject]" value="{{ (mpblog_subscribemail.unsubscribe[language.language_id]) ? mpblog_subscribemail.unsubscribe[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+																{% if error_subscribemail.unsubscribe[language.language_id].subject %}
+					                      <div class="text-danger">{{ error_subscribemail.unsubscribe[language.language_id].subject }}</div>
+					                      {% endif %}
+															</div>
+														</div>
+														<div class="form-group">
+					                    <label class="col-sm-2 control-label" for="input-unsubscribemsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+					                    <div class="col-sm-10">
+					                      <textarea name="mpblog_subscribemail[unsubscribe][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-unsubscribemsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.unsubscribe[language.language_id]) ? mpblog_subscribemail.unsubscribe[language.language_id].message : '' }}</textarea>
+					                      {% if error_subscribemail.unsubscribe[language.language_id].message %}
+					                      <div class="text-danger">{{ error_subscribemail.unsubscribe[language.language_id].message }}</div>
+					                      {% endif %}
+					                    </div>
+					                  </div>
+					                  <fieldset>
+					                  	<legend>{{ legend_msg_unsubscribe }}</legend>
+					                  	<div class="alert alert-info">{{ info_unsubscribe_page }}</div>
+					                  	<div class="form-group required">
+																<label class="col-sm-2 control-label" for="input-unsubscribetitle{{ language.language_id }}">{{ entry_page_title }}</label>
+																<div class="col-sm-10">
+																	<input id="input-unsubscribetitle{{ language.language_id }}" type="text" name="mpblog_subscribemail[unsubscribe][{{ language.language_id }}][title]" value="{{ (mpblog_subscribemail.unsubscribe[language.language_id]) ? mpblog_subscribemail.unsubscribe[language.language_id].title : '' }}" placeholder="{{ entry_page_title }}" class="form-control" />
+																	{% if error_subscribemail.unsubscribe[language.language_id].title %}
+						                      <div class="text-danger">{{ error_subscribemail.unsubscribe[language.language_id].title }}</div>
+						                      {% endif %}
+																</div>
+															</div>
+															<div class="form-group">
+						                    <label class="col-sm-2 control-label" for="input-unsubscribecontent{{ language.language_id }}">{{ entry_page_content }}</label>
+						                    <div class="col-sm-10">
+						                      <textarea name="mpblog_subscribemail[unsubscribe][{{ language.language_id }}][content]" placeholder="{{ entry_page_content }}" id="input-unsubscribecontent{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.unsubscribe[language.language_id]) ? mpblog_subscribemail.unsubscribe[language.language_id].content : '' }}</textarea>
+						                      {% if error_subscribemail.unsubscribe[language.language_id].content %}
+						                      <div class="text-danger">{{ error_subscribemail.unsubscribe[language.language_id].content }}</div>
+						                      {% endif %}
+						                    </div>
+						                  </div>
+					                  </fieldset>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+                          <table class="table table-bordered table-striped">
+                          	<thead>
+                            	<tr>
+                            		<td>{{ sh_code }}</td>
+                            		<td>{{ sh_name }}</td>
+                            	</tr>
+                          	</thead>
+                          	<tbody>
+	                            <tr>
+	                            	<td>[LOGO]</td>
+	                            	<td>{{ sh_logo }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_NAME]</td>
+	                            	<td>{{ sh_storename }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_LINK]</td>
+	                            	<td>{{ sh_storelink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[EMAIL]</td>
+	                            	<td>{{ sh_email }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[CONFIRMATION_LINK]</td>
+	                            	<td>{{ sh_confirmlink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[CONFIRMATION_CODE]</td>
+	                            	<td>{{ sh_confirmcode }}</td>
+	                            </tr>
+                          	</tbody>
+                          </table>
+                        </div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab-email_invalidurl">
+										<div class="alert alert-info">{{ info_invalidurl }}</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="invalidurllanguage">
+					                {% for language in languages %}
+					                <li><a href="#invalidurllanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="invalidurllanguage{{ language.language_id }}">
+					                	<fieldset>
+														  <legend>{{ legend_msg_invalid }}</legend>
+														  <div class="form-group required">
+														    <label class="col-sm-2 control-label" for="input-invalidtitle{{ language.language_id }}">{{ entry_page_title }}</label>
+														    <div class="col-sm-10">
+														      <input id="input-invalidtitle{{ language.language_id }}" type="text" name="mpblog_subscribemail[invalid][{{ language.language_id }}][title]" value="{{ (mpblog_subscribemail.invalid[language.language_id]) ? mpblog_subscribemail.invalid[language.language_id].title : '' }}" placeholder="{{ entry_page_title }}" class="form-control" />
+														      {% if error_subscribemail.invalid[language.language_id].title %}
+														        <div class="text-danger">{{ error_subscribemail.invalid[language.language_id].title }}</div>
+														      {% endif %}
+														    </div>
+														  </div>
+														  <div class="form-group">
+														    <label class="col-sm-2 control-label" for="input-invalidcontent{{ language.language_id }}">{{ entry_page_content }}</label>
+														    <div class="col-sm-10">
+														      <textarea name="mpblog_subscribemail[invalid][{{ language.language_id }}][content]" placeholder="{{ entry_page_content }}" id="input-invalidcontent{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_subscribemail.invalid[language.language_id]) ? mpblog_subscribemail.invalid[language.language_id].content : '' }}</textarea>
+														      {% if error_subscribemail.invalid[language.language_id].content %}
+														        <div class="text-danger">{{ error_subscribemail.invalid[language.language_id].content }}</div>
+														      {% endif %}
+														    </div>
+														  </div>
+														</fieldset>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+                          <table class="table table-bordered table-striped">
+                          	<thead>
+	                            <tr>
+	                            	<td>{{ sh_code }}</td>
+	                            	<td>{{ sh_name }}</td>
+	                            </tr>
+                          	</thead>
+                          	<tbody>
+	                            <tr>
+	                            	<td>[LOGO]</td>
+	                            	<td>{{ sh_logo }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_NAME]</td>
+	                            	<td>{{ sh_storename }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[STORE_LINK]</td>
+	                            	<td>{{ sh_storelink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[EMAIL]</td>
+	                            	<td>{{ sh_email }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[CONFIRMATION_LINK]</td>
+	                            	<td>{{ sh_confirmlink }}</td>
+	                            </tr>
+	                            <tr>
+	                            	<td>[CONFIRMATION_CODE]</td>
+	                            	<td>{{ sh_confirmcode }}</td>
+	                            </tr>
+                          	</tbody>
+                          </table>
+                        </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-emails">
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#tab-email_blogadd" data-toggle="tab"><i class="fa fa-plus"></i> {{ tab_email_blogadd }}</a></li>
+									<li><a href="#tab-email_blogedit" data-toggle="tab"> <i class="fa fa-pencil"></i> {{ tab_email_blogedit }}</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab-email_blogadd">
+										<div class="alert alert-info">{{ info_email_blogadd }}</div>
+										<div class="form-group mp-buttons">
+											<label class="col-sm-2 control-label" for="input-blogadd_status">{{ entry_mail_send }}</label>
+											<div class="col-sm-3">
+												<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-blogadd_status" class="btn btn-primary {% if mpblog_blogadd_status %} active {% endif %}"><input id="input-blogadd_status" type="radio" name="mpblog_blogadd_status" value="1" {% if mpblog_blogadd_status %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+			                    <label for="input-blogadd_status_0" class="btn btn-primary {% if not mpblog_blogadd_status %} active {% endif %}"><input id="input-blogadd_status_0" type="radio" name="mpblog_blogadd_status" value="0" {% if not mpblog_blogadd_status %}checked="checked"{% endif %} /> {{ text_no }}</label>
+		                  	</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="blogaddmaillanguage">
+					                {% for language in languages %}
+					                <li><a href="#blogaddmaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					                {% endfor %}
+					              </ul>
+					              <div class="tab-content">
+					                {% for language in languages %}
+					                <div class="tab-pane" id="blogaddmaillanguage{{ language.language_id }}">
+					                	<div class="form-group required">
+															<label class="col-sm-2 control-label" for="input-blogaddsubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+															<div class="col-sm-10">
+																<input id="input-blogaddsubject{{ language.language_id }}" type="text" name="mpblog_emails[blogadd][{{ language.language_id }}][subject]" value="{{ (mpblog_emails.blogadd[language.language_id]) ? mpblog_emails.blogadd[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+																{% if error_emails.blogadd[language.language_id].subject %}
+					                      <div class="text-danger">{{ error_emails.blogadd[language.language_id].subject }}</div>
+					                      {% endif %}
+															</div>
+														</div>
+														<div class="form-group">
+					                    <label class="col-sm-2 control-label" for="input-blogaddmsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+					                    <div class="col-sm-10">
+					                      <textarea name="mpblog_emails[blogadd][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-blogaddmsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_emails.blogadd[language.language_id]) ? mpblog_emails.blogadd[language.language_id].message : '' }}</textarea>
+					                      {% if error_emails.blogadd[language.language_id].message %}
+					                      <div class="text-danger">{{ error_emails.blogadd[language.language_id].message }}</div>
+					                      {% endif %}
+					                    </div>
+					                  </div>
+					                </div>
+					                {% endfor %}
+					              </div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+		                      <table class="table table-bordered table-striped">
+		                      	<thead>
+		                        	<tr>
+		                        		<td>{{ sh_code }}</td>
+		                        		<td>{{ sh_name }}</td>
+		                        	</tr>
+		                      	</thead>
+		                      	<tbody>
+			                        <tr>
+			                        	<td>[LOGO]</td>
+			                        	<td>{{ sh_logo }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[STORE_NAME]</td>
+			                        	<td>{{ sh_storename }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[STORE_LINK]</td>
+			                        	<td>{{ sh_storelink }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[BLOG_NAME]</td>
+			                        	<td>{{ sh_blog_name }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[BLOG_THUMB]</td>
+			                        	<td>{{ sh_blog_thumb }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[BLOG_DESCRIPTION]</td>
+			                        	<td>{{ sh_blog_description }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[BLOG_SHORTDESCRIPTION]</td>
+			                        	<td>{{ sh_blog_shortdescription }}</td>
+			                        </tr>
+		                      	</tbody>
+		                      </table>
+		                    </div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="tab-email_blogedit">
+										<div class="alert alert-info">{{ info_email_blogedit }}</div>
+										<div class="form-group mp-buttons">
+										  <label class="col-sm-2 control-label" for="input-blogedit_status">{{ entry_mail_send }}</label>
+										  <div class="col-sm-3">
+										  	<div class="btn-group btn-group-justified" data-toggle="buttons">
+			                    <label for="input-blogedit_status" class="btn btn-primary {% if mpblog_blogedit_status %} active {% endif %}"><input id="input-blogedit_status" type="radio" name="mpblog_blogedit_status" value="1" {% if mpblog_blogedit_status %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+			                    <label for="input-blogedit_status_0" class="btn btn-primary {% if not mpblog_blogedit_status %} active {% endif %}"><input id="input-blogedit_status_0" type="radio" name="mpblog_blogedit_status" value="0" {% if not mpblog_blogedit_status %}checked="checked"{% endif %} /> {{ text_no }}</label>
+		                  	</div>
+										  </div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8">
+												<ul class="nav nav-tabs mlang-tabs" id="blogeditmaillanguage">
+												  {% for language in languages %}
+												  <li><a href="#blogeditmaillanguage{{ language.language_id }}" data-toggle="tab"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+												  {% endfor %}
+												</ul>
+												<div class="tab-content">
+												  {% for language in languages %}
+												  <div class="tab-pane" id="blogeditmaillanguage{{ language.language_id }}">
+												    <div class="form-group required">
+												      <label class="col-sm-2 control-label" for="input-blogeditsubject{{ language.language_id }}">{{ entry_mail_subject }}</label>
+												      <div class="col-sm-10">
+												        <input id="input-blogeditsubject{{ language.language_id }}" type="text" name="mpblog_emails[blogedit][{{ language.language_id }}][subject]" value="{{ (mpblog_emails.blogedit[language.language_id]) ? mpblog_emails.blogedit[language.language_id].subject : '' }}" placeholder="{{ entry_mail_subject }}" class="form-control" />
+												        {% if error_emails.blogedit[language.language_id].subject %}
+												        <div class="text-danger">{{ error_emails.blogedit[language.language_id].subject }}</div>
+												        {% endif %}
+												      </div>
+												    </div>
+												    <div class="form-group">
+												      <label class="col-sm-2 control-label" for="input-blogeditmsg{{ language.language_id }}">{{ entry_mail_message }}</label>
+												      <div class="col-sm-10">
+												        <textarea name="mpblog_emails[blogedit][{{ language.language_id }}][message]" placeholder="{{ entry_mail_message }}" id="input-blogeditmsg{{ language.language_id }}" class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}">{{ (mpblog_emails.blogedit[language.language_id]) ? mpblog_emails.blogedit[language.language_id].message : '' }}</textarea>
+												        {% if error_emails.blogedit[language.language_id].message %}
+												        <div class="text-danger">{{ error_emails.blogedit[language.language_id].message }}</div>
+												        {% endif %}
+												      </div>
+												    </div>
+												  </div>
+												  {% endfor %}
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="table-responsive">
+										      <table class="table table-bordered table-striped">
+										      	<thead>
+										        	<tr>
+										        		<td>{{ sh_code }}</td>
+										        		<td>{{ sh_name }}</td>
+										        	</tr>
+										      	</thead>
+										      	<tbody>
+											        <tr>
+											        	<td>[LOGO]</td>
+											        	<td>{{ sh_logo }}</td>
+											        </tr>
+											        <tr>
+											        	<td>[STORE_NAME]</td>
+											        	<td>{{ sh_storename }}</td>
+											        </tr>
+											        <tr>
+											        	<td>[STORE_LINK]</td>
+											        	<td>{{ sh_storelink }}</td>
+											        </tr>
+											        <tr>
+											        	<td>[BLOG_NAME]</td>
+											        	<td>{{ sh_blog_name }}</td>
+											        </tr>
+			                        <tr>
+			                        	<td>[BLOG_THUMB]</td>
+			                        	<td>{{ sh_blog_thumb }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[BLOG_DESCRIPTION]</td>
+			                        	<td>{{ sh_blog_description }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>[BLOG_SHORTDESCRIPTION]</td>
+			                        	<td>{{ sh_blog_shortdescription }}</td>
+			                        </tr>
+										      	</tbody>
+										      </table>
+										    </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="tab-pane" id="tab-module">
+								<div class="bs-callout bs-callout-info"> 
+									<h4>{{ text_socialmedia_title }}</h4> 
+									<p>{{ text_socialmedia_defination }}</p>
+								</div>
+								<div class="form-group mp-buttons">
+										<label class="col-sm-2 control-label" for="input-blog_viewsocial">{{ text_blog_show_viewsocial }}</label>
+										<div class="col-sm-3">
+											<div class="btn-group btn-group-justified" data-toggle="buttons">
+		                    <label for="input-blog_viewsocial" class="btn btn-primary {% if mpblog_blog_viewsocial %} active {% endif %}"><input id="input-blog_viewsocial" type="radio" name="mpblog_blog_viewsocial" value="1" {% if mpblog_blog_viewsocial %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+		                    <label for="input-blog_viewsocial_0" class="btn btn-primary {% if not mpblog_blog_viewsocial %} active {% endif %}"><input id="input-blog_viewsocial_0" type="radio" name="mpblog_blog_viewsocial" value="0" {% if not mpblog_blog_viewsocial %}checked="checked"{% endif %} /> {{ text_no }}</label>
+	                  	</div>
+										</div>
+									</div>
+									<div class="form-group mp-buttons">
+										<label class="col-sm-2 control-label" for="input-blog_sociallocation">{{ text_blog_show_sociallocation }}</label>
+										<div class="col-sm-3">
+											<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		                    <label for="input-blog_sociallocation" class="btn btn-primary {% if 'TOP' in mpblog_blog_sociallocation %} active {% endif %}"><input id="input-blog_sociallocation" type="checkbox" name="mpblog_blog_sociallocation[]" value="TOP" {% if 'TOP' in mpblog_blog_sociallocation %}checked="checked"{% endif %} /> {{ text_top }}</label>
+		                    <label for="input-blog_sociallocation_bottom" class="btn btn-primary {% if 'BOTTOM' in  mpblog_blog_sociallocation %} active {% endif %}"><input id="input-blog_sociallocation_bottom" type="checkbox" name="mpblog_blog_sociallocation[]" value="BOTTOM" {% if 'BOTTOM' in  mpblog_blog_sociallocation %}checked="checked"{% endif %} /> {{ text_bottom }}</label>
+	                  	</div>
+										</div>
+									</div>
+									<div class="form-group mp-buttons">
+										<label class="col-sm-2 control-label" for="input-blog_sharethis">{{ text_blog_show_sharethis }}</label>
+										<div class="col-sm-3">
+											<div class="btn-group btn-group-justified" data-toggle="buttons">
+		                    <label for="input-blog_sharethis" class="btn btn-primary {% if mpblog_blog_sharethis %} active {% endif %}"><input id="input-blog_sharethis" type="radio" name="mpblog_blog_sharethis" value="1" {% if mpblog_blog_sharethis %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+		                    <label for="input-blog_sharethis_0" class="btn btn-primary {% if not mpblog_blog_sharethis %} active {% endif %}"><input id="input-blog_sharethis_0" type="radio" name="mpblog_blog_sharethis" value="0" {% if not mpblog_blog_sharethis %}checked="checked"{% endif %} /> {{ text_no }}</label>
+	                  	</div>
+										</div>
+									</div>
+								<div class="table-responsive">
+									<table id="mpblog-social" class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<td class="text-left">{{ entry_social_icon }}</td>
+												<td class="text-left">{{ entry_social_href }}</td>
+												<td class="text-left">{{ entry_social_name }}</td>
+												<td class="text-right">{{ entry_sort_order }}</td>
+												<td></td>
+											</tr>
+										</thead>
+										<tbody>
+											{% set mpblog_social_row = 0 %}
+											{% for mpblog_social in mpblog_socials %}
+											<tr id="mpblog-social-row{{ mpblog_social_row }}">
+												<td class="text-left"><input type="text" name="mpblog_social[{{ mpblog_social_row }}][icon]" value="{{ mpblog_social.icon }}" placeholder="{{ placeholder_social_icon }}" class="form-control" /></td>
+												<td class="text-left"><input type="text" name="mpblog_social[{{ mpblog_social_row }}][href]" value="{{ mpblog_social.href }}" placeholder="{{ placeholder_social_href }}" class="form-control" /></td>
+												<td class="text-left">
+													{% for language in languages %}
+		                        <div class="input-group"><span class="input-group-addon"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /></span>
+		                        <input type="text" name="mpblog_social[{{ mpblog_social_row }}][name][{{ language.language_id }}]" value="{{ mpblog_social.name[language.language_id] ? mpblog_social.name[language.language_id] }}" placeholder="{{ placeholder_social_name }}" class="form-control" />
+		                        </div>
+		                        {% endfor %}
+		                      </td>
+												<td class="text-right"><input type="text" name="mpblog_social[{{ mpblog_social_row }}][sort_order]" value="{{ mpblog_social.sort_order }}" placeholder="{{ placeholder_sort_order }}" class="form-control" /></td>
+												<td class="text-left"><button type="button" onclick="$('#mpblog-social-row{{ mpblog_social_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+											</tr>
+											{% set mpblog_social_row = mpblog_social_row + 1 %}
+											{% endfor %}
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="4"></td>
+												<td class="text-left"><button type="button" onclick="addMpBlogSocial();" data-toggle="tooltip" title="{{ button_social_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-comments">
+								<div class="bs-callout bs-callout-info"> 
+									<h4>{{ text_comment_title }}</h4> 
+									<p>{{ text_comment_defination }}</p>
+								</div>
+								<fieldset>
+									<legend>{{ legend_comment }}</legend>
+								<div class="row">
+									<div class="col-sm-3">
+										<ul class="nav nav-pills nav-stacked ostab" id="mpblogcomments">
+											<li class="active"><a class="text-left" href="#tab-comments-default" data-toggle="tab"><i class="fa fa-comment" aria-hidden="true"></i> {{ tab_mpblogcomments_default }}</a></li>
+											<li><a class="text-left" href="#tab-comments-facebook" data-toggle="tab"><i class="fa fa-facebook-official" aria-hidden="true"></i> {{ tab_mpblogcomments_facebook }}</a></li>
+											<li><a class="text-left" href="#tab-comments-google" data-toggle="tab"><i class="fa fa-google-plus-square" aria-hidden="true"></i> {{ tab_mpblogcomments_google }}</a></li>
+											<li><a class="text-left" href="#tab-comments-disqus" data-toggle="tab"><i class="fa fa-user" aria-hidden="true"></i> {{ tab_mpblogcomments_disqus }}</a></li>
+										</ul>
+									</div>  
+									<div class="col-sm-9">
+										<div class="tab-content">
+											<div class="tab-pane active" id="tab-comments-default">
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-comments_default">{{ text_comment_default }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-comments_default" class="btn btn-primary {% if mpblog_comments_default %} active {% endif %}"><input id="input-comments_default" type="radio" name="mpblog_comments_default" value="1" {% if mpblog_comments_default %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-comments_default_0" class="btn btn-primary {% if not mpblog_comments_default %} active {% endif %}"><input id="input-comments_default_0" type="radio" name="mpblog_comments_default" value="0" {% if not mpblog_comments_default %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_allow_comment">{{ text_blog_allow_comment }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_allow_comment" class="btn btn-primary {% if mpblog_blog_allow_comment %} active {% endif %}"><input id="input-blog_allow_comment" type="radio" name="mpblog_blog_allow_comment" value="1" {% if mpblog_blog_allow_comment %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-blog_allow_comment_0" class="btn btn-primary {% if not mpblog_blog_allow_comment %} active {% endif %}"><input id="input-blog_allow_comment_0" type="radio" name="mpblog_blog_allow_comment" value="0" {% if not mpblog_blog_allow_comment %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_approve_comment">{{ text_blog_approve_comment }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_approve_comment" class="btn btn-primary {% if mpblog_blog_approve_comment %} active {% endif %}"><input id="input-blog_approve_comment" type="radio" name="mpblog_blog_approve_comment" value="1" {% if mpblog_blog_approve_comment %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-blog_approve_comment_0" class="btn btn-primary {% if not mpblog_blog_approve_comment %} active {% endif %}"><input id="input-blog_approve_comment_0" type="radio" name="mpblog_blog_approve_comment" value="0" {% if not mpblog_blog_approve_comment %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-blog_captcha_comment">{{ text_blog_captcha_comment }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-blog_captcha_comment" class="btn btn-primary {% if mpblog_blog_captcha_comment %} active {% endif %}"><input id="input-blog_captcha_comment" type="radio" name="mpblog_blog_captcha_comment" value="1" {% if mpblog_blog_captcha_comment %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-blog_captcha_comment_0" class="btn btn-primary {% if not mpblog_blog_captcha_comment %} active {% endif %}"><input id="input-blog_captcha_comment_0" type="radio" name="mpblog_blog_captcha_comment" value="0" {% if not mpblog_blog_captcha_comment %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+				                  	<div dclass="help">{{ help_blog_captcha_comment }}</div>
+													</div>
+												</div>
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-comments_default_guest">{{ text_comment_default_guest }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-comments_default_guest" class="btn btn-primary {% if mpblog_comments_default_guest %} active {% endif %}"><input id="input-comments_default_guest" type="radio" name="mpblog_comments_default_guest" value="1" {% if mpblog_comments_default_guest %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-comments_default_guest_0" class="btn btn-primary {% if not mpblog_comments_default_guest %} active {% endif %}"><input id="input-comments_default_guest_0" type="radio" name="mpblog_comments_default_guest" value="0" {% if not mpblog_comments_default_guest %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+
+											</div>
+											<div class="tab-pane" id="tab-comments-facebook">
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-comments_facebook">{{ text_comment_facebook }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-comments_facebook" class="btn btn-primary {% if mpblog_comments_facebook %} active {% endif %}"><input id="input-comments_facebook" type="radio" name="mpblog_comments_facebook" value="1" {% if mpblog_comments_facebook %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-comments_facebook_0" class="btn btn-primary {% if not mpblog_comments_facebook %} active {% endif %}"><input id="input-comments_facebook_0" type="radio" name="mpblog_comments_facebook" value="0" {% if not mpblog_comments_facebook %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-facebook_appid">{{ text_facebook_appid }}</label>
+													<div class="col-sm-10">
+														<input id="input-facebook_appid" type="text" name="mpblog_facebook_appid" value="{{ mpblog_facebook_appid }}" placeholder="{{ text_facebook_appid }}" class="form-control" />
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-facebook_nocomment">{{ text_facebook_nocomment }}</label>
+													<div class="col-sm-10">
+														<input id="input-facebook_nocomment" type="text" name="mpblog_facebook_nocomment" value="{{ mpblog_facebook_nocomment }}" placeholder="{{ text_facebook_nocomment }}" class="form-control" />
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-facebook_color">{{ text_facebook_color }}</label>
+													<div class="col-sm-10">
+														<select id="input-facebook_color" type="text" name="mpblog_facebook_color" class="form-control">
+															<option {% if mpblog_facebook_color == 'light' %} selected="selected" {% endif %} value="light">{{ text_facebook_colorlight }}</option>
+															<option {% if mpblog_facebook_color == 'dark' %} selected="selected" {% endif %} value="dark">{{ text_facebook_colordark }}</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-facebook_order">{{ text_facebook_order }}</label>
+													<div class="col-sm-10">
+														<select id="input-facebook_order" type="text" name="mpblog_facebook_order" class="form-control">
+															<option {% if mpblog_facebook_order == 'social' %} selected="selected" {% endif %} value="social">{{ text_facebook_ordersocial }}</option>
+															<option {% if mpblog_facebook_order == 'reverse_time' %} selected="selected" {% endif %} value="reverse_time">{{ text_facebook_orderreverse_time }}</option>
+															<option {% if mpblog_facebook_order == 'time' %} selected="selected" {% endif %} value="time">{{ text_facebook_ordertime }}</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-facebook_width">{{ text_facebook_width }}</label>
+													<div class="col-sm-10">
+														<input id="input-facebook_width" type="text" name="mpblog_facebook_width" value="{{ mpblog_facebook_width }}" placeholder="{{ text_facebook_width }}" class="form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="tab-pane" id="tab-comments-google">
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-comments_google">{{ text_comment_google }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-comments_google" class="btn btn-primary {% if mpblog_comments_google %} active {% endif %}"><input id="input-comments_google" type="radio" name="mpblog_comments_google" value="1" {% if mpblog_comments_google %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-comments_google_0" class="btn btn-primary {% if not mpblog_comments_google %} active {% endif %}"><input id="input-comments_google_0" type="radio" name="mpblog_comments_google" value="0" {% if not mpblog_comments_google %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+											</div>
+											<div class="tab-pane" id="tab-comments-disqus">
+												<div class="form-group mp-buttons">
+													<label class="col-sm-2 control-label" for="input-comments_disqus">{{ text_comment_disqus }}</label>
+													<div class="col-sm-3">
+														<div class="btn-group btn-group-justified" data-toggle="buttons">
+					                    <label for="input-comments_disqus" class="btn btn-primary {% if mpblog_comments_disqus %} active {% endif %}"><input id="input-comments_disqus" type="radio" name="mpblog_comments_disqus" value="1" {% if mpblog_comments_disqus %}checked="checked"{% endif %} /> {{ text_yes }}</label>
+					                    <label for="input-comments_disqus_0" class="btn btn-primary {% if not mpblog_comments_disqus %} active {% endif %}"><input id="input-comments_disqus_0" type="radio" name="mpblog_comments_disqus" value="0" {% if not mpblog_comments_disqus %}checked="checked"{% endif %} /> {{ text_no }}</label>
+				                  	</div>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-mpblog-comment-disqus-code">{{ text_comment_disqus_code }}</label>
+													<div class="col-sm-10">
+														<textarea row="8" id="input-mpblog-comment-disqus-code" type="text" name="mpblog_comment_disqus_code" placeholder="{{ text_comment_disqus_code }}" class="form-control">{{ mpblog_comment_disqus_code }}</textarea>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-2 control-label" for="input-mpblog-comment-disqus-count">{{ text_comment_disqus_count }}</label>
+													<div class="col-sm-10">
+														<textarea row="8" id="input-mpblog-comment-disqus-count" type="text" name="mpblog_comment_disqus_count" placeholder="{{ text_comment_disqus_count }}" class="form-control" >{{ mpblog_comment_disqus_count }}</textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								</fieldset>
+							</div>
+							<div class="tab-pane" id="tab-rss">
+								<div class="bs-callout bs-callout-info"> 
+									<h4>{{ info_title_rssfeed }}</h4> 
+									<p>{{ info_text_rssfeed }}
+										<br/>
+										{{ text_rss_href }} <strong>{{ rss_href }}</strong>
+									</p>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-mpblog-rssfeed_title">{{ text_rssfeed_title }}</label>
+									<div class="col-sm-10">
+										<input id="input-mpblog-rssfeed_title" placeholder="{{ text_rssfeed_title }}" name="mpblog_rssfeed_title" class="form-control" value="{{ mpblog_rssfeed_title }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-mpblog-rssfeed_description">{{ text_rssfeed_description }}</label>
+									<div class="col-sm-10">
+										<input id="input-mpblog-rssfeed_description" placeholder="{{ text_rssfeed_description }}" name="mpblog_rssfeed_description" class="form-control" value="{{ mpblog_rssfeed_description }}" />
+									</div>  
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-mpblog-rssfeed_format">{{ text_rssfeed_format }}</label>
+									<div class="col-sm-10">
+										<select id="input-mpblog-rssfeed_format" name="mpblog_rssfeed_format" class="form-control">
+											<option {% if mpblog_rssfeed_format == 'Atom' %} selected="selected" {% endif %} value="Atom">Atom</option>
+											<option {% if mpblog_rssfeed_format == 'RSS 2.0' %} selected="selected" {% endif %} value="RSS 2.0">RSS 2.0</option>
+											<option {% if mpblog_rssfeed_format == 'RSS 1.0' %} selected="selected" {% endif %} value="RSS 1.0">RSS 1.0</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-mpblog-rssfeed_limit">{{ text_rssfeed_limit }}</label>
+									<div class="col-sm-10">
+										<input id="input-mpblog-rssfeed_limit" placeholder="{{ text_rssfeed_limit }}" name="mpblog_rssfeed_limit" class="form-control" value="{{ mpblog_rssfeed_limit }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-mpblog-rssfeed_web_master">{{ text_rssfeed_web_master }}</label>
+									<div class="col-sm-10">
+										<input id="input-mpblog-rssfeed_web_master" placeholder="{{ text_rssfeed_web_master }}" name="mpblog_rssfeed_web_master" class="form-control" value="{{ mpblog_rssfeed_web_master }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-mpblog-rssfeed_copy_write">{{ text_rssfeed_copy_write }}</label>
+									<div class="col-sm-10">
+										<input id="input-mpblog-rssfeed_copy_write" placeholder="{{ text_rssfeed_copy_write }}" name="mpblog_rssfeed_copy_write" class="form-control" value="{{ mpblog_rssfeed_copy_write }}" />
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-mpsupport">
+								<div class="bs-callout bs-callout-info">
+									<h4>{{ heading_title }}</h4>
+									<p><center><strong>M-Blog Version 3X</strong></center> <br/> Add beautiful blog system into your opencart store. Blog Is one of best media for internet user to stay tunes with your site. Blogs are also helpful for your upcoming announcements and keep users excited with upcomming products. One of the feature of blog is that blogs are useful to website <strong>SEO</strong>. Using blogs articles you can promote your website. </p>
+								</div>
+								<fieldset id="module-points">
+									<legend class="">Modulepoints</legend>
+									<div class="form-group">
+										<div class="col-md-12 col-xs-12">
+											
+											<h4 class="text-center"><i class="fa fa-thumbs-up fa-mp" aria-hidden="true"></i> Thanks For Choosing Our Extension</h4>
+											 <ul class="list-group list-hover">
+												<li class="list-group-item clearfix">Installed Version <span class="badge"><i class="fa fa-gg" aria-hidden="true"></i> V.1.0</span></li>
+											</ul>
+											<h4 class=" text-center"><i class="fa fa-phone fa-mp" aria-hidden="true"></i> Please Contact Us In Case Any Issue Or Give Feedback!</h4>
+											<ul class="list-group">
+												<li class="list-group-item clearfix">support@modulepoints.com <span class="badge"><a href="mailto:support@modulepoints.com?Subject=Request Support: {{ heading_title }} &body=Module ID: https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=30958"><i class="fa fa-envelope"></i> Email To Support</a></span></li>
+											</ul>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>  
+					</form>  
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript"><!--
+
+$('input[name="mpblog_blog_date"]').on('change', function() {
+	if($(this).val() == 1) {
+		$('.mpblog_show_date').slideDown('slow');
+	} else {
+		$('.mpblog_show_date').slideUp('slow');
+	}
+});
+
+$('input[name="mpblog_blog_view"]').on('change', function() {
+	if($(this).val() == 'GRID') {
+		$('.mpblog_blog_view_grid').slideDown('slow');
+	} else {
+		$('.mpblog_blog_view_grid').slideUp('slow');
+	}
+});
+
+$('input[name="mpblog_category_view"]').on('change', function() {
+	if($(this).val() == 'GRID') {
+		$('.mpblog_category_view_grid').slideDown('slow');
+	} else {
+		$('.mpblog_category_view_grid').slideUp('slow');
+	}
+});
+
+var mpblog_social_row = {{ mpblog_social_row }};
+
+function addMpBlogSocial() {
+	html  = '<tr id="mpblog-social-row' + mpblog_social_row + '">';
+	html += '  <td class="text-left"><input type="text" name="mpblog_social[' + mpblog_social_row + '][icon]" value="" placeholder="{{ placeholder_social_icon }}" class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="mpblog_social[' + mpblog_social_row + '][href]" value="" placeholder="{{ placeholder_social_href }}" class="form-control" /></td>';
+
+	html += '<td class="text-left">';
+					{% for language in languages %}
+	html += '<div class="input-group"><span class="input-group-addon"><img src="{{ language.lang_flag }}" title="{{ language.name }}" /></span>';
+	html += '<input type="text" name="mpblog_social[' + mpblog_social_row + '][name][{{ language.language_id }}]" value="" placeholder="{{ placeholder_social_name }}" class="form-control" />';
+	html += '</div>';
+					{% endfor %}
+	html += '</td>';
+
+	html += '  <td class="text-right"><input type="text" name="mpblog_social[' + mpblog_social_row + '][sort_order]" value="" placeholder="{{ placeholder_sort_order }}" class="form-control" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#mpblog-social-row' + mpblog_social_row  + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+
+	$('#mpblog-social > tbody').append(html);
+
+	mpblog_social_row++;
+}
+//--></script>
+{{ text_editor }}
+<script type="text/javascript"><!--
+$('.mlang-tabs').each(function() {
+	$(this).find('a:first').tab('show');
+});
+//--></script>
+
+
+</div>{{ footer }}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
+<script src="catalog/view/javascript/jquery.countdown.min.js"></script>
+<script src="catalog/view/javascript/jquery.countdown.js"></script>
+
+<script type="text/javascript" src="catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js"></script>
+<link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/magnific/magnific-popup.css" />
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> 
+<link href="catalog/view/theme/{{ mytemplate }}/stylesheet/stylesheet.css" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{ mytemplate }}/stylesheet/megnor/lightbox.css" />
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{ mytemplate }}/stylesheet/megnor/carousel.css" />
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{  mytemplate }}/stylesheet/megnor/custom.css" />
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{  mytemplate }}/stylesheet/megnor/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{  mytemplate }}/stylesheet/megnor/animate.css" />
+<link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/owl-carousel/owl.carousel.css" />
+<link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/owl-carousel/owl.transitions.css" />
+{% if direction == 'rtl' %}
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{ mytemplate }}/stylesheet/megnor/rtl.css">
+{% endif %}
+
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for script in scripts %}
+<script src="{{ script }}"></script>
+{% endfor %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+<!-- Megnor www.templatemela.com - Start -->
+<script src="catalog/view/javascript/megnor/instagram-scripts-min.js"></script>
+<script src="catalog/view/javascript/megnor/custom.js"></script>
+<script src="catalog/view/javascript/megnor/jstree.min.js"></script>
+<script src="catalog/view/javascript/megnor/carousel.min.js"></script>
+<script src="catalog/view/javascript/megnor/jquery.bxslider.min.js"></script>
+<script src="catalog/view/javascript/megnor/megnor.min.js"></script>
+<script src="catalog/view/javascript/megnor/jquery.custom.min.js"></script>
+<script src="catalog/view/javascript/megnor/jquery.formalize.min.js"></script>
+<script src="catalog/view/javascript/megnor/jquery.elevatezoom.min.js"></script>
+<script src="catalog/view/javascript/megnor/bootstrap-notify.min.js"></script>  
+<script src="catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js"></script>
+<script src="catalog/view/javascript/megnor/tabs.js"></script>
+<script src="catalog/view/javascript/megnor/jquery.hoverdir.js"></script>
+<script src="catalog/view/javascript/megnor/modernizr.js"></script>
+<script src="catalog/view/javascript/lightbox/lightbox-2.6.min.js"></script>
+
+<script>
+    (function () {
+      var feedToken = 'https://ig.instant-tokens.com/users/bc2afecf-30b2-4a91-b819-38edd295cd71/instagram/17841402307816714/token?userSecret=jird860sk2dgid0scrvj5';
+
+        fetch(feedToken).then(function(resp) {
+          return resp.json();
+        }).then(function (data) {
+          var feed = new Instafeed({
+            accessToken: data.Token, // Access token from json response
+            target: 'instafeed',
+            limit: 6,
+            template: '<div class="item instafeed-item-wrap"><a href="\{\{link\}\}"><figure data-src="\{\{image\}\}"></figure></a></div>',
+            after: function() {
+                // disable button if no more results to load
+                $('.instafeed-item-wrap figure').lazy();
+            },
+          });
+          feed.run();
+        }).catch(function (error) {
+          console.log(error);
+        });
+    
+    })();
+
+</script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+$('.instafeed-item-wrap').owlCarousel({
+		items: 6,
+		autoPlay: true,
+		singleItem: false,
+		navigation: true,
+		navigationText: ['<i class="prev fa fa-arrow-left"></i>', '<i class="next fa fa-arrow-right"></i>'],
+		pagination:false,
+		itemsDesktop: [1500, 5],
+ 		itemsDesktopSmall: [1200, 4],
+ 		itemsTablet: [991, 3],
+	itemsMobile: [767, 2]
+	});
+});	
+</script>
+
+
+<!-- ======= Quick view JS ========= -->
+<script> 
+
+function quickbox(){
+ if ($(window).width() > 767) {
+    $('.quick-view').magnificPopup({
+      type:'iframe',
+      delegate: 'a',
+      preloader: true,
+      tLoading: 'Loading image #%curr%...',
+    });
+ }  
+}
+jQuery(document).ready(function() {quickbox();});
+jQuery(window).resize(function() {quickbox();});
+
+</script>
+
+<!-- Megnor www.templatemela.com - End -->
+
+<script src="catalog/view/javascript/common.js"></script>
+<script>
+	// Can also be used with $(document).ready()
+	$(window).load(function() {		
+	  $("#spinner").fadeOut("slow");
+	});	
+</script>
+
+</head>
+
+{% if (column_left and column_right) %}
+{% set layoutclass = 'layout-3' %}
+{% elseif (column_left or column_right) %}
+{% if column_left %}
+{% set layoutclass = 'layout-2 left-col' %}
+{% elseif column_right %}
+{% set layoutclass = 'layout-2 right-col' %}
+{% endif %}
+{% else %}
+{% set layoutclass = 'layout-1' %}
+{% endif %}
+
+<body class="{{ class }} {{ " " }} {{ layoutclass }}">
+<div id="spinner"></div>
+<nav id="topbar_outer">
+  <div class="container">
+    <div class="row">
+    {{ header_top_left }}
+      <div class="header-nav-left">
+        <div class="header-compare">
+          <a href="{{ compare }}"  title="{{ text_compare }}">{{ text_compare }}</a>
+        </div>
+        <div class="lang-curr-wrapper">
+        {{ language }}
+        {{ currency }}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<header>
+  <div class="header-top">
+    <div class="container">
+      <div class="row">
+        <!-- <div class="header-left">
+        {{ headerleft }}
+        </div> -->
+        <div class="col-sm-4 header-logo">
+          <div id="logo">
+          {% if logo %}
+            <a href="{{ home }}">
+              <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
+            </a>
+          {% else %}
+            <h1><a href="{{ home }}">{{ name }}</a></h1>
+          {% endif %}
+          </div>
+        </div>
+        <div class="col-sm-4 header-search">
+          <div class="header-toggle"></div>{{ search }}
+        </div>
+        <div class="account">
+          <div class="header-wishlist">
+            <a href="{{ wishlist }}" id="wishlist-total">
+              <span>{{ text_wishlist }}</span>
+            </a>
+          </div>
+          <div class="dropdown myaccount">
+            <div class="topbar-link-wrapper">
+              <div class="header-menu-links">
+              {% if logged %}
+                {% set title_account_text = firstname ~ ' ' ~ lastname %}
+              {% else %}
+                {% set title_account_text = text_login %}
+              {% endif %}
+              </div>
+            </div>
+            <a href="{{ account }}" title="{{ title_account_text }}"></a>
+          </div>
+          <div class="col-sm-3 header_cart">{{ cart }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-bottom-cover">
+    <div class="header-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="header-center">
+            {{ menu }}
+          </div>
+          <div class="header-right">{{ header_top }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="content-top-breadcum">
+<div class="container">
+<div class="row">
+<div id="title-content"> 
+</div>
+</div>
+</div>
+</div>
+
+
+

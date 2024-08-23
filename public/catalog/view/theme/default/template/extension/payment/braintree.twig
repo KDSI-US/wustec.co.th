@@ -1,0 +1,364 @@
+<?php
+//==============================================================================
+// Braintree Payment Gateway Pro v2022-7-12
+// 
+// Author: Clear Thinking, LLC
+// E-mail: johnathan@getclearthinking.com
+// Website: http://www.getclearthinking.com
+// 
+// All code within this file is copyright Clear Thinking, LLC.
+// You may not copy or reuse code within this file without written permission.
+//==============================================================================
+?>
+
+<style type="text/css">
+	.buttons {
+		margin-top: 15px;
+	}
+	.braintree-delete-confirmation {
+		font-size: 14px;
+	}
+	.braintree-form__hosted-field {
+		border: 1px solid #CCC !important;
+		border-radius: 5px;
+	}
+	div[data-braintree-id="save-card-field-group"] label {
+		cursor: pointer;
+		width: 100px;
+	}
+	div[data-braintree-id="save-card-field-group"] input {
+		cursor: pointer;
+	}
+	<?php if ($settings['dark_mode']) { ?>
+		.braintree-dropin, .braintree-dropin div, .braintree-dropin div:hover {
+				background: #000 !important;
+				border-color: #333 !important;
+				color: #DDD !important;
+		}
+	<?php } ?>
+	<?php if (!empty($settings['additional_css'])) { ?>
+		<?php echo $settings['additional_css']; ?>
+	<?php } ?>
+</style>
+
+<div id="dropin">
+	<?php echo html_entity_decode($settings['text_loading_' . $language], ENT_QUOTES, 'UTF-8'); ?>
+</div>
+<div class="buttons">
+	<?php if (!empty($settings['badge_type'])) { ?>
+		<div class="pull-left">
+			<a target="_blank" href="https://<?php echo ($settings['server_mode'] == 'production') ? 'www' : 'sandbox'; ?>.braintreegateway.com/merchants/<?php echo $settings[$settings['server_mode'] . '_merchant_id']; ?>/verified">
+				<img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-<?php echo $settings['badge_type']; ?>.png" height="44px" border="0" />
+			</a>		
+		</div>
+	<?php } ?>
+	<div class="right pull-right">
+		<a id="button-confirm" disabled="disabled" class="<?php echo $settings['button_class']; ?>" style="<?php echo $settings['button_styling']; ?>">
+			<?php echo $settings['button_text_' . $language]; ?>
+		</a>
+	</div>
+</div>
+
+<script>
+	<?php if ($settings['server_mode'] == 'production') { ?>
+		if (window.location.protocol != 'https:') {
+			displayError('You are in LIVE mode but are not on a secure (https) connection! Payment info is not secure!');
+		}
+	<?php } ?>
+	
+	// Set up drop-in UI
+	$.getScript('https://js.braintreegateway.com/web/dropin/1.33.2/js/dropin.min.js', function(data) {
+		$('#dropin').empty();
+		$('#button-confirm').removeAttr('disabled');
+		
+		braintree.dropin.create({
+			authorization: '<?php echo $client_token; ?>',
+			container: '#dropin',
+			dataCollector: {
+				kount: true,
+				paypal: true,
+			},
+			locale: '<?php echo $locale; ?>',
+			translations: {
+				<?php echo $settings['translation_overrides_' . $language]; ?>
+			},
+			vaultManager: true,
+			
+			// Some styles that cannot be specified in the Drop-in UI are at the top of this file
+			// You can read more on styling customizations here:
+			// https://developers.braintreepayments.com/guides/drop-in/customization/javascript/v3#field-overrides
+			card: {
+				<?php if ($settings['store_payment_method'] == 'choice') { ?>
+					vault: {
+						allowVaultCardOverride: true,
+					},
+				<?php } ?>
+				overrides: {
+					styles: {
+						input: {
+							color: '<?php echo ($settings['dark_mode']) ? '#EEE !important' : 'black !important'; ?>',
+							'font-size': '16px',
+							'font-family': 'monospace',
+						},
+						'.invalid': {
+							color: 'red !important',
+						},
+						'.valid': {
+							color: 'green !important',
+						},
+					}
+				}
+			},
+			
+			<?php if ($settings['three_d_secure']) { ?>
+				threeDSecure: true,
+			<?php } ?>
+			
+			// Other payment methods
+			<?php if ($settings['applepay']) { ?>
+				applePay: {
+					buttonStyle: 'black', // valid values are "black", "white", and "white-outline"
+					displayName: '<?php echo $settings['applepay_label_' . $language]; ?>',
+					paymentRequest: {
+						total: {
+							label: '<?php echo $settings['applepay_label_' . $language]; ?>',
+							amount: '<?php echo $order_amount; ?>',
+						},
+						<?php if (!empty($settings['applepay_billing'])) { ?>
+							requiredBillingContactFields: ['postalAddress'],
+						<?php } ?>
+					},
+				},
+			<?php } ?>
+			
+			<?php if ($settings['googlepay']) { ?>
+				googlePay: {
+					googlePayVersion: 2,
+					merchantId: '<?php echo $settings['googlepay_merchant_id']; ?>',
+					transactionInfo: {
+						totalPriceStatus: 'FINAL',
+						totalPrice: '<?php echo $order_amount; ?>',
+						currencyCode: '<?php echo $currency; ?>',
+					},
+					<?php if (!empty($settings['googlepay_billing'])) { ?>
+						allowedPaymentMethods: [{
+							type: 'CARD',
+							parameters: {
+								billingAddressRequired: true,
+								billingAddressParameters: {
+									format: 'FULL'
+								}
+							}
+						}]
+					<?php } ?>
+				},
+			<?php } ?>
+			
+			<?php if ($settings['paypal']) { ?>
+				paypal: {
+					flow: '<?php echo $paypal_flow; ?>',
+					amount: '<?php echo $order_amount; ?>',
+					currency: '<?php echo $currency; ?>',
+					<?php if ($paypal_flow == 'vault' && !empty($order_info['shipping_firstname'])) { ?>
+						enableShippingAddress: true,
+						shippingAddressEditable: false,
+						shippingAddressOverride: {
+							recipientName:	'<?php echo $order_info['shipping_firstname'] . ' ' . $order_info['shipping_lastname']; ?>',
+							line1:			'<?php echo $order_info['shipping_address_1']; ?>',
+							<?php if ($order_info['shipping_address_2']) { ?>
+								line2:			'<?php echo $order_info['shipping_address_2']; ?>',
+							<?php } ?>
+							city:			'<?php echo $order_info['shipping_city']; ?>',
+							state:			'<?php echo $order_info['shipping_zone_code']; ?>',
+							postalCode:		'<?php echo $order_info['shipping_postcode']; ?>',
+							countryCode:	'<?php echo $order_info['shipping_iso_code_2']; ?>',
+							phone:			'<?php echo preg_replace('/^([A-Za-z]+)/', '', $order_info['telephone']); ?>',
+						},
+					<?php } ?>
+					// Styling options: https://developer.paypal.com/docs/archive/checkout/how-to/customize-button/#button-styles
+					buttonStyle: {
+						color: 'blue',
+						size: 'responsive',
+						tagline: false,
+					},
+				},
+			<?php } ?>
+			
+			<?php if ($settings['paypal_credit']) { ?>
+				paypalCredit: {
+					flow:	'<?php echo $paypal_flow; ?>',
+					amount: '<?php echo $order_amount; ?>',
+					currency: '<?php echo $currency; ?>',
+					<?php if (!empty($order_info['shipping_firstname'])) { ?>
+						enableShippingAddress: true,
+						shippingAddressEditable: false,
+						shippingAddressOverride: {
+							recipientName:	'<?php echo $order_info['shipping_firstname'] . ' ' . $order_info['shipping_lastname']; ?>',
+							line1:			'<?php echo $order_info['shipping_address_1']; ?>',
+							<?php if ($order_info['shipping_address_2']) { ?>
+								line2:			'<?php echo $order_info['shipping_address_2']; ?>',
+							<?php } ?>
+							city:			'<?php echo $order_info['shipping_city']; ?>',
+							state:			'<?php echo $order_info['shipping_zone_code']; ?>',
+							postalCode:		'<?php echo $order_info['shipping_postcode']; ?>',
+							countryCode:	'<?php echo $order_info['shipping_iso_code_2']; ?>',
+							phone:			'<?php echo preg_replace('/^([A-Za-z]+)/', '', $order_info['telephone']); ?>',
+						},
+					<?php } ?>
+					// Styling options: https://developer.paypal.com/docs/archive/checkout/how-to/customize-button/#button-styles
+					buttonStyle: {
+						size: 'responsive',
+						tagline: false,
+					},
+				},
+			<?php } ?>
+			
+			<?php if ($settings['venmo']) { ?>
+				venmo: {
+					allowNewBrowserTab: false,
+				},
+			<?php } ?>
+			
+		}, function(createErr, dropinInstance) {
+			if (createErr) {
+				console.log(createErr);
+				displayError(createErr.message + ' ' + (createErr._braintreeWebError != null ? createErr._braintreeWebError.message : ''));
+			} else {
+				dropinInstance.on('paymentOptionSelected', function(event) {
+					$('.alert').remove();
+				});
+				
+				//$('input[data-braintree-id="save-card-input"]').removeAttr('checked');
+				
+				/*
+				dropinInstance.on('paymentMethodRequestable', function(event) {
+						if (event.paymentMethodIsSelected && event.type != 'CreditCard') {
+								$('#button-confirm').click();
+						}
+				});
+				*/
+				
+				$('#button-confirm').click(function(){
+					displayWait();
+					dropinInstance.requestPaymentMethod(
+						<?php if ($settings['three_d_secure']) { ?>
+							{
+								threeDSecure: {
+									amount: '<?php echo $order_amount; ?>',
+									email: '<?php echo $order_info['email']; ?>',
+									billingAddress: {
+										givenName: '<?php echo $order_info['payment_firstname']; ?>',
+										surname: '<?php echo $order_info['payment_lastname']; ?>',
+										phoneNumber: '<?php echo preg_replace('/\D/', '', $order_info['telephone']); ?>',
+										streetAddress: '<?php echo $order_info['payment_address_1']; ?>',
+										extendedAddress: '<?php echo $order_info['payment_address_2']; ?>',
+										locality: '<?php echo $order_info['payment_city']; ?>',
+										region: '<?php echo $order_info['payment_zone_code']; ?>',
+										postalCode: '<?php echo $order_info['payment_postcode']; ?>',
+										countryCodeAlpha2: '<?php echo $order_info['payment_iso_code_2']; ?>',
+									}
+								}
+							},
+						<?php } ?>
+					function(requestErr, payload) {
+						if (requestErr) {
+							console.log(requestErr);
+							dropinInstance.clearSelectedPaymentMethod();
+							displayError(requestErr.message + ' ' + (requestErr._braintreeWebError != null ? requestErr._braintreeWebError.message : ''));
+						} else {
+							chargeNonce(payload);
+						}
+					});
+				});
+			}
+		})
+	});
+	
+	// Utility functions
+	var errorOverrides = {
+		<?php foreach ($error_overrides as $replace => $with) { ?>
+			'<?php echo trim($replace); ?>': '<?php echo str_replace("'", "\'", html_entity_decode(trim($with), ENT_QUOTES, 'UTF-8')); ?>',
+		<?php } ?>
+	}
+	
+	function displayWait() {
+		$('#button-confirm').attr('disabled', 'disabled').css('pointer-events', 'none');
+		$('.alert').remove();
+		$('#dropin').after('<div class="attention alert alert-warning" style="display: none; margin-top: 20px;"><i class="fa fa-spinner fa-spin"></i> &nbsp; <?php echo str_replace("'", "\'", html_entity_decode($settings['text_please_wait_' . $language], ENT_QUOTES, 'UTF-8')); ?></div>');
+		$('.attention').fadeIn();
+	}
+	
+	function displayError(message) {
+		if (typeof triggerLoadingOff == 'function') triggerLoadingOff(); // Journal fix
+		$('#button-confirm').removeAttr('disabled').css('pointer-events', 'auto');
+		$('.alert').remove();
+		if (message == 'No payment method is available.') return;
+		if (errorOverrides[message]) message = errorOverrides[message];
+		$('#dropin').after('<div class="warning alert alert-danger" style="display: none; margin-top: 20px;"><i class="fa fa-exclamation-triangle"></i> &nbsp; ' + message.trim() + '</div>');
+		$('.warning').fadeIn();
+	}
+	
+	// Charge function
+	function chargeNonce(payload) {
+		$.ajax({
+			type: 'POST',
+			url: 'index.php?route=<?php echo $settings['extension_route']; ?>/chargeNonce',
+			data: {nonce: payload.nonce, device_data: payload.deviceData},
+			success: function(error) {
+				if (error.trim()) {
+					displayError(error);
+				} else {
+					completeOrder();
+				}
+			},
+			error: function(xhr, status, error) {
+				displayError(xhr.responseText ? xhr.responseText : error);
+			}
+		});
+	}
+	
+	// Completion functions
+	function completeOrder() {
+		<?php if (empty($settings['advanced_error_handling'])) { ?>
+			location = '<?php echo $checkout_success; ?>';
+		<?php } else { ?>
+			$.ajax({
+				cache: false,
+				url: 'index.php?route=<?php echo $settings['extension_route']; ?>/completeOrder',
+				success: function(error) {
+					if (error.trim()) {
+						completeWithError(error.trim());
+					} else {
+						location = '<?php echo $checkout_success; ?>';
+					}
+				},
+				error: function(xhr, status, error) {
+					completeWithError(xhr.responseText ? xhr.responseText : error);
+				}
+			});
+		<?php } ?>
+	}
+	
+	function completeWithError(errorMessage) {
+		$.ajax({
+			type: 'POST',
+			url: 'index.php?route=<?php echo $settings['extension_route']; ?>/completeWithError',
+			data: {error_message: errorMessage},
+			success: function(error) {
+				if (error.trim()) {
+					triggerFatalError(error);
+				} else {
+					location = '<?php echo $checkout_success; ?>';
+				}
+			},
+			error: function(xhr, status, error) {
+				triggerFatalError(xhr.responseText ? xhr.responseText : error);
+			}
+		});
+	}
+	
+	function triggerFatalError(errorMessage) {
+		$('.alert').remove();
+		$('#dropin').after('<div class="warning alert alert-danger"><i class="fa fa-exclamation-triangle"></i> <strong>Fatal Error:</strong> Your payment was completed successfully, but the system encountered a fatal error when trying to complete your order. Please do not resubmit your order! Instead, please <a target="_blank" href="index.php?route=information/contact">contact the store administrator</a> with your order number (#<?php echo $order_info['order_id']; ?>) and the following error message:<br /><br />' + errorMessage.trim() + '</div>');
+	}
+</script>

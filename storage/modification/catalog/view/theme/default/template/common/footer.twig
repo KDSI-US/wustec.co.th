@@ -1,0 +1,170 @@
+
+            {{ sweetalert_fragment_in_header }}
+            
+<footer>{{ git_hidden_tag }}
+  <div class="container">
+    <div class="row">
+      {% if informations %}
+      <div class="col-sm-3">
+        <h5>{{ text_information }}</h5>
+        <ul class="list-unstyled">
+         {% for information in informations %}
+          <li><a href="{{ information.href }}">{{ information.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      <div class="col-sm-3">
+        <h5>{{ text_service }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ contact }}">{{ text_contact }}</a></li>
+          <li><a href="{{ return }}">{{ text_return }}</a></li>
+          <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+
+			{% if ticketsetting_status is not empty %}
+			<li><a href="{{ mpsupport }}">{{ menu_support }}</a></li>
+			{% endif %}
+			
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <h5>{{ text_extra }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
+          <li><a href="{{ voucher }}">{{ text_voucher }}</a></li>
+          <li><a href="{{ affiliate }}">{{ text_affiliate }}</a></li>
+          <li><a href="{{ special }}">{{ text_special }}</a></li>
+
+                {% if galleria_href %}<li><a href="{{ galleria_href }}">{{ text_galleria }}</a></li>{% endif %}
+            
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <h5>{{ text_account }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ account }}">{{ text_account }}</a></li>
+          <li><a href="{{ order }}">{{ text_order }}</a></li>
+          <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+          <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+
+{% if module_footer_social_icons_status %}
+
+	<link href="/admin/view/stylesheet/footer_social_icons.css" rel="stylesheet" type="text/css" />
+
+	{% if facebook_link %}
+	<a href="{{ facebook_link }}" title="Facebook" target="_blank">
+		<i class="social-icon fa fa-facebook-square fa-2x" style="color: #4267b2;" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if twitter_link %}
+	<a href="{{ twitter_link }}" title="Twitter" target="_blank">
+		<i style="color: #38A1F3;" class="social-icon fa fa-twitter-square" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if instagram_link %}
+	<a href="{{ instagram_link }}" title="Instagram" target="_blank">
+		<i style="color: #e4405f;"class="social-icon fa fa-instagram fa-2x" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if youtube_link %}
+	<a href="{{ youtube_link }}" title="Youtube" target="_blank">
+		<i style="color: #ED3833;" class="social-icon fa fa-youtube-square" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if googlep_link %}
+	<a href="{{ googlep_link }}" title="Google+" target="_blank">
+		<i style="color: #ED3833;" class="social-icon fa fa-google-plus-square" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if pinterest_link %}
+	<a href="{{ pinterest_link }}" title="Pinterest" target="_new">
+		<i style="color: #BD081C;" class="social-icon fa fa-pinterest" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if linkedin_link %}
+	<a href="{{ linkedin_link }}" title="Linkedin" target="_new">
+		<i style="color: #0077B5;" class="social-icon fa fa-linkedin-square" aria-hidden="true"></i>
+	</a> 
+	{% endif %} 
+
+	{% if whatsapp_no %}
+	<a href="//api.whatsapp.com/send?phone={{ whatsapp_no }}&amp;text=Hey!" target="_blank">
+		<i style="color: #43d854;" class="social-icon fa fa-whatsapp fa-2x" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+
+	{% if blog_link %}
+	<a href="{{ blog_link }}" title="Blog" target="_blank">
+		<i style="color: #00405d;" class="social-icon fa fa-wordpress" aria-hidden="true"></i>
+	</a> 
+	{% endif %}
+			 
+{% endif %}
+			
+    <p>{{ powered }}</p>
+  </div>
+</footer>
+
+<script src="/catalog/view/javascript/back_to_top.js"></script>
+			
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<!--
+OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
+Please donate via PayPal to donate@opencart.com
+//-->
+
+			{% if at_js %}
+<script>
+{{ at_js }}
+</script>
+			{% endif %}
+			
+
+{% if page_route %}
+<script>
+function getURLVar(key) {
+    var value = [];
+    var query = String(document.location).split('?');
+
+    if (query[1]) {
+        var part = query[1].split('&');
+
+        for (i = 0; i < part.length; i++) {
+            var data = part[i].split('=');
+
+            if (data[0] && data[1]) {
+                value[data[0]] = data[1];
+            }
+        }
+
+        if (value[key]) {
+            return value[key];
+        } else {
+            return '';
+        }
+    } else {
+        // URL alias
+        if (key == 'route') {
+            return '{{ page_route }}';
+        }
+    }
+}
+</script>
+{% endif %}
+            
+</body></html>

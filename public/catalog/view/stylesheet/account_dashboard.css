@@ -1,0 +1,639 @@
+.dashboard .panel-default {
+	border: 2px solid #1e91cf;
+	border-top: 2px solid #1e91cf;
+}
+.dashboard {
+	line-height: 22px;
+}
+.dashboard .dash-cols .tile-heading {
+	padding: 7px 10px;
+	border-bottom: 1px solid #fff;
+	background: #e0e0e0;
+	color: #434343;
+	position: relative;
+}
+.tile .tile-body h2 {
+	font-size: 70px;
+	margin: 31px 0;
+	color: #e0e0e0;
+	font-weight: normal;
+	line-height: 40px;
+}
+.dashboard .panel-heading {
+	padding: 7px 10px;
+	border-bottom: 1px solid #fff;
+	background: #1e91cf;
+	color: #fff;
+	border-radius: 0;
+}
+.dashboard .tile-heading i {
+	display: inline-block;
+	vertical-align: middle;
+	position: absolute;
+	right: 15px;
+	line-height: 24px;
+}
+.dashboard .tile-one {
+	border: 1px solid #ddd;
+}
+.dashboard .tile-footer {
+	background: rgba(255, 255, 255, 0.1);
+}
+.dashboard .tile {
+	border-radius: 2px;
+	margin-bottom: 15px;
+}
+.dashboard .tile-heading {
+	background: none;
+}
+.dashboard .tile-heading span {
+	vertical-align: middle;
+	display: inline-block;
+	width: 80%;
+	text-transform: uppercase;
+	font-size: 15px;
+	font-weight: bold;
+}
+.dashboard .panel ul li:last-child {
+	border: none;
+}
+.dashboard .panel ul li {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #1e91cf;
+	margin-bottom: 10px;
+}
+.dashboard .panel ul li a {
+	font-size: 16px;
+}
+.dashboard .view-all {
+	padding: 10px 0;
+}
+.dashboard .view-all a {
+	font-size: 12px;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #666666;
+}
+.profile-section {
+	border: 1px solid #eee;
+	border-radius: 3px;
+	margin-bottom: 15px;
+	border-top: 3px solid #666666;
+	width: 100%;
+	display: inline-block;
+}
+
+/*
+.profile-section .user-icon i {
+  font-size: 60px;
+  line-height: 90px;
+}
+.profile-section .user-icon{
+  border: 1px solid #666;
+  border-radius: 50%;
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+} 
+*/
+
+.profile-section .user-image img {
+	display: inline-block;
+	border: 2px solid #ddd;
+}
+.profile-section .user-image {
+	text-align: center;
+	padding: 25px;
+}
+.profile-section .user-name span {
+	display: inline-block;
+	line-height: normal;
+	padding-bottom: 5px;
+	margin-top: 40px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.profile-links a {
+	display: block;
+	background: #f5f5f5;
+	padding: 28px 0;
+	text-align: center;
+	color: #666;
+}
+.profile-links a + a {
+	border-top: 2px solid #ddd;
+}
+.profile-links a i {
+	transition: all 0.3s ease;
+}
+.profile-section .info {
+	font-size: 14px;
+	margin-top: 11px;
+}
+/*.account-links li a:hover i {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 
+  filter: grayscale(100%);
+}*/
+/*.account-links li i {
+  display: inline-block;
+  -webkit-filter: grayscale(0); /* Safari 6.0 - 9.0 
+  filter: grayscale(0);
+}*/
+.account-links li .icon {
+	display: inline-block;
+	min-height: 92px;
+	vertical-align: middle;
+	background: #fff;
+}
+.account-links li img {
+	margin-top: 22px;
+	border-radius: 50%;
+}
+.account-links li i {
+	font-size: 40px;
+	width: 60px;
+	height: 65px;
+	display: inline-block;
+	color: #666;
+	padding-top: 22px;
+}
+.account-links li span {
+	display: block;
+	font-size: 12px;
+	padding: 0 5px;
+}
+.account-links li {
+	margin-bottom: 15px;
+	text-align: center;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.account-links li a {
+	display: block;
+	border: 1px solid #ddd;
+}
+.account-links {
+	margin-bottom: 0;
+}
+.dashboard .grey-table {
+	width: 100%;
+	display: inline-block;
+}
+.dashboard .grey-table h3 {
+	border-top: 3px solid #767676;
+	margin-top: 0;
+	background: #e0e0e0;
+	color: #434343;
+	font-size: 17px;
+	padding: 10px;
+}
+.dashboard .grey-table h3 a {
+	color: #434343;
+	font-size: 12px;
+	padding-top: 3px;
+}
+.dashboard .grey-table .table {
+	margin-bottom: 0;
+}
+.profile-section .user-icon i {
+	color: #666666;
+}
+.profile-section .user-icon {
+	border: 2px solid #666666;
+	border-radius: 50%;
+	display: inline-block;
+	margin-top: 30px;
+}
+@media (min-width: 768px) {
+	.dashboard .tile-heading i {
+		font-size: 22px;
+	}
+	.dashboard .flex {
+		margin-bottom: 15px;
+	}
+	.profile-section .user-image {
+		text-align: center;
+		padding: 38px 10px;
+	}
+	.profile-section .user-name span {
+		font-size: 20px;
+	}
+	.profile-links a i {
+		font-size: 34px;
+	}
+	.account-links li .icon {
+		width: 28.8%;
+	}
+	.account-links li span {
+		width: 69%;
+	}
+	.profile-section .user-icon i {
+		font-size: 55px;
+		line-height: 95px;
+	}
+	.profile-section .user-icon {
+		height: 100px;
+		width: 100px;
+	}
+}
+@media (min-width: 980px) {
+	.both-account-links .account-links .col-sm-6 {
+		width: 50%;
+	}
+	.both-account-links .tile-cols .col-md-6 {
+		width: 100%;
+	}
+}
+@media (min-width: 1200px) {
+	.dashboard .flex {
+		display: flex;
+	}
+}
+@media (max-width: 767px) {
+	.dashboard .tile-heading i {
+		font-size: 16px;
+	}
+	.dashboard .flex {
+		margin-bottom: 15px;
+	}
+	.profile-section .user-image {
+		text-align: center;
+		padding: 5px;
+		margin-top: 30px;
+	}
+	.profile-section .user-name span {
+		font-size: 16px;
+	}
+	.profile-links a i {
+		font-size: 24px;
+	}
+	.account-links li .icon {
+		width: 100%;
+	}
+	.account-links li span {
+		width: 100%;
+		min-height: 60px;
+		padding-top: 4px;
+		padding-bottom: 4px;
+	}
+	.profile-section .user-icon i {
+		font-size: 40px;
+		line-height: 80px;
+	}
+	.profile-section .user-icon {
+		height: 90px;
+		width: 90px;
+	}
+}
+.account-links li .wrap {
+	background: #666666;
+}
+.account-links li span {
+	font-size: 14px;
+	color: #ffffff;
+	display: inline-block;
+	vertical-align: middle;
+}
+#content .col-lg-2:nth-child(6n + 1),
+#content .col-lg-2:nth-child(6n + 1),
+#content .col-lg-3:nth-child(4n + 1),
+#content .col-lg-4:nth-child(3n + 1),
+#content .col-lg-6:nth-child(2n + 1) {
+	clear: none;
+}
+#content .col-md-2:nth-child(6n + 1),
+#content .col-md-2:nth-child(6n + 1),
+#content .col-md-3:nth-child(4n + 1),
+#content .col-md-4:nth-child(3n + 1),
+#content .col-md-6:nth-child(2n + 1) {
+	clear: none;
+}
+.account-links.list-inline > li:first-child {
+	padding-left: 15px;
+}
+.journal-dashboard .account-links.list-inline > li:first-child {
+	padding-left: 10px;
+}
+
+/** Template 2 Start **/
+.dash-template2 .dash-cols .tile-heading {
+	width: 30%;
+	text-align: center;
+}
+.dash-template2 .tile .tile-body {
+	width: 70%;
+}
+.dash-template2 .tile .tile-body h1 {
+	margin: 10px 0;
+	font-size: 15px;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #666666;
+}
+.dash-template2 .tile .tile-body h2 {
+	margin: 10px 0;
+	font-size: 40px;
+}
+.dash-template2 .flex {
+	display: flex;
+}
+.dash-template2 .tile-heading i {
+	font-size: 40px;
+	position: relative;
+	right: auto;
+	padding-top: 40px;
+	line-height: normal;
+}
+.dash-template2 .account-links li .icon {
+	width: 60px;
+	min-height: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 15px;
+	border: 1px solid #666;
+}
+.dash-template2 .account-links li span {
+	width: 100%;
+	display: block;
+	margin: 15px 0;
+	color: #666;
+}
+.dash-template2 .account-links li i {
+	font-size: 26px;
+	width: 52px;
+	height: 52px;
+	padding-top: 15px;
+}
+.dash-template2 .account-links li .wrap {
+	background: none;
+}
+.dash-template2 .account-links li img {
+	margin-top: 2px;
+}
+/** Template 2 End **/
+
+/** Template 3 Start **/
+.dash-template3 .dash-cols .tile-heading {
+	width: 30%;
+	text-align: center;
+}
+.dash-template3 .tile .tile-body {
+	width: 70%;
+}
+.dash-template3 .tile .tile-body h1 {
+	margin: 5px 0;
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #666666;
+}
+.dash-template3 .tile .tile-body h2 {
+	margin: 0px 0;
+	font-size: 32px;
+}
+.dash-template3 .flex {
+	display: flex;
+}
+.dash-template3 .view-all a {
+	font-size: 12px;
+}
+.dash-template3 .tile-heading i {
+	font-size: 35px;
+	position: relative;
+	right: auto;
+	padding-top: 20px;
+	line-height: normal;
+}
+.dash-template3 .view-all {
+	padding: 5px 0;
+}
+.dash-template3 .account-links li .icon {
+	width: 60px;
+	min-height: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-top: 15px;
+}
+.dash-template3 .account-links li span {
+	display: block;
+	margin: 15px auto;
+	min-height: 45px;
+}
+.journal-dashboard.dash-template1 .account-links li i {
+	font-size: 40px;
+}
+.dash-template3 .account-links li i {
+	font-size: 26px;
+	width: 52px;
+	height: 52px;
+	padding-top: 15px;
+}
+.dash-template3 .account-links li .wrap {
+	background: none;
+}
+.dash-template3 .account-links li img {
+	margin-top: 2px;
+}
+.dash-template3 .profile-links a {
+	width: 50%;
+	float: left;
+	padding: 5px 0;
+	border-top: 2px solid #ddd;
+}
+.dash-template3 .profile-links a i {
+	font-size: 24px;
+	line-height: 28px;
+}
+.dash-template3 .profile-links a + a {
+	border-left: 2px solid #ddd;
+}
+.dash-template3 .profile-section .user-name span {
+	margin-top: 0px;
+}
+.dash-template3 .account-links li span {
+	color: #666;
+}
+.dash-template3 .account-links li .icon {
+	border: 1px solid #666;
+}
+.dash-template3 .profile-section .info {
+	margin-bottom: 16px;
+}
+.dash-template3 .profile-section .user-icon {
+	margin: 46px 0;
+}
+.dash-template3 .profile-section .user-image {
+	padding: 44px 10px;
+}
+@media (min-width: 768px) {
+	.dash-template3 .account-links li span {
+		width: 83%;
+	}
+}
+@media (min-width: 980px) {
+	.dash-template3 .account-links li span {
+		width: 83%;
+	}
+}
+@media (min-width: 1200px) {
+	.dash-template3 .account-links li span {
+		width: 65%;
+	}
+}
+/** Template 3 End **/
+
+/** Journal Theme Css**/
+.img-circle {
+	border-radius: 50%;
+}
+.img-responsive {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+.text-center {
+	text-align: center;
+}
+.journal-dashboard .col-xs-12 {
+	padding: 0 10px;
+}
+.journal-dashboard .profile-section .col-xs-12 {
+	padding: 0;
+}
+.journal-dashboard .list-inline {
+	list-style: none;
+	padding: 0;
+	margin: 0 -10px;
+}
+.journal-dashboard .profile-links a i {
+	font-size: 40px;
+}
+.journal-dashboard b {
+	font-weight: normal;
+}
+.journal-dashboard .grey-table h3 {
+	margin-bottom: 15px;
+}
+.journal-dashboard .tile-cols {
+	margin: 0 -10px;
+}
+.journal-dashboard .account-links li .icon {
+	margin: 3px 0;
+}
+.journal-dashboard .grey-table .list td {
+	text-align: center;
+}
+.journal-dashboard.dash-template2 .account-links li .icon {
+	margin-top: 15px;
+}
+
+.journal-dashboard.dash-template3 .j-row {
+	/* margin: 0 -15px; */
+	margin: 0 -10px;
+}
+.journal-dashboard.dash-template3 .j-row > [class^="col-"],
+.journal-dashboard.dash-template3 .j-row > [class*=" col-"] {
+	/* padding-right: 15px;
+  padding-left: 15px; */
+
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.journal-dashboard.dash-template3 .account-links li .icon {
+	margin-top: 15px;
+}
+.journal-dashboard.dash-template3 .profile-links a i {
+	font-size: 24px;
+	line-height: 28px;
+}
+.journal-dashboard .account-links {
+	/*display: inline-block;*/
+	display: block;
+}
+
+.journal-dashboard .account-links li {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+@media (min-width: 768px) {
+	.journal-dashboard .profile-links a i {
+		font-size: 34px;
+		line-height: 45px;
+	}
+	.visible-xs {
+		display: none;
+	}
+	.journal-dashboard .account-links li span {
+		width: 68%;
+	}
+	.journal-dashboard.dash-template3 .account-links li span {
+		width: 88%;
+	}
+	.journal-dashboard.dash-template2 .account-links li span {
+		margin: 15px 0;
+		display: block;
+		width: 100%;
+	}
+}
+@media (min-width: 980px) {
+	.journal-dashboard.dash-template3 .account-links li span {
+		width: 61%;
+	}
+}
+@media (min-width: 1200px) {
+	.journal-dashboard.dash-template3 .account-links li span {
+		width: 56%;
+	}
+}
+@media (max-width: 767px) {
+	.profile-links a + a {
+		border-left: 2px solid #ddd;
+	}
+	.journal-dashboard .profile-links a i {
+		font-size: 22px;
+		line-height: 28px;
+	}
+	.account-links li span {
+		width: 63%;
+		padding-top: 9px;
+	}
+	.profile-section {
+		text-align: center;
+	}
+	.profile-links a {
+		width: 50%;
+		float: left;
+		padding: 5px 0;
+		border-top: 2px solid #ddd;
+		margin-top: 10px;
+	}
+	.hidden-xs {
+		display: none;
+	}
+	.visible-xs {
+		display: block;
+	}
+	.journal-dashboard .account-links li span {
+		width: 70%;
+	}
+	.journal-dashboard.dash-template2 .account-links li span {
+		margin: 15px auto;
+		display: block;
+		width: 78%;
+	}
+}
+@media only screen and (max-width: 470px) {
+	.journal-dashboard .profile-links a {
+		width: 50%;
+		float: left;
+		padding: 5px 0;
+		border-top: 2px solid #ddd;
+		margin-top: 10px;
+	}
+}
+/** Journal Theme Css**/
+
+.dashboard .col-lg-4 .tile-body h2 {
+	font-size: 27px;
+}
+

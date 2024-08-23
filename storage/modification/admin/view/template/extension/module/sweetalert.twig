@@ -1,0 +1,193 @@
+{{ header }}{{ git_hidden_tag }}{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="tv-module-form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }} 1.1.1</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    {% if error.error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error.error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+        </div>
+    
+        <div class="panel-body">
+
+            <form action="{{ action }}" id="tv-module-form" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" style="padding-top: 0"
+                           for="sweetalert_cfg_extension_status">Module status</label>
+                    <div class="col-sm-9">
+                        <div style="border: none; box-shadow: none;">
+
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_extension_status"
+                                       value="1" {{ sweetalert_cfg_extension_status ? 'checked' : '' }}
+                                       id="sweetalert_cfg_extension_status"/>
+                                {{ "Enabled" }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_extension_status"
+                                       value="0" {{ sweetalert_cfg_extension_status ? '' : 'checked' }} />
+                                {{ "Disabled" }}
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="sweetalert_cfg_auto_close_seconds">
+                        Auto close the popup after X seconds
+                    </label>
+                    <div class="col-sm-9">
+                        <div style="border: none; box-shadow: none;">
+
+                            <input type="text" name="sweetalert_cfg_auto_close_seconds" value="{{ sweetalert_cfg_auto_close_seconds }}" class="form-control" style="width: 99px" />
+
+                        </div>
+                        <small>Empty or Zero (0) means: do not close the popup automatically</small>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="sweetalert_cfg_allow_outside_click" style="padding-top: 0">
+                        Allow Outside Click
+                    </label>
+                    <div class="col-sm-9">
+                        <div style="border: none; box-shadow: none;">
+
+                            {% if sweetalert_cfg_allow_outside_click %}
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_allow_outside_click" value="true" checked="checked" id="sweetalert_cfg_allow_outside_click" />
+                                {{ text_yes }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_allow_outside_click" value="false" />
+                                {{ text_no }}
+                            </label>
+                            {% else %}
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_allow_outside_click" value="true" />
+                                {{ text_yes }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_allow_outside_click" value="false" checked="checked" />
+                                {{ text_no }}
+                            </label>
+                            {% endif %}
+
+                        </div>
+                        <small>If set to "No", the user can't dismiss the modal by clicking outside it.</small>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="sweetalert_cfg_apply_on_product_page_only" style="padding-top: 0">
+                        Show the popup on the product page only?
+                    </label>
+                    <div class="col-sm-9">
+                        <div style="border: none; box-shadow: none;">
+
+                            {% if sweetalert_cfg_apply_on_product_page_only %}
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_apply_on_product_page_only" value="1" checked="checked" id="sweetalert_cfg_apply_on_product_page_only" />
+                                {{ text_yes }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_apply_on_product_page_only" value="0" />
+                                {{ text_no }}
+                            </label>
+                            {% else %}
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_apply_on_product_page_only" value="1" />
+                                {{ text_yes }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_apply_on_product_page_only" value="0" checked="checked" />
+                                {{ text_no }}
+                            </label>
+                            {% endif %}
+
+                        </div>
+                        <small>If checked, the sweet alert popup won't be used when customer adds items to cart from the home page for example</small>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="sweetalert_cfg_log" style="padding-top: 0">Enable verbose logs</label>
+                    <div class="col-sm-9">
+                        <div style="border: none; box-shadow: none;">
+
+                            {% if sweetalert_cfg_log %}
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_log" value="1" checked="checked" id="sweetalert_cfg_log" />
+                                {{ text_yes }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_log" value="0" />
+                                {{ text_no }}
+                            </label>
+                            {% else %}
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_log" value="1" />
+                                {{ text_yes }}
+                            </label>
+                            <label style="margin-right: 11px;">
+                                <input style="vertical-align: top;" type="radio" name="sweetalert_cfg_log" value="0" checked="checked" />
+                                {{ text_no }}
+                            </label>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>            
+            
+        </div><!-- .panel-body -->
+     </div>
+  </div><!-- .container-fluid -->
+  
+  
+  <div class="page-headerX">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="tv-module-form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      
+      <!-- include_social_login_fragment_b0c4d -->
+          
+    </div>
+  </div>
+  
+  
+</div><!-- #content -->
+
+{{ footer }}
+
+<!-- 
+<script type="text/javascript" src="view/javascript/script.js?v=1"></script>
+ -->

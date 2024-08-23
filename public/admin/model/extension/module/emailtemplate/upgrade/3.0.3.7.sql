@@ -1,0 +1,1 @@
+ALTER TABLE `oc_emailtemplate_config` ADD `emailtemplate_config_showcase_description` SMALLINT(6) NULL DEFAULT '0' AFTER `emailtemplate_config_showcase_related`;

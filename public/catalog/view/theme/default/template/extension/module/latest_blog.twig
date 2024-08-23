@@ -1,0 +1,70 @@
+<h3>{{ heading_title }}</h3>
+		{% if limit_row == 1 %}
+		 {% set listing_row = 'col-sm-12' %}
+		 {% elseif limit_row == 2 %}
+		 {% set listing_row = 'col-sm-6' %}
+		 {% elseif limit_row == 3 %}
+		 {% set listing_row = 'col-sm-4' %}
+		 {% elseif limit_row == 4 %}
+		 {% set listing_row = 'col-sm-3' %}
+		 {% endif %}
+	<div class="row layout2 {% if show_slider %}owl-carousel" id="latest_slider"{% else %}"{% endif %}>
+		<!-- Blog Content Start --->
+		{% for blog in blogs %}
+			<div class="{% if show_slider %}item{% else %} {{ listing_row }} {% endif %} blogs_post">
+				{% if showtitle %}
+					<a href="{{ blog.href }}"><h3>{{ blog.name }}</h3></a>
+				{% endif %}
+				<hr />
+				{% if show_publishdate or show_author %}
+				<p class="post_date_blog">
+					{% if show_author %}
+					<span class="posted_by">{{ blogsetting_postby }}</span>
+					<span><a>{{ blog.username }}</a></span>
+					{% endif %}
+					{% if show_publishdate %}
+					<span class="date_blog">{{ blogsetting_on }} <a>{{ blog.date }}</a></span>
+					{% endif %}
+				</p>
+				{% endif %}
+				
+				{% if show_thumb %}
+				{% if blog.post_type ==1 %}
+						<div class="image">
+						   <a href="{{ blog.href }}"><img src="{{ blog.image }}" class="img-responsive" width="100%" alt="" /></a>
+						</div>
+					 {% endif %}
+					{% if blog.post_type ==2 %}
+					<div class="image">
+						{% if blog.video_url %}
+						  <div class="videoWrapper">
+							<iframe width="{{ thumbsize_w }}" height="{{ thumbsize_h }}" src="{{ blog.video_url }}" frameborder="0" allowfullscreen></iframe>
+						 </div>
+						 {% endif %}
+					</div>
+					 {% endif %}
+				 {% endif %}
+				{% if show_totalview or show_like or comment %}
+					<div class="view_like">
+						{% if show_totalview %}<span><i class="fa fa-eye"></i> {{ blog.viewed }}</span>{% endif %}
+						{% if show_like %}<span><i class="fa fa-heart"></i> {{ blog.likes }}</span>{% endif %}
+						{% if comment %}<span><i class="fa fa-comments"></i> {{ blog.comments }}</span>{% endif %}
+					</div>
+					{% endif %}
+				
+				{% if show_short_description %}
+						<p class="description">{{ blog.short_description }}</p>
+					{% endif %}
+				
+				<a href="{{ blog.href }}">{{ blogsetting_readmore }}</a>
+			</div>
+		{% endfor %}
+	</div>
+<script type="text/javascript"><!--
+$('#latest_slider').owlCarousel({
+	items: {{ limit_row }},
+	navigation: true,
+	navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
+	pagination: false
+});
+--></script>

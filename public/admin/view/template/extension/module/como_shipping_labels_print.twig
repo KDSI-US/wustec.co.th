@@ -1,0 +1,54 @@
+{% if quickprint %}
+<script type="text/javascript">
+$(window).on('load', function () {
+    if (typeof jsPrintSetup !== 'undefined') {
+        // Firefox add-on is available
+        if (jsPrintSetup.getPermissions() == jsPrintSetup.JSPS_DENY_ACTION) {
+            jsPrintSetup.askUserPermissions(null);
+        }
+        // set printer if specified
+        var oldPrinter = '';
+        {% if printsetup_printer %}
+            var printer = '{{ printsetup_printer }}'.trim();
+            var printers = jsPrintSetup.getPrintersList().split(',');
+            var isMac = navigator.platform.indexOf('Mac') > -1; // on Mac getPrintersList not working: https://github.com/edabg/jsprintsetup/wiki#getprinterslist
+            if (!isMac && $.inArray(printer, printers) == -1) {
+                var message = '{{ error_printermissing }}: ' + printer;
+                alert(message + '\n\n' + printers.join('\n'));
+            }
+            oldPrinter = jsPrintSetup.getPrinter();
+            jsPrintSetup.setPrinter(printer);
+        {% endif %}
+        // set page margins
+        jsPrintSetup.setOption('marginTop', 0);
+        jsPrintSetup.setOption('marginBottom', 0);
+        jsPrintSetup.setOption('marginLeft', 0);
+        jsPrintSetup.setOption('marginRight', 0);
+        // set empty page header
+        jsPrintSetup.setOption('headerStrLeft', '');
+        jsPrintSetup.setOption('headerStrCenter', '');
+        jsPrintSetup.setOption('headerStrRight', '');
+        // set empty page footer
+        jsPrintSetup.setOption('footerStrLeft', '');
+        jsPrintSetup.setOption('footerStrCenter', '');
+        jsPrintSetup.setOption('footerStrRight', '');
+        // set printer dialog
+        jsPrintSetup.clearSilentPrint();
+        jsPrintSetup.setSilentPrint({% if printsetup_silentprint %}true{% else %}false{% endif %});
+        // print
+        jsPrintSetup.printWindow(window)
+        //jsPrintSetup.print();
+        // return printing settings
+        setTimeout(function(){
+            jsPrintSetup.setSilentPrint(false);
+            if (oldPrinter) {
+                jsPrintSetup.setPrinter(oldPrinter);
+            }
+        }, 2000);
+    } else {
+        window.print();
+        //setTimeout('window.print()', 50);
+    }
+});
+</script>
+{% endif %}

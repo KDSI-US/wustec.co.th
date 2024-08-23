@@ -1,0 +1,6 @@
+<div class="mp-list-group">
+<h1>{{ heading_title }}</h1>
+  {% for href in hrefs %}
+   <a href="{{ href.href }}" class="list-group-item {% if href.selected %} active {% endif %}"><i class="fa fa-angle-right" aria-hidden="true"></i> {{ href.title }}</a>
+   {% endfor %}
+</div>

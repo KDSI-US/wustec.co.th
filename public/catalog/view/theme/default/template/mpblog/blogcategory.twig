@@ -1,0 +1,91 @@
+ {{ header }}
+<div id="container" class="container mp-blog j-container {{ themeclass }}">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+	</ul>
+	<div class="row">{{ column_left }}
+		{% if themename == 'journal2' %}
+			{{ column_right }}
+		{% endif %}
+		{% if column_left and column_right %}
+	    {% set class = 'col-sm-6' %}
+	    {% elseif column_left or column_right %}
+	    {% set class = 'col-sm-9' %}
+	    {% else %}
+	    {% set class = 'col-sm-12' %}
+	    {% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}	
+			<div class="mpblog-cate-wrap">		
+				<h2>{{ heading_title }}</h2>
+				{% if thumb or description %}
+					<div class="{{ themename != 'journal2' ? 'row' : 'journal-box' }}">
+					{% set rowno = 12 %}
+					{% if thumb %} 
+						{% set rowno = 8 %}
+						<div class="col-sm-4 xl-33 sm-100"><img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
+					{% endif %}
+					{% if description %}
+						<div class="col-sm-{{ rowno }} xl-66 sm-100">{{ description }}</div>
+					{% endif %}
+					</div>
+				{% endif %}
+			</div>
+			{% if mpblogcategories %}
+			<div class="mpblog-subcate">
+				<h3>{{ text_categories }}</h3>
+				<div class="{{ themename != 'journal2' ? 'row' : '' }}">
+					<div class="col-sm-12 xl-100">
+						<div class="swiper-viewport">
+						<div id="mpblogsubcates" class="swiper-container">
+						<ul class="list list-inline swiper-wrapper" >
+							{% for mpblogcategory in mpblogcategories %}
+							<li class="item swiper-slide"><a href="{{ mpblogcategory.href }}">
+								{% if mpblogcategory.thumb %}
+								<img class="img-responsive" src="{{ mpblogcategory.thumb }}" alt="{{ mpblogcategory.name }}" title="{{ mpblogcategory.name }}" /> {% endif %}
+								<h4>{{ mpblogcategory.name }} </h4>
+								</a></li>
+							{% endfor %}
+						</ul>
+						</div>
+						<div class="swiper-pagination blogcategory"></div>
+						<div class="swiper-pager">
+							<div class="swiper-button-next"></div>
+							<div class="swiper-button-prev"></div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			{{ view_posts }}
+			{% if not mpblogcategories and not mpblogposts %}
+			<div class="row">
+				<div class="col-sm-12 xl-100">
+					<p>{{ text_empty }}</p>
+					<div class="buttons text-right">
+						<div><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			{{ content_bottom }}</div>
+			{% if themename != 'journal2' %}
+	        	{{ column_right }}
+	      	{% endif %}
+	    </div>
+<script type="text/javascript"><!--
+$('#mpblogsubcates').swiper({
+	mode: 'horizontal',
+	slidesPerView: 6,
+	//pagination: '.blogcategory',
+	paginationClickable: true,
+	nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
+	autoplay: 3000,
+	loop: true
+});
+--></script>
+</div>
+{{ footer }}

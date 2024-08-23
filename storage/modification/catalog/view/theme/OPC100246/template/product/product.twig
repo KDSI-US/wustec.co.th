@@ -1,0 +1,1817 @@
+{{ header }}{{ git_hidden_tag }}
+
+<style type="text/css">
+.custom-input-qty {
+  width:65px;
+}
+.all-input-qty {
+  width: 65px;
+  height: 30px;
+  text-align: center;
+  font-size: 14px;
+  margin: 0px 0px 10px 0px;
+}
+.ot_total-text {
+  text-align: right;
+  height:30px;
+  border-right:1px solid #cccccc;
+}
+.ot_total-input {
+  vertical-align: middle;
+  text-align: center;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  border-top: 1px solid #cccccc;
+  width:90px;
+}
+
+#pre-pack-table tbody tr td {
+  font-size: 12px;
+  text-align: center;
+  padding: 2px 2px 2px 2px;
+  margin: 0px 0px 0px 0px;
+  inline-height: 12px;
+}
+
+#pre-pack-table tbody tr td input {
+  width: 65px;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background-color: #e8f2fd;
+  text-align: center;
+}
+
+#pre-pack-table .color-name {
+  text-align: left;
+  padding-left: 5px;
+}
+
+.pack-option-image {
+  cursor: pointer;
+}
+
+.pack-option-image:hover {
+  color: #FF6EAB;
+  font-weight: 700;
+}
+</style>
+	  
+<div id="product-product" class="container">
+
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6 productpage' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9 productpage' %}
+    {% else %}
+    {% set class = 'col-sm-12 productpage' %}
+    {% endif %}
+  <div id="content" class="{{ class }} pro-product-info">
+    
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  {{ content_top }}
+      <div class="row"> {% if column_left or column_right %}
+        
+        {% set class = 'col-sm-6 product-left' %}
+        {% else %}
+        {% set class = 'col-sm-8 product-left' %}
+        {% endif %}
+        <div class="{{ class }}"> 
+    <div class="product-info">    
+     {% if thumb or images %}
+          <div class="left product-image thumbnails">
+         {% if thumb %}      
+    <!-- Megnor Cloud-Zoom Image Effect Start -->
+    <div class="image"><a class="thumbnail" href="{{ popup }}" title="{{ heading_title }}"><img id="tmzoom" src="{{ thumb }}" data-zoom-image="{{ popup }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a></div> 
+      {% endif %}
+      {% if images %}
+       {% set sliderFor = 3 %}
+      {% set imageCount = images|length %} 
+      
+     <div class="additional-carousel">  
+      {% if imageCount >= sliderFor %}
+      <div class="customNavigation">
+        <span class="fa prev fa-arrow-left">&nbsp;</span>
+        <span class="fa next fa-arrow-right">&nbsp;</span>
+      </div>
+     {% endif %}        
+      <div id="additional-carousel" class="image-additional {% if imageCount >= sliderFor %}product-carousel{% endif %}">
+          
+      <div class="slider-item">
+        <div class="product-block">   
+          <a href="{{ popup }}" title="{{ heading_title }}" class="elevatezoom-gallery" data-image="{{ thumb }}" data-zoom-image="{{ popup }}"><img src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a>
+        </div>
+        </div>    
+        
+      {% for  image in images %}
+        <div class="slider-item">
+        <div class="product-block">   
+              <a href="{{ image.popup }}" title="{{ heading_title }}" class="elevatezoom-gallery" data-image="{{ image.thumb }}" data-zoom-image="{{ image.popup }}"><img src="{{ image.thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a>
+        </div>
+        </div>    
+          {% endfor %}        
+        </div>
+      <span class="additional_default_width" style="display:none; visibility:hidden"></span>
+      </div>
+    {% endif %}         
+  <!-- Megnor Cloud-Zoom Image Effect End-->
+    </div>
+    {% endif %}
+        </div>
+        </div>
+        {% if column_left or column_right %}
+        {% set class = 'col-sm-6 product-right' %}
+        {% else %}
+        {% set class = 'col-sm-4 product-right' %}
+        {% endif %}
+        <div class="{{ class }}">
+          
+          <h3 class="product-title">{{ heading_title }}</h3>
+           {% if review_status %}
+          <div class="rating-wrapper">
+            {% for i in 1..5 %}
+              {% if rating < i %}
+                <span class="fa fa-stack"><i class="fa fa-star off fa-stack-2x"></i></span>
+              {% else %}
+                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+              {% endif %}
+              {% endfor %}
+              <a href="" class="review-count" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">{{ reviews }}</a>  
+              <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;" class="write-review"><i class="fa fa-pencil"></i>{{ text_write }}</a>
+              {% if other_fit_product_href %}
+                {% if "X" in model %}
+                  {% set text_shop_other_fit = "Regular" %}
+                {% else %}
+                  {% set text_shop_other_fit = "Plus" %}
+                {% endif %}
+                  <a class="text-right" href="{{ other_fit_product_href }}">
+                  <i class="fa fa-shopping-bag" aria-hidden="true"></i>&nbsp;
+                  Shop Other Size & Fit &nbsp;
+                  <button class="btn btn-primary btn-sm btn-block" onclick="location.href='{{ other_fit_product_href }}'" type="button">{{text_shop_other_fit}}&nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                  </a>
+              {% endif %}
+          </div>
+          {% endif %}
+            <div class="description">
+        <table class="product-description" style="display: block;">
+
+            {% if manufacturer %}
+            <tr><td><span class="desc" style="display: none;">{{ text_manufacturer }}</span></td><td class="description-right"><a href="{{ manufacturers }}">{{ manufacturer }}</a></td></tr>
+            {% endif %}
+            <tr><td><span class="desc" style="display: block;">{{ text_style_number }}</span></td><td  class="description-right"> {{ model }}</td></tr>
+
+			{% if product_upc %}
+			<li>{{ text_upc }} {{ product_upc }}</li>
+			{% endif %}
+			{% if product_ean %}
+			<li>{{ text_ean }} {{ product_ean }}</li>
+			{% endif %}
+			
+            {% if reward %}
+           <tr><td><span class="desc" style="display: none;">{{ text_reward }}</span> </td><td class="description-right" style="display: none;">{{ reward }}</td></tr>
+            {% endif %}
+            {% if sku %}
+           <tr><td><span class="desc" style="display: none;">SKU :</span> </td><td class="description-right" style="display: none;">{{ sku }}</td></tr>
+            {% endif %}
+    </table>
+    {#
+        {% if stock_qty =='false' %}
+          <tr><td><span class="desc" style="display: none;">{{ text_stock }}</span></td><td class="description-right"><span style="color:#ff0000;">{{ stock }}</span></td></tr>
+		{% endif %}
+    
+          </table>
+          {% if stock_qty =='true' %}
+          	<span class="stock_msg" style="color:#228B22;">{{ text_productavail }} : {{qty_stock}}</span>
+          {% endif %}
+
+    #}
+      </div>
+
+          {% if price %}
+          <ul class="list-unstyled">
+            {% if not special %}
+            <li>
+              <h4 class="special-price"><span class="old-price pro-price">{{ price }}</span></h4>
+            </li>
+            {% else %}
+            <li><h4 class="special-price pro-price"><span class="new-prices">{{ special }}</span></h4>
+            	<span class="old-price pro-price" style="text-decoration: line-through;">{{ price }}</span>
+            	<span class="discount-per">&nbsp;&nbsp;{{percentsaving}}% off</span>
+            </li>
+            {% endif %}
+            {% if tax %}
+            <li class="price-tax">{{ text_tax }} <span class="product-tax">{{ tax }}</span></li>
+            {% endif %}
+            {% if points %}
+            <li class="rewardpoint">{{ text_points }} {{ points }}</li>
+            {% endif %}
+            <!--
+            {% if discounts %}
+           
+            {% for discount in discounts %}
+            <li class="discount">{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
+            {% endfor %}
+            {% endif %}
+            -->
+          </ul>
+          {% endif %}
+          {% if discounts %}
+            <h3 class="volume-pricing">Volume Pricing</h3>
+            <table class="table table-bordered table-hover" id="volume-pricing-table" style="padding-bottom:0px;border-collapse: separate;">
+              <thead>
+                <tr>
+                  <td class="text-center" data-range_from = "1" data-range_until = "" data-price_delta ="0">1</td>
+                  {% set head_no = 1 %}
+                {% for discount in discounts %}
+                  {% set pack_quantity =  discount.quantity|number_format / 6 %}
+                  <td class="text-center" data-range_from = "{{ pack_quantity }}" data-range_until = "" data-price_delta ="{{ price[1:]|number_format(2) - discount.price[1:]|number_format(2)}}">{{ pack_quantity }}</td>
+                  {% set head_no = head_no + 1 %}
+                {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                {% if min_price == price %}
+                  <td class="text-center" data-body_no = "0">{{ price }}</td> 
+                {% else %}
+                  <td class="text-center" data-body_no = "0">{{ min_price }} ~ {{ price }}</td> 
+                {% endif %}
+                {% set body_no = 1 %}
+                {% for discount in discounts %}
+                {% if discount.min_price == discount.price %}
+                  <td class="text-center" data-body_no = "{{body_no}}" >{{ discount.price }}</td> 
+                {% else %}
+                  <td class="text-center" data-body_no = "{{body_no}}" >{{ discount.min_price }} ~ {{ discount.price }}</td> 
+                {% endif %}
+                {% set body_no = body_no + 1 %}
+                {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+          {% endif %}
+          <div id="product">
+
+{% if product_upc %}
+<svg id="upc_barcode"></svg>
+<script>
+$( document ).ready(function() {
+	JsBarcode(
+		"#upc_barcode", 
+		"{{ product_upc }}",
+		{
+			format:"CODE128",
+			displayValue:true,
+			height:40,
+			fontSize:14
+		}
+	);
+})
+</script>
+{% endif %}
+
+{% if product_ean %}
+<svg id="ean_barcode"></svg>
+<script>
+$( document ).ready(function() {
+	JsBarcode(
+		"#ean_barcode", 
+		"{{ product_ean }}",
+		{
+			format:"EAN13",
+			displayValue:true,
+			height:40,
+			fontSize:14
+		}
+	);
+})
+</script>
+{% endif %}
+			
+       {% if options %}
+
+			<div class="pro-options">
+			
+            <h3 class="product-option">{{ text_option }}</h3>
+
+<style type="text/css">
+.option-color-table {
+	display:table;
+	float: left;
+	margin: 0px 0px 15px 0px;
+	width:100%;
+}
+.option-color-row {
+	display: table-row;
+	float: left;
+	width:100%;
+}
+.option-color-cell {
+	display: table-cell;
+	float:left;
+	width:45px;
+	margin: 3px 3px 3px 3px;
+}
+</style>
+
+		<div id="option color-gallery" class="option-color-table">
+			<div id="input-color" class="option-color-row">
+			{% for option in options %}
+			{% if option.option_id == '1' %}
+			{% for option_value in option.product_option_value %}
+				<div class="hint--top ps btn-color option-color-cell" data-toggle="tooltip" data-image="{{ option_value.option_image }}" data-zoom-image="{{ option_value.option_image }}" title="{{ option_value.name }}">
+					<img class="lazy psi" alt="{{ option_value.name }}" src="{{ option_value.option_image_color_swatch }}" itemprop="image" />
+				</div>
+			{% endfor %}
+			{% endif %}
+			{% endfor %}
+			</div>
+		</div>
+<script>
+$(".btn-color").on('click mouseover', function(){
+	var newImg=$(this).attr('data-zoom-image');
+	if(newImg!='NA'){
+		changeImage(newImg);
+	}
+	return true;
+});
+
+function changeImage(newImgSrc) {
+	$(".thumbnail").attr('href',newImgSrc);
+	$("#tmzoom").attr('src',newImgSrc);
+  $(".zoomWindow").css("background-image", "url(" + newImgSrc + ")");
+}
+
+$(document).on("click mouseover", ".pack-option-image", function() {
+	var newImg=$(this).attr('data-image');
+	if(newImg!='NA'){
+		changeImage(newImg);
+	}
+	return true;
+});
+</script>
+			
+            {% for option in options %}
+            {% if option.type == 'select' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <select name="option[{{ option.product_option_id }}]" id="input-option{{ option.product_option_id }}" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for option_value in option.product_option_value %}
+                <option value="{{ option_value.product_option_value_id }}" master-option-value="{{ option_value.master_option_value }}" option-value="{{option_value.product_option_value_id }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %}> {{ option_value.name }}
+                {% if option_value.price %}
+                ({{ option_value.price_prefix }}{{ option_value.price }})
+                {% endif %} </option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if option.type == 'radio' %}
+
+            <div class="ot_btn_all" style="margin-bottom:0;">APPLY ALL PACKS&nbsp;
+              <input type="text" class="all-input-qty" id="all-input-qty" name="all-input-qty" value="" placeholder="0" onfocus="this.placeholder=''" onblur="this.placeholder='0'" />
+            </div>
+            <table class="table table-bordered table-hover" id="pre-pack-table" style="padding-bottom:0px;">
+			  <thead>
+                <tr class="pack-label" id="pack-label">
+                  <td class="pack start">Availability</td>
+                  <td class="pack">Color</td>
+                  <td class="pack qty">S</td>
+                  <td class="pack qty">M</td>
+                  <td class="pack qty">L</td>
+                  <td class="pack price">$/Piece</td>
+                  <td class="pack">Piece Qty</td>
+                  <td class="pack" style="width:90px;">Amount</td>
+                  <td class="pack" style="width:65px;">Pack</td>
+                </tr>
+			  </thead>
+			  <tbody>
+              {% for option_value in option.product_option_value %}
+                <tr class="pack-field">
+                <input type="hidden" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" />
+                <input type="hidden" name="product_id" value="{{ product_id }}" />
+                  <td class="pack start">{{ option_value.stock }}</td>
+                  <td class="pack color-name"><span class="pack-option-image" data-image="{{ option_value.option_image }}" data-id="{{ option_value.product_option_value_id }}">{{ option_value.name }}</span></td>
+                  <td class="pack qty">2</td>
+                  <td class="pack qty">2</td>
+                  <td class="pack qty">2</td>
+                <input type="hidden" id="piece_price_{{ option_value.product_option_value_id }}" value="{{price_no_sign + option_value.price_no_sign}}" data-default_piece_price = "{{ price_no_sign + option_value.price_no_sign}}"/>
+                <input type="hidden" id="pack_qty_{{ option_value.product_option_value_id }}" value="6" />
+                <input type="hidden" id="pack_price_{{ option_value.product_option_value_id }}" value="{{(price_no_sign + option_value.price_no_sign) * 6}}" data-default_pack_price = "{{(price_no_sign + option_value.price_no_sign) * 6}}" />
+                <input type="hidden" id="quantity_{{ option_value.product_option_value_id }}" name="quantity" value="0" />
+                  <td class="pack price piece_price" data-default_price="{{ price_no_sign + option_value.price_no_sign}}">${{ price_no_sign + option_value.price_no_sign}}</td>
+                  <td class="pack"><span id="total_pack_piece_{{ option_value.product_option_value_id }}">0</span></td>
+                  <td class="pack">$<span id="total_piece_amount_{{ option_value.product_option_value_id }}">0</span></td>
+                  <td class="pack qty input">
+                    <input type="" min="0" class="custom-input-qty" name="pack_quantity" rel="{{ option_value.product_option_value_id }}" value="" placeholder="0" onfocus="this.placeholder=''" onblur="this.placeholder='0'" />
+                  </td>
+                </tr>
+              {% endfor %}
+			  </tbody>
+            </table>
+            <div class="option" id="pack" style="margin-bottom:0;padding-top:0;">
+              <table class="table table-bordered table-hover">
+              <tr>
+                <td class="ot_total-text">Total&nbsp;<span id="total_qty"></span> Pcs (<span id="total_pack"></span> Packs)</td>
+                <td class="ot_total-input">$<span id="total_amount"></span></td>
+              </tr>
+              </table>
+            </div>
+            <script type="text/javascript">
+            function updateTotal(){
+              var total_qty=0;
+              var total_pack=0;
+              var total_amount=0.0;
+              $(".custom-input-qty").each(function(){
+                var this_value = $(this).val();
+                if(this_value<=0){ this_value=0; }
+                var this_rel = $(this).attr("rel");
+                var piece_price = $("#piece_price_" + this_rel).val();
+                var pack_price = $("#pack_price_" + this_rel).val();
+                var pack_qty = $("#pack_qty_" + this_rel).val();
+                $("#total_pack_piece_" + this_rel).html(this_value*pack_qty);
+                $("#quantity_" + this_rel).val(this_value*pack_qty);
+                $("#total_piece_amount_" + this_rel).html((pack_price*this_value).toFixed(2));
+                total_qty += this_value*pack_qty;
+                total_pack += parseInt(this_value);
+                total_amount += parseFloat(pack_price*this_value);
+              });
+              $("#total_qty").html(total_qty);
+              $("#total_pack").html(total_pack);
+              $("#total_amount").html(total_amount.toFixed(2));
+              
+              var volume_pricing_table_head = $("#volume-pricing-table").find("thead").find("td");
+              var volume_pricing_table_body = $("#volume-pricing-table").find("tbody").find("td");
+              for (let i = 0; i < volume_pricing_table_head.length - 1; i++) {
+                $(volume_pricing_table_head[i]).attr("data-range_until", $(volume_pricing_table_head[i+1]).attr("data-range_from"));
+                $(volume_pricing_table_head[i]).attr("style","background:#f5f5f5;border-color:#f5f5f5;color:#303030;");
+                $(volume_pricing_table_body[i]).attr("style","border-color:#f5f5f5;");
+                let range_from = Number($(volume_pricing_table_head[i]).attr("data-range_from"));
+                let range_until = Number($(volume_pricing_table_head[i]).attr("data-range_until"));
+                let price_delta = Number($(volume_pricing_table_head[i]).attr("data-price_delta"));
+                if ( total_pack <= 0) {
+                  $(".custom-input-qty").each(function(){
+                    var this_value = 0;
+                    var this_rel = $(this).attr("rel");
+                    var pack_price = $("#pack_price_" + this_rel).val();
+                    var pack_qty = $("#pack_qty_" + this_rel).val();
+                    $("#total_piece_amount_" + this_rel).html(((pack_price - pack_qty * Number($(volume_pricing_table_head[i]).attr("data-price_delta")))*this_value).toFixed(2));
+                  });
+                  $(".piece_price").each(function(){
+                    $(this).html('<span>$' + String(Number($(this).attr("data-default_price")).toFixed(2)) + '</span>');
+                  });
+                  $("#total_amount").html(0.00);
+                 }
+                if ( total_pack >= range_from && total_pack < range_until) {
+                  $(volume_pricing_table_head[i]).attr("style","background:#666;border-color:#666;color:#fff;");
+                  $(volume_pricing_table_body[i]).attr("style","border-color:#666;");
+                  var total_amount=0.0;
+                  $(".custom-input-qty").each(function(){
+                    var this_value = $(this).val();
+                    var this_rel = $(this).attr("rel");
+                    var pack_price = $("#pack_price_" + this_rel).val();
+                    var pack_qty = $("#pack_qty_" + this_rel).val();
+                    $("#total_piece_amount_" + this_rel).html(((pack_price - pack_qty * Number($(volume_pricing_table_head[i]).attr("data-price_delta")))*this_value).toFixed(2));
+                    total_amount += parseFloat(((pack_price - pack_qty * Number($(volume_pricing_table_head[i]).attr("data-price_delta")))*this_value).toFixed(2));
+                    console.log(total_amount);
+                  });
+                  $("#total_amount").html(total_amount.toFixed(2));
+                  if ($(volume_pricing_table_head[i]).attr("data-price_delta") != "0") {
+                    $(".piece_price").each(function(){
+                      $(this).html('<span>$' + String((Number($(this).attr("data-default_price"))- Number($(volume_pricing_table_head[i]).attr("data-price_delta"))).toFixed(2)) + '</span>&nbsp;' + '<span style="color:red;text-decoration:line-through;">$' + String(Number($(this).attr("data-default_price")).toFixed(2)) + '</span>');
+                    });
+                  } else {
+                    $(".piece_price").each(function(){
+                      $(this).html('<span>$' + String(Number($(this).attr("data-default_price")).toFixed(2)) + '</span>');
+                    });
+                  }
+                }
+              }
+              $(volume_pricing_table_head[volume_pricing_table_head.length - 1]).attr("style","background:#f5f5f5;border-color:#f5f5f5;color:#303030;");
+              $(volume_pricing_table_body[volume_pricing_table_head.length - 1]).attr("style","border-color:#f5f5f5;");
+              let range_from = Number($(volume_pricing_table_head[volume_pricing_table_head.length - 1]).attr("data-range_from"));
+              if ( total_pack >= range_from ) {
+                $(volume_pricing_table_head[volume_pricing_table_head.length - 1]).attr("style","background:#666;border-color:#666;color:#fff;");
+                $(volume_pricing_table_body[volume_pricing_table_head.length - 1]).attr("style","border-color:#666;");
+                var total_amount=0.0;
+                $(".custom-input-qty").each(function(){
+                  var this_value = $(this).val();
+                  if(this_value<=0){ this_value=0; }
+                  var this_rel = $(this).attr("rel");
+                  var pack_price = $("#pack_price_" + this_rel).val();
+                  var pack_qty = $("#pack_qty_" + this_rel).val();
+                  $("#total_piece_amount_" + this_rel).html(((pack_price - pack_qty * Number($(volume_pricing_table_head[volume_pricing_table_head.length - 1]).attr("data-price_delta")))*this_value).toFixed(2));
+                  total_amount += parseFloat(((pack_price - pack_qty * Number($(volume_pricing_table_head[volume_pricing_table_head.length - 1]).attr("data-price_delta")))*this_value).toFixed(2));
+                  console.log(total_amount)
+                });
+                $("#total_amount").html(total_amount.toFixed(2));
+                $(".piece_price").each(function(){
+                  $(this).html('<span>$' + String((Number($(this).attr("data-default_price"))- Number($(volume_pricing_table_head[volume_pricing_table_head.length - 1]).attr("data-price_delta"))).toFixed(2)) + '</span>&nbsp;' + '<span style="color:red;text-decoration:line-through;">$' + String(Number($(this).attr("data-default_price")).toFixed(2)) + '</span>');
+                });
+              }
+              
+            }
+            function applyall(){
+              $(".custom-input-qty").each(function(){
+                var this_value = $("#all-input-qty").val();
+                if(this_value <= 0){
+                  this_value=0;
+                  $("all-input-qty").val(0);
+                }
+                $(".custom-input-qty").val(this_value);
+                updateTotal();
+              });
+            }
+            $(".custom-input-qty").keyup(function(){
+              updateTotal();
+            });
+            $(".all-input-qty").keyup(function(){
+              applyall();
+            });
+            $(document).ready(function(){
+              updateTotal();
+            });
+            </script>
+            {#
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label">{{ option.name }}</label>
+              <div id="input-option{{ option.product_option_id }}"> {% for option_value in option.product_option_value %}
+                <div class="radio">
+                  <label for="option-value-{{ option_value.product_option_value_id }}">
+                    <input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" id="option-value-{{ option_value.product_option_value_id }}" master-option-value="{{ option_value.master_option_value }}" option-value="{{option_value.product_option_value_id }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %} />
+                    {% if option_value.image %} <img src="{{ option_value.image }}" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-thumbnail" /> {% endif %}                  
+                    {{ option_value.name }}
+                    {% if option_value.price %}
+                    ({{ option_value.price_prefix }}{{ option_value.price }})
+                    {% endif %} </label>
+                </div>
+                {% endfor %} </div>
+            </div>
+    #}
+            {% endif %}
+            {% if option.type == 'checkbox' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label">{{ option.name }}</label>
+              <div id="input-option{{ option.product_option_id }}"> {% for option_value in option.product_option_value %}
+                <div class="checkbox">
+                  <label for="option-value-{{ option_value.product_option_value_id }}">
+                    <input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" id="option-value-{{ option_value.product_option_value_id }}" master-option-value="{{ option_value.master_option_value }}" option-value="{{option_value.product_option_value_id }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %} />
+                    {% if option_value.image %} <img src="{{ option_value.image }}" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-thumbnail" /> {% endif %}
+                    {{ option_value.name }}
+                    {% if option_value.price %}
+                    ({{ option_value.price_prefix }}{{ option_value.price }})
+                    {% endif %} </label>
+                </div>
+                {% endfor %} </div>
+            </div>
+            {% endif %}
+            {% if option.type == 'text' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control" master-option-value="{{ option.master_option_value }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %} />
+            </div>
+            {% endif %}
+            {% if option.type == 'textarea' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <textarea name="option[{{ option.product_option_id }}]" rows="5" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control" master-option-value="{{ option.master_option_value }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %}>{{ option.value }}</textarea>
+            </div>
+            {% endif %}
+            {% if option.type == 'file' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label">{{ option.name }}</label>
+              <button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default btn-block" master-option-value="{{ option.master_option_value }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %}><i class="fa fa-upload"></i> {{ button_upload }}</button>
+              <input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-option{{ option.product_option_id }}" />
+            </div>
+            {% endif %}
+            {% if option.type == 'date' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <div class="input-group date">
+                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="input-option{{ option.product_option_id }}" class="form-control" master-option-value="{{ option.master_option_value }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %} />
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                </span></div>
+            </div>
+            {% endif %}
+            {% if option.type == 'datetime' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <div class="input-group datetime">
+                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" master-option-value="{{ option.master_option_value }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %} />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+            </div>
+            {% endif %}
+            {% if option.type == 'time' %}
+            <div class="form-group{% if option.required %} required{% endif %} pro-option" master-option="{{ option.master_option }}" option="{{ option.option_id }}" id="option-{{ option.product_option_id }}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <div class="input-group time">
+                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" master-option-value="{{ option.master_option_value }}" {% if PRO_status and PRO_settings.buy_out_of_stock == 0 and option_value.quantity is defined and option_value.quantity <= 0 %} disabled {% endif %} />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+			</div>
+			
+            {% endif %}
+            {% if recurrings %}
+            <hr>
+            <h3>{{ text_payment_recurring }}</h3>
+            <div class="form-group required">
+              <select name="recurring_id" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for recurring in recurrings %}
+                <option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="help-block" id="recurring-description"></div>
+            </div>
+            {% endif %}
+<div class="form-group cart">
+              <div>
+                <span class="qty"></span>
+                <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block">
+                  <span class="button-cart-text">Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            {#
+            <div class="form-group qty">
+              {% if stock_qty =='true' %} 
+              <label class="control-label" for="input-quantity">{{ entry_qty }}</label>
+              <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" />
+              <input type="hidden" name="product_id" value="{{ product_id }}" />
+              <button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block">{{ button_cart }}</button>
+
+			  <!-- /* MP Membership Starts */ -->
+              {% if membership_buttontext and membership_prices %}
+              <button type="button" class="btn btn-success btn-block btn-lg" data-toggle="modal" data-target="#membership-modal">{{ membership_buttontext }}</button>
+              {% endif %}
+        <!-- /* MP Membership Ends */ -->
+			
+              {% else %}
+                 <label class="control-label" for="input-quantity">{{ entry_qty }}</label>
+              <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" />
+              <input type="hidden" name="product_id" value="{{ product_id }}" />
+              <button type="button" id="button" onclick="alert('{{text_outstock}}');" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block disabled">{{ button_cart }}</button> 
+
+			  <!-- /* MP Membership Starts */ -->
+              {% if membership_buttontext and membership_prices %}
+              <button type="button" class="btn btn-success btn-block btn-lg" data-toggle="modal" data-target="#membership-modal">{{ membership_buttontext }}</button>
+              {% endif %}
+        <!-- /* MP Membership Ends */ -->
+			
+              {% endif %}
+          </div>
+    #}
+          <div class="btn-group prd_page">
+            <button type="button" class="btn btn-default wishlist" title="{{ button_wishlist }}" onclick="wishlist.toggle(this, '{{ product_id }}');">{{ button_wishlist }}</button>
+            <a href="" class="see-products-related" onclick="$('a[href=\'#products-related\']').trigger('click'); return false;">&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>&nbsp;&nbsp;{{ button_related }}</a>
+          </div>
+            
+          {% if minimum > 1 %}
+            <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div>
+            {% endif %}
+            </div>
+
+        
+
+           <hr>
+            <div class="content_product_block">{{ product_block }}</div>
+      </div>
+          </div>
+
+      {% if mgallery_products is not empty %}	{{ mgallery_products }} {% endif %}
+      
+
+                {% if galleria %}{{ galleria }}{% endif %}
+            
+      {% if tags %}
+        <p>{{ text_tags }}
+        {% for i in 0..tags|length %}
+        {% if i < (tags|length - 1) %} <a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
+        {% else %} <a href="{{ tags[i].href }}">{{ tags[i].tag }}</a> {% endif %}
+        {% endfor %} </p>
+        {% endif %}
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+     <!-- product page tab code start-->
+     {% if column_left and column_right %}
+         {% set class = 'col-sm-6' %}
+         {%  elseif column_left or column_right %}
+         {% set class = 'col-sm-12' %}
+         {% else %}
+         {% set class = 'col-sm-12' %}
+        {% endif %}
+    <div id="tabs_info" class="product-tab {{ class }}">
+          <ul class="nav nav-tabs" style="text-align: left">
+            <li class="active"><a href="#tab-description" data-toggle="tab">{{ tab_description }}</a></li>
+            {% if attribute_groups %}
+            <li><a href="#tab-specification" data-toggle="tab">{{ tab_attribute }}</a></li>
+            {% endif %}
+            {% if review_status %}
+            <li><a href="#tab-review" data-toggle="tab">{{ tab_review }}</a></li>
+            {% endif %}
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-description">{{ description }}</div>
+            {% if attribute_groups %}
+            <div class="tab-pane" id="tab-specification">
+              <table class="table table-bordered">
+                {% for attribute_group in attribute_groups %}
+                <thead>
+                  <tr>
+                    <td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for attribute in attribute_group.attribute %}
+                <tr>
+                  <td>{{ attribute.name }}</td>
+                  <td>{{ attribute.text }}</td>
+                </tr>
+                {% endfor %}
+                  </tbody>
+                {% endfor %}
+              </table>
+            </div>
+            {% endif %}
+            {% if review_status %}
+            <div class="tab-pane" id="tab-review">
+              <form class="form-horizontal" id="form-review">
+                <div id="review"></div>
+                <h4>{{ text_write }}</h4>
+                {% if review_guest %}
+                <div class="form-group required">
+                  <div class="col-sm-12">
+                    <label class="control-label" for="input-name">{{ entry_name }}</label>
+                    <input type="text" name="name" value="{{ customer_name }}" id="input-name" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <div class="col-sm-12">
+                    <label class="control-label" for="input-review">{{ entry_review }}</label>
+                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
+                    <div class="help-block">{{ text_note }}</div>
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <div class="col-sm-12">
+                    <label class="control-label">{{ entry_rating }}</label>
+                    &nbsp;&nbsp;&nbsp; {{ entry_bad }}&nbsp;
+                    <input type="radio" name="rating" value="1" />
+                    &nbsp;
+                    <input type="radio" name="rating" value="2" />
+                    &nbsp;
+                    <input type="radio" name="rating" value="3" />
+                    &nbsp;
+                    <input type="radio" name="rating" value="4" />
+                    &nbsp;
+                    <input type="radio" name="rating" value="5" />
+                    &nbsp;{{ entry_good }}</div>
+                </div>
+                {{ captcha }}
+                <div class="buttons clearfix">
+                  <div class="pull-right">
+                    <button type="button" id="button-review" data-loading-text="{{ text_loading }}" class="btn btn-primary">{{ button_continue }}</button>
+                  </div>
+                </div>
+                {% else %}
+                {{ text_login }}
+                {% endif %}
+              </form>
+            </div>
+            {% endif %}</div>
+      </div>
+        {% if products %}
+      <div class="box related_prd">
+      <div id="products-related-anchor">&nbsp;</div>
+     <div class="box-head"> <div class="box-heading">{{ text_related }}</div></div>
+    <div class="box-content">
+    <div id="products-related" class="related-products">
+      
+      {% set sliderFor = 5 %}
+      {% set productCount = products|length %} 
+      
+        {% if productCount >= sliderFor %}
+          <div class="customNavigation">
+            <a class="fa prev fa-arrow-left">&nbsp;</a>
+            <a class="fa next fa-arrow-right">&nbsp;</a>
+          </div>  
+        {% endif %}
+        
+        <div class="box-product {% if productCount >= sliderFor %}product-carousel{% else %}productbox-grid{% endif %}" id="{% if productCount >= sliderFor %}related-carousel{% else %}related-grid{% endif %}">
+            {% for product in products %}
+        <div class="{% if productCount >= sliderFor %}slider-item{% else %}product-items{% endif %}">
+           <div class="product-block product-thumb transition">
+              <div class="product-block-inner"> 
+
+      <div class="image_cover">
+        <div class="image {% if product.qty == 0 %}outstock{% endif %}">
+          {% if product.thumb_swap %}
+            <a href="{{ product.href }}">
+              <img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive reg-image"/>
+                <div class="image_content"><img class="img-responsive hover-image" src="{{ product.thumb_swap }}" title="{{ product.name }}" alt="{{ product.name }}"/>
+                </div>
+              </a>
+              {% else %}
+                <a href="{{ product.href }}">
+                <img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive"/></a>
+            {% endif %}
+
+          
+
+            {% if product.qty < 1 %}
+               <span class="stock_status">{{text_outstock}}</span>
+             {% endif %}
+      </div>
+      
+{% if product.special %}
+    <div class="percentsaving">-{{ product.percentsaving }}%</div>
+    {% endif %} 
+
+
+                    <div class="product_hover_block">
+											  <div class="action">
+				  								  <div class="quick-view" data-toggle="tooltip" data-placement="left" data-original-title="{{  quick_view }}"><a href="{{ product.quick }}"></a></div>
+                       							 <button class="wishlist" type="button" data-toggle="tooltip" data-placement="left" title="{{ button_wishlist }} " onclick="wishlist.toggle(this, '{{ product.product_id }} ');"></button>
+    										    </div>
+										    </div>
+                      <div class="add_btn">
+                        {% if product.qty > 0 %}
+                          <button type="button" class="addtocart" data-toggle="tooltip"  onclick="cart.add('{{ product.product_id }} ');"> {{ button_cart }}</button>
+
+			  <!-- /* MP Membership Starts */ -->
+              {% if membership_buttontext and membership_prices %}
+              <button type="button" class="btn btn-success btn-block btn-lg" data-toggle="modal" data-target="#membership-modal">{{ membership_buttontext }}</button>
+              {% endif %}
+        <!-- /* MP Membership Ends */ -->
+			
+                        {% else %}
+                          <span class="stock_status" title="Out Of Stock">{{ out_of_stock }}</span>
+                        {% endif %}
+                      </div>
+                   </div>
+
+      
+          <div class="product-details">
+        <div class="caption">
+        
+            
+              {#{% if product.rating %} #}
+                <div class="rating">
+                  {% for i in 1..5 %}
+                     {% if product.rating < i %}
+                      <span class="fa fa-stack"><i class="fa fa-star off fa-stack-2x"></i></span>
+                        {% else %}
+                      <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {#{% endif %}#}
+                
+                  <h4><a href="{{ product.href }} ">{{ product.name }} </a></h4>
+
+      {% if product.price %}
+      <p class="price">
+      {% if not product.special %}
+      {{ product.price }}
+      {% else %}
+      <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+      {% endif %}
+      {% if product.tax %}
+      <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+      {% endif %}
+      </p>
+      {% endif %}
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      </div>                  
+    </div>
+    </div>
+          </div>
+        </div>
+        <script> 
+            $('.total-review{{ product.product_id }}').on('click', function() { 
+             var t='{{product.href}}'; 
+            const parseResult = new DOMParser().parseFromString(t, "text/html");
+            const parsedUrl = parseResult.documentElement.textContent;
+            window.location.href = parsedUrl + '&review';
+            return false;
+          });
+      </script>
+        {% endfor %}
+        </div>
+        <span class="related_default_width" style="display:none; visibility:hidden"></span>
+    </div>
+    </div>
+    </div>
+        {% endif %}
+  </div>
+</div>
+
+<script type="text/javascript"><!--
+$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+  $.ajax({
+    url: 'index.php?route=product/product/getRecurringDescription',
+    type: 'post',
+    data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+    dataType: 'json',
+    beforeSend: function() {
+      $('#recurring-description').html('');
+    },
+    success: function(json) {
+      $('.alert-dismissible, .text-danger').remove();
+
+      if (json['success']) {
+        $('#recurring-description').html(json['success']);
+      }
+    }
+  });
+});
+//--></script> 
+<script type="text/javascript"><!--
+var flag = 0;
+
+function ajaxCallBack(param){
+  flag = flag + parseInt(param);
+}
+
+function alertCallBack(){
+  if (flag > 0) {
+    sweetAlert((flag*6).toString() + " items added to Cart");
+  }
+}
+
+$( document ).ajaxStop(function() {
+  alertCallBack();
+});
+			
+$('#button-cart').on('click', function() {
+if($('.pack-field').length) {
+    $('.pack-field').each(function() {
+      if($(this).find('.custom-input-qty').val() > 0) {
+        $.ajax({
+          url: 'index.php?route=checkout/cart/add',
+          type: 'post',
+          data: $(this).find('input'),
+          dataType: 'json',
+          beforeSend: function() {
+            $('#button-cart').button('loading');
+          },
+          complete: function() {
+            $('#button-cart').button('reset');
+          },
+          success: function(json) {
+            $('.alert-dismissible, .text-danger').remove();
+            $('.form-group').removeClass('has-error');
+
+            if (json['error']) {
+              if (json['error']['pack']) {
+                var element = $('#pack');
+                element.before('<div class="text-danger" style="height:30px;margin:0;width:100%;padding-left:10px;padding-bottom:0;padding-top:0;line-height: 30px;" ><font color=red><b>*' + json['error']['pack'] + '</b></font></div>');
+              }
+              if (json['error']['option']) {
+                for (i in json['error']['option']) {
+                  var element = $('#input-option' + i.replace('_', '-'));
+
+                  if (element.parent().hasClass('input-group')) {
+                    element.parent().before('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+                  } else {
+                    element.before('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+                  }
+                }
+              }
+
+              if (json['error']['recurring']) {
+                $('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+              }
+
+              // Highlight any found errors
+              $('.text-danger').parent().addClass('has-error');
+            }
+
+            if (json['success']) {
+                /*
+			
+              $.notify({
+                message: json['success'],
+                target: '_blank'
+              },{
+                // settings
+                element: 'body',
+                position: null,
+                type: "info",
+                allow_dismiss: true,
+                newest_on_top: false,
+                placement: {
+                  from: "top",
+                  align: "center"
+                },
+                offset: 0,
+                spacing: 10,
+                z_index: 2031,
+                delay: 5000,
+                timer: 1000,
+                url_target: '_blank',
+                mouse_over: null,
+                animate: {
+                  enter: 'animated fadeInDown',
+                  exit: 'animated fadeOutUp'
+                },
+                onShow: null,
+                onShown: null,
+                onClose: null,
+                onClosed: null,
+                icon_type: 'class',
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
+                  '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
+                  '<span data-notify="message"><i class="fa fa-check-circle"></i>&nbsp; {2}</span>' +
+                  '<div class="progress" data-notify="progressbar">' +
+                    '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                  '</div>' +
+                  '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                '</div>' 
+              });
+
+                */
+			
+              $('#cart > button').html('<div class="cart_image"></div><div class="cart-label"><span id="cart-total">' + json['total'] + '</span>'  + '</div>');
+
+              //$('html, body').animate({ scrollTop: 0 }, 'slow');
+
+              $('#cart > ul').load('index.php?route=common/cart/info ul li');
+            }
+              ajaxCallBack($('.custom-input-qty').val());
+			
+          },
+              error: function(xhr, ajaxOptions, thrownError) {
+                  alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+        });
+      }
+    });
+  } else {
+  $.ajax({
+    url: 'index.php?route=checkout/cart/add',
+    type: 'post',
+    data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+    dataType: 'json',
+    beforeSend: function() {
+      $('#button-cart').button('loading');
+    },
+    complete: function() {
+      $('#button-cart').button('reset');
+    },
+    success: function(json) {
+      $('.alert-dismissible, .text-danger').remove();
+      $('.form-group').removeClass('has-error');
+
+      if (json['error']) {
+        if (json['error']['option']) {
+          for (i in json['error']['option']) {
+            var element = $('#input-option' + i.replace('_', '-'));
+
+            if (element.parent().hasClass('input-group')) {
+              element.parent().before('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+            } else {
+              element.before('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+            }
+          }
+        }
+
+        if (json['error']['recurring']) {
+          $('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+        }
+
+        // Highlight any found errors
+        $('.text-danger').parent().addClass('has-error');
+      }
+
+      if (json['success']) {
+        $.notify({
+          message: json['success'],
+          target: '_blank'
+        },{
+          // settings
+          element: 'body',
+          position: null,
+          type: "info",
+          allow_dismiss: true,
+          newest_on_top: false,
+          placement: {
+            from: "top",
+            align: "center"
+          },
+          offset: 0,
+          spacing: 10,
+          z_index: 2031,
+          delay: 5000,
+          timer: 1000,
+          url_target: '_blank',
+          mouse_over: null,
+          animate: {
+            enter: 'animated fadeInDown',
+            exit: 'animated fadeOutUp'
+          },
+          onShow: null,
+          onShown: null,
+          onClose: null,
+          onClosed: null,
+          icon_type: 'class',
+          template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
+            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
+            '<span data-notify="message"><i class="fa fa-check-circle"></i>&nbsp; {2}</span>' +
+            '<div class="progress" data-notify="progressbar">' +
+              '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+            '</div>' +
+            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          '</div>' 
+        });
+
+         $('#cart > button').html('<div class="cart_image"></div><div class="cart-label"><span id="cart-total">' + json['total'] + '</span>'  + '</div>');
+
+        //$('html, body').animate({ scrollTop: 0 }, 'slow');
+
+        $('#cart > ul').load('index.php?route=common/cart/info ul li');
+      }
+    },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+  });
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('.see-products-related').on('click', function() {
+  $('html, body').animate({scrollTop: $('#products-related-anchor').offset().top}, 'slow');
+});
+			
+$('.date').datetimepicker({
+    }
+  language: '{{ datepicker }}',
+  pickTime: false
+});
+
+$('.datetime').datetimepicker({
+  language: '{{ datepicker }}',
+  pickDate: true,
+  pickTime: true
+});
+
+$('.time').datetimepicker({
+  language: '{{ datepicker }}',
+  pickDate: false
+});
+
+$('button[id^=\'button-upload\']').on('click', function() {
+  var node = this;
+
+  $('#form-upload').remove();
+
+  $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+  $('#form-upload input[name=\'file\']').trigger('click');
+
+  if (typeof timer != 'undefined') {
+      clearInterval(timer);
+  }
+
+  timer = setInterval(function() {
+    if ($('#form-upload input[name=\'file\']').val() != '') {
+      clearInterval(timer);
+
+      $.ajax({
+        url: 'index.php?route=tool/upload',
+        type: 'post',
+        dataType: 'json',
+        data: new FormData($('#form-upload')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+          $(node).button('loading');
+        },
+        complete: function() {
+          $(node).button('reset');
+        },
+        success: function(json) {
+          $('.text-danger').remove();
+
+          if (json['error']) {
+            $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+          }
+
+          if (json['success']) {
+            alert(json['success']);
+
+            $(node).parent().find('input').val(json['code']);
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    }
+  }, 500);
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('#review').delegate('.pagination a', 'click', function(e) {
+    e.preventDefault();
+
+    $('#review').fadeOut('slow');
+
+    $('#review').load(this.href);
+
+    $('#review').fadeIn('slow');
+});
+
+$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+$('#button-review').on('click', function() {
+  $.ajax({
+    url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+    type: 'post',
+    dataType: 'json',
+    data: $("#form-review").serialize(),
+    beforeSend: function() {
+      $('#button-review').button('loading');
+    },
+    complete: function() {
+      $('#button-review').button('reset');
+    },
+    success: function(json) {
+      $('.alert-dismissible').remove();
+
+      if (json['error']) {
+        $('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+      }
+
+      if (json['success']) {
+        $('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+        $('input[name=\'name\']').val('');
+        $('textarea[name=\'text\']').val('');
+        $('input[name=\'rating\']:checked').prop('checked', false);
+      }
+    }
+  });
+});
+
+//$(document).ready(function() {
+//  $('.thumbnails').magnificPopup({
+//    type:'image',
+//    delegate: 'a',
+//    gallery: {
+//      enabled: true
+//    }
+//  });
+//});
+
+
+$(document).ready(function() {
+  var ramswaroop = new URLSearchParams(window.location.search);
+  var tarun = ramswaroop.has('review');
+  if (tarun == true) {
+    setTimeout(function(){ 
+      $('html, body').animate({scrollTop: $('#tabs_info').offset().top}, 'slow'); 
+      $('a[href=\'#tab-review\']').trigger('click');
+    }, 1000);
+    return false;
+  }
+});
+
+$(document).ready(function() {
+if ($(window).width() > 767) {
+    $("#tmzoom").elevateZoom({
+        
+        gallery:'additional-carousel',
+        //inner zoom         
+                 
+        zoomType : "inner", 
+        cursor: "crosshair" 
+        
+        /*//tint
+        
+        tint:true, 
+        tintColour:'#F90', 
+        tintOpacity:0.5
+        
+        //lens zoom
+        
+        zoomType : "lens", 
+        lensShape : "round", 
+        lensSize : 200 
+        
+        //Mousewheel zoom
+        
+        scrollZoom : true*/
+        
+        
+      });
+    var z_index = 0;
+                  
+                  $(document).on('click', '.thumbnail', function () {
+                    $('.thumbnails').magnificPopup('open', z_index);
+                    return false;
+                  });
+              
+                  $('.additional-carousel a').click(function() {
+                    var smallImage = $(this).attr('data-image');
+                    var largeImage = $(this).attr('data-zoom-image');
+                    var ez =   $('#tmzoom').data('elevateZoom');  
+                    $('.thumbnail').attr('href', largeImage);  
+                    ez.swaptheimage(smallImage, largeImage); 
+                    z_index = $(this).index('.additional-carousel a');
+                    return false;
+                  });
+      
+  }else{
+    $(document).on('click', '.thumbnail', function () {
+    $('.thumbnails').magnificPopup('open', 0);
+    return false;
+    });
+  }
+});
+$(document).ready(function() {     
+  $('.thumbnails').magnificPopup({
+    delegate: 'a.elevatezoom-gallery',
+    type: 'image',
+    tLoading: 'Loading image #%curr%...',
+    mainClass: 'mfp-with-zoom',
+    gallery: {
+      enabled: true,
+      navigateByImgClick: true,
+      preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+    },
+    image: {
+      tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+      titleSrc: function(item) {
+        return item.el.attr('title');
+      }
+    }
+  });
+});
+
+$('#custom_tab a').tabs();
+ $('#tabs a').tabs();
+
+//--></script>
+
+{% if (update_price_status is defined and update_price_status) %}
+          
+          <script type="text/javascript">
+          
+            $("#product input[type='checkbox']").click(function() {
+              changePrice();
+            });
+            
+            $("#product input[type='radio']").click(function() {
+              changePrice();
+            });
+            
+            $("#product select").change(function() {
+              changePrice();
+            });
+            
+            $("#input-quantity").keyup(function() {
+              changePrice();
+            });
+            
+            function changePrice() {
+              $.ajax({
+                url: 'index.php?route=product/product/updatePrice&product_id={{ product_id }}',
+                type: 'post',
+                dataType: 'json',
+                data: $('#product input[name=\'quantity\'], #product select, #product input[type=\'checkbox\']:checked, #product input[type=\'radio\']:checked'),
+                beforeSend: function() {
+                  
+                },
+                complete: function() {
+                  
+                },
+                success: function(json) {
+                  $('.alert-success, .alert-danger').remove();
+                  
+                  if(json['new_price_found']) {
+                    $('.new-prices').html(json['total_price']);
+                    $('.product-tax').html(json['tax_price']);
+                  } else {
+                    $('.old-prices').html(json['total_price']);
+                    $('.product-tax').html(json['tax_price']);
+                  }
+                }
+              });
+            }
+          </script>
+          
+        {% endif %}
+ 
+
+{% if PRO_status %}
+<style>
+.pro-option .radio,
+.pro-option .checkbox {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+div[id^='input-option'] {
+	margin-top: 10px;
+}
+</style>
+
+<script>
+let PRO_productData, PRO_optionsData, PRO_optionImages = {};
+{% if PRO_config        is not empty %}PRO_config        = {{ PRO_config }};{% endif %}
+{% if PRO_product_data  is not empty %}PRO_productData   = {{ PRO_product_data }};{% endif %}
+{% if PRO_options_data  is not empty %}PRO_optionsData   = {{ PRO_options_data }};{% endif %}
+{% if PRO_option_images is not empty %}PRO_optionImages  = {{ PRO_option_images }};{% endif %}
+$(document).ready(function() {
+	$('.pro-option[master-option!=0]').hide();
+	$('div.pro-option, span.option-value').each(function() {
+		$(this).css({
+			WebkitTransition : 'none',
+			MozTransition    : 'none',
+			MsTransition     : 'none',
+			OTransition      : 'none',
+			transition       : 'none'
+		});
+	});
+	$('.pro-option select').on('change', updateSelectOption);
+	$('.pro-option input[type=radio]').on('change', updateRadioOption);
+	$('.pro-option input[type=checkbox]').on('change', updateCheckboxOption);
+	$('.pro-option input[type=text], .pro-option textarea').on('change', updateTextAndTextareaOption);
+	function updateSelectOption() {
+		//console.log('updateSelectOption');
+		let option_value = $(this).children('option:selected').attr('option-value');
+		let $related_options = $('.pro-option[master-option=' + $(this).parents('.pro-option').attr('option') + ']');
+		if ($(this).val() != '') {
+			updateOptionList($related_options, option_value);
+			changeImage(option_value);
+		} else {
+			$related_options.slideUp();
+		}
+		clearOption($related_options);
+	}
+	function updateRadioOption() {
+		//console.log('updateRadioOption');
+		let option_value = $(this).attr('option-value');
+		let $related_options = $('.pro-option[master-option=' + $(this).parents('.pro-option').attr('option') + ']');
+		if ($('input[name=\'' + $(this).attr('name') + '\']:checked').length != '') {
+			updateOptionList($related_options, option_value);
+			changeImage(option_value);
+		} else {
+			$related_options.slideUp();
+		}
+		clearOption($related_options);
+	}
+	function updateCheckboxOption() {
+		//console.log('updateCheckboxOption');
+		let option_value_clicked = ($(this).is(':checked')) ? $(this).attr('option-value') : null;
+		let option_value = [];
+		$('.pro-option input[name=\'' + $(this).attr('name') + '\']:checked').each(function() {
+			option_value.push($(this).attr('option-value'));
+		});
+		let $related_options = $('.pro-option[master-option=' + $(this).parents('.pro-option').attr('option') + ']');
+		if ($('input[name=\'' + $(this).attr('name') + '\']:checked').length != '') {
+			updateOptionList($related_options, option_value);
+			changeImage(option_value_clicked);
+		} else {
+			$related_options.slideUp();
+		}
+		clearOption($related_options);
+	}
+	function updateTextAndTextareaOption() {
+		//console.log('updateTextAndTextareaOption');
+		let $related_options = $('.pro-option[master-option=' + $(this).parents('.pro-option').attr('option') + ']');
+		if ($(this).val() != '') {
+			$related_options.slideDown();
+		} else {
+			$related_options.slideUp();
+		}
+		clearOption($related_options);
+	}
+	function updateOptionList($related_options, option_value) {
+		//console.log('updateOptionList');
+		$related_options.find('option[master-option-value!=0]').each(function() {
+			if ($(this).parent('span').length == 0) {
+				$(this).wrap("<span>");
+			}
+		});
+		let attr = $related_options.find('input[type=hidden]').attr('master-option-value');
+		if (typeof attr !== typeof undefined && attr !== false) {
+			$related_options.find('input[type=hidden][master-option-value!=0]').prev().prop('disabled', true);
+		}
+		$related_options.find('input[master-option-value!=0]').hide();
+		$related_options.find('input[master-option-value!=0]').parent('label').parent('div').hide();
+		$related_options.find('option[master-option-value][master-option-value!=0]').hide(); // Hide all select options that have a master-option-value attribute and it is not equal to 0
+		$related_options.find('textarea[master-option-value!=0]').hide();
+		if (typeof(option_value) == "string") {
+			option_value = [option_value];
+		}
+		for (let i in option_value) {
+			$related_options.find('option[master-option-value=' + option_value[i] + '], option[value=\'\']').each(function() {
+				if ($(this).parent('span').length != 0) {
+					$(this).unwrap();
+				}
+			});
+			$related_options.find('input[type=hidden][master-option-value=' + option_value[i] + ']').prev().prop('disabled', false);
+
+			//If standard radio and checkboxes (uncomment this line and comment next)
+			$related_options.find('input[master-option-value=' + option_value[i] + ']').show();
+			//If non-standard radio and checkboxes - do not display classic radio and checkboxes (uncomment this line and comment previous)
+			//$related_options.find('input[master-option-value=' + option_value[i] + ']').not("input[type=radio], input[type=checkbox]").show();
+			$related_options.find('input[master-option-value=' + option_value[i] + ']').parent('label').parent('div').show();
+			$related_options.find('option[master-option-value=' + option_value[i] + ']').show();
+			$related_options.find('textarea[master-option-value=' + option_value[i] + ']').show();
+		}
+
+		// If the block has no visible options - hide block, else show block
+		$related_options.each(function() {
+			let visible_options = 0;
+			for (let i in option_value) {
+				visible_options += $(this).find('[master-option-value=' + option_value[i] + ']').length * 1;
+				visible_options += $(this).find('[master-option-value=0]').length * 1;
+			}
+			if ($(this).find('option, input, textarea').length != 0 && visible_options == 0) {
+				$(this).slideUp();
+			} else {
+				$(this).slideDown();
+			}
+		});
+	}
+
+	function clearOption($option_container) {
+		//console.log('clearOption');
+		/*
+		For templates without AJAX update price uncomment the lines with ".trigger("change")"
+		and comment the lines with ".each(update...)".
+		For templates with AJAX update, uncomment the lines with ".each(update...)"
+		and comment the lines with ".trigger("change")".
+		*/
+		//find('..., li') - "li" for Journal 2, .removeClass('selected') - for Journal 2
+		$option_container.find('select, li').removeClass('selected').val('').trigger("change");
+		//$option_container.find('select, li').removeClass('selected').val('').each(updateSelectOption);
+		$option_container.find('input[type=radio]:checked, input[type=checkbox]:checked, li').removeClass('selected').removeAttr('checked').trigger("change");
+		//$option_container.find('input[type=radio]:checked, li').removeClass('selected').removeAttr('checked').each(updateRadioOption);
+		//$option_container.find('input[type=checkbox]:checked, li').removeClass('selected').removeAttr('checked').each(updateCheckboxOption);
+		$option_container.find('input[type=text], textarea').attr('value', '').val('').trigger("change");
+		//$option_container.find('input[type=text], textarea').attr('value', '').val('').each(updateTextAndTextareaOption);
+		$option_container.find('input[type=hidden][name^=option], li').removeClass('selected').attr('value', '');
+
+{% if PRO_settings.price_adjustment_on is defined and PRO_settings.price_adjustment_on %}
+		updatePrices();
+{% endif %}
+	}
+
+{% if PRO_settings.price_adjustment_on is defined and PRO_settings.price_adjustment_on %}
+
+	const animatePriceEnabled  = {{ PRO_settings.price_animate_on }},
+		  multiplyPriceEnabled = {{ PRO_settings.price_multiply }};
+	const optionsWrapper   = (PRO_config.option_selector)    ? PRO_config.option_selector       : '.pro-options',
+		  $priceWrapper    = (PRO_config.price_selector)     ? $(PRO_config.price_selector)     : $('.pro-product-info .pro-price:first'),
+		  $priceOldWrapper = (PRO_config.price_old_selector) ? $(PRO_config.price_old_selector) : $('.pro-product-info .pro-price-old:first'),
+		  $quantityInput   = (PRO_config.quantity_selector)  ? $(PRO_config.quantity_selector)  : $('#input-quantity'),
+		  $taxWrapper      = $(''),
+		  $pointsWrapper   = $('');
+
+	let currentPrice    = null,
+		currentPriceOld = null;
+
+	$quantityInput.on('change keyup', updatePrices);
+
+	function updatePrices() {
+		const PR = PRO_productData['price'],
+			  SP = PRO_productData['special'],
+			  MN = PRO_productData['minimum'],
+			  DC = PRO_productData['decimal_place'],
+			  DP = PRO_productData['decimal_point'],
+			  TP = PRO_productData['thousand_point'],
+			  SL = PRO_productData['symbol_left'],
+			  SR = PRO_productData['symbol_right'];
+		let quantity = 1;
+		if (multiplyPriceEnabled) {
+			quantity = +$quantityInput.val().trim();
+			if (isNaN(quantity) || quantity < MN) {
+				quantity = +MN;
+			}
+		}
+		let initialPrice             = (SP != false) ? extractPrice(SP) : extractPrice(PR),
+			priceToSpecialDifference = (SP != false) ? extractPrice(PR) - extractPrice(SP) : 0;
+		let price = initialPrice + getAllOptionsPrices(initialPrice);
+		let priceOld = price + priceToSpecialDifference;
+		if (currentPrice == null) currentPrice = initialPrice * quantity;
+		if (currentPriceOld == null) currentPriceOld = (initialPrice + priceToSpecialDifference) * quantity;
+		if (animatePriceEnabled) {
+			animatePrice($priceWrapper, currentPrice, price * quantity);
+			animatePrice($priceOldWrapper, currentPriceOld, priceOld * quantity);
+		} else {
+			price    = formatPrice(price * quantity, DC, DP, TP, SL, SR);
+			priceOld = formatPrice(priceOld * quantity, DC, DP, TP, SL, SR);
+			showPrice($priceWrapper, price);
+			showPrice($priceOldWrapper, priceOld);
+		}
+		currentPrice = price * quantity;
+		currentPriceOld = priceOld * quantity;
+	}
+
+	// Calculation of the cost of all options
+	function getAllOptionsPrices(initialPrice = 0) {
+		let additionalPrice       =  0,
+			additionalPricePrefix = '',
+			productOptionValueId  =  0,
+			difference            =  0;
+		$(optionsWrapper + ' input[type="radio"]:checked, ' + optionsWrapper + ' input[type="checkbox"]:checked, ' + optionsWrapper + ' select>option:selected').each(function() {
+			productOptionValueId = $(this).attr('option-value');
+			if (!productOptionValueId) {
+				return;
+			}
+			additionalPrice = extractPrice(PRO_optionsData[productOptionValueId].price);
+			if (additionalPrice === false || additionalPrice === undefined || additionalPrice === null || additionalPrice == '') {
+				return;
+			}
+			additionalPricePrefix = PRO_optionsData[productOptionValueId].price_prefix;
+			if (additionalPricePrefix == '+') {
+				difference += additionalPrice * 1;
+			} else if (additionalPricePrefix == '-') {
+				difference -= additionalPrice * 1;
+			} else if (additionalPricePrefix == '=') {
+				difference += additionalPrice * 1 - initialPrice;
+				initialPrice = +additionalPrice;
+			}
+		});
+		return difference;
+	}
+
+	// Price extraction, e.g. $1,499.99 -> 1499.99, 1 499,99р. -> 1499.99
+	function extractPrice(price = 0) {
+		if (!price) {
+			return 0;
+		}
+		return +price.split(PRO_productData['thousand_point']).join('')
+				 .replace(PRO_productData['symbol_left'], '')
+				 .replace(PRO_productData['symbol_right'], '')
+				 .replace(PRO_productData['decimal_point'], '.');
+	}
+
+	// Formatting prices for regional settings, e.g. 1499.99 -> $1,499.99, 1499.99 -> 1 499,99р.
+	function formatPrice(price = 0, decimalPlaces = 2, decimalPoint = '.', thousandPoint = '', symbolLeft = '', symbolRight = '') {
+		let p     = price.toFixed(decimalPlaces).replace('-', '').split('.'),
+			chars = p[0].split("").reverse(),
+			str   = '',
+			count = 0;
+		for (let i in chars) {
+			count++;
+			if (count%3 == 1 && count != 1) {
+				str = chars[i] + thousandPoint + str;
+			} else {
+				str = chars[i] + str;
+			}
+		}
+		let formattedPrice = 0;
+		if (decimalPlaces > 0) {
+			formattedPrice = str + decimalPoint + p[1];
+		} else {
+			formattedPrice = str;
+		}
+		if (price >= 0) {
+			return symbolLeft + formattedPrice + symbolRight;
+		} else {
+			return '-' + symbolLeft + formattedPrice + symbolRight;
+		}
+	}
+
+	// Function that displays the price (without animation)
+	function showPrice(wrapper, price) {
+		wrapper.text(price);
+	}
+
+	// Recursive function that animates price changes
+	function animatePrice(wrapper, priceStart, PriceEnd, step = 0) {
+		if (priceStart == PriceEnd) {
+			return;
+		}
+		const DC = PRO_productData['decimal_place'],
+			  DP = PRO_productData['decimal_point'],
+			  TP = PRO_productData['thousand_point'],
+			  SL = PRO_productData['symbol_left'],
+			  SR = PRO_productData['symbol_right'];
+		let stepCount = 15,
+			stepDelay = 40, //ms between steps
+			price     = priceStart;
+		if (!step) {
+			step = +((PriceEnd - priceStart) / stepCount).toFixed(DC);
+		}
+		price += step;
+		if ((PriceEnd > priceStart && price >= PriceEnd) || (PriceEnd < priceStart && price <= PriceEnd) || !step) {
+			priceFormatted = formatPrice(PriceEnd, DC, DP, TP, SL, SR);
+			showPrice(wrapper, priceFormatted);
+		} else {
+			priceFormatted = formatPrice(price, DC, DP, TP, SL, SR);
+			showPrice(wrapper, priceFormatted);
+			setTimeout(animatePrice, stepDelay, wrapper, price, PriceEnd, step);
+		}
+	}
+{% endif %}
+
+{% if PRO_settings.option_image_change is defined and PRO_settings.option_image_change  %}
+
+	function changeImage(optionValueId) {
+		if(optionValueId in PRO_optionImages) {
+			let $imagesAdditional = $('.image-additional');
+			let $slide = $imagesAdditional.find('a[data-zoom-image="' + PRO_optionImages[optionValueId].image_large + '"]:first');
+			if ($slide.length) {
+				$slide.trigger('click');
+			} else {
+			
+			}
+		}
+	}
+
+{% else %}
+
+	function changeImage() {
+		return true;
+	}
+
+{% endif %}
+
+});
+</script>
+
+{% endif %}
+			
+<script>
+$(document).ready(function() {
+  var volume_pricing_table_head = $("#volume-pricing-table").find("thead").find("td");
+  for (let i = 0; i < volume_pricing_table_head.length - 1; i++) {
+    $(volume_pricing_table_head[i]).text($(volume_pricing_table_head[i]).text() + " ~ " + String(Number($(volume_pricing_table_head[i+1]).text()) - 1) + " PACKS")
+  }
+  $(volume_pricing_table_head[volume_pricing_table_head.length - 1]).text($(volume_pricing_table_head[volume_pricing_table_head.length - 1]).text() + "+ PACKS");
+});
+</script>
+
+				<!-- /* MP Membership Starts */ -->
+				{% if membership_buttontext and membership_prices %}
+				<div id="membership-modal" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h4 class="modal-title">{{ membership_modaltext }}</h4>
+				      </div>
+				      <div class="modal-body">
+				        <div class="table-responsive">
+				          <table class="table table-bordered table-hover list">
+				            <tr>
+				              <td>{{ column_package }}</td>
+				              <td>{{ column_regular }}</td>
+				              <td>{{ column_membership }}</td>
+				              <td>{{ column_yousave }}</td>
+				            </tr>
+				            {% for membership_price in membership_prices %}
+				            <tr>
+				              <td>{{ membership_price.plan_name }}</td>
+				              <td>{{ membership_price.price }}</td>
+				              <td>{{ membership_price.membership_price }}</td>
+				              <td>{{ membership_price.save_price }}</td>
+				            </tr>
+				            {% endfor %}
+				          </table>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				{% endif %}
+				<!-- /* MP Membership Ends */ -->
+			
+{{ footer }} 

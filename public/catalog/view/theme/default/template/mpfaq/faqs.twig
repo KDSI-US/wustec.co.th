@@ -1,0 +1,27 @@
+{% if categories %}
+  <div class="mpfaq">
+    {% for category in categories %}
+      <h2>{{ category.name }}</h2>
+      <div class="mpfaq-inner">
+      {% for question in category.questions %}
+        <h3 class="mpfaq-que">{{ question.question }}</h3>
+        <div class="mpfaq-ans">
+          <p>{{ question.answer }}</p>
+        </div>
+      {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+    <p class="text-center">{{ text_no_faq }}</p>
+{% endif %}
+<style type="text/css">
+  .no-result{ padding: 10px; }
+</style>
+<script type="text/javascript">
+$('.mpfaq').mpfaqAccordian({
+  collapsible: true,
+  headline: '.mpfaq-que',
+  highlander: false
+});
+</script>

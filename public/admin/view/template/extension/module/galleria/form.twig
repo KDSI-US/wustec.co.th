@@ -1,0 +1,477 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-galleria" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-galleria" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+            <li><a href="#tab-data" data-toggle="tab">{{ tab_data }}</a></li>
+            <li><a href="#tab_images" data-toggle="tab">{{ tab_images }}</a></li>
+            <li><a href="#tab-links" data-toggle="tab">{{ tab_links }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active in" id="tab-general">
+              <ul class="nav nav-tabs" id="language">
+                {% for language in languages %}
+                <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-name{{ language.language_id }}">{{ entry_name }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="galleria_description[{{ language.language_id }}][name]" value="{{ galleria_description[language.language_id].name }}" placeholder="{{ entry_name }}" id="input-name{{ language.language_id }}" class="form-control" />
+                      {% if error_name[language.language_id] %}
+                      <div class="text-danger">{{ error_name[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language.language_id }}">{{ entry_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="galleria_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ galleria_description[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-title{{ language.language_id }}">{{ entry_meta_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="galleria_description[{{ language.language_id }}][meta_title]" value="{{ galleria_description[language.language_id].meta_title }}" placeholder="{{ entry_meta_title }}" id="input-meta-title{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-description{{ language.language_id }}">{{ entry_meta_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="galleria_description[{{ language.language_id }}][meta_description]" rows="5" placeholder="{{ entry_meta_description }}" id="input-meta-description{{ language.language_id }}" class="form-control">{{ galleria_description[language.language_id].meta_description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-keyword{{ language.language_id }}">{{ entry_meta_keyword }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="galleria_description[{{ language.language_id }}][meta_keyword]" rows="5" placeholder="{{ entry_meta_keyword }}" id="input-meta-keyword{{ language.language_id }}" class="form-control">{{ galleria_description[language.language_id].meta_keyword }}</textarea>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-data">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-inpage"><span data-toggle="tooltip" title="{{ help_inpage }}">{{ entry_inpage }}</span></label>
+                <div class="col-sm-10">
+                  <select name="inpage" id="input-inpage" class="form-control">
+                    {% if inpage %}
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }}</option>
+                      {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %} 
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+                <div class="col-sm-10">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <td class="text-left">{{ entry_store }}</td>
+                        <td class="text-left">{{ entry_keyword }}</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for store in stores %}
+                      <tr>
+                        <td class="text-left">{{ store.name }}</td>
+                        <td class="text-left">
+                          {% for language in languages %}
+                            <div class="input-group">
+                              <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                              <input type="text" name="galleria_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if galleria_seo_url[store.store_id][language.language_id] %}{{ galleria_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" />
+                            </div>
+                            {% if error_keyword[store.store_id][language.language_id] %}
+                              <div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+                            {% endif %} 
+                          {% endfor %}
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_store }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for store in stores %}
+                    <div class="checkbox">
+                      <label>
+                        {% if store.store_id in galleria_store %}
+                        <input type="checkbox" name="galleria_store[]" value="{{ store.store_id}}" checked="checked" />
+                        {{ store.name }}
+                        {% else %}
+                        <input type="checkbox" name="galleria_store[]" value="{{ store.store_id }}" />
+                        {{ store.name }}
+                        {% endif %} 
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-date-published">{{ entry_date_published }}</label>
+                <div class="col-sm-3">
+                  <div class="input-group date">
+                    <input type="text" name="date_published" value="{{ date_published }}" placeholder="{{ entry_date_published }}" data-date-format="YYYY-MM-DD" id="input-date-published" class="form-control" />
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="status" id="input-status" class="form-control">
+                    {% if status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab_images">
+              <div class="table-responsive">
+                <table id="images" class="table table-striped table-bordered table-hover table-sortable">
+                  <thead>
+                    <tr>
+                      <td class="text-left">{{ column_image }}</td>
+                      <td class="text-left{% if not image_title_status and not image_description_status %} hidden{% endif %}">{{ column_title }}</td>
+                      <td class="text-right" style="width: 110px;">{{ column_sort_order }}</td>
+                      <td class="text-center"></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set image_row = 0 %}
+                    {% for album_image in album_images %}
+                    <tr id="image-row{{ image_row }}">
+                      <td class="text-left"><a href="" id="thumb-image{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ album_image.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="album_image[{{ image_row }}][image]" value="{{ album_image.image }}" id="input-image{{ image_row }}" /></td>
+                      <td class="left{% if not image_title_status and not image_description_status %} hidden{% endif %}">
+                        {% if image_title_status %}{{ entry_image_title }}<br>{% endif %}
+                        {% for language in languages %}
+                          <div class="input-group{% if not image_title_status %} hidden{% endif %}"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                            <input type="text" name="album_image[{{ image_row }}][description][{{ language.language_id }}][name]" value="{{ album_image['description'][language.language_id]['name'] }}" placeholder="{{ entry_image_name }}" class="form-control"/>
+                          </div>
+                        {% endfor %}
+                        {% if image_description_status %}{{ entry_image_description }}<br>{% endif %}
+                        {% for language in languages %}
+                          <div class="input-group{% if not image_description_status %} hidden{% endif %}"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                            <textarea name="album_image[{{ image_row }}][description][{{ language.language_id }}][description]" cols="50" rows="3" class="form-control" />{{ album_image['description'][language.language_id]['description'] }}</textarea>
+                          </div>
+                        {% endfor %}
+                      </td>
+                      <td class="text-right"><input type="text" name="album_image[{{ image_row }}][sort_order]" value="{{ album_image.sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control sort-input" /></td>
+                      <td class="text-left"><button type="button" onclick="$('#image-row{{ image_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    {% set image_row = image_row + 1 %}
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td {% if not image_title_status and not image_description_status %}colspan="2"{% else %}colspan="3"{% endif %}></td>
+                      <td class="text-left"><button type="button" onclick="addMultiImage();" data-toggle="tooltip" title="{{ button_image_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            
+            <div class="tab-pane" id="tab-links">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-product"><span data-toggle="tooltip" title="{{ help_product }}">{{ entry_product }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="product_name" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+                  <div id="galleria-product" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for product in products %}
+                    <div id="galleria-product{{ product.product_id }}"><i class="fa fa-minus-circle"></i> {{ product.name }}
+                      <input type="hidden" name="product[]" value="{{ product.product_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-category"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="category_name" value="" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+                  <div id="galleria-category" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for category in categories %}
+                    <div id="galleria-category{{ category.category_id }}"><i class="fa fa-minus-circle"></i> {{ category.name }}
+                      <input type="hidden" name="category[]" value="{{ category.category_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-manufacturer"><span data-toggle="tooltip" title="{{ help_manufacturer }}">{{ entry_manufacturer }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="manufacturer_name" value="" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control" />
+                  <div id="galleria-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for manufacturer in manufacturers %}
+                    <div id="galleria-manufacturer{{ manufacturer.manufacturer_id }}"><i class="fa fa-minus-circle"></i> {{ manufacturer.name }}
+                      <input type="hidden" name="manufacturer[]" value="{{ manufacturer.manufacturer_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-information"><span data-toggle="tooltip" title="{{ help_information }}">{{ entry_information }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="information_name" value="" placeholder="{{ entry_information }}" id="input-information" class="form-control" />
+                  <div id="galleria-information" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for information in informations %}
+                    <div id="galleria-information{{ information.information_id }}"><i class="fa fa-minus-circle"></i> {{ information.name }}
+                      <input type="hidden" name="information[]" value="{{ information.information_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+  </div>
+<script><!--
+var fixHelper = function(e, ui) {
+  ui.children().each(function() {
+    $(this).width($(this).width());
+  });
+  return ui;
+};
+$('.table-sortable tbody').sortable({
+  helper: fixHelper,
+  stop: function( event, ui ) {
+    var imageRows = $('.tab-pane.active').find('.sort-input');
+    var i = 1;
+    imageRows.each(function(){
+      $(this).val(i);
+      i++;
+    });
+  }
+});
+
+$('input[name=\'product_name\']').autocomplete({
+  source: function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  select: function(item) {
+    $('input[name=\'product_name\']').val('');
+    
+    $('#galleria-product' + item['value']).remove();
+    
+    $('#galleria-product').append('<div id="galleria-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product[]" value="' + item['value'] + '" /></div>');  
+  }
+});
+  
+$('#galleria-product').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+$('input[name=\'category_name\']').autocomplete({
+  source: function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['category_id']
+          }
+        }));
+      }
+    });
+  },
+  select: function(item) {
+    $('input[name=\'category_name\']').val('');
+    
+    $('#galleria-category' + item['value']).remove();
+    
+    $('#galleria-category').append('<div id="galleria-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="category[]" value="' + item['value'] + '" /></div>'); 
+  }
+});
+  
+$('#galleria-category').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+$('input[name=\'manufacturer_name\']').autocomplete({
+  source: function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['manufacturer_id']
+          }
+        }));
+      }
+    });
+  },
+  select: function(item) {
+    $('input[name=\'manufacturer_name\']').val('');
+    
+    $('#galleria-manufacturer' + item['value']).remove();
+    
+    $('#galleria-manufacturer').append('<div id="galleria-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="manufacturer[]" value="' + item['value'] + '" /></div>'); 
+  }
+});
+  
+$('#galleria-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+$('input[name=\'information_name\']').autocomplete({
+  source: function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/module/galleria/autocompleteInformation&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['information_id']
+          }
+        }));
+      }
+    });
+  },
+  select: function(item) {
+    $('input[name=\'information_name\']').val('');
+    
+    $('#galleria-information' + item['value']).remove();
+    
+    $('#galleria-information').append('<div id="galleria-information' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="information[]" value="' + item['value'] + '" /></div>');  
+  }
+});
+  
+$('#galleria-information').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+//--></script>
+
+<script><!--
+var image_row = {{ image_row }};
+function addMultiImage() {
+    $('#modal-image').remove();
+    $.ajax({
+        url: 'index.php?route=common/galleriamanager&user_token=' + getURLVar('user_token') + '&image_row=' + image_row,
+        dataType: 'html',
+        beforeSend: function() {
+            $('#button-image i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+            $('#button-image').prop('disabled', true);
+        },
+        complete: function() {
+            $('#button-image i').replaceWith('<i class="fa fa-upload"></i>');
+            $('#button-image').prop('disabled', false);
+        },
+        success: function(html) {
+            $('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+            $('#modal-image').modal('show');
+        }
+    });
+}
+function addImage() {
+  html  = '<tr id="image-row' + image_row + '">';
+  html += '<td class="text-left"><a href="" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /><input type="hidden" name="album_image[' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
+  html += '<td class="left{% if not image_title_status and not image_description_status %} hidden{% endif %}">';
+  html += '{% if image_title_status %}{{ entry_image_title }}<br>{% endif %}';
+  {% for language in languages %}
+    html += '<div class="input-group{% if not image_title_status %} hidden{% endif %}"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span><input type="text" name="album_image[' + image_row + '][description][{{ language.language_id }}][name]" value="" placeholder="{{ entry_image_name }}" class="form-control"/></div>';
+  {% endfor %}
+  html += '{% if image_description_status %}{{ entry_image_description }}<br>{% endif %}';
+  {% for language in languages %}
+     html += '<div class="input-group{% if not image_description_status %} hidden{% endif %}"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span><textarea name="album_image[' + image_row + '][description][{{ language.language_id }}][description]" cols="50" rows="3" class="form-control" /></textarea></div>';
+  {% endfor %}
+  html += '</td>';
+  html += '<td class="text-right"><input type="text" name="album_image[' + image_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control" /></td>';
+  html += '<td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';
+  
+  $('#images tbody').append(html);
+  
+  image_row++;
+}
+//--></script>
+
+<script><!--
+$('#language a:first').tab('show');
+//--></script>
+
+<style>
+.table-sortable tbody tr {
+  cursor: move;
+}
+</style>
+
+</div>
+
+<script>
+$('.date').datetimepicker({
+  language: '{{ datepicker }}',
+  pickTime: false
+});
+</script>
+
+{{ footer }}

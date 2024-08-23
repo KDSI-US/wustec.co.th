@@ -1,0 +1,451 @@
+.membership_content .memberheading, .membership_content_cols .memberheading {
+    text-align: center;
+    position: relative;
+    text-transform: uppercase;
+}
+.membership_content .memberheading span::after, .membership_content_cols .memberheading span::after{
+	width: 100%;
+	position: absolute;
+	background: #666;
+	height: 2px;
+	content: '';
+	left: 0;
+	top: 11px;
+	z-index: -1;
+}
+.membership_content .memberheading span, .membership_content_cols .memberheading span{
+	background: #fff;
+	padding: 0 15px;	
+	font-size: 23px;
+	color: #666;
+}
+.membership_content .prcing_table .title_text{
+	background: #000D20;
+	color: #fff;
+	padding: 30px;
+}
+.membership_content .prcing_table .title_text2{
+	background: #343D4E;
+	color: #fff;
+	padding: 30px;
+}
+.membership_content .prcing_table .table_cols_two{
+	float: left;
+	width: 70%;
+}
+.membership_content .prcing_table .table_titles{
+	font-size: 20px;
+}
+.membership_content .green{
+	background-image: -webkit-linear-gradient(90deg, #70B139 50%, #5DA22E 50%);
+}
+.membership_content .green:after{
+	background-image: -webkit-linear-gradient(90deg, #70B139 50%, #5DA22E 50%);
+}
+.membership_content .blue{
+	background-image: -webkit-linear-gradient(90deg, #34B7E5 50%, #28A9E2 50%);
+}
+.membership_content .blue:after{
+	background-image: -webkit-linear-gradient(90deg, #343D4E 50%, #000D20 50%);
+}
+.membership_content .yellow{
+	background-image: -webkit-linear-gradient(90deg, #FABE06 50%, #F7B104 50%);
+}
+.membership_content .yellow:after{
+	background-image: -webkit-linear-gradient(90deg, #343D4E 50%, #000D20 50%);
+}
+.membership_content .purple{
+	background-image: -webkit-linear-gradient(90deg, #9E1FA2 50%, #8C1895 50%);
+}
+.membership_content .purple:after{
+	background-image: -webkit-linear-gradient(90deg, #343D4E 50%, #000D20 50%);
+}
+.membership_content .pricing_content{
+  	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	position: relative;
+}
+.membership_content .pricing_content:after{
+	content: '';
+	height: 100%;
+	z-index: 999;
+	position: absolute;
+	width: 20px;
+	right: 0;
+}
+.membership_content .pricing_content .plan_name{
+	font-size: 25px;
+	text-transform: uppercase;
+	color: #fff;
+	font-weight: 700;
+	height: 50%;
+}
+.membership_content .pricing_content .plan_time{
+	font-size: 16px;
+	text-transform: uppercase;
+	color: #fff;
+	padding: 10px 10px 48px 30px;
+	height: 50%;
+}
+.membership_content .pricing_content .plan_detail{
+	background: #F2EEEF;	
+	position: relative;
+	border-bottom: 1px solid #ddd;
+}
+.membership_content .pricing_content .plan_detail label{
+	color: #000D20;
+	font-size: 16px;
+}
+.membership_content .pricing_content .plan_detail label+span{
+	color: #838383;
+	font-size: 16px;
+}
+.membership_content .pricing_content .plan_detail ul{
+	margin-bottom: 0;
+}
+.membership_content .pricing_content .plan_detail ul li{
+	padding-bottom: 15px;
+}
+.membership_content .pricing_content .plan_detail ul li:last-child{
+	padding-bottom: 0;
+}
+.membership_content .pricing_content .plan_detail .plan_price{
+	height: 100%;
+	text-align: center;
+}
+.membership_content .pricing_content .plan_detail .plan_price h3{
+	margin-top: 20px;
+	font-size: 25px;
+	line-height: normal;
+}
+.membership_content .pricing_content .plan_detail .plan_price .plan_buy{
+	border: none;
+	display: block;
+	width: 100%;
+	font-size: 14px;
+	line-height: normal;
+	text-transform: uppercase;
+	padding: 8px;
+	background: #ddd;
+	color: #333;
+}
+.membership_content .pricing_content .plan_detail .plan_price .plan_view{
+	border: none;
+	display: block;
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 14px;
+	line-height: normal;
+	text-transform: uppercase;
+	padding: 8px;
+}
+.membership_content .product-thumb .member_caption{
+	text-align: center;
+}
+.membership_content .product-thumb .member_caption ul{
+	margin-bottom: 0;
+}
+.membership_content .product-thumb .member_caption ul li{
+	padding: 10px;
+	border-top: 1px solid #ddd;
+	text-align: right;
+}
+.membership_content .product-thumb .member_caption ul li b{
+	width: 165px;
+	float: left;
+	text-align: left;
+}
+.membership_content .product-thumb .member_caption ul li:last-child{
+	color: #363636;
+	font-size: 16px;
+	font-weight: bold;
+}
+.membership_content .product-thumb .button-groups{
+	text-align: center;
+	display: flex;
+}
+.membership_content .product-thumb .button-groups .btn{
+	width: 50%;
+	float: left;
+	border-radius: 0;
+}
+.membership_account .tile {
+    margin-bottom: 15px;
+    border-radius: 3px;
+    background-color: #279FE0;
+    color: #FFFFFF;
+    transition: all 1s;
+}
+.membership_account .tile-heading {
+    padding: 5px 8px;
+    text-transform: uppercase;
+    background-color: #1E91CF;
+    color: #FFF;
+}
+.membership_account .tile-body {
+    padding: 15px;
+    color: #FFFFFF;
+    line-height: 48px;
+}
+.membership_account .tile .tile-body i {
+    font-size: 50px;
+    opacity: 0.3;
+    transition: all 1s;
+}
+.membership_account .tile .tile-body h2 {
+    font-size: 42px;
+    color: #fff;
+    margin: 0;
+}
+.membership_account .tile-footer {
+    padding: 5px 8px;
+    background-color: #3DA9E3;
+}
+.membership_account .table tr th{
+	background: #f3f3f3;
+}
+.membership_account .myplan tr span{
+	position: relative;
+}
+.membership_account .myplan tr span i{
+	font-size: 18px;
+}
+.membership_account .myplan tr input{
+	position: absolute;
+	left: 0;
+	opacity: 0;
+	z-index: 1;
+}
+.membership_account .membership_active{
+	background: #f5f5f5;
+	padding: 30px;
+}
+.membership_account .membership_active .active_heading{
+	margin: -30px -30px 10px -30px;
+    background: #333;
+    padding: 10px 15px;
+}
+.membership_account .membership_active .active_heading .activate_icon{
+	color: #fff;
+	float: right;
+	background: #0dc20d;
+	line-height: normal;
+	padding: 2px 8px;
+}
+.membership_account .membership_active .active_heading h3{
+	color: #fff;
+	font-size: 16px;
+	display: inline-block;
+	margin:0;
+}
+.membership_account .membership_active > ul{
+	font-size: 16px;
+	line-height: 30px;
+	margin-bottom: 0;
+}
+.membership_account .membership_active ul li ul{
+	padding-left: 15px;
+	margin-left: 15px;
+}
+.pointer {
+	cursor: pointer;
+}
+.membership_content_cols{
+
+}
+.membership_content_cols .pricing_content .table_cols_one{
+	background: #333;
+	text-align: center;
+	color: #fff;
+	padding: 25px 10px;
+	position: relative;
+}
+.membership_content_cols .pricing_content .table_cols_one:after{
+	content: "";
+	position: absolute;
+	bottom: -14px;
+	font-family: 'FontAwesome';
+	color: #333;
+	font-size: 70px;
+	left: calc((100% / 2) - 20px);
+	line-height: 20px;
+}
+.membership_content_cols .pricing_content .table_cols_one .xs-price{
+	font-size: 30px;
+	color: #fff;
+	margin: 15px 0;
+}
+.membership_content_cols .pricing_content .table_cols_one .plan_name{
+	font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.membership_content_cols .pricing_content .table_cols_two{
+	background: #eee;
+	padding: 30px 10px;
+	text-align: center;	
+}
+.membership_content_cols .pricing_content .table_cols_two ul li{
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 5px;
+	margin-bottom: 15px;
+}
+.membership_content_cols .pricing_content .table_cols_two ul li label{
+	font-size: 15px;
+}
+.membership_content_cols .pricing_content .plan_buy{
+	border-radius: 30px;
+	color: #fff;
+	background: #333;
+	text-transform: uppercase;
+	border-color: #333;
+	font-size: 14px;
+	font-weight: bold;
+	width: 130px;
+	padding: 7px 24px;
+}
+.membership_content_cols .pricing_content .plan_price{
+	text-align: center;
+}
+.membership_content_cols .pricing_content .plan_view{
+	border-radius: 30px;
+	color: #333;
+	text-transform: uppercase;
+	border: 1px solid #333;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 7px 24px;
+	margin-bottom: 10px;
+	display: inline-block;
+	width: 130px;
+}
+#content .membership_content_cols .col-lg-3, #content .membership_content_cols .col-sm-6{
+	clear: none;
+}
+.membership_content_cols .pricing_content{
+	margin-bottom: 15px;
+}
+@media(min-width: 768px){
+	.membership_content .prcing_table .table_cols_one{
+		float: left;
+		width: 30%;
+	}
+	.membership_content .pricing_content .plan_detail .plan_price{
+		width: 150px;
+		right: 20px;
+		position: absolute;
+		top: 0;
+		padding: 0 15px;
+		background: #fff;
+	}
+	.membership_content .pricing_content .plan_detail{
+		padding-left: 30px;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	.membership_content .pricing_content .plan_name{
+		padding: 48px 10px 10px 30px;
+	}
+	.membership_content .memberheading, .membership_content_cols .memberheading{
+		margin-bottom: 50px;
+	}
+}
+@media(max-width: 767px){
+	.membership_content .pricing_content .table_cols_one, .membership_content .pricing_content .table_cols_two{
+		width: 100%;
+		text-align: center;
+	}
+	.membership_content .pricing_content .plan_detail{
+		padding: 30px;
+	}
+	.membership_content .pricing_content .plan_name{
+		padding: 48px 0 10px 0;
+	}
+	.membership_content .pricing_content .xs-price{
+		color: #fff;
+	    margin-top: 0;
+	    font-weight: 600;
+	    font-size: 20px;
+	}
+	.membership_content .memberheading, .membership_content_cols .memberheading{
+		margin: 25px 0;
+	}
+}
+/*Jounral Fixes*/
+.membership_content .hide, .membership_content_cols .hide{
+	display: none;
+}
+.membership_content_cols .row, .membership_content .row {
+	margin-left: -15px;
+	margin-right: -15px;
+}	
+.membership_content_cols .row > [class^="col-"],
+.membership_content_cols .row > [class*=" col-"],
+.membership_content .row > [class^="col-"],
+.membership_content .row > [class*=" col-"] {
+   padding-right: 15px;
+   padding-left: 15px;
+}
+.membership_content .product-thumb {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    overflow: auto;
+}
+.membership_content .product-thumb .image{
+	text-align: center;
+}
+.membership_content .product-thumb .image img {
+    margin-left: auto;
+    margin-right: auto;
+}
+.membership_content .product-thumb .member_caption h4{
+	margin: 15px 0;
+}
+.membership_content .product-thumb .btn-warning {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #faa732;
+    background-image: linear-gradient(to bottom, #fbb450, #f89406);
+    background-repeat: repeat-x;
+    border-color: #f89406 #f89406 #ad6704;
+}
+.membership_content .btn-success, .mp-sucess {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #5bb75b;
+    background-image: linear-gradient(to bottom, #62c462, #51a351);
+    background-repeat: repeat-x;
+    border-color: #51a351 #51a351 #387038;
+}
+.membership_content .product-thumb .button-groups:after, .membership_content .product-thumb .button-groups:before{
+	display: table;
+	content: " ";
+}
+.membership_content .product-thumb .button-groups:after{
+	clear: both;
+}
+.membership_content .product-grid{
+	display: block;
+}
+@media(min-width: 768px){
+	.membership_content .visible-xs{
+		display: none;
+	}
+	.membership_content .hidden-xs{
+		display: inline-block;
+	}
+}
+@media(max-width: 768px){
+	.membership_content .visible-xs{
+		display: inline-block;
+	}
+	.membership_content .hidden-xs{
+		display: none;
+	}
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

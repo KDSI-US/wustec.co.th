@@ -1,0 +1,266 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+
+        <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ help_instructions }}</div>
+
+        {% if php_max_input_vars %}
+        <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ text_php_max_input_vars_warning|replace({'[[php_max_input_vars]]' : php_max_input_vars}) }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+
+        <!--<div class="col-md-4 col-lg-2"></div>
+        <div class="col-md-8 col-lg-10"></div>-->
+
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+          <li><a href="#tab-adaptation" data-toggle="tab">{{ tab_adaptation }}</a></li>
+        </ul>
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="tab-general">
+
+              <div class="form-group" id="price_adjustment_block">
+                <label class="col-md-4 col-lg-2 control-label" for="price_adjustment_on">{{ entry_price_adjustment }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_settings[price_adjustment_on]" id="price_adjustment_on" class="form-control">
+                    {% if module_settings.price_adjustment_on %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_price_adjustment }}</div>
+              </div>
+
+              {% if module_settings.price_adjustment_on %}
+              <div class="form-group" id="price_animate_block">
+              {% else %}
+              <div class="form-group" id="price_animate_block" style="display: none;">
+              {% endif %}
+                <label class="col-md-4 col-lg-2 control-label" for="price_animate_on">{{ entry_price_animate }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_settings[price_animate_on]" id="price_animate_on" class="form-control">
+                    {% if module_settings.price_animate_on %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-5 col-lg-8"></div>
+              </div>
+
+              {% if module_settings.price_adjustment_on %}
+              <div class="form-group" id="price_multiply_block">
+              {% else %}
+              <div class="form-group" id="price_multiply_block" style="display: none;">
+              {% endif %}
+                <label class="col-md-4 col-lg-2 control-label" for="price_multiply">{{ entry_multiply_price_by_quantity }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_settings[price_multiply]" id="price_multiply" class="form-control">
+                    {% if module_settings.price_multiply %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-5 col-lg-8"></div>
+              </div>
+
+              {% if module_settings.price_adjustment_on %}
+              <!--<div class="form-group" id="decimal_places_block">
+              {% else %}
+              <!--<div class="form-group" id="decimal_places_block" style="display: none;">
+              {% endif %}
+                <label class="col-md-4 col-lg-2 control-label" for="decimal_places">{{ entry_decimal_places }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <input type="number" min="0" max="6" step="1" name="module_related_options_settings[decimal_places]" value="{{ module_settings.decimal_places }}" id="input-decimal_places" class="form-control" />
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_decimal_places }}</div>
+              </div>-->
+
+              <div class="form-group" id="show_out_of_stock_block">
+                <label class="col-md-4 col-lg-2 control-label" for="show_out_of_stock">{{ entry_show_out_of_stock }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_settings[show_out_of_stock]" id="show_out_of_stock" class="form-control">
+                    {% if module_settings.show_out_of_stock %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_show_out_of_stock }}</div>
+              </div>
+
+              {% if module_settings.show_out_of_stock %}
+              <div class="form-group" id="buy_out_of_stock_block">
+              {% else %}
+              <div class="form-group" id="buy_out_of_stock_block" style="display: none;">
+              {% endif %}
+                <label class="col-md-4 col-lg-2 control-label" for="buy_out_of_stock">{{ entry_buy_out_of_stock }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_settings[buy_out_of_stock]" id="buy_out_of_stock" class="form-control">
+                    {% if module_settings.buy_out_of_stock %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_buy_out_of_stock }}</div>
+              </div>
+
+              <div class="form-group" id="option_image_change_block">
+                <label class="col-md-4 col-lg-2 control-label" for="option_image_change">{{ entry_option_image_change }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_settings[option_image_change]" id="option_image_change" class="form-control">
+                    {% if module_settings.option_image_change %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-5 col-lg-8"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-4 col-lg-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <select name="module_related_options_status" id="input-status" class="form-control">
+                    {% if module_related_options_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="tab-pane" id="tab-adaptation">
+
+              <div class="form-group" id="option_selector_block">
+                <label class="col-md-4 col-lg-2 control-label" for="input-option_selector">{{ entry_option_selector }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <input type="text" name="module_related_options_settings[option_selector]" value="{{ module_settings.option_selector ? module_settings.option_selector }}" placeholder="" id="input-option_selector" class="form-control"/>
+                  {% if error_option_selector %}
+                    <div class="text-danger">{{ error_option_selector }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_option_selector }}</div>
+              </div>
+
+              <div class="form-group" id="price_selector_block">
+                <label class="col-md-4 col-lg-2 control-label" for="input-price_selector">{{ entry_price_selector }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <input type="text" name="module_related_options_settings[price_selector]" value="{{ module_settings.price_selector ? module_settings.price_selector }}" placeholder="" id="input-price_selector" class="form-control"/>
+                  {% if error_price_selector %}
+                    <div class="text-danger">{{ error_price_selector }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_price_selector }}</div>
+              </div>
+
+              <div class="form-group" id="price_old_selector_block">
+                <label class="col-md-4 col-lg-2 control-label" for="input-price_old_selector">{{ entry_price_old_selector }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <input type="text" name="module_related_options_settings[price_old_selector]" value="{{ module_settings.price_old_selector ? module_settings.price_old_selector }}" placeholder="" id="input-price_old_selector" class="form-control"/>
+                  {% if error_price_old_selector %}
+                    <div class="text-danger">{{ error_price_old_selector }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_price_old_selector }}</div>
+              </div>
+
+              <div class="form-group" id="quantity_selector_block">
+                <label class="col-md-4 col-lg-2 control-label" for="input-quantity_selector">{{ entry_quantity_selector }}</label>
+                <div class="col-md-3 col-lg-2">
+                  <input type="text" name="module_related_options_settings[quantity_selector]" value="{{ module_settings.quantity_selector ? module_settings.quantity_selector }}" placeholder="" id="input-quantity_selector" class="form-control"/>
+                  {% if error_quantity_selector %}
+                    <div class="text-danger">{{ error_quantity_selector }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-5 col-lg-8">{{ help_quantity_selector }}</div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+        <div class="text-right">
+          <small><b>{{ heading_title }} v{{ constant('ControllerExtensionModuleRelatedOptions::VERSION') }}</b></small><br>
+          <small><b>&copy; <a href="//www.kingdomdreamsolutions.com/" target="_blank">KDSI</a></b></small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$('#price_adjustment_on').on('change', function(){
+		if ($(this).val()==1) {
+			$('#price_animate_block, #price_multiply_block, #decimal_places_block').slideDown();
+		} else {
+			$('#price_animate_block, #price_multiply_block, #decimal_places_block').slideUp();
+			$('#price_animate_on, #price_multiply').val(0);
+		}
+	});
+	$('#show_out_of_stock').on('change', function(){
+		if ($(this).val()==1) {
+			$('#buy_out_of_stock_block').slideDown();
+		} else {
+			$('#buy_out_of_stock_block').slideUp();
+			$('#buy_out_of_stock').val(0);
+		}
+	});
+</script>
+{{ footer }}

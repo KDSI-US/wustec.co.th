@@ -1,0 +1,171 @@
+<div class="container-fluid">
+    <h3>{{ text_general }}</h3>
+    <br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><span class="required">*</span> <strong>{{ text_gdpr_status }}</strong></h5>
+            <span class="help">{{ text_gdpr_status_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[Enabled]" class="form-control">
+                  <option value="1" {{ moduleData['Enabled'] is not empty and moduleData['Enabled'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['Enabled'] is empty or moduleData['Enabled'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+	</div>
+    <hr /><br />
+    {% if (storeId == '0') %}
+	<div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_show_gdpr_menu_left }}</strong></h5>
+            <span class="help">{{ text_show_gdpr_menu_left_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[LinkInMenu]" class="form-control">
+                  <option value="1" {{ moduleData['LinkInMenu'] is not empty and moduleData['LinkInMenu'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['LinkInMenu'] is empty or moduleData['LinkInMenu'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+             <em>{{ text_show_gdpr_menu_left_default }}</em>
+        </div>
+    </div>
+    <hr /><br />
+    {% endif %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_show_gdpr_footer }}</strong></h5>
+            <span class="help">{{ text_show_gdpr_footer_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[LinkInFooter]" class="form-control">
+                  <option value="1" {{ moduleData['LinkInFooter'] is not empty and moduleData['LinkInFooter'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['LinkInFooter'] is empty or moduleData['LinkInFooter'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+             <em>{{ text_show_gdpr_menu_left_default }}</em>
+        </div>
+    </div>
+    <hr /><br />
+	<div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_right_to_be_forgotten_requests }}</strong></h5>
+            <span class="help">{{ text_right_to_be_forgotten_requests_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[RTBMode]" class="form-control">
+                  <option value="1" {{ moduleData['RTBMode'] is not empty and moduleData['RTBMode'] == '1' ? 'selected=selected' : '' }}>{{ text_automatically }}</option>
+                  <option value="0"  {{ moduleData['RTBMode'] is empty or moduleData['RTBMode'] == '0' ? 'selected=selected' : '' }}>{{ text_manually }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    <div class="row">
+      <div class="col-xs-3">
+        <h5><strong>{{ setting_captcha }}</strong></h5>
+        <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ setting_captcha_h }}</span>
+      </div>
+      <div class="col-xs-3">
+        <select id="CaptchaChecker" name="{{ moduleName }}[UseCaptcha]" class="form-control">
+      <option value="no"  {{ moduleData.UseCaptcha is not defined or (moduleData.UseCaptcha is defined and moduleData.UseCaptcha == 'no') ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+            <option value="yes"  {{ moduleData.UseCaptcha is defined and moduleData.UseCaptcha == 'yes' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+        </select>
+        <div class="captcha-info" style="margin-top:10px;">
+            <div class="input-group">
+                <span class="input-group-addon">{{ setting_captcha_h2 }}</span>
+                <input type="text" name="{{ moduleName }}[SiteKey]" class="form-control" value="{{ moduleData.SiteKey is defined ? moduleData.SiteKey : '' }}" />
+            </div>
+            <div class="input-group" style="margin-top:10px;">
+                <span class="input-group-addon">{{ setting_captcha_h3 }}</span>
+                <input type="text" name="{{ moduleName }}[SecretKey]" class="form-control" value="{{ moduleData.SecretKey is defined ? moduleData.SecretKey : '' }}" />
+            </div>
+        </div>
+      </div>
+    </div>
+    <hr /><br />
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+			<h5><strong>{{ text_gdpr_seo_link }}</strong></h5>
+			<span class="help">{{ text_gdpr_seo_link_helper }}</span>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+			<ul class="nav nav-tabs" id="langtabs-seo" role="tablist">
+			  {% for language in languages %} 
+				<li><a href="#lang-seo-{{ language['language_id'] }}" role="tab" data-toggle="tab"><img src="{{ language['flag_url'] }}" title="{{ language['name'] }}"/> {{ language['name'] }}</a></li>
+			  {% endfor %} 
+			</ul>
+			<div class="tab-content">
+			  {% for language in languages %} 
+				<div class="tab-pane" id="lang-seo-{{ language['language_id'] }}">
+					<input name="{{ moduleName }}[Slug][{{ language['language_id'] }}]" class="form-control" value="{{ moduleData['Slug'][language['language_id']] is defined ? moduleData['Slug'][language['language_id']] : 'gdpr-tools' }}" />
+				</div>
+			  {% endfor %} 
+			</div>
+		</div>
+    </div>
+    <hr /><br />
+	
+    <h3>{{ text_life_of_links }}</h3>
+    <br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_access_to_personal_data_link }}</strong></h5>
+            <span class="help">{{ text_access_to_personal_data_link_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <input type="number" class="form-control" name="{{ moduleName }}[PersonalDataLinkLife]" value="{{ moduleData['PersonalDataLinkLife'] is defined ? moduleData['PersonalDataLinkLife'] : '5' }}" />
+             <em>{{ text_access_default_hours }}</em>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_remove_personal_data_link }}</strong></h5>
+            <span class="help">{{ text_remove_personal_data_link_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <input type="number" class="form-control" name="{{ moduleName }}[RemovePersonalDataLinkLife]" value="{{ moduleData['RemovePersonalDataLinkLife'] is defined ? moduleData['RemovePersonalDataLinkLife'] : '2' }}" />
+             <em>{{ text_delete_default_hours }}</em>
+        </div>
+    </div>
+    <hr /><br />
+	
+	<h3>{{ text_optins }}</h3>
+    <br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_contact_form_optin_link }}</strong></h5>
+            <span class="help">{{ text_contact_form_optin_link_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[EnabledContactFormOptIn]" class="form-control">
+                  <option value="1" {{ moduleData['EnabledContactFormOptIn'] is not empty and moduleData['EnabledContactFormOptIn'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['EnabledContactFormOptIn'] is empty or moduleData['EnabledContactFormOptIn'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_contact_form_newsletter_link }}</strong></h5>
+            <span class="help">{{ text_contact_form_newsletter_link_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[NewsletterOptIn]" class="form-control">
+                  <option value="1" {{ moduleData['NewsletterOptIn'] is not empty and moduleData['NewsletterOptIn'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['NewsletterOptIn'] is empty or moduleData['NewsletterOptIn'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+    </div>
+    <hr /><br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <h5><strong>{{ text_newsletter_double_optin }}</strong></h5>
+            <span class="help">{{ text_newsletter_double_optin_helper }}</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+             <select name="{{ moduleName }}[NewsletterDoubleOptIn]" class="form-control">
+                  <option value="1" {{ moduleData['NewsletterDoubleOptIn'] is not empty and moduleData['NewsletterDoubleOptIn'] == '1' ? 'selected=selected' : '' }}>{{ text_enabled }}</option>
+                  <option value="0"  {{ moduleData['NewsletterDoubleOptIn'] is empty or moduleData['NewsletterDoubleOptIn'] == '0' ? 'selected=selected' : '' }}>{{ text_disabled }}</option>
+             </select>
+        </div>
+    </div>
+    <hr />
+</div>

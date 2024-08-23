@@ -1,0 +1,55 @@
+<form action="POST" id="popup-form">
+  <div style="display:block;">
+    <h3>{{ text_reason_denied }}</h3>
+      <div>
+        <table class="reason_denied_table">
+          <thead>
+            <tr>
+              <td>{{ select_reason_denied }}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <select id="select_reason_denied" name="reason_denied" onchange="show_hide_form(this)">                   
+                  <option value="reason_denied_1">
+                    {{ reason_denied_1 }}
+                  </option> 
+                  <option value="reason_denied_2">
+                    {{ reason_denied_2 }}
+                  </option>             
+                  <option value="reason_denied_3">
+                    {{ reason_denied_3 }}
+                  </option>                         
+                  <option value="other" id="other_reason_denied">
+                    {{ other_reason_denied }}
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input id="other_reason_denied_form" type="hidden"
+                  style="text-align:right" 
+                  type="text" 
+                  name="input_other_reason_denied" 
+                  placeholder="{{ input_other_reason_denied }}" 
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+  <input type="hidden" name="customer_id" value="{{ customer_id }}">  
+</form>    
+
+<script>
+function show_hide_form(selectOS) {
+  if (selectOS.value == "other" ) {
+    $("#other_reason_denied_form").removeAttr("type")
+  } else {
+    $("#other_reason_denied_form").attr("type", "hidden")
+  }
+}
+</script>

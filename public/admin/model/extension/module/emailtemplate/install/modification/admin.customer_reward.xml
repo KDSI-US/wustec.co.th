@@ -1,0 +1,60 @@
+<file path="admin/controller/mail/reward.php" email_template="admin.customer_reward">
+	<operation>
+		<search index="0"><![CDATA[$mail = new Mail(]]></search>
+		<add position="before"><![CDATA[
+			// Prepare mail: admin.customer_reward
+			$this->load->model('customer/customer');
+			$this->load->model('sale/order');
+			$this->load->model('extension/module/emailtemplate');
+
+			$template_load = array(
+			    'key' =>'admin.customer_reward',
+			    'customer_id' => $customer_info['customer_id'],
+				'customer_group_id' => $customer_info['customer_group_id'],
+				'language_id' => $customer_info['language_id'],
+				'store_id' => $customer_info['store_id']
+            );
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+            if ($template) {
+                $template->addData($customer_info, 'customer');
+
+                if ($order_id) {
+                	$order_info = $this->model_sale_order->getOrder($order_id);
+                	if ($order_info) {
+                		$template->addData($order_info, 'order');
+					}
+                }
+
+                $template->data['customer_reward_points'] = $points ? $points : 0;
+                $template->data['customer_reward_description'] = $description ? $description : '';
+                $template->data['customer_reward_total'] = $this->model_customer_customer->getRewardTotal($customer_id);
+
+                $template->data['reward_received'] = sprintf($template->data['text_reward_received'], $template->data['customer_reward_points']);
+                $template->data['reward_total'] = sprintf($template->data['text_reward_total'], $template->data['customer_reward_total']);
+
+                $template->data['text_reward_subject'] = sprintf($template->data['text_reward_subject'], $store_name);
+			    // Prepared mail: admin.customer_reward
+			}
+		]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[
+			// Send mail: admin.customer_reward
+            if ($template && $template->check()) {
+                $template->build();
+			    $template->hook($mail);
+
+                $mail->send();
+
+                $this->model_extension_module_emailtemplate->sent();
+            }]]></add>
+	</operation>
+    <operation error="skip">
+        <search><![CDATA[$mail->setHtml($this->load->view('mail/reward', $data));]]></search>
+        <ignoreif><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/reward', $data));]]></ignoreif>
+        <add position="replace"><![CDATA[if (empty($template)) $mail->setHtml($this->load->view('mail/reward', $data));]]></add>
+    </operation>
+</file>

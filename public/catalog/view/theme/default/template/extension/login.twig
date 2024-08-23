@@ -1,0 +1,103 @@
+<div id="modal-quicklogin" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title main-heading">{{ text_signin_register }}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row" id="quicklogin">
+					<div class="col-sm-12">
+						<h4 class="modal-title">{{ text_returning }}</h4>
+						<span>{{ text_returning_customer }}</span>
+					</div>
+					<div class="col-sm-6">		
+						<div class="form-group required">
+							<label class="control-label" for="input-email">{{ entry_email }}</label>
+							<input type="text" name="email" value=""  id="input-email" class="form-control" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group required">
+							<label class="control-label" for="input-password">{{ entry_password }}</label>
+							<input type="password" name="password" value="" id="input-password" class="form-control" />
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="form-group">
+							<button type="button" class="btn btn-primary loginaccount"  data-loading-text="{{ text_loading }}">{{ button_login }}</button>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+						<a href="{{ forgotten }}">{{ text_forgotten }}</a>
+						</div>
+					</div>
+					<div class="col-sm-6 text-right">
+						<a style="cursor:pointer" id="quickregister">{{ entry_create_a_new_account }}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.quick_signup{
+	cursor:pointer;
+}
+#modal-quicksignup .form-control{
+	height:auto;
+}
+</style>
+<script type="text/javascript"><!--
+$('#quick-register input').on('keydown', function(e) {
+	if (e.keyCode == 13) {
+		$('#quick-register .createaccount').trigger('click');
+	}
+});
+//--></script>
+<script type="text/javascript"><!--
+$('#modal-quicklogin input').on('keydown', function(e) {
+	if (e.keyCode == 13) {
+		$('#quick-login .loginaccount').trigger('click');
+	}
+});
+$('#modal-quicklogin .loginaccount').click(function() {
+	$.ajax({
+		url: 'index.php?route=extension/login/login',
+		type: 'post',
+		data: $('#modal-quicklogin input[type=\'text\'], #modal-quicklogin input[type=\'password\']'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#modal-quicklogin .loginaccount').button('loading');
+			$('#modal-quicklogin .alert-danger').remove();
+		},
+		complete: function() {
+			$('#modal-quicklogin .loginaccount').button('reset');
+		},
+		success: function(json) {
+			$('#modal-quicklogin .form-group').removeClass('has-error');
+			if(json['islogged']){
+				 window.location.href="index.php?route=account/account";
+			}
+			
+			if (json['error']) {
+				$('#modal-quicklogin .modal-header').after('<div class="alert alert-danger" style="margin:5px;"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+				$('#modal-quicklogin #input-email').parent().addClass('has-error');
+				$('#modal-quicklogin #input-password').parent().addClass('has-error');
+				$('#modal-quicklogin #input-email').focus();
+			}
+			if(json['success']){
+				loacation();
+				$('#modal-quicklogin').modal('hide');
+			}
+			
+		}
+	});
+});
+//--></script>
+<script type="text/javascript"><!--
+function loacation() {
+	location.reload();
+}
+//--></script>

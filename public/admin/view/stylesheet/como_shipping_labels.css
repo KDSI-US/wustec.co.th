@@ -1,0 +1,164 @@
+﻿body {
+    font-family: Verdana, Arial;
+    line-height: 1.2;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0;
+}
+@page { margin: 0; } /* affects printing only */
+.labelbox {
+    float: left;
+    width: 365px;
+    height: 240px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    font-size: 14px;
+    border: 1px solid #999999;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.labelbox1 {
+    width: 100%;
+}
+.kindlabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+}
+.logo {
+    display: block;
+    margin-bottom: 5px;
+    height: 60px;
+}
+.senderaddress {
+    font-size: 13px;
+    padding: 5px 0 0 10px;
+    vertical-align: top;
+}
+.shippingaddress {
+    font-size: 15px;
+    padding: 5px 0 0 10px;
+    vertical-align: top;
+}
+.qrcode {
+    width: 75px;
+}
+.qrcode1 {
+    text-align: right;
+    font-size: 12px;
+    padding: 20px 5px 0 0;
+    width: 100%;
+}
+.barcode {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 10px 0 0 0;
+}
+.barcodeimg {
+    margin: 0;
+}
+.barcodetxt {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 9px;
+    margin: -3px 0 0 0;
+}
+.phone {
+    font-size: 11px;
+}
+.message {
+    width: 100%; 
+    text-align: center; 
+    padding-top: 50px;
+    text-transform: uppercase;
+}
+.adrname, .adrcompany, .adrcity {
+    font-weight: bold;
+}
+
+/* label box*/
+.label-box {
+    float: left;
+    position: relative;
+    width: 105mm;
+    height: 148mm;
+    font-family: Arial, Helvetica;
+    font-size: 3.7mm;
+    font-weight: normal;
+    border: 2px solid #555;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.label-box .barcode-box {
+    width: 100mm;
+    text-align: right; 
+    padding: 0;
+    margin: 0;
+    float: none;
+    position: absolute;
+}
+.barcodetxt-box {
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-size: 80%;
+    margin: -3px 0 0 0;
+}
+.content-box {
+    width: auto; 
+    text-align: left; 
+    padding: 0 0 0 5mm;
+    margin: 5mm 0 0 0;
+    float: none;
+    position: absolute;
+}
+
+/* label sticky*/
+.label-sticky {
+    float: left;
+    position: relative;
+    font-family: Arial, Helvetica;
+    font-size: 3.7mm;
+    font-weight: normal;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.label-sticky-sender {
+    position: absolute;
+    font-family: Arial, Helvetica;
+    font-size: 3.4mm;
+    font-weight: normal;
+    font-stretch: semi-condensed;
+    padding: 0;
+    overflow: hidden;
+}
+.label-sticky-sender-in {
+    padding: 2mm 0 0 2mm;
+    display: block;
+}
+.label-sticky-sender .adrname, .label-sticky-sender .adrcompany, .label-sticky-sender .adrcity {
+    font-weight: normal;
+}
+.label-sticky-shipping {
+    position: absolute;
+    font-family: Arial, Helvetica;
+    font-size: 5mm;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0;
+    overflow: hidden;
+}
+.label-sticky-shipping-in {
+    padding: 4mm 0 0 4mm;
+    display: block;
+}
+.label-sticky-shipping .adrname, .label-sticky-shipping .adrcompany, .label-sticky-shipping .adrcity {
+    font-weight: bold;
+}

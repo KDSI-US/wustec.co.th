@@ -1,0 +1,44 @@
+{{ header }}
+<link href="catalog/view/theme/journal3/stylesheet/video_gallery.css" rel="stylesheet" type="text/css" />
+<div class="container">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="row">
+		{{ column_left }}
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">
+			{{ content_top }}
+			<div class="box-content">
+				<div class="row">
+					{% for video_gallery_category in video_gallery_categories %}
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="mainbox">
+							<h2>{{ video_gallery_category.title }}</h2>
+							<div class="images">
+								{% if video_gallery_category.image %}
+								<a href="{{ video_gallery_category.href }}"><img src="{{ video_gallery_category.image }}"/></a>
+								{% endif %}
+							</div>
+							{{ video_gallery_category.description }}	
+						</div>
+					</div>
+					{% endfor %}
+				<div class="pagination">{{ pagination }}</div>
+			</div>
+			<br class="clear" />
+		</div> 
+		{{ content_bottom }}
+	</div>
+	{{ column_right }}
+</div>
+
+{{ footer }}

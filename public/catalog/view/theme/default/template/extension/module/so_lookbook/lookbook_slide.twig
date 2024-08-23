@@ -1,0 +1,46 @@
+{% if slider is defined and slider and lookbooks|length > 0 %}
+<div class="so-lookbook-slider owl-carousel owl-theme {{ slider.custom_class }}" id="so_lookbook_slider_{{ slider.slide_id }}">
+	{% for lookbook in lookbooks %}
+		<div class="so-lookbook-container">
+			<div class="so-lookbook-container__item">
+				<div class="pin__image">
+					<img src="{{ lookbook.image }}" alt="{{ lookbook.name }}" class="so-lookbook-image img-responsive" />
+				</div>
+				{{ lookbook.pinHtml }}
+				{{lookbook.pinHtmlMobile}}
+			</div>
+		</div>
+	{% endfor %}
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		$('#so_lookbook_slider_{{ slider.slide_id }}').owlCarousel({
+			items: 1,
+			loop: {{ loop }},
+			nav: {{ navigation }},
+			dots: {{ pagination }},
+			autoplay: {{ auto_play }},
+			autoplayHoverPause: {{ stop_auto }},
+			autoplayTimeout: {{ auto_play_timeout }},
+			animateOut: 'fadeOut',
+			animateIn: 'fadeIn',
+			navText: ['{{ prev_image }}', '{{ next_image }}']
+		});
+
+		if($('.pin__type').length){
+			$('.so-lookbook-container .pin__type').hover(function(){
+				$('.so-lookbook-container .pin__image').toggleClass('pm-mask');
+			});
+			
+			$('.so-lookbook-container .pin__type').click(function(){
+				$('.so-lookbook-container .pin__type').removeClass('pin__opened');
+				$(this).toggleClass('pin__opened');
+			});
+			
+			$('.so-lookbook-image').click(function(){
+				$('.so-lookbook-container .pin__type').removeClass('pin__opened');
+			});
+		}
+	});
+</script>
+{% endif %}

@@ -1,0 +1,1 @@
+ALTER TABLE `oc_emailtemplate_config` ADD `emailtemplate_config_footer_padding` VARCHAR(32);

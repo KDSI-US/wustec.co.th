@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}">
+<head>
+	<meta charset="UTF-8" />
+	<title>{{ config_owner }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+	<link rel="shortcut icon" href="view/image/green_lock.png" />
+	<link href="view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+	<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+	<link type="text/css" href="view/stylesheet/admin_custom_login_page.css" rel="stylesheet" />
+</head>
+<body class="login_pg">
+	<div id="content">
+		<div class="container">
+			<div class="row">
+				<div class="login-container col-xs-12 col-sm-6 col-md-4 col-lg-4 col-sm-offset-3 col-md-offset-4">
+					<div class="login_painel panel panel-default">
+						<div class="panel-heading text-center">
+							<h1 class="panel-title">
+								<i class="fa fa-lock"></i> {{ config_owner }}<br />
+								<b class="text-danger">IP: {{ remote_ip }}</b>
+							</h1>
+						</div>
+						<div class="panel-body">
+							{% if success %}
+							<div class="alert alert-success alert-dismissible">
+								<i class="fa fa-check-circle"></i> {{ success }}
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+							</div>
+							{% endif %}
+							{% if error_warning %}
+							<div class="alert alert-danger alert-dismissible">
+								<i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+							</div>
+							{% endif %}
+							<form action="{{ action }}" method="post" enctype="multipart/form-data">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user"></i></span>
+										<input type="text" name="username" value="{{ username }}" placeholder="{{ entry_username }}" id="input-username" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i></span>
+										<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />
+									</div>
+									{% if forgotten %}
+									<span class="help-block">
+										<small>
+											<a href="{{ forgotten }}"><i class="fa fa-exclamation-circle"></i>&nbsp;{{ text_forgotten }}</a>
+										</small>
+									</span>
+									{% endif %}
+								</div>
+								<div class="text-center">
+									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-unlock"></i> {{ button_login }}</button>
+								</div>
+								{% if redirect %}
+								<input type="hidden" name="redirect" value="{{ redirect }}" />
+								{% endif %}
+							</form>
+						</div>
+					</div>
+					<div>
+						<span class="login-credit">Powered by <a href="//www.kingdomdreamsolutions.com" target="_blank">Kingdom Dream Solutions, Inc.</a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

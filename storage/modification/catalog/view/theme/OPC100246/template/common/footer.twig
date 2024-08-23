@@ -1,0 +1,137 @@
+
+            {{ sweetalert_fragment_in_header }}
+            
+<footer>{{ git_hidden_tag }}
+<div class="content_footer_top">{{ footertop }}</div>
+	<div class="footer-top">
+  
+		<div id="footer" class="container">
+			<div class="row">
+          <div class="footer-blocks">
+          {{ footer_left }}
+          <div id="extra-link" class="col-sm-3 column">
+                <h5>{{ text_extra }}</h5>
+                  <ul class="list-unstyled">
+                    <li><a href="{{ special }}">{{ text_special }}</a></li>
+
+                {% if galleria_href %}<li><a href="{{ galleria_href }}">{{ text_galleria }}</a></li>{% endif %}
+            
+                    <li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
+                    <li><a href="{{ contact }}">{{ text_contact }}</a></li>
+                    <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+
+			{% if ticketsetting_status is not empty %}
+			<li><a href="{{ mpsupport }}">{{ menu_support }}</a></li>
+			{% endif %}
+			
+                    <li><a href="{{ account }}">{{ text_account }}</a></li>
+                    <li><a href="{{ affiliate }}">{{ text_affiliate }}</a></li>
+
+                  </ul>
+              </div>
+
+              
+              {% if informations %}
+                <div id="info" class="col-sm-3 column">
+                  <h5>{{ text_information }}</h5>
+                    <ul class="list-unstyled">
+                      {% for information in informations %}
+                        <li><a href="{{ information.href }}">{{ information.title }}</a></li>
+                       
+                      {% endfor %}
+                      <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+                        
+                        <li><a href="{{ voucher }}">{{ text_voucher }}</a></li>
+                     
+                    </ul>
+                </div>
+              {% endif %}
+              
+              
+              
+              {{ footer_right }}
+            </div>
+      </div>
+	  </div>
+  </div>
+
+
+
+<div class="manufacture_block">
+    <div class="container">
+      <div class="row">
+        {% if manufacturer_list %}
+          <h5 class="manufacturer_title">{{ text_manufacturer }} :</h5>
+          <ul>
+            {% for manufacturer in manufacturer_list %}
+              <li class="manufacturer_item"><a href="{{ manufacturer.href }}">{{ manufacturer.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+</div>
+
+
+
+<div class="bottomfooter">
+
+<div class="container">
+<div class="row">
+ <div class="content_footer_bottom"> </div>	
+ <p class="powered">{{ powered }}</p>
+ {{ footer_bottom }}
+</div>
+</div>
+</div>
+</footer>
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+
+<!--
+OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
+Please donate via PayPal to donate@opencart.com
+//--> 
+<!-- Theme created by Welford Media for OpenCart 2.0 www.welfordmedia.co.uk -->
+
+			{% if at_js %}
+<script>
+{{ at_js }}
+</script>
+			{% endif %}
+			
+
+{% if page_route %}
+<script>
+function getURLVar(key) {
+    var value = [];
+    var query = String(document.location).split('?');
+
+    if (query[1]) {
+        var part = query[1].split('&');
+
+        for (i = 0; i < part.length; i++) {
+            var data = part[i].split('=');
+
+            if (data[0] && data[1]) {
+                value[data[0]] = data[1];
+            }
+        }
+
+        if (value[key]) {
+            return value[key];
+        } else {
+            return '';
+        }
+    } else {
+        // URL alias
+        if (key == 'route') {
+            return '{{ page_route }}';
+        }
+    }
+}
+</script>
+{% endif %}
+            
+</body></html>

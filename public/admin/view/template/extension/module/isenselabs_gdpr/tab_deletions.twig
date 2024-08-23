@@ -1,0 +1,101 @@
+<div class="deletions-filter-data well">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+		<div class="form-group">
+            <label for="email">{{ column_email }}</label>
+            <input name="email" id="email" class="form-control deletions_input" value="{{ filter_data['email'] }}" />
+        </div>
+        <div class="form-group">
+            <label for="status">{{ entry_status }}</label>
+            <select name="status" class="form-control">
+                <option value="-" {{ filter_data['status'] == '-' ? 'selected="selected"' : '' }}>{{ text_filter_all }}</option>
+                <option value="0" {{ filter_data['status'] == '0' ? 'selected="selected"' : '' }}>{{ text_pending_status }}</option>
+                <option value="1" {{ filter_data['status'] == '1' ? 'selected="selected"' : '' }}>{{ text_cancelled_status }}</option>
+				<option value="2" {{ filter_data['status'] == '2' ? 'selected="selected"' : '' }}>{{ text_awaiting_deletion_status }}</option>
+                <option value="3" {{ filter_data['status'] == '3' ? 'selected="selected"' : '' }}>{{ text_deleted_status }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date_deletion">{{ text_column_deletion_date }}</label>
+            <input name="date_deletion" id="date_deletion" class="form-control date" data-date-format="YYYY-MM-DD" value="{{ filter_data['date_deletion'] }}" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="form-group">
+            <label for="date_start">{{ text_date_start }}</label>
+            <input name="date_start" id="date_start" class="form-control date" data-date-format="YYYY-MM-DD" value="{{ filter_data['date_start'] }}" />
+        </div>
+        <div class="form-group">
+            <label for="date_end">{{ text_date_end }}</label>
+            <input name="date_end" id="date_end" class="form-control date" data-date-format="YYYY-MM-DD" value="{{ filter_data['date_end'] }}" />
+        </div>
+        <div class="form-group text-right">
+             <br />
+             <button class="btn btn-deletions-filter btn-primary" onClick="filterDeletions(this, event);">{{ text_filter }}</button>
+        </div>
+    </div>         
+    <div class="clearfix"></div>            
+</div>
+<table class="table table-striped table-deletions-results table-hover"> 
+    <thead>
+        <tr>
+            <th>{{ column_email }}</th> 
+            <th>{{ entry_status }}</th> 
+            <th>{{ text_customer_data }}</th>
+            <th>{{ text_address_data }}</th>
+            <th>{{ text_order_data }}</th>
+            <th>{{ text_gdpr_data }}</th>
+			<th class="text-right">{{ text_column_deletion_date }}</th>
+            <th class="text-right">{{ column_date }}</th> 
+            <th class="text-right">{{ column_actions }}</th> 
+        </tr> 
+    </thead> 
+    <tbody>
+        {% if (sources|length > 0) %} 
+            {% for index,result in sources %} 
+            <tr> 
+                <td>{{ result['email'] }}</td> 
+                <td>{{ result['status'] }}</td>
+                <td>{{ result['customer_data'] }}</td> 
+                <td>{{ result['address_data'] }}</td> 
+                <td>{{ result['order_data'] }}</td> 
+                <td>{{ result['gdpr_data'] }}</td> 
+				<td class="text-right">{{ result['date_deletion'] }}</td> 
+                <td class="text-right">{{ result['date_added'] }}</td> 
+                <td class="text-right">
+					<a {% if (result['status_code'] != '0' and result['status_code'] != '1' and result['status_code'] != '3') %}onClick="deleteData({{ result['deletion_id'] }});"{% else %}disabled="disabled"{% endif %} class="btn btn-small btn-primary" data-toggle="tooltip" title="" data-original-title="{{ text_process_deletion }}"><i class="fa fa-trash-o"></i></a>
+					<a {% if (result['status_code'] != '3' and result['status_code'] != '1') %}onClick="approveRequest({{ result['deletion_id'] }});"{% else %}disabled="disabled"{% endif %} class="btn btn-small btn-default" data-toggle="tooltip" title="" data-original-title="{{ text_approve_deletion }}"><i class="fa fa-thumbs-o-up"></i></a>
+					<a {% if (result['status_code'] != '3' and result['status_code'] != '1') %}onClick="denyRequest({{ result['deletion_id'] }});"{% else %}disabled="disabled"{% endif %} class="btn btn-small btn-danger" data-toggle="tooltip" title="" data-original-title="{{ text_cancel_deletion }}"><i class="fa fa-minus-circle"></i></a>
+				</td> 
+            </tr> 
+            {% endfor %} 
+        {% else %} 
+            <tr>
+                <td colspan="9" class="text-center">{{ text_no_results }}</td>
+            </tr>
+        {% endif %} 
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="9">
+                <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script type="text/javascript">
+$('.date').datetimepicker({
+    pickTime: false
+});
+    
+// input auto-send query
+$('.deletions_input').on('keydown', function(e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('.btn-deletions-filter').trigger('click');
+    }
+});
+</script>

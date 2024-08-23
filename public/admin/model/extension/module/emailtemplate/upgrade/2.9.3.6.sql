@@ -1,0 +1,1 @@
+ALTER TABLE `oc_emailtemplate_logs` ADD `emailtemplate_config_id` INT(11) UNSIGNED NULL DEFAULT NULL AFTER `emailtemplate_id`;

@@ -1,0 +1,168 @@
+<table cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td height="30" style="font-size:30px; line-height:30px; height:30px;"></td>
+  </tr>
+</table>
+{% if key and (key == 'order_product' and emailtemplate.order_title) or (key == 'cart_product' and emailtemplate.cart_title) %}
+  <table border="0" cellpadding="0" cellspacing="0" class="table-heading" style="width:auto">
+    <tbody>
+    <tr>
+      <td width="2">&nbsp;</td>
+      <td class="heading3">{% if (key == 'order_product' and emailtemplate.order_title) %}{{ emailtemplate.order_title}}{% elseif (key == 'cart_product' and emailtemplate.cart_title) %}{{ emailtemplate.cart_title}}{% endif %}</td>
+    </tr>
+    <tr>
+      <td height="3" style="font-size:1px; line-height:3px; height: 3px;" width="2">&nbsp;</td>
+      <td height="3" style="font-size:1px; line-height:3px; height: 3px;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bgcolor="#e8e8e8" height="1" style="font-size:1px; line-height:1px; height:1px;" width="2">&nbsp;</td>
+      <td bgcolor="#e8e8e8" height="1" style="font-size:1px; line-height:1px; height:1px;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="15" style="font-size:1px; line-height:15px; height:15px;" width="2">&nbsp;</td>
+      <td height="15" style="font-size:1px; line-height:15px; height:15px;">&nbsp;</td>
+    </tr>
+    </tbody>
+  </table>
+{% endif %}
+<div class="table-responsive">
+  <table cellpadding="5" cellspacing="0" width="100%" class="table-order-default table-order">
+    <thead>
+      <tr>
+        <th bgcolor="#ededed" class="text-center" style="text-align:center;">{{ text_product }}</th>
+        {% if products[0].price is defined %}
+          {% if config.order_products.quantity_column %}
+            <th bgcolor="#ededed" align="center" class="text-center table-column-quantity" style="text-align:center;">{{ text_quantity }}</th>
+            <th bgcolor="#ededed" align="right" class="text-right table-column-price" style="white-space:nowrap;text-align:right;">{{ text_price }}</th>
+          {% else %}
+            <th bgcolor="#ededed" align="right" class="text-right table-column-price" style="white-space:nowrap;text-align:right;">{{ text_price }}</th>
+          {% endif %}
+        {% endif %}
+        {% if products[0].price is defined or vouchers %}
+          <th bgcolor="#ededed" align="right" class="text-right table-column-price" style="white-space:nowrap;text-align:right;">{{ text_total }}</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    {% set row_style_background = 0 %}
+    {% set row_style_backgrounds = ['#f6f6f6', '#fafafa'] %}
+    {% for product in products %}
+      {% set row_style_background = loop.index0 %}
+      <tr>
+        <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}">
+          <table cellpadding="0" cellspacing="0" width="100%" style="table-layout:auto !important;">
+            <tr>
+              <td class="email-product-data">
+                <table cellpadding="0" cellspacing="0" width="100%" style="table-layout:auto !important;">
+                  <tr class="table-row-stack">
+                    {% if product.image %}
+                      <td class="email-product-image table-cell-stack" style="text-align: left;width:1px;padding:0 10px 0 0;">
+                        <a href="{{ product.url|replace({'&amp;':'&'}) }}">
+                          <img src="{{ product.image }}" alt="" style="margin:0 auto;max-width:none;"/>
+                        </a>
+                      </td>
+                    {% endif %}
+                    <td class="table-cell-stack" style="padding:0!important;">
+                      <table cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                          <td class="email-product-data">
+                            <a href="{{ product.url|replace({'&amp;':'&'}) }}">
+                              <strong>{{ product.name }} </strong>
+                            </a>
+                            {% if product.model %}
+                              <div class="list-product-options" title="{{ text_model }}" style="font-size:12px;line-height:16px;">
+                                {{ product.model }}
+                              </div>
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% if product.sku %}
+                          <tr>
+                            <td class="list-product-options" style="font-size:12px;line-height:16px;">{{ text_sku }} <b>{{ product.sku }}</b></td>
+                          </tr>
+                        {% endif %}
+                        {% if product.rating %}
+                          <tr>
+                            <td class="rating" style="font-size:13px;color:#ca8f00;text-align:center;" title="{{ text_rating }}">
+                                <span>
+                                {% for i in 1..5 %} <small>{{ product.rating < i ? '&#9734;' : '&#9733;' }}</small>{% endfor %}
+                                </span>
+                              <small> ({{ product.reviews }})</small>
+                            </td>
+                          </tr>
+                        {% endif %}
+                        {% if product.stock_quantity is defined and product.stock_status is defined %}
+                          <tr class="table-row-stack">
+                            <td class="table-cell-stack email-product-data" style="padding-top:6px;">
+                              <div>
+                                <b style="font-size:0.9em">{{ text_stock_quantity }}</b>
+                                <span style="font-size:0.85em;color:{% if product.stock_quantity <= 0 %}#FF0000{% elseif product.stock_quantity <= 5 %}#FFA500{% else %}#008000{% endif %}">{{ product.stock_status }} ({{ product.stock_quantity }})</span>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endif %}
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {% if product.description %}<tr><td height="5" style="font-size:1px;line-height:5px;mso-margin-top-alt:1px;">&nbsp;</td></tr><tr><td class="product-desc" style="font-size:12px;line-height:14px;">{{ product.description }}</td></tr>{% endif %}
+            {% if product.option %}
+              <tr>
+                <td class="email-product-data">
+                  <div class="list-product-options" style="font-size:0.9em;line-height:16px;">
+                    {% for option in product.option %}
+                      &raquo; <strong>{{ option.name }}:</strong>&nbsp;{{ option.value }} {% if option.price_value > 0 %}<small>{{ option.price_prefix ~ option.price }}</small>{% endif %}
+                      {% if option.stock_quantity %} (<span style="font-size:0.85em;color:{% if option.stock_quantity <= 0 %}#FF0000{% elseif option.stock_quantity <= 5 %}#FFA500{% else %}#008000{% endif %}">{{ option.stock_quantity }}</span>){% endif %}<br />
+                    {% endfor %}
+                  </div>
+                </td>
+              </tr>
+            {% endif %}
+          </table>
+        </td>
+        {% if products[0].price is defined %}
+          {% if config.order_products.quantity_column %}
+            <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="center" class="text-center table-column-quantity" style="white-space:nowrap;text-align:center;">
+              {{ product.quantity }}
+            </td>
+            <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="center" class="text-center" style="white-space:nowrap;text-align:right;">
+              {{ product.price }}
+            </td>
+          {% else %}
+            <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="right" class="text-right table-column-price" style="white-space:nowrap;text-align:right;">
+              <span class="table-column-price-label">{{ product.quantity }}  <span style="font-weight:normal;">x</span></span> {{ product.price }}
+            </td>
+          {% endif %}
+        {% endif %}
+        {% if products[0].price is defined or vouchers %}
+          <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="right" class="text-right table-column-price" style="white-space:nowrap;text-align:right;">
+            {{ product.total }}
+          </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    {% if vouchers %}
+      {% for voucher in vouchers %}
+        {% set row_style_background = row_style_background + 1 %}
+        <tr>
+          <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" colspan="{% if products[0].price is defined %}{{ config.order_products.quantity_column ? 3 : 2 }}{% else %}1{% endif %}">{{ voucher.description }} </td>
+          <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="right" class="text-right email-price" style="white-space:nowrap;text-align:right;">{{ voucher.amount }}</td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+    {% if totals %}
+      <tfoot>
+      {% for total in totals %}
+        {% set row_style_background = row_style_background + 1 %}
+        <tr>
+          <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="right" class="text-right" colspan="{% if products[0].price is defined %}{{ config.order_products.quantity_column ? 3 : 2 }}{% else %}1{% endif %}"style="text-align:right;"><b>{{ total.title }} </b></td>
+          <td bgcolor="{{ cycle(row_style_backgrounds, row_style_background) }}" align="right" class="text-right email-price" style="white-space:nowrap;text-align:right;">{{ total.text }} </td>
+        </tr>
+      {% endfor %}
+      </tfoot>
+    {% endif %}
+  </table>
+</div>

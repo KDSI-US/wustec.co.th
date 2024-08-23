@@ -1,0 +1,273 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid clearfix">
+      <div class="pull-right">
+        <button id="button-send" data-loading-text="{{ text_loading }}" data-toggle="tooltip" title="{{ button_send }}" class="btn btn-primary" onclick="send('index.php?route=marketing/contact/send&user_token={{ user_token }}');"><i class="fa fa-envelope"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item{{ loop.index==breadcrumbs|length ? ' active' }}"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <form class="row" id="main-form">
+      <div class="col-md-3 col-md-push-9 col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="tab-content">
+              <div class="form-group">
+                <label class="control-label" for="input-template">{{ entry_template }}</label>
+                <select name="emailtemplate_id" id="input-template" class="form-control">
+                  <option value=''>{{ text_select }}</option>
+                  {% for item in email_templates %}
+                    <option value="{{ item.value }}">{{ item.label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-store">{{ entry_store }}</label>
+                <select name="store_id" id="input-store" class="form-control">
+                  <option value="0">{{ text_default }}</option>
+                  {% for store in stores %}
+                    <option value="{{ store.store_id }}">{{ store.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-to">{{ entry_to }}</label>
+                <select name="to" id="input-to" class="form-control">
+                  <option value="newsletter">{{ text_newsletter }}</option>
+                  <option value="customer_all">{{ text_customer_all }}</option>
+                  <option value="customer_group">{{ text_customer_group }}</option>
+                  <option value="customer">{{ text_customer }}</option>
+                  <option value="product">{{ text_product }}</option>
+                </select>
+              </div>
+              <div class="form-group to" id="to-customer-group">
+                <label class="control-label" for="input-customer-group">{{ entry_customer_group }}</label>
+                <select name="customer_group_id" id="input-customer-group" class="form-control">
+                  {% for customer_group in customer_groups %}
+                    <option value="{{ customer_group.customer_group_id }}">{{ customer_group.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group to" id="to-customer">
+                <label class="control-label" for="input-customer"><span data-toggle="tooltip" title="{{ help_customer }}">{{ entry_customer }}</span></label>
+                <input type="text" name="customers" value="" placeholder="{{ entry_customer }}" id="input-customer" class="form-control"/>
+                <div class="form-control" id="customer-autocomplete" style="height: 150px; overflow: auto;">
+                </div>
+              </div>
+              <div class="form-group to" id="to-product">
+                <label class="control-label" for="input-product"><span data-toggle="tooltip" title="{{ help_product }}">{{ entry_product }}</span></label>
+                <input type="text" name="products" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control"/>
+                <div class="form-control" id="product-autocomplete" style="height: 150px; overflow: auto;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 col-md-pull-3 col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <i class="fa fa-envelope"></i> {{ heading_title }}
+          </div>
+          <div class="panel-body form-horizontal">
+            <ul class="nav nav-tabs" id="language">
+              {% for language in languages %}
+                <li class="nav-item{{ loop.first ? ' active' }}"><a href="javascript:void(0)" data-target="#language{{ language.language_id }}" data-toggle="tab" class="nav-link"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+            <div class="tab-content">
+              {% for language in languages %}
+                <div class="tab-pane form-horizontal {{ loop.first ? ' active' }}" id="language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-md-2 control-label" for="input-subject-{{ language.language_id }}">{{ entry_subject }}</label>
+                    <div class="col-md-10">
+                      <input type="text" name="subject[{{ language.language_id }}]" value="" id="input-subject-{{ language.language_id }}" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label" for="input-preview-{{ language.language_id }}">{{ entry_preheader }}</label>
+                    <div class="col-md-10">
+                      <input type="text" name="preview[{{ language.language_id }}]" value="" id="input-preview-{{ language.language_id }}" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-md-2 control-label" for="input-message-{{ language.language_id }}">{{ entry_message }}</label>
+                    <div class="col-md-10">
+                      <textarea name="message[{{ language.language_id }}]" id="input-message-{{ language.language_id }}" class="language_editor form-control" data-lang="{{ summernote_language }}" data-toggle="summernote"></textarea>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript"><!--
+    (function ($) {
+        $(document).ready(function () {
+            if ($.fn.ckeditor) {
+                $('textarea[data-toggle=\'summernote\']').ckeditor();
+            }
+            $('#input-template').change(function () {
+                var val = $(this).val(), language_id, store_id = $('select[name=store_id]').val(), editor = $('.language_editor');
+                if (!val) {
+                    $(this).data('current', $(this).val());
+                    return true;
+                }
+                if ((editor.val() != '' && editor.val() != '<p><br /></p>') && !confirm("{{ warning_template_content }}")) {
+                    $(this).val($(this).data('current'));
+                    return false;
+                }
+                $(this).data('current', $(this).val());
+                $.ajax({
+                    url: 'index.php?route=extension/module/emailtemplate/get_template&user_token={{ user_token }}',
+                    type: 'get',
+                    data: 'id=' + val + '&store_id=' + store_id + '&parse=0&output=comment,subject,preview',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) {
+                            for (language_id in data) {
+                                if (data[language_id].subject) {
+                                    $("#input-subject-" + language_id).val(data[language_id].subject);
+                                }
+                                if (data[language_id].preview) {
+                                    $("#input-preview-" + language_id).val(data[language_id].preview);
+                                }
+                                $("#input-message-" + language_id).val(data[language_id].comment);
+                                if (typeof CKEDITOR !== "undefined" && CKEDITOR.instances["input-message-" + language_id]) {
+                                    CKEDITOR.instances["input-message-" + language_id].setData(data[language_id].comment);
+                                } else if ($.fn.summernote) {
+                                    $("#input-message-" + language_id).summernote('code', data[language_id].comment);
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            $('select[name=\'to\']').on('change', function () {
+                $('.to').hide();
+                $('#to-' + this.value.replace('_', '-')).show();
+            }).trigger('change');
+            // Customers
+            $('input[name=\'customers\']').autocomplete({
+                'source': function (request, response) {
+                    $.ajax({
+                        url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                        dataType: 'json',
+                        success: function (json) {
+                            response($.map(json, function (item) {
+                                return {
+                                    label: item.name,
+                                    value: item.customer_id
+                                }
+                            }));
+                        }
+                    });
+                },
+                'select': function (item) {
+                    $('input[name=\'customers\']').val('');
+                    $('#input-customer' + item.value).remove();
+                    $('#customer-autocomplete').append('<div id="customer' + item.value + '"><i class="fa fa-minus-circle"></i> ' + item.label + '<input type="hidden" name="customer[]" value="' + item.value + '" /></div>');
+                }
+            });
+            $('#input-customer').parent().find('.form-control').delegate('.fa-minus-circle', 'click', function () {
+                $(this).parent().remove();
+            });
+            // Products
+            $('input[name=\'products\']').autocomplete({
+                'source': function (request, response) {
+                    $.ajax({
+                        url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                        dataType: 'json',
+                        success: function (json) {
+                            response($.map(json, function (item) {
+                                return {
+                                    label: item.name,
+                                    value: item.product_id
+                                }
+                            }));
+                        }
+                    });
+                },
+                'select': function (item) {
+                    $('input[name=\'products\']').val('');
+                    $('#input-product' + item.value).remove();
+                    $('#product-autocomplete').append('<div id="product' + item.value + '"><i class="fa fa-minus-circle"></i> ' + item.label + '<input type="hidden" name="product[]" value="' + item.value + '" /></div>');
+                }
+            });
+            $('#input-product').parent().find('.form-control').delegate('.fa-minus-circle', 'click', function () {
+                $(this).parent().remove();
+            });
+        });
+    })(jQuery);
+    function send(url) {
+        (function ($) {
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: $('#main-form').serialize(),
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#button-send').button('loading');
+                },
+                complete: function () {
+                    $('#button-send').button('reset');
+                },
+                success: function (json) {
+                    $('.alert, .text-danger').remove();
+                    if (json.error) {
+                        if (json.error.warning) {
+                            $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json.error.warning + '</div>');
+                        }
+                        if (json.error.email) {
+                            $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json.error.email + '</div>');
+                        }
+                        if (json.error.subject) {
+                            for (i in json.error.subject) {
+                                $('input[name=\'subject[' + i + ']\']').after('<div class="text-danger">' + json.error.subject[i] + '</div>');
+                            }
+                        }
+                        if (json.error.message) {
+                            for (i in json.error.message) {
+                                $('textarea[name=\'message[' + i + ']\']').parent().append('<div class="text-danger">' + json.error.message[i] + '</div>');
+                            }
+                        }
+                    }
+                    if (json.success) {
+                        if (!json.next) {
+                            $('.language_editor, input[name^=subject], input[name^=preview], #input-template').val('');
+
+                            if (typeof CKEDITOR !== "undefined") {
+                                for(var instanceName in CKEDITOR.instances) {
+                                    CKEDITOR.instances[instanceName].updateElement();
+                                }
+                            } else if($.fn.summernote){
+                                $(".language_editor").each(function() {
+                                  $(this).summernote('reset');
+                                })
+                            }
+                        }
+                        $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json.success + '</div>');
+                    }
+                    if (json.next) {
+                        send(json.next);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        })(jQuery);
+    }
+    //--></script>
+{{ footer }}
