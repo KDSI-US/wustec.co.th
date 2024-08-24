@@ -2216,14 +2216,13 @@ textarea.input-lg,select[multiple].input-lg {
 
 .btn-primary {
 	border: 1px solid #333;
-	border-radius: 0;
+	border-radius: .25rem;
 	background: #333;
 	color: #fff;
 }
 
 .btn-primary:hover, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
 	background: #333;
-	border: 1px solid #333;
 	border-color: #333;
 }
 
@@ -6351,13 +6350,13 @@ button.close {
         display: none!important;
     }
 }
-
+/*
 @media (max-width: 767px) {
 	.row {
 		margin-left: 0;
 		margin-right: 0;
 	}
-}
+}*/
 @media (max-width: 543px) {
 	.productpage .nav-tabs > li.active > a {
 		font-size: 15px;

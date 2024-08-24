@@ -5517,9 +5517,6 @@ h2.price {
 	color: #b8b8b8;
 	line-height: 20px;
 }
-.contact-form-design {
-	margin-top: 5%;
-}
 .contact-form .form-group .col-sm-2.control-label {
 	padding: 3px 9px;
 }
@@ -5549,12 +5546,6 @@ h2.price {
 	position: relative;
 	z-index: 9;
 	padding: 36px 35px 0px 35px;
-}
-.contact-form {
-	float: left;
-	width: 60%;
-	background-color: #f2f2f2;
-	padding: 32px;
 }
 .contact-form-design.container {
 	padding: 30px;
@@ -10065,6 +10056,9 @@ li.nav-item {
 	padding: 7px;
 	transition: 0.5s;
 }
+.dreamit-team-member-area.style-three.certificates .dreamit-team-thumb img {
+	border-radius: 0;
+}
 .dreamit-team-member-area.style-three
 	.dreamit-team-single-box:hover
 	.dreamit-team-content {
@@ -11638,8 +11632,21 @@ button.btn {
 	border: none;
 }
 button.btn:hover {
-	background: #20dfe3;
+	background: #25458b;
 	color: #fff;
+}
+
+input.btn {
+        background: #426abb;
+        color: #fff;
+        padding: 14px 42px;
+        text-transform: capitalize;
+        transition: 0.5s;
+        border: none;
+}
+input.btn:hover {
+        background: #25458b;
+        color: #fff;
 }
 .dreamit-contact-area .form-control {
 	border-radius: 7px;
@@ -12024,7 +12031,7 @@ textarea#message {
 <!--Start itexpert feature Area-->
 ==================================================-*/
 .feature-area {
-	padding: 75px 0 63px;
+	padding: 25px 0 40px;
 }
 .dreamit-single-feature-box {
 	padding: 25px 30px 12px;
@@ -12051,6 +12058,9 @@ textarea#message {
 	top: 0;
 	opacity: 0;
 	transition: 0.5s;
+}
+.dreamit-single-feature-box .feature-thumb:before {
+	background: none;
 }
 .dreamit-single-feature-box:hover {
 	box-shadow: 2px 10px 50px rgb(158 158 158 / 25%);

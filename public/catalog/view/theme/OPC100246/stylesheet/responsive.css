@@ -2141,7 +2141,7 @@
 		font-size: 20px !important;
 	}
 	.faq-area {
-		padding: 0 120px !important;
+		padding: 0 120px;
 	}
 	.service-content {
 		padding: 0 1px 0 !important;
@@ -2248,7 +2248,7 @@
 		font-size: 16px !important;
 	}
 	.faq-area {
-		padding: 0 100px !important;
+		padding: 0 100px;
 	}
 	.nav-pills .nav-link {
 		padding: 16px 27px !important;
@@ -2323,6 +2323,13 @@
 	#white-bar-3 {
 		top: 237px;
 	}
+        .dreamit-single-pricing-box {
+                margin-bottom: 30px;
+        }
+	.single-service-box {
+		margin-bottom: 30px;
+	}
+
 }
 
 @media (min-width: 992px) and (max-width: 1024px) {
@@ -2415,7 +2422,7 @@
 		font-size: 15px !important;
 	}
 	.faq-area {
-		padding: 0 30px !important;
+		padding: 0 30px;
 	}
 	.case-detail-area .pl-65 {
 		padding-left: 20px !important;
@@ -2580,6 +2587,12 @@
 
 	#white-bar-3 {
 		top: 237px;
+	}
+	.dreamit-single-pricing-box {
+		margin-bottom: 30px;
+	}
+	.single-service-box {
+		margin-bottom: 30px;
 	}
 }
 /* Tablet Tab :768px. */
