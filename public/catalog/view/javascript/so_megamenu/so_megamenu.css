@@ -78,9 +78,6 @@ ul.megamenu {
 	position: static;
 	padding: 0;
 }
-ul.megamenu > li:hover {
-	background-color: rgba(0, 0, 0, 0.2);
-}
 
 ul.megamenu > li.pull-right {
 	float: right;

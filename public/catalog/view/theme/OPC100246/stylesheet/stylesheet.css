@@ -3377,7 +3377,6 @@ footer {
 	float: left;
 	width: 100%;
 	background: #222222;
-	margin-top: 30px;
 }
 footer h5 {
 	font-size: 16px;
@@ -8709,7 +8708,7 @@ select.select-your-service.form-box-input {
 	transition: 0.5s;
 }
 .appoinment-button button:hover {
-	background: #20dfe3;
+	background: #25458b;
 }
 /*--==============================================->
 	<!--Start itexpert service Area-->
@@ -9903,7 +9902,7 @@ li.nav-item {
 	content: "";
 	height: 100%;
 	width: 100%;
-	background: rgba(90, 73, 248, 0.74);
+	background: #25458ba1;
 	left: 0;
 	top: 0;
 	transition: 0.5s;
@@ -10119,7 +10118,7 @@ li.nav-item {
 }
 /*tesm member topper*/
 .dreamit-team-member-area.topper {
-	padding: 80px 0 10px;
+	padding: 80px 0 55px;
 }
 .dreamit-team-member-area.topper .dreamit-section-content-text p {
 	margin: 5px 0 35px;
@@ -10486,10 +10485,10 @@ li.nav-item {
 	margin-left: 42px;
 }
 a.active {
-	background-color: #20dfe3;
+	background-color: #25458b;
 }
 .dreamit-call-do-button a:hover {
-	background: #20dfe3;
+	background: #25458b;
 	color: #fff;
 }
 /*style-two*/
@@ -10561,7 +10560,7 @@ a.active {
 	padding: 19px 0 18px;
 }
 .call-do-action-area.style-four .row.margin-topper8 {
-	background: url(../image/tech/slider2.jpg);
+	background: linear-gradient(#3b9ff57d, #18439bbd), url(../image/tech/slider2.jpg);
 	padding: 88px 0 90px 43px;
 	background-position: center center;
 	background-size: cover;
@@ -10628,14 +10627,14 @@ a.active {
 	line-height: 1.5;
 }
 .call-do-action-area.style-five .call-do-button a {
-	background: #20dfe3;
+	background: #426abb;
 	color: #fff;
 	padding: 16px 36px;
 	font-size: 14px;
 }
 .call-do-action-area.style-five .call-do-button a:hover {
-	color: #20dfe3;
-	background: #fff;
+	color: #fff;
+	background: #25458b;
 }
 /*style-six*/
 .call-do-action-area.style-six {
@@ -11562,24 +11561,24 @@ a.active {
 	font-weight: 600;
 }
 .dreamit-filepx-area.style-two.upper7 .flip-box-back {
-	background: #20dfe3;
+	background: #426abb;
 }
 .dreamit-filepx-area.style-two.upper7 .des {
 	padding-top: 57px;
 }
 .dreamit-filepx-area.style-two.upper7 .flip-box-front {
-	border-radius: 0;
+	border-radius: 15px;
 }
 .dreamit-filepx-area.style-two.upper7 .flip-box-back {
-	border-radius: 0;
+	border-radius: 15px;
 }
 .dreamit-filepx-area.style-two.upper7 .des a {
 	color: #fff;
-	background-color: #7744d9;
+	background-color: #25458b;
 	padding: 11px 22px;
 }
 .dreamit-filepx-area.style-two.upper7 .des a:hover {
-	background: #c13740;
+	background: #597dc1;
 	color: #fff;
 }
 /*--==============================================->
@@ -12408,7 +12407,7 @@ textarea#message {
 	height: 100%;
 	width: 100%;
 	margin: auto;
-	background: url(assets/images/price.png);
+	background: url(../image/tech/price.png);
 	background-repeat: no-repeat;
 	background-position: bottom;
 }
@@ -13825,4 +13824,7 @@ div#particles .slider-area {
 }
 .header-logo {
 	padding: 0 !important;
+}
+div#information-contact {
+	padding-bottom: 15px;
 }
