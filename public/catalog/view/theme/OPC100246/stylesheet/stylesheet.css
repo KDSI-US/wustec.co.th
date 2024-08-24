@@ -11296,9 +11296,32 @@ a.active {
 	background: #ffffff;
 	border: 0px solid #ffffff;
 	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-	background: url(../image/tech/circuitboard.jpg);
 	background-size: 160%;
 	background-position: center;
+}
+.flip-box.ai .flip-box-front {
+	background: url(../../../../../image/catalog/product-lines-cpu-gpu-ai.jpg);
+	background-size: cover;
+}
+.flip-box.cloud .flip-box-front {
+        background: url(../../../../../image/catalog/product-lines-data-center.jpg);
+        background-size: cover;
+}
+.flip-box.ev .flip-box-front {
+        background: url(../../../../../image/catalog/product-lines-ev_rf.jpg);
+        background-size: cover;
+}
+.flip-box.mem .flip-box-front {
+        background: url(../../../../../image/catalog/product-lines-medical-mems.jpg);
+        background-size: cover;
+}
+.flip-box.otn .flip-box-front {
+        background: url(/../../../../../image/catalog/product-lines-otn-bbu.jpg);
+        background-size: cover;
+}
+.flip-box.plc .flip-box-front {
+        background: url(../../../../../image/catalog/product-linesplc.jpg);
+        background-size: cover;
 }
 .box-title {
 	padding-top: 195px;
