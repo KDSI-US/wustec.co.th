@@ -39,9 +39,9 @@
         </div>
       </div>
       {% if contact_details %}
-      <div class="contact-details">
+      {#<div class="contact-details">
       {{ contact_details }}
-      </div>
+      </div>#}
       {% endif %}
 
       {% if locations %}
@@ -91,7 +91,7 @@
         </div>
         {% endfor %}
       </div>
-      {% endif %}
+      {% endif %}{#
       <div class="contact-form-design">
           <div class="left">
             {% if image %} 
@@ -184,12 +184,9 @@
         </div>
       </form>
     </div>
-    </div>
+    </div>#}
       {{ content_bottom }}</div>
     {{ column_right }}</div>
-
-  <br />
-  <br />
 
   {% if geocode %}
   <p>
@@ -207,10 +204,5 @@
   {% endif %}
 
 </div>
-
-  <br />
-  <br />
-  <br />
-  <br />
 
 {{ footer }}

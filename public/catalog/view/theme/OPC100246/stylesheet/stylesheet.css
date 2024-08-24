@@ -5496,9 +5496,6 @@ h2.price {
 .row.contact-info {
 	margin: 0;
 }
-.information-contact .content-top-breadcum {
-	display: inline-block;
-}
 .information-contact .panel-body {
 	padding: 0;
 }
@@ -8274,7 +8271,7 @@ start search Popup Css
 <!--Start itexpert Slider-Area-->
 ==================================================-*/
 .slider-area {
-	background: url(assets/images/slider1.jpg);
+	background: url(../image/tech/slider1.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8367,8 +8364,8 @@ start search Popup Css
 	position: relative;
 }
 .slider-button a:hover {
-	background: #20dfe3 !important;
-	border-color: #20dfe3 !important;
+	background: #25458b;
+	border-color: #25458b;
 	color: #fff;
 }
 /*style-four*/
@@ -8397,7 +8394,7 @@ start search Popup Css
 	color: #426abb;
 }
 .slider-button a {
-	background: #20dfe3;
+	background: #426abb;
 	color: #fff;
 	padding: 13px 28px;
 	display: inline-block;
@@ -8558,7 +8555,7 @@ start search Popup Css
 	background: #426abb;
 }
 a.slider-active {
-	background: #20dfe3 !important;
+	background: #426abb;
 	margin-left: 23px;
 }
 a.slider-active:hover {
@@ -8967,6 +8964,7 @@ select.select-your-service.form-box-input {
 .dreamit-service-area.style-three .dreamit-single-service-box {
 	padding: 65px 30px 33px;
 	background: #fff;
+	border-radius: 15px;
 }
 .dreamit-service-area.style-three .service-icon {
 	float: left;
@@ -10059,6 +10057,7 @@ li.nav-item {
 	margin-bottom: 30px;
 	box-shadow: 0 2px 48px 0 rgb(0 0 0 / 6%);
 	padding: 39px 25px 15px;
+	border-radius: 15px;
 }
 .dreamit-team-member-area.style-three .dreamit-team-thumb img {
 	width: 100%;
@@ -10462,7 +10461,7 @@ li.nav-item {
 <!--Start itexpert call do Area-->
 ==================================================-*/
 .dreamit-call-do-action-area {
-	background: url(assets/images/call.jpg);
+	background: url(../image/tech/call.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -10599,7 +10598,7 @@ a.active {
 }
 /*style-five*/
 .call-do-action-area.style-five {
-	background: url(assets/images/call5.jpg);
+	background: url(../image/tech/call5.jpg);
 	padding: 76px 0 168px;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -10862,8 +10861,8 @@ a.active {
 <!--Start itexpert technology Area-->
 ==================================================-*/
 .technology-area {
-	background: linear-gradient(rgba(90, 73, 248, 0.7), rgba(90, 73, 248, 0.7)),
-		url(assets/images/technology.jpg);
+	background: linear-gradient(#426abbc4, #426abbc4),
+		url(../image/tech/technology.jpg);
 	background-size: cover;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -11271,6 +11270,7 @@ a.active {
 .flip-box {
 	width: 100%;
 	border: none;
+	border-radius: 15px;
 	perspective: 1000px;
 	margin-bottom: 30px;
 	height: 310px;
@@ -11297,11 +11297,11 @@ a.active {
 	height: 100%;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
+	border-radius: 15px;
 }
 .flip-box-front {
 	background: #ffffff;
 	border: 0px solid #ffffff;
-	border-radius: 0px;
 	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 	background: url(../image/tech/circuitboard.jpg);
 	background-size: 160%;
@@ -11322,7 +11322,6 @@ a.active {
 }
 .flip-box-back {
 	background: #426abb;
-	border-radius: 0px;
 	color: white;
 	transform: rotateY(180deg);
 	padding-top: 40px;
@@ -11714,7 +11713,7 @@ textarea#message {
 	font-weight: 500;
 }
 .about-button a:hover {
-	background: #20dfe3;
+	background: #25458b;
 	color: #fff;
 }
 .about-thumb {
