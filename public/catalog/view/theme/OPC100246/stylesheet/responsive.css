@@ -284,6 +284,9 @@
 	.search_box .form-control-select.active {
 		background-position: 115px 19px;
 	}
+	.dreamit-about-area .about-thumb {
+		display: none;
+	}
 }
 
 @media (max-width: 1023px) {
@@ -337,6 +340,12 @@
 	.cms-inner-block .desc .title {
 		font-size: 24px;
 		line-height: 35px;
+	}
+}
+
+@media (max-width: 991px) {
+	.faq-image {
+		display: none;
 	}
 }
 
@@ -1593,6 +1602,9 @@
 		padding-inline-end: 0;
 		margin-right: 0;
 	}
+	.dreamit-about-area.style-two .pt-10 {
+		padding-top: 35px;
+	}
 }
 
 @media only screen and (max-width: 640px) {
@@ -2129,7 +2141,7 @@
 		font-size: 20px !important;
 	}
 	.faq-area {
-		padding: 0 0 !important;
+		padding: 0 120px !important;
 	}
 	.service-content {
 		padding: 0 1px 0 !important;
@@ -2159,6 +2171,10 @@
 	.header-top-address ul li {
 		margin-right: 17px !important;
 	}
+        .faq-area {
+                padding: 0 80px;
+        }
+
 }
 /* Normal Laptop :992px. */
 @media (min-width: 1024px) and (max-width: 1199px) {
@@ -2232,7 +2248,7 @@
 		font-size: 16px !important;
 	}
 	.faq-area {
-		padding: 0 0 !important;
+		padding: 0 100px !important;
 	}
 	.nav-pills .nav-link {
 		padding: 16px 27px !important;
@@ -2399,7 +2415,7 @@
 		font-size: 15px !important;
 	}
 	.faq-area {
-		padding: 0 0 !important;
+		padding: 0 30px !important;
 	}
 	.case-detail-area .pl-65 {
 		padding-left: 20px !important;
@@ -2799,7 +2815,7 @@
 		font-size: 13px;
 	}
 	.faq-area {
-		padding: 37px 0 !important;
+		padding: 37px 25px !important;
 	}
 	.call-do-action-area.style-five .call-do-action-title h2 {
 		font-size: 36px !important;
