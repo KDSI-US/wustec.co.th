@@ -962,7 +962,6 @@ div.required .control-label:before {
 	padding-inline-end: 12px;
 }
 .pull-left::before {
-	content: "";
 	background: #74777a;
 	width: 1px;
 	height: 16px;
@@ -993,17 +992,17 @@ div.required .control-label:before {
 #form-language .language-menu,
 #form-currency .currency-menu {
 	float: left;
-	padding: 15px 15px 23px 23px;
+	padding: 10px;
 	list-style: none;
-	top: 29px;
+	top: 22px;
 	border: 1px solid #e6e6e6;
 	box-shadow: none;
-	right: 0;
+	right: auto;
 	left: auto;
 	position: absolute;
 	z-index: 1000;
-	min-width: 160px;
-	background-color: #fff;
+	min-width: 114px;
+	background-color: #426abb;
 }
 .lang-curr-wrapper .language-title .fa.fa-caret-down {
 	float: right;
@@ -1189,7 +1188,6 @@ header .btn-link:focus,
 #form-currency .btn-link,
 #form-language .btn-link {
 	border: medium none;
-	color: #ccc;
 	display: block;
 	font-size: 13px;
 	text-decoration: none;
@@ -2447,6 +2445,7 @@ header .header-cart a .fa {
 .pull-left #form-language .btn-group span,
 .pull-left #form-currency .btn-group span {
 	font-size: 13px;
+	padding: 4px;
 	text-transform: capitalize;
 }
 .table.table-bordered.shopping-cart.responsive {
@@ -13893,4 +13892,7 @@ div#information-contact {
 }
 textarea#input-enquiry {
 	padding: 16px 26px;
+}
+#form-language .dropdown-toggle::after {
+	content: none;
 }
