@@ -1,5 +1,5 @@
 {% if languages|length > 1 %}{{ git_hidden_tag }}
-<div class="pull-left">
+<div class="pull-right pr-10">
   <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-language">
   <div class="btn-group">
     <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
@@ -7,9 +7,9 @@
       {% for language in languages %}
       {% if language.code == code %} 
       <img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}">
+      {{ language.name }}<i class="fa fa-caret-down" aria-hidden="true"></i></span></button>
       {% endif %}
       {% endfor %}
-      {{ text_language }}<i class="fa fa-caret-down" aria-hidden="true"></i></span></button>
       <ul class="language-menu">
         {% for language in languages %}
         <li>

@@ -980,6 +980,10 @@ div.required .control-label:before {
 	padding-inline-end: 15px;
 	padding-inline-start: 20px;
 }
+.pull-right:first-child {
+	padding-inline-end: 15px;
+	padding-inline-start: 20px;
+}
 .lang-curr-wrapper {
 	padding: 0;
 	float: none;
@@ -997,7 +1001,7 @@ div.required .control-label:before {
 	top: 22px;
 	border: 1px solid #e6e6e6;
 	box-shadow: none;
-	right: auto;
+	right: -1px;
 	left: auto;
 	position: absolute;
 	z-index: 1000;
@@ -2445,6 +2449,12 @@ header .header-cart a .fa {
 	padding: 4px;
 	text-transform: capitalize;
 }
+.pull-right #form-language .btn-group span,
+.pull-left #form-currency .btn-group span {
+        font-size: 13px;
+        padding: 4px;
+        text-transform: capitalize;
+}
 .table.table-bordered.shopping-cart.responsive {
 	display: none;
 }
@@ -2454,6 +2464,10 @@ header .header-cart a .fa {
 .pull-left #form-language .fa.fa-caret-down {
 	padding-inline-start: 10px;
 	vertical-align: top;
+}
+.pull-right #form-language .fa.fa-caret-down {
+        padding-inline-start: 5px;
+        vertical-align: top;
 }
 .pull-left #form-currency .fa.fa-caret-down {
 	padding-inline-start: 10px;
