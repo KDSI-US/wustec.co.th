@@ -228,7 +228,7 @@ $('.blog_list').owlCarousel({
 
 
 
-            /* Portfolio Isotope  *//* 
+            /* Portfolio Isotope  */ 
     $('.image_load').imagesLoaded(function() {
 
         if ($.fn.isotope) {
@@ -266,7 +266,7 @@ $('.blog_list').owlCarousel({
 
         };
 
-    });	 */
+    });	 
         // counterUp
     /* $('.counter').counterUp({
         delay: 10,

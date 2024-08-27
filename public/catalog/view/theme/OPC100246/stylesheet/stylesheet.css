@@ -8308,7 +8308,7 @@ start search Popup Css
 }
 /*style-two*/
 .slider-area.style-two {
-	background: url(assets/images/slider2.jpg);
+	background: url(/image/catalog/assets/slider2.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8347,7 +8347,7 @@ start search Popup Css
 }
 /*style-three*/
 .slider-area.style-three {
-	background: url(assets/images/procces.jpg);
+	background: url(/image/catalog/assets/procces.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8360,7 +8360,7 @@ start search Popup Css
 }
 /*style-four*/
 .slider-area.style-four {
-	background: url(assets/images/banner.png);
+	background: url(/image/catalog/assets/banner.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8374,7 +8374,7 @@ start search Popup Css
 }
 /*STYLE-FIVE*/
 .slider-area.style-five {
-	background: url(assets/images/banner.png);
+	background: url(/image/catalog/assets/banner.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8395,7 +8395,7 @@ start search Popup Css
 }
 /*style-six*/
 .slider-area.style-six {
-	background: url(assets/images/banner.png);
+	background: url(/image/catalog/assets/banner.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8433,7 +8433,7 @@ start search Popup Css
 }
 /*style-eight*/
 .slider-area.style-eight {
-	background: url(assets/images/white.jpg);
+	background: url(/image/catalog/assets/white.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	position: relative;
@@ -8466,7 +8466,7 @@ start search Popup Css
 }
 /*style-nine*/
 .slider-area.style-nine {
-	background: url(assets/images/slider7.jpg);
+	background: url(/image/catalog/assets/slider7.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 838px;
@@ -8502,7 +8502,7 @@ start search Popup Css
 }
 /*style-ten*/
 .slider-area.style-ten {
-	background: url(assets/images/slider8.jpg);
+	background: url(/image/catalog/assets/slider8.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 840px;
@@ -8829,7 +8829,7 @@ select.select-your-service.form-box-input {
 }
 /*style-two*/
 .dreamit-service-area.style-two {
-	background: #f7f9fe url(assets/images/service-map.png);
+	background: #f7f9fe url(/image/catalog/assets/service-map.png);
 	background-position: center center;
 	background-repeat: no-repeat;
 	padding: 80px 0 50px;
@@ -9634,7 +9634,7 @@ li.nav-item {
 			rgba(90, 73, 248, 0.87),
 			rgba(90, 73, 248, 0.87)
 		),
-		url(assets/images/about2.jpg);
+		url(/image/catalog/assets/about2.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -10488,7 +10488,7 @@ a.active {
 /*style-two*/
 .call-do-action-area.style-two {
 	padding: 90px 0 105px;
-	background: url(../image/tech/call5.jpg);
+	background: url(/image/catalog/assets/call5.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -10551,10 +10551,10 @@ a.active {
 }
 /*style-four*/
 .call-do-action-area.style-four {
-	padding: 19px 0 18px;
+	padding: 55px 0 18px;
 }
 .call-do-action-area.style-four .row.margin-topper8 {
-	background: linear-gradient(#3b9ff57d, #18439bbd), url(../image/tech/slider2.jpg);
+	background: linear-gradient(#3b9ff57d, #18439bbd), url(/image/catalog/assets/slider2.jpg);
 	padding: 88px 0 90px 43px;
 	background-position: center center;
 	background-size: cover;
@@ -10632,7 +10632,7 @@ a.active {
 }
 /*style-six*/
 .call-do-action-area.style-six {
-	background: url(assets/images/slider2.jpg);
+	background: url(/image/catalog/assets/slider2.jpg);
 	padding: 76px 0 168px;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -10663,7 +10663,7 @@ a.active {
 }
 /*style-seven*/
 .call-do-action-area.style-seven .row.margin-toppe10 {
-	background: url(assets/images/counter.jpg);
+	background: url(/image/catalog/assets/counter.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -10701,6 +10701,36 @@ a.active {
 	border: 2px solid #7744d9;
 	background: #7744d9;
 	color: #fff;
+}
+/*style-eight*/
+.call-do-action-area.style-eight {
+	padding: 110px 0 110px;
+	background: url(/image/catalog/assets/call-do.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.call-do-action-area.style-eight .about-video {
+	position: inherit;
+	left: 0;
+	top: 0;
+	transform: translate(0%);
+}
+.call-do-action-area.style-eight .call-do-action-title h2 {
+	color: #434343;
+	font-size: 24px;
+	line-height: 1.2;
+	font-weight: 700;
+	margin: 0;
+}
+.call-do-action-area.style-eight .call-do-content-text p {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.9);
+	width: 31%;
+	margin: 20px auto 0;
+	line-height: 1.5;
+}
+.call-do-action-area.style-eight .call-do-button {
+	margin-top: 29px;
 }
 /*--==============================================->
 <!--Start itexpertcase study Area-->
@@ -11123,7 +11153,7 @@ a.active {
 	background: none;
 }
 .row.margin-upper7 {
-	background: url(assets/images/counter.jpg);
+	background: url(/image/catalog/assets/counter.jpg);
 	background-position: center center;
 	background-size: cover;
 	padding: 58px 0;
@@ -11174,7 +11204,7 @@ a.active {
 			rgba(90, 73, 248, 0.74),
 			rgba(90, 73, 248, 0.74)
 		),
-		url(assets/images/counter.jpg);
+		url(/image/catalog/assets/counter.jpg);
 	background-position: center center;
 	background-size: cover;
 	padding: 58px 0;
@@ -11189,7 +11219,7 @@ a.active {
 	background: inherit;
 }
 .row.margin-upper8 {
-	background: url(assets/images/counter.jpg);
+	background: url(/image/catalog/assets/counter.jpg);
 	background-position: center center;
 	background-size: cover;
 	padding: 58px 0;
@@ -11300,27 +11330,27 @@ a.active {
 	background-position: center;
 }
 .flip-box.ai .flip-box-front {
-	background: url(../../../../../image/catalog/product-lines-cpu-gpu-ai.jpg);
+	background: url(/image/catalog/product-lines-cpu-gpu-ai.jpg);
 	background-size: cover;
 }
 .flip-box.cloud .flip-box-front {
-        background: url(../../../../../image/catalog/product-lines-data-center.jpg);
+        background: url(/image/catalog/product-lines-data-center.jpg);
         background-size: cover;
 }
 .flip-box.ev .flip-box-front {
-        background: url(../../../../../image/catalog/product-lines-ev_rf.jpg);
+        background: url(/image/catalog/product-lines-ev.jpg);
         background-size: cover;
 }
-.flip-box.mem .flip-box-front {
-        background: url(../../../../../image/catalog/product-lines-medical-mems.jpg);
+.flip-box.rf .flip-box-front {
+        background: url(/image/catalog/product-lines-rf.jpg);
         background-size: cover;
 }
 .flip-box.otn .flip-box-front {
-        background: url(/../../../../../image/catalog/product-lines-otn-bbu.jpg);
+        background: url(/image/catalog/product-lines-otn-bbu.jpg);
         background-size: cover;
 }
 .flip-box.plc .flip-box-front {
-        background: url(../../../../../image/catalog/product-linesplc.jpg);
+        background: url(/image/catalog/product-lines-plc.jpg);
         background-size: cover;
 }
 .box-title {
@@ -11423,7 +11453,7 @@ a.active {
 			rgba(90, 73, 248, 0.92),
 			rgba(90, 73, 248, 0.92)
 		),
-		url(assets/images/back.jpg);
+		url(/image/catalog/assets/back.jpg);
 	border-radius: 0px;
 	color: white;
 	transform: rotateY(180deg);
@@ -11435,28 +11465,28 @@ a.active {
 			rgba(90, 73, 248, 0.92),
 			rgba(90, 73, 248, 0.92)
 		),
-		url(assets/images/flipx4.jpg);
+		url(/image/catalog/assets/flipx4.jpg);
 }
 .dreamit-filepx-area.style-two .flip-box-back.three {
 	background: linear-gradient(
 			rgba(90, 73, 248, 0.92),
 			rgba(90, 73, 248, 0.92)
 		),
-		url(assets/images/back2.jpg);
+		url(/image/catalog/assets/back2.jpg);
 }
 .dreamit-filepx-area.style-two .flip-box-back.four {
 	background: linear-gradient(
 			rgba(90, 73, 248, 0.92),
 			rgba(90, 73, 248, 0.92)
 		),
-		url(assets/images/flipx4.jpg);
+		url(/image/catalog/assets/flipx4.jpg);
 }
 .dreamit-filepx-area.style-two .flip-box-back.five {
 	background: linear-gradient(
 			rgba(90, 73, 248, 0.92),
 			rgba(90, 73, 248, 0.92)
 		),
-		url(assets/images/back.jpg);
+		url(/image/catalog/assets/back.jpg);
 }
 .flip-box.style-two .flip-box-back {
 	transform: rotateX(-180deg);
@@ -11491,28 +11521,28 @@ a.active {
 }
 .dreamit-filepx-area.style-three .flip-box-front.two {
 	background: linear-gradient(rgba(90, 73, 248, 0.8), rgba(90, 73, 248, 0.8)),
-		url(assets/images/flipx3.jpg);
+		url(/image/catalog/assets/flipx3.jpg);
 	border-radius: 5px;
 }
 .dreamit-filepx-area.style-three .flip-box-front.three {
 	background: linear-gradient(rgba(90, 73, 248, 0.8), rgba(90, 73, 248, 0.8)),
-		url(assets/images/flipx4.jpg);
+		url(/image/catalog/assets/flipx4.jpg);
 	border-radius: 5px;
 }
 
 .dreamit-filepx-area.style-three .flip-box-front {
 	background: linear-gradient(rgba(90, 73, 248, 0.8), rgba(90, 73, 248, 0.8)),
-		url(assets/images/pilepx1.jpg);
+		url(/image/catalog/assets/pilepx1.jpg);
 	border-radius: 5px;
 }
 .dreamit-filepx-area.style-three .flip-box-back {
 	background: linear-gradient(rgba(90, 73, 248, 0.8), rgba(90, 73, 248, 0.8)),
-		url(assets/images/flipx2.jpg);
+		url(/image/catalog/assets/flipx2.jpg);
 	border-radius: 5px;
 }
 .dreamit-filepx-area.style-three .flip-box-back.two {
 	background: linear-gradient(rgba(90, 73, 248, 0.8), rgba(90, 73, 248, 0.8)),
-		url(assets/images/flipx4.jpg);
+		url(/image/catalog/assets/flipx4.jpg);
 	border-radius: 5px;
 }
 /*style-two*/
@@ -11544,7 +11574,7 @@ a.active {
 }
 .service-deatail-two-area .flip-box-back {
 	background: linear-gradient(rgba(90, 73, 248, 0.8), rgba(90, 73, 248, 0.8)),
-		url(assets/images/flipx2.jpg);
+		url(/image/catalog/assets/flipx2.jpg);
 	border-radius: 5px;
 }
 .service-deatail-two-area .des p {
@@ -11602,7 +11632,7 @@ a.active {
 <!--Start itexpert contact Area-->
 ==================================================-*/
 .dreamit-contact-area {
-	padding: 80px 0 34px;
+	padding: 0px 0 34px;
 }
 .dreamit-contact-content {
 	border: 2px solid rgba(238, 238, 238, 1);
@@ -11969,7 +11999,7 @@ textarea#message {
 ==================================================-*/
 .choose-us-area {
 	padding: 100px 0 138px;
-	background: url(assets/images/choose-us.png);
+	background: url(/image/catalog/assets/choose-us.png);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -12296,14 +12326,14 @@ textarea#message {
 	position: relative;
 	z-index: 1;
 	background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-		url(assets/images/info.jpg);
+		url(/image/catalog/assets/info.jpg);
 	border-radius: 5px;
 	background-position: center center;
 	background-size: cover;
 }
 .info-single-box.two {
 	background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-		url(assets/images/about.jpg);
+		url(/image/catalog/assets/about.jpg);
 }
 .info-single-box:before {
 	position: absolute;
@@ -12399,8 +12429,8 @@ textarea#message {
 <!--Start itexpert priching Area-->
 ==================================================-*/
 .dreamit-priching-area {
-	background: #f6f6f6;
-	padding: 85px 0 80px;
+	/*background: #f6f6f6;*/
+	padding: 50px 0 80px;
 }
 .dreamit-single-pricing-box {
 	position: relative;
@@ -12422,7 +12452,7 @@ textarea#message {
 	height: 100%;
 	width: 100%;
 	margin: auto;
-	background: url(assets/images/price.png);
+	background: url(/image/catalog/assets/price.png);
 	background-repeat: no-repeat;
 	background-position: bottom;
 }
@@ -13329,7 +13359,7 @@ button.accordion-button.collapsed:hover.accordion-button a i {
 			rgba(90, 73, 248, 0.71),
 			rgba(90, 73, 248, 0.71)
 		),
-		url(assets/images/flipx2.jpg);
+		url(/image/catalog/assets/flipx2.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -13860,4 +13890,7 @@ div#particles .slider-area {
 }
 div#information-contact {
 	padding-bottom: 15px;
+}
+textarea#input-enquiry {
+	padding: 16px 26px;
 }

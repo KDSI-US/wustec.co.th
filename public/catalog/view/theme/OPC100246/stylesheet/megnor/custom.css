@@ -9,8 +9,11 @@ span.customSelect {
 	text-decoration: none;
 	white-space: nowrap;
 	text-align: left;
-	height: 33px;
+	height: 38px;
 	border-radius: 4px;
+	padding: 10px;
+	margin-top: 10px;
+	width: 100%;
 }
 span.customSelect option {font-size:12px !important;}
 span.customSelect.changed {
