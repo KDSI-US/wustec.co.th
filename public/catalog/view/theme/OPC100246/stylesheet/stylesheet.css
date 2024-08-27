@@ -1201,9 +1201,6 @@ header .btn-link:focus,
 	font-weight: normal;
 	padding: 0 5px 0 4px;
 }
-.pull-left #form-language .btn-group span img {
-	padding: 0 3px 0 0;
-}
 .dropdown.myaccount {
 	position: relative;
 	margin: 0px 15px 0 25px;
@@ -13895,4 +13892,15 @@ textarea#input-enquiry {
 }
 #form-language .dropdown-toggle::after {
 	content: none;
+}
+#form-language .btn-link:focus, #form-language .btn-link:hover {
+	background-color: #426abb;
+	color: #fff;
+}
+
+#top {
+	background-color: #EEEEEE;
+	border-bottom: 1px solid #e2e2e2;
+	padding: 6px 0px 3px 0;
+	min-height: 37px;
 }
