@@ -125,14 +125,14 @@ class ControllerStartupSeoUrl extends Controller
 				array_pop($parts);
 			}
 
-			$langIdSwitchTo = 0;
+			// $langIdSwitchTo = 0;
 
 			foreach ($parts as $part) {
 				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE keyword = '" . $this->db->escape($part) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "'");
 
-				if (!$subfolder_check && !empty($query->row['language_id'])) {
+				/* if (!$subfolder_check && !empty($query->row['language_id'])) {
 					$langIdSwitchTo = $query->row['language_id'];
-				}
+				} */
 
 				if ($query->num_rows) {
 					$url = explode('=', $query->row['query']);
@@ -234,19 +234,14 @@ class ControllerStartupSeoUrl extends Controller
 				}
 			}
 
-			if (!empty($langIdSwitchTo) && $this->config->get('config_language_id') != $langIdSwitchTo) {
-				$this->load->model('localisation/language');
-				$language_info = $this->model_localisation_language->getLanguage($langIdSwitchTo);
+			$this->load->model('localisation/language');
+			$language_info = $this->model_localisation_language->getLanguageByCode($this->session->data['language']);
+			if (!empty($language_info['code']) && $this->config->get('config_language_id') != $language_info['language_id']) {
+				$language = new Language($language_info['code']);
+				$language->load($language_info['code']);
 
-				if (!empty($language_info['code'])) {
-					$this->session->data['language'] = $language_info['code'];
-
-					$language = new Language($language_info['code']);
-					$language->load($language_info['code']);
-
-					$this->registry->set('language', $language);
-					$this->config->set('config_language_id', $language_info['language_id']);
-				}
+				$this->registry->set('language', $language);
+				$this->config->set('config_language_id', $language_info['language_id']);
 			}
 
 			if (!isset($this->request->get['route'])) {
