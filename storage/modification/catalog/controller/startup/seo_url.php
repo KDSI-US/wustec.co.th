@@ -627,7 +627,7 @@ class ControllerStartupSeoUrl extends Controller
 					($data['route'] == 'extension/video_gellry_all' && $key == 'video_gallery_category_id') || ($data['route'] == 'extension/post' && $key == 'post_id') ||
 					(($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id') || ($data['route'] == 'extension/mpphotogallery/photo' && $key == 'gallery_id') || ($data['route'] == 'membership/plan_details' && $key == 'mpplan_id')
 				) {
-					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "'"); //. "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
 
 					if ($query->num_rows && $query->row['keyword']) {
 
