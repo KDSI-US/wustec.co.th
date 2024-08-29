@@ -3888,6 +3888,7 @@ p.powered > a {
 	content: "";
 	padding: 0;
 	color: #fff;
+	font-family: 'FontAwesome';
 }
 .col-xs-11.col-sm-3.alert span a:hover {
 	color: #9bbab1;
@@ -13917,4 +13918,43 @@ textarea#input-enquiry {
 	border-bottom: 1px solid #e2e2e2;
 	padding: 6px 0px 3px 0;
 	min-height: 37px;
+}
+
+.dreamit-call-do-button.banner a {
+	margin: 0;
+}
+
+.navbar-toggle {
+	position: relative;
+	float: right;
+	margin-right: 15px;
+	padding: 9px 10px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	background-color: transparent;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 0px;
+-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+-khtml-border-radius: 0px;
+}
+
+.navbar-toggle:focus {
+	outline: 0;
+}
+
+.navbar-toggle .icon-bar {
+	display: block;
+	width: 22px;
+	height: 2px;
+	border-radius: 0px;
+-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+-khtml-border-radius: 0px;
+}
+
+
+.navbar-toggle .icon-bar+.icon-bar {
+	margin-top: 4px;
 }

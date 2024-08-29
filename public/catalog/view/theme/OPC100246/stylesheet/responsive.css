@@ -284,9 +284,6 @@
 	.search_box .form-control-select.active {
 		background-position: 115px 19px;
 	}
-	.dreamit-about-area .about-thumb {
-		display: none;
-	}
 }
 
 @media (max-width: 1023px) {
@@ -340,12 +337,6 @@
 	.cms-inner-block .desc .title {
 		font-size: 24px;
 		line-height: 35px;
-	}
-}
-
-@media (max-width: 991px) {
-	.faq-image {
-		display: none;
 	}
 }
 
@@ -2593,6 +2584,12 @@
 	}
 	.single-service-box {
 		margin-bottom: 30px;
+	}
+}
+
+@media (min-width: 992px) {
+	.navbar-toggle {
+		display: none;
 	}
 }
 /* Tablet Tab :768px. */
