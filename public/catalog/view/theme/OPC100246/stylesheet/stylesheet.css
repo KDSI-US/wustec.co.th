@@ -8326,8 +8326,8 @@ start search Popup Css
 	position: relative;
 }
 .slider-thumb {
-	position: absolute;
-	bottom: -62px;
+	position: relative;
+	bottom: -110px;
 }
 .slider-content p {
 	color: #fff;

@@ -101,8 +101,10 @@
 					{% endfor %}
 				</div>
 			{% endif %}
-			<div
-				class="contact-form-design">
+				{{ content_bottom }}</div>
+			{{ column_right }}</div>
+
+		<div class="row">
 				{# <div class="left">
 												{% if image %}
 													<div class="address-detail">
@@ -263,13 +265,13 @@
 						</div>
 					</div>
 				</div>
-				{{ content_bottom }}</div>
-			{{ column_right }}</div>
-
+		</div>
 		<br/>
 		<br/>
 
 		{% if geocode %}
+		<div class="row">
+		    <div class="content col-12">
 			<p class="pt-20">
 				<span style="font-weight: bold;font-size:18px;color:#434343;">{{ owner }}</span><br>
 				<span style="font-weight: bold;">
@@ -290,6 +292,8 @@
 			<div class="video-responsive">
 				{{ googlemap_embed_html }}
 			</div>
+		    </div>
+		</div>
 		{% endif %}
 	</div>
 </div>
