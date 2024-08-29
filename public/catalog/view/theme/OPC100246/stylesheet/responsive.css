@@ -3100,6 +3100,9 @@
 	#white-bar-3 {
 		top: 237px;
 	}
+	.dreamit-about-area.style-six .about-thumb {
+		display: none;
+	}
 }
 
 /* Large Mobile :600px. */
@@ -3417,6 +3420,12 @@
   }
 	.dreamit-call-do-content {
 		float: none;
+	}
+	.faq-image {
+		display: none;
+	}
+	.dreamit-about-area.style-six .about-thumb {
+		display: none;
 	}
 }
 
@@ -3872,5 +3881,11 @@
 	
 	.dreamit-call-do-content {
 		float: none;
+	}
+	.faq-image {
+		display: none;
+	}
+	.dreamit-about-area.style-six .about-thumb {
+		display: none;
 	}
 }
