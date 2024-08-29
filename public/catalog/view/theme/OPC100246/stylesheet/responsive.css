@@ -1,12 +1,9 @@
 /*----------------------------------------------------- Responsive start------------------------------------------------------------- */
 @media (max-width: 1399px) {
-	#blue-box {
-		height: 604px;
+	.dreamit-call-do-button a {
+		margin-left: 30px;
 	}
 
-	#white-box {
-		height: 587px;
-	}
 }
 
 @media (max-width: 1260px) {
@@ -93,6 +90,9 @@
   .dreamit-counter-area .dreamit-single-counter {
     text-align: center;
   }
+	.dreamit-call-do-button a {
+		margin-left: 5px;
+	}
 }
 
 @media (max-width: 1199px) and (min-width: 768px) {
@@ -1270,13 +1270,6 @@
 		width: 100%;
 		display: block;
 	}
-	#top {
-		background: #f5f5f5;
-		padding: 10px 0;
-		border-top: none;
-		position: relative;
-		height: 60px;
-	}
 	.search_box .form-control-select,
 	.search_box .form-control-select.active {
 		font-size: 11px;
@@ -2292,14 +2285,6 @@
 		margin-top: 15px;
 		padding: 10px 51px 10px;
 	}
-
-	#blue-box {
-		height: 480px;
-	}
-
-	#white-box {
-		height: 470px;
-	}
 	.dreamit-about-area.style-two .dreamit-section-content-text p {
 		font-size: 14px;
 		margin: 13px 0 0;
@@ -2556,14 +2541,6 @@
 		margin-top: 15px;
 		padding: 10px 51px 10px;
 	}
-
-	#blue-box {
-		height: 470px;
-	}
-
-	#white-box {
-		height: 460px;
-	}
 	.dreamit-about-area.style-two .dreamit-section-content-text p {
 		font-size: 14px;
 		margin: 13px 0 0;
@@ -2719,6 +2696,10 @@
 	.dreamit-call-do-button a {
 		padding: 13px 16px !important;
 		margin-left: 35px !important;
+		margin-bottom: 10px;
+	}
+	.dreamit-call-do-content {
+		margin-top: 10px;
 	}
 	.case-study-title a h2 {
 		font-size: 18px !important;
@@ -3434,6 +3415,9 @@
   .dreamit-service-area.style-three .service-content {
     margin: -55px 0 0px 52px;
   }
+	.dreamit-call-do-content {
+		float: none;
+	}
 }
 
 /* small mobile :320px. */
@@ -3884,5 +3868,9 @@
 	}
 	#white-bar-3 {
 		top: 482px;
+	}
+	
+	.dreamit-call-do-content {
+		float: none;
 	}
 }
