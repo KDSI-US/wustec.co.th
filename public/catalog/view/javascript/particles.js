@@ -474,7 +474,7 @@
         j.preventDefault();
     });
 })(jQuery);
-
+/* 
 $(document).ready(function(){
 
 $('.aa').counterUp({
@@ -482,7 +482,7 @@ $('.aa').counterUp({
     time: 1000
 });
 
-});
+}); */
 
 })(jQuery);
 
