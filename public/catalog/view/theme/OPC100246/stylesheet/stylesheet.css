@@ -13954,7 +13954,10 @@ textarea#input-enquiry {
 -khtml-border-radius: 0px;
 }
 
-
 .navbar-toggle .icon-bar+.icon-bar {
 	margin-top: 4px;
+}
+
+.row.reverse {
+	flex-direction: row-reverse;
 }
