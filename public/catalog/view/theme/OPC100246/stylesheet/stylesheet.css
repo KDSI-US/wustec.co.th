@@ -10602,7 +10602,7 @@ a.active {
 }
 /*style-five*/
 .call-do-action-area.style-five {
-	background: url(../image/tech/call5.jpg);
+	background: url(/image/catalog/assets/call5.jpg);
 	padding: 76px 0 168px;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -10715,7 +10715,7 @@ a.active {
 }
 /*style-eight*/
 .call-do-action-area.style-eight {
-	padding: 110px 0 110px;
+	padding: 150px 0 220px;
 	background: url(/image/catalog/assets/call-do.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
