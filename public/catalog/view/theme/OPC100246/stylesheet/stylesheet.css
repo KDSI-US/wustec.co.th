@@ -8319,7 +8319,7 @@ start search Popup Css
 }
 /*style-two*/
 .slider-area.style-two {
-	background: url(/image/catalog/assets/slider2.jpg);
+	background: linear-gradient(#265dcbc9, #104abfb5), url(/image/catalog/assets/patternbackground2.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
@@ -8358,7 +8358,7 @@ start search Popup Css
 }
 /*style-three*/
 .slider-area.style-three {
-	background: url(/image/catalog/assets/procces.jpg);
+	background: linear-gradient(#426abba3, #426abb8a), url(/image/catalog/assets/patternbackground1.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 748px;
