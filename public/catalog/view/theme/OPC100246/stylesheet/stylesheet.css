@@ -13961,3 +13961,11 @@ textarea#input-enquiry {
 .row.reverse {
 	flex-direction: row-reverse;
 }
+
+.timeline {
+	padding: 190px 0;
+	background: url(/image/catalog/assets/timeline.png);
+	background-size: 90%;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
