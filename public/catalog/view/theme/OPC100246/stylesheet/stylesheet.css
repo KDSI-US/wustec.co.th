@@ -13969,3 +13969,24 @@ textarea#input-enquiry {
 	background-position: center center;
 	background-repeat: no-repeat;
 }
+
+.technology-icon {
+	height: 80px;
+	margin: auto;
+}
+.technology-icon img {
+	position: absolute;
+	left: 85px;
+	-webkit-transition: -webkit-transform 0.5s ease;
+	transition: -webkit-transform 0.5s ease;
+	transition: transform 0.5s ease;
+	transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+}
+.technology-icon img:last-child {
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+}
+.technology-single-box:hover .technology-icon img:last-child {
+	opacity: 1;
+	transition: opacity 0.5s ease-in-out;
+}
