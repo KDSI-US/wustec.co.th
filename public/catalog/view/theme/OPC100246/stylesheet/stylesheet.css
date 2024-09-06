@@ -8423,11 +8423,13 @@ start search Popup Css
 }
 /*style-seven*/
 .slider-area.style-seven {
-	background: url(../image/tech/1.png);
-	background-size: cover;
+	background: linear-gradient(#0000004f, #00000052), url(/image/catalog/csr.jpg);
+	background-size: 132%;
+	background-position: 35% 80%;
 	background-repeat: no-repeat;
 	height: 870px;
 	position: relative;
+	border-radius: 0 0 50% 50%;
 }
 .slider-area.style-seven .slider-content h1 {
 	font-size: 40px;
@@ -10465,7 +10467,7 @@ li.nav-item {
 <!--Start itexpert call do Area-->
 ==================================================-*/
 .dreamit-call-do-action-area {
-	background: url(../image/tech/call.jpg);
+	background: linear-gradient(#bdbdbd94, #9b9b9ba3), url(/image/catalog/background3.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -10565,7 +10567,7 @@ a.active {
 	padding: 55px 0 18px;
 }
 .call-do-action-area.style-four .row.margin-topper8 {
-	background: linear-gradient(#3b9ff57d, #18439bbd), url(/image/catalog/assets/slider2.jpg);
+	background: linear-gradient(#3b9ff57d, #18439bbd), url(/image/catalog/background2.jpg);
 	padding: 88px 0 90px 43px;
 	background-position: center center;
 	background-size: cover;
@@ -10883,7 +10885,7 @@ a.active {
 	width: 45px;
 	line-height: 45px;
 	text-align: center;
-	background: #42bce2;
+	background: #426abb;
 	display: inline-block;
 	font-size: 40px;
 	font-weight: 700;
@@ -10896,7 +10898,7 @@ a.active {
 ==================================================-*/
 .technology-area {
 	background: linear-gradient(#426abbc4, #426abbc4),
-		url(../image/tech/technology.jpg);
+		url(/image/catalog/puzzle.jpg);
 	background-size: cover;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -10926,6 +10928,7 @@ a.active {
 	font-size: 20px;
 	color: #444;
 	transition: 0.5s;
+	padding: 0 6px;
 }
 /*--==============================================->
 <!--Start itexpert testimonial Area-->
