@@ -11343,26 +11343,32 @@ a.active {
 .flip-box.ai .flip-box-front {
 	background: url(/image/catalog/product-lines-cpu-gpu-ai.jpg);
 	background-size: cover;
+	background-position: center;
 }
 .flip-box.cloud .flip-box-front {
         background: url(/image/catalog/product-lines-data-center.jpg);
         background-size: cover;
+        background-position: center;
 }
 .flip-box.ev .flip-box-front {
         background: url(/image/catalog/product-lines-ev.jpg);
         background-size: cover;
+        background-position: center;
 }
 .flip-box.rf .flip-box-front {
         background: url(/image/catalog/product-lines-rf.jpg);
         background-size: cover;
+        background-position: center;
 }
 .flip-box.otn .flip-box-front {
         background: url(/image/catalog/product-lines-otn-bbu.jpg);
         background-size: cover;
+        background-position: center;
 }
 .flip-box.plc .flip-box-front {
         background: url(/image/catalog/product-lines-plc.jpg);
         background-size: cover;
+        background-position: center;
 }
 .box-title {
 	padding-top: 195px;
