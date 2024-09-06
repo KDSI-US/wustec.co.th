@@ -8840,7 +8840,7 @@ select.select-your-service.form-box-input {
 }
 /*style-two*/
 .dreamit-service-area.style-two {
-	background: #f7f9fe url(/image/catalog/assets/service-map.png);
+	background: #f7f9fe;
 	background-position: center center;
 	background-repeat: no-repeat;
 	padding: 80px 0 50px;
@@ -11115,8 +11115,8 @@ a.active {
 ==================================================-*/
 .dreamit-counter-area {
 	background: linear-gradient(rgb(15 55 135 / 87%), rgb(66 106 187 / 87%)),
-		url(../image/tech/counter.jpg);
-	background-position: center center;
+		url(/image/catalog/banner.jpg);
+	background-position: 0 30%;
 	background-size: cover;
 	background-repeat: no-repeat;
 	padding: 66px 0 74px;
@@ -13189,7 +13189,7 @@ span.tk {
 --< start breatcome Area Css -->
 ======================================================*/
 .breatcome-area {
-	background: url(../image/tech/breat.png);
+	background: linear-gradient(#426abb57, #426abb9c), url(/image/catalog/breadcrumb.jpg);
 	height: 440px;
 	background-position: center center;
 	background-size: cover;
