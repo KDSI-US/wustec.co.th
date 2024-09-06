@@ -14003,3 +14003,7 @@ textarea#input-enquiry {
 	opacity: 1;
 	transition: opacity 0.5s ease-in-out;
 }
+.col-lg-05 {
+	width: 6.25% !important;
+	flex: 0 0 auto;
+}
