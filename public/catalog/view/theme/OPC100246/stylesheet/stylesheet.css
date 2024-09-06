@@ -8429,7 +8429,7 @@ start search Popup Css
 	background-repeat: no-repeat;
 	height: 870px;
 	position: relative;
-	border-radius: 0 0 50% 50%;
+	border-radius: 0 0 40% 40%;
 }
 .slider-area.style-seven .slider-content h1 {
 	font-size: 40px;
@@ -10604,7 +10604,7 @@ a.active {
 }
 /*style-five*/
 .call-do-action-area.style-five {
-	background: url(/image/catalog/assets/call5.jpg);
+	background: linear-gradient(#426abb73, #000000), url(/image/catalog/background4.jpg);
 	padding: 76px 0 168px;
 	background-position: center center;
 	background-repeat: no-repeat;
