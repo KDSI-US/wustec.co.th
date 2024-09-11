@@ -1,0 +1,144 @@
+{{ header }}{{ git_hidden_tag }}
+<style>
+	#information-information {
+		width: 100%;
+	}
+	@media only screen and(max-width: 767px) {
+		#information-information {
+			width: 100%;
+		}
+	}
+</style>
+<div id="information-supplier-registration" class="container-fluid">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li>
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">
+			{{ content_top }}
+			<h1 class="page-title">{{ heading_title }}</h1>
+
+			{{ description }}
+			{% if galleria %}
+				{{ galleria }}
+			{% endif %}
+			{{ content_bottom }}</div>
+		{{ column_right }}</div>
+	<div class="row">
+		<div class="col-lg-4 col-md-12">
+			<div class="row">
+				<div class="col-lg-12 col-md-4">
+					<div class="dreamit-contact-content d-flex">
+						<div class="contact-icon">
+							<i class="flaticon-time"></i>
+						</div>
+						<div class="contact-title">
+							<h2>Address</h2>
+							<span>{{ address }}</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12 col-md-4">
+					<div class="dreamit-contact-content d-flex">
+						<div class="contact-icon">
+							<i class="flaticon-call"></i>
+						</div>
+						<div class="contact-title">
+							<h2>{{ text_telephone }}</h2>
+							<span>{{ telephone }}</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12 col-md-4">
+					<div class="dreamit-contact-content d-flex">
+						<div class="contact-icon">
+							<i class="flaticon-report"></i>
+						</div>
+						<div class="contact-title">
+							<h2>{{ text_email }}</h2>
+							<span>{{ office_email }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8 col-md-12 pl-50">
+			<div class="dreamit-section-title pb-30">
+				<div class="dreamit-section-sub-title">
+					<h5>// CONTACT</h5>
+				</div>
+				<div class="dreamit-section-main-title">
+					<h2>Get In
+						<span>Touch</span>
+					</h2>
+				</div>
+				<div class="dreamit-section-content-text">
+					<p>
+						Morem ipsum dolor sit amet, consectetur are adipiscing elit. Aliquam at rhoncus lorem all. Etiam in nibh ut est laoreet mattis joremn as. Maecenas ac tempor mauris.</p>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="contact-form contact_from style-two">
+							<form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form_box mb-3 required">
+											<input class="form-control" type="text" name="name" id="input-name" placeholder="{{ entry_name }}">
+											{% if error_name %}
+												<div class="text-danger">{{ error_name }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form_box mb-3 required">
+											<input class="form-control" type="text" name="email" id="input-email" placeholder="{{ entry_email }}">
+											{% if error_email %}
+												<div class="text-danger">{{ error_email }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form_box mb-3">
+											<input class="form-control" type="text" name="phone" placeholder="Phone Number">
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form_box">
+											<input class="form-control" type="text" name="web" placeholder=" Your Website">
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<div class="form_box mb-1 required">
+											<textarea class="form-control" id="input-enquiry" name="enquiry" cols="30" rows="5" placeholder="{{ entry_enquiry }}"></textarea>
+											{% if error_enquiry %}
+												<div class="text-danger">{{ error_enquiry }}</div>
+											{% endif %}
+										</div>
+										{{ captcha }}
+										<div class="wow fadeInUp" data-wow-delay="1.5s" data-wow-duration="1s">
+											<div class="quote_btn text_center pt-3">
+												<input class="btn btn-primary captcha-btn" type="submit" value="{{ button_submit }}"/>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}
