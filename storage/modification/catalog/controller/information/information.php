@@ -1,42 +1,41 @@
 <?php
 /* This file is under Git Control by KDSI. */
-class ControllerInformationInformation extends Controller {
-	public function index() {
-
-            $login_required = $this->config->get("module_kdsi_login_required");
-            if ($login_required['status_information']) {
-                $redirect = true;
-                if (isset($this->request->get['route'])) {
-                    $route = $this->request->get['route'];
-                } else {
-                    $route = 'common/home';
-                }
-                $safe_route = array(
-                    'account/register', 
-                    'account/login',
-                    'account/forgotten',
-                );
-                if ($this->customer->isLogged()) {
-                    $redirect = false;
-                } elseif (isset($this->request->get["route"])) {
-                    if(in_array($route, $safe_route)) {
-                        $redirect = false;
-                    }
-                }
-                if ($redirect) {
-                    if($route == 'information/information') {
-                        $information_id = $this->request->get['information_id'];
-                        $this->session->data['redirect'] = $this->url->link('information/information', 'information_id=' . $information_id, true);
-                    } elseif($route == 'information/contact') {
-                        $this->session->data['redirect'] = $this->url->link('information/contact', '', true);
-                    } elseif($route == 'information/sitemap') {
-                        $this->session->data['redirect'] = $this->url->link('information/sitemap', '', true);
-                    }
-                    
-                    $this->response->redirect($this->url->link('account/login', '', true));
-                }
-            }
-            
+class ControllerInformationInformation extends Controller
+{
+	public function index()
+	{
+		$login_required = $this->config->get("module_kdsi_login_required");
+		if ($login_required['status_information']) {
+			$redirect = true;
+			if (isset($this->request->get['route'])) {
+				$route = $this->request->get['route'];
+			} else {
+				$route = 'common/home';
+			}
+			$safe_route = array(
+				'account/register',
+				'account/login',
+				'account/forgotten',
+			);
+			if ($this->customer->isLogged()) {
+				$redirect = false;
+			} elseif (isset($this->request->get["route"])) {
+				if (in_array($route, $safe_route)) {
+					$redirect = false;
+				}
+			}
+			if ($redirect) {
+				if ($route == 'information/information') {
+					$information_id = $this->request->get['information_id'];
+					$this->session->data['redirect'] = $this->url->link('information/information', 'information_id=' . $information_id, true);
+				} elseif ($route == 'information/contact') {
+					$this->session->data['redirect'] = $this->url->link('information/contact', '', true);
+				} elseif ($route == 'information/sitemap') {
+					$this->session->data['redirect'] = $this->url->link('information/sitemap', '', true);
+				}
+				$this->response->redirect($this->url->link('account/login', '', true));
+			}
+		}
 
 		$approval_required = $this->config->get("module_approval_required");
 		$approved = (int)$this->customer->getApproved();
@@ -48,32 +47,32 @@ class ControllerInformationInformation extends Controller {
 				$route = 'common/home';
 			}
 			$safe_route = array(
-				'account/register', 
+				'account/register',
 				'account/login',
 				'account/forgotten',
-				'account/account', 
+				'account/account',
 				'account/edit'
 			);
 			if ($approved == 1) {
 				$redirect = false;
 			} elseif (isset($this->request->get["route"])) {
-				if(in_array($route, $safe_route)) {
+				if (in_array($route, $safe_route)) {
 					$redirect = false;
 				}
 			}
 			if ($redirect) {
-				if($route == 'information/information') {
+				if ($route == 'information/information') {
 					$information_id = $this->request->get['information_id'];
 					$this->session->data['redirect'] = $this->url->link('information/information', 'information_id=' . $information_id, true);
-				} elseif($route == 'information/contact') {
+				} elseif ($route == 'information/contact') {
 					$this->session->data['redirect'] = $this->url->link('information/contact', '', true);
-				} elseif($route == 'information/sitemap') {
+				} elseif ($route == 'information/sitemap') {
 					$this->session->data['redirect'] = $this->url->link('information/sitemap', '', true);
-				}					
+				}
 				$this->response->redirect($this->url->link('account/edit', '', true));
 			}
 		}
-            
+
 		$this->load->language('information/information');
 
 		$this->load->model('catalog/information');
@@ -95,12 +94,12 @@ class ControllerInformationInformation extends Controller {
 
 		if ($information_info) {
 
-                $filter_galleria = array(
-                    'source' => 'information',
-                    'source_id'  => $information_info['information_id']
-                );
-                $data['galleria'] = $this->load->controller('extension/module/galleria/widget', $filter_galleria);
-            
+			$filter_galleria = array(
+				'source' => 'information',
+				'source_id'  => $information_info['information_id']
+			);
+			$data['galleria'] = $this->load->controller('extension/module/galleria/widget', $filter_galleria);
+
 			$this->document->setTitle($information_info['meta_title']);
 			$this->document->setDescription($information_info['meta_description']);
 			$this->document->setKeywords($information_info['meta_keyword']);
@@ -130,7 +129,7 @@ class ControllerInformationInformation extends Controller {
 				'href' => $this->url->link('information/information', 'information_id=' . $information_id)
 			);
 
-$this->load->controller('extension/module/isenselabs_seo/notFoundPageHandler');
+			$this->load->controller('extension/module/isenselabs_seo/notFoundPageHandler');
 			$this->document->setTitle($this->language->get('text_error'));
 
 			$data['heading_title'] = $this->language->get('text_error');
@@ -152,7 +151,8 @@ $this->load->controller('extension/module/isenselabs_seo/notFoundPageHandler');
 		}
 	}
 
-	public function agree() {
+	public function agree()
+	{
 		$this->load->model('catalog/information');
 
 		if (isset($this->request->get['information_id'])) {
@@ -167,12 +167,12 @@ $this->load->controller('extension/module/isenselabs_seo/notFoundPageHandler');
 
 		if ($information_info) {
 
-                $filter_galleria = array(
-                    'source' => 'information',
-                    'source_id'  => $information_info['information_id']
-                );
-                $data['galleria'] = $this->load->controller('extension/module/galleria/widget', $filter_galleria);
-            
+			$filter_galleria = array(
+				'source' => 'information',
+				'source_id'  => $information_info['information_id']
+			);
+			$data['galleria'] = $this->load->controller('extension/module/galleria/widget', $filter_galleria);
+
 			$output .= html_entity_decode($information_info['description'], ENT_QUOTES, 'UTF-8') . "\n";
 		}
 
