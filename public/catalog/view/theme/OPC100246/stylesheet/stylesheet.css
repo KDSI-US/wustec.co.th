@@ -10606,7 +10606,7 @@ a.active {
 /*style-five*/
 .call-do-action-area.style-five {
 	background: linear-gradient(#426abb73, #000000), url(/image/catalog/background4.jpg);
-	padding: 76px 0 168px;
+	padding: 90px 0 80px;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -11993,7 +11993,7 @@ textarea#message {
 <!--Start itexpert engineer Area-->
 ==================================================-*/
 .engineer-area {
-	padding: 70px 0 80px;
+	padding: 0px 0 80px;
 }
 .engineer-area .dreamit-section-sub-title h5 {
 	color: #7744d9;
@@ -12212,9 +12212,6 @@ textarea#message {
 	opacity: 1;
 }
 /*style-three*/
-.feature-area.style-three {
-	padding: 0px 0 30px;
-}
 .feature-area.style-three .row.margin-upper6 {
 	position: relative;
 	margin-top: -42px;
@@ -13368,7 +13365,7 @@ button.accordion-button.collapsed:hover.accordion-button a i {
 	padding: 12px 19px;
 }
 .faq-area.style-three {
-	padding: 85px 0 1px;
+	padding: 65px 0 1px;
 	background: none;
 }
 .accordion-thumb img {
