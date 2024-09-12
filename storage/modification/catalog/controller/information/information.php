@@ -74,6 +74,7 @@ class ControllerInformationInformation extends Controller
 		}
 
 		$this->load->language('information/information');
+		$this->load->language('information/contact');
 
 		$this->load->model('catalog/information');
 
@@ -113,6 +114,7 @@ class ControllerInformationInformation extends Controller
 
 			$data['description'] = html_entity_decode($information_info['description'], ENT_QUOTES, 'UTF-8');
 
+			$data['action'] = $this->url->link('information/contact', '', true);
 			$data['continue'] = $this->url->link('common/home');
 
 			$data['column_left'] = $this->load->controller('common/column_left');
@@ -122,7 +124,13 @@ class ControllerInformationInformation extends Controller
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			$this->response->setOutput($this->load->view('information/information', $data));
+			if($information_id == 35) {
+				$this->response->setOutput($this->load->view('information/registration', $data));
+			} elseif($information_id == 36) {
+				$this->response->setOutput($this->load->view('information/report', $data));
+			} else {
+				$this->response->setOutput($this->load->view('information/information', $data));
+			}
 		} else {
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('text_error'),

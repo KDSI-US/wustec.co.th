@@ -2576,6 +2576,9 @@
 	.col-lg-05 {
 		display: none;
 	}
+	.form_box i.fa-caret-down {
+		top: -44px;
+	}
 }
 /* Tablet Tab :768px. */
 @media (min-width: 768px) and (max-width: 991px) {
@@ -3895,5 +3898,8 @@
 	}
 	.dreamit-about-area.style-six .about-thumb {
 		display: none;
+	}
+	.form_box i.fa-caret-down {
+		top: -47px;
 	}
 }

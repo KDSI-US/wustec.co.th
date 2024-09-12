@@ -10599,8 +10599,8 @@ a.active {
 	text-transform: uppercase;
 }
 .call-do-action-area.style-four .call-do-button a:hover {
-	border: 2px solid #20dfe3;
-	background: #20dfe3;
+	border: 2px solid #426abb;
+	background: #426abb;
 	color: #fff;
 }
 /*style-five*/
@@ -14037,4 +14037,14 @@ textarea#input-enquiry {
 .col-lg-05 {
 	width: 6.25% !important;
 	flex: 0 0 auto;
+}
+.form_box i.fa-caret-down {
+	position: relative;
+	float: right;
+	right: 4%;
+	top: -28px;
+	pointer-events: none;
+}
+select.form-control {
+	cursor: pointer;
 }
