@@ -124,9 +124,9 @@ class ControllerInformationInformation extends Controller
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			if($information_id == 35) {
+			if($information_id == 34) {
 				$this->response->setOutput($this->load->view('information/registration', $data));
-			} elseif($information_id == 36) {
+			} elseif($information_id == 35) {
 				$this->response->setOutput($this->load->view('information/report', $data));
 			} else {
 				$this->response->setOutput($this->load->view('information/information', $data));
