@@ -8272,9 +8272,10 @@ start search Popup Css
 <!--Start itexpert Slider-Area-->
 ==================================================-*/
 .slider-area {
-	background: url(../image/tech/slider1.jpg);
+	background: linear-gradient(#a9a9a900, #426abb70), url(/image/catalog/supplier2.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
+	background-position: center;
 	height: 748px;
 	position: relative;
 }
@@ -9793,7 +9794,7 @@ li.nav-item {
 	left: 5%;
 }
 .progress_bar.blue .progress-bar-inner {
-	border-color: #049dff;
+	border-color: #426abb;
 }
 .progress_bar.blue .progress-left .progress-bar-inner {
 	animation: loading-2 1.5s linear forwards 1.8s;
@@ -11992,7 +11993,7 @@ textarea#message {
 <!--Start itexpert engineer Area-->
 ==================================================-*/
 .engineer-area {
-	padding: 95px 0 80px;
+	padding: 0px 0 80px;
 }
 .engineer-area .dreamit-section-sub-title h5 {
 	color: #7744d9;
@@ -12226,14 +12227,14 @@ textarea#message {
 }
 .feature-area .feature-single-box-two {
 	padding: 33px 0 33px 25px;
-	background: #20dfe3;
+	background: #25458b;
 	margin-bottom: 30px;
 }
 .feature-area.style-three .featuire-icon i {
 	height: 55px;
 	width: 55px;
 	line-height: 55px;
-	background: #20dfe3;
+	background: #25458b;
 	font-size: 30px;
 	color: #fff;
 	display: inline-block;
@@ -13199,6 +13200,39 @@ span.tk {
 ======================================================*/
 .breatcome-area {
 	background: linear-gradient(#426abb57, #426abb9c), url(/image/catalog/breadcrumb.jpg);
+	height: 440px;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	display: flex;
+}
+.information-contact .breatcome-area {
+	background: linear-gradient(#426abb57, #426abb9c), url(/image/catalog/contact.jpg);
+	height: 440px;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	display: flex;
+}
+.information-information-27 .breatcome-area {
+	background: linear-gradient(#426abb57, #426abb9c), url(/image/catalog/products.jpg);
+	height: 440px;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	display: flex;
+	margin-bottom: -20px;
+}
+.information-information-33 .breatcome-area {
+	background: linear-gradient(#426abb57, #426abb9c), url(/image/catalog/trend.jpg);
+	height: 440px;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	display: flex;
+}
+.information-information-32 .breatcome-area {
+	background: linear-gradient(#426abb57, #426abb9c), url(/image/catalog/quality.jpg);
 	height: 440px;
 	background-position: center center;
 	background-size: cover;
