@@ -95,9 +95,9 @@ class ControllerInformationInformation extends Controller
 		$information_info = $this->model_catalog_information->getInformation($information_id);
 
 		if ($information_id == 34) {
-			$this->registrationIndex();
+			$this->registrationIndex($information_id);
 		} elseif ($information_id == 35) {
-			$this->registrationIndex();
+			$this->registrationIndex($information_id);
 		} else {
 			if ($information_info) {
 
@@ -190,11 +190,15 @@ class ControllerInformationInformation extends Controller
 		$this->response->setOutput($output);
 	}
 
-	public function registrationIndex()
+	public function registrationIndex($information_id)
 	{
-		$this->load->language('information/report');
+		if($information_id == 34) {
+			$this->load->language('information/registration');
+		} else {
+			$this->load->language('information/report');
+		}
 
-		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) { // Change subject with reason and to email based on form
 			// Prepare mail: information.contact
 			$this->load->model('extension/module/emailtemplate');
 
@@ -359,6 +363,12 @@ class ControllerInformationInformation extends Controller
 			} else {
 				$data['error_email'] = '';
 			}
+			
+			if (isset($this->error['reason'])) {
+				$data['error_reason'] = $this->error['reason'];
+			} else {
+				$data['error_reason'] = '';
+			}
 
 			if (isset($this->error['enquiry'])) {
 				$data['error_enquiry'] = $this->error['enquiry'];
@@ -418,7 +428,11 @@ class ControllerInformationInformation extends Controller
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			$this->response->setOutput($this->load->view('information/report', $data));
+			if ($information_id == 34) {
+				$this->response->setOutput($this->load->view('information/registration', $data));
+			} else {
+				$this->response->setOutput($this->load->view('information/report', $data));
+			}
 		} else {
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('text_error'),
@@ -455,6 +469,10 @@ class ControllerInformationInformation extends Controller
 
 		if (!filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
 			$this->error['email'] = $this->language->get('error_email');
+		}
+		
+		if (!(((int)$this->request->post['reason'] == 1) || ((int)$this->request->post['reason'] == 2) || ((int)$this->request->post['reason'] == 3))) {
+			$this->error['reason'] = $this->language->get('error_reason');
 		}
 
 		if ((utf8_strlen($this->request->post['enquiry']) < 10) || (utf8_strlen($this->request->post['enquiry']) > 3000)) {

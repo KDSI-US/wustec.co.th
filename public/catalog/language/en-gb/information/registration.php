@@ -1,7 +1,7 @@
 <?php
 /* This file is under Git Control by KDSI. */
 // Heading
-$_['heading_title']  = 'Make A Report';
+$_['heading_title']  = 'Supplier Registration';
 
 // Text
 $_['text_location']  = 'Our Location';
@@ -15,8 +15,10 @@ $_['text_comment']   = 'Comments';
 $_['text_message']   = '<p>Your enquiry has been successfully sent to the store owner!</p>'; 
 
 // Entry
-$_['entry_name']     = 'Your Name';
+$_['entry_name']     = 'Contact Name';
 $_['entry_email']    = 'E-Mail Address';
+$_['entry_phone']    = 'Phone Number';
+$_['entry_company']  = 'Company Name';
 $_['entry_enquiry']  = 'Enquiry';
 
 // Email
