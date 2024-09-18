@@ -14056,3 +14056,9 @@ textarea#input-enquiry {
 select.form-control {
 	cursor: pointer;
 }
+.sitemap {
+	text-align: center;
+}
+.sitemap li {
+	list-style: none;
+}

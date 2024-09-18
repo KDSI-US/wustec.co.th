@@ -216,6 +216,14 @@ class ControllerInformationInformation extends Controller
 
 				$template->data['email'] = $this->request->post['email'];
 
+				if (!empty($this->request->post['reason'])) {
+					$template->data['reason'] = $this->request->post['reason'];
+				}
+				
+				if (!empty($this->request->post['company'])) {
+					$template->data['company'] = $this->request->post['company'];
+				}
+
 				if (!empty($this->request->post['enquiry'])) {
 					$template->data['enquiry'] = html_entity_decode(str_replace("\n", "<br />", $this->request->post['enquiry']), ENT_QUOTES, 'UTF-8');
 				}
@@ -378,8 +386,6 @@ class ControllerInformationInformation extends Controller
 
 			$data['button_submit'] = $this->language->get('button_submit');
 
-			$data['action'] = $this->url->link('information/supplier-registration', '', true);
-
 			$this->load->model('tool/image');
 
 			if ($this->config->get('config_image')) {
@@ -429,9 +435,11 @@ class ControllerInformationInformation extends Controller
 			$data['header'] = $this->load->controller('common/header');
 
 			if ($information_id == 34) {
-				$this->response->setOutput($this->load->view('information/registration', $data));
+			$data['action'] = $this->url->link('information/supplier-registration', '', true);
+			$this->response->setOutput($this->load->view('information/registration', $data));
 			} else {
-				$this->response->setOutput($this->load->view('information/report', $data));
+			$data['action'] = $this->url->link('information/supplier-registration', '', true);
+			$this->response->setOutput($this->load->view('information/report', $data));
 			}
 		} else {
 			$data['breadcrumbs'][] = array(
@@ -470,9 +478,11 @@ class ControllerInformationInformation extends Controller
 		if (!filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
 			$this->error['email'] = $this->language->get('error_email');
 		}
-		
-		if (!(((int)$this->request->post['reason'] == 1) || ((int)$this->request->post['reason'] == 2) || ((int)$this->request->post['reason'] == 3))) {
-			$this->error['reason'] = $this->language->get('error_reason');
+
+		if($this->request->post['reason']) {
+			if (!(((int)$this->request->post['reason'] == 1) || ((int)$this->request->post['reason'] == 2) || ((int)$this->request->post['reason'] == 3))) {
+				$this->error['reason'] = $this->language->get('error_reason');
+			}
 		}
 
 		if ((utf8_strlen($this->request->post['enquiry']) < 10) || (utf8_strlen($this->request->post['enquiry']) > 3000)) {
