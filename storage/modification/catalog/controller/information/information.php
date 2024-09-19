@@ -435,10 +435,10 @@ class ControllerInformationInformation extends Controller
 			$data['header'] = $this->load->controller('common/header');
 
 			if ($information_id == 34) {
-			$data['action'] = $this->url->link('information/supplier-registration', '', true);
+			$data['action'] = $this->url->link('information/information', 'information_id=' . $information_id, true);
 			$this->response->setOutput($this->load->view('information/registration', $data));
 			} else {
-			$data['action'] = $this->url->link('information/report', '', true);
+			$data['action'] = $this->url->link('information/information', 'information_id=' . $information_id, true);
 			$this->response->setOutput($this->load->view('information/report', $data));
 			}
 		} else {
