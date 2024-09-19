@@ -438,7 +438,7 @@ class ControllerInformationInformation extends Controller
 			$data['action'] = $this->url->link('information/supplier-registration', '', true);
 			$this->response->setOutput($this->load->view('information/registration', $data));
 			} else {
-			$data['action'] = $this->url->link('information/supplier-registration', '', true);
+			$data['action'] = $this->url->link('information/report', '', true);
 			$this->response->setOutput($this->load->view('information/report', $data));
 			}
 		} else {
