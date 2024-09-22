@@ -9167,6 +9167,7 @@ select.select-your-service.form-box-input {
 }
 .service-thumb img {
 	position: absolute;
+	width: 75px;
 	top: 50%;
 	left: 50%;
 	-webkit-transform: translate(-50%, -50%);
