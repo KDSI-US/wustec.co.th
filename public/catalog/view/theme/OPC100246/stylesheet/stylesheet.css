@@ -11861,7 +11861,8 @@ textarea#message {
 	transition: 0.5s;
 }
 .dreamit-about-button a:hover {
-	background: #20dfe3;
+	background: #25458b;
+	color: white;
 }
 /*style-three*/
 .dreamit-about-area.style-three {
@@ -12116,7 +12117,7 @@ textarea#message {
 	transition: 0.5s;
 }
 .dreamit-single-feature-box:hover .feature-icon i {
-	background: #20dfe3;
+	background: #25458b;
 	color: #fff;
 }
 .feature-thumb {
