@@ -14019,7 +14019,18 @@ textarea#input-enquiry {
 	background-position: center center;
 	background-repeat: no-repeat;
 }
-
+.dreamit-single-service-box:hover .service-icon img:last-child {
+	opacity: 1;
+	transition: opacity 0.5s ease-in-out;
+}
+.service-icon img {
+	position: absolute;
+	width: 70px;
+	transform: translate(0px, -35px);
+}
+.service-icon img:last-child {
+	opacity: 0;
+}
 .technology-icon {
 	height: 80px;
 	margin: auto;
