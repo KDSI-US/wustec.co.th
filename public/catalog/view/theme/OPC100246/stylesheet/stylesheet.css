@@ -12162,7 +12162,7 @@ textarea#message {
 	transition: 0.5s;
 }
 .feature-button a {
-	background: #20dfe3;
+	background: #426abb;
 	color: #fff;
 	padding: 9px 24px;
 	border-radius: 5px;
@@ -12185,7 +12185,7 @@ textarea#message {
 	font-size: 35px;
 }
 .feature-icon i:hover {
-	background: #20dfe3;
+	background: #25458b;
 	color: #fff;
 }
 .feature-content {
