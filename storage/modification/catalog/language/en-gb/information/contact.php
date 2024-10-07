@@ -12,6 +12,7 @@ $_['text_telephone'] = 'Telephone';
 $_['text_fax']       = 'Fax';
 $_['text_open']      = 'Opening Times';
 $_['text_comment']   = 'Comments';
+$_['text_touch']     = 'Get In Touch';
 $_['text_message']   = '<p>Your enquiry has been successfully sent to the store owner!</p>'; 
 
 // Entry

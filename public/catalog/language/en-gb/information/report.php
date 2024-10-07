@@ -4,13 +4,7 @@
 $_['heading_title']  = 'Make A Report';
 
 // Text
-$_['text_location']  = 'Our Location';
-$_['text_store']     = 'Our Stores';
-$_['text_contact']   = 'Contact Form';
-$_['text_address']   = 'Address';
-$_['text_telephone'] = 'Telephone';
-$_['text_fax']       = 'Fax';
-$_['text_open']      = 'Opening Times';
+$_['text_detail']    = 'Have any information you would like to share with us?';
 $_['text_comment']   = 'Comments';
 $_['text_message']   = '<p>Your enquiry has been successfully sent to the store owner!</p>'; 
 
@@ -18,6 +12,10 @@ $_['text_message']   = '<p>Your enquiry has been successfully sent to the store 
 $_['entry_name']     = 'Your Name';
 $_['entry_email']    = 'E-Mail Address';
 $_['entry_enquiry']  = 'Enquiry';
+$_['entry_reason']   = 'Select A Reason';
+$_['entry_reason1']  = 'Transparent Business Collaborations';
+$_['entry_reason2']  = 'Whistleblowing Hotline';
+$_['entry_reason3']  = 'Other';
 
 // Email
 $_['email_subject']  = 'Enquiry %s';

@@ -39,12 +39,11 @@
 		<div class="col-lg-8 col-md-10 pl-50 pr-50" style="text-align: center">
 			<div class="dreamit-section-title pb-30 pt-20">
 				<div class="dreamit-section-main-title">
-					<h2>Make A 
-						<span>Report</span>
+					<h2>{{ heading_title }}
 					</h2>
 				</div>
 				<div class="dreamit-section-content-text">
-					<p>Have any information you would like to share with us?</p>
+					<p>{{ text_detail }}</p>
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
@@ -75,10 +74,10 @@
 									<div class="col-lg-6">
 										<div class="form_box required">
 											<select class="form-control" type="text" name="reason">
-												<option value="select">Select A Reason</option>
-												<option value="1">B1c.-1 Transparent Business Collaborations</option>
-												<option value="2">B1c.-2 Whistleblowing Hotline</option>
-												<option value="3">Other</option>
+												<option value="select">{{ entry_reason }}</option>
+												<option value="1">B1c.-1 {{ entry_reason1 }}</option>
+												<option value="2">B1c.-2 {{ entry_reason2 }}</option>
+												<option value="3">{{ entry_reason3 }}</option>
 											</select>
 											<i class="fa fa-caret-down" aria-hidden="true"></i>
 											{% if error_reason %}

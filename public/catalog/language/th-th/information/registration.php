@@ -1,31 +1,30 @@
 <?php
 /* This file is under Git Control by KDSI. */
 // Heading
-$_['heading_title']  = 'Supplier Registrations';
+$_['heading_title']  = 'การลงทะเบียนซัพพลายเออร์';
 
 // Text
-$_['text_location']  = 'Our Location';
-$_['text_store']     = 'Our Stores';
-$_['text_contact']   = 'Contact Form';
-$_['text_address']   = 'Address';
-$_['text_telephone'] = 'Telephone';
-$_['text_fax']       = 'Fax';
-$_['text_open']      = 'Opening Times';
-$_['text_comment']   = 'Comments';
-$_['text_message']   = '<p>Your enquiry has been successfully sent to the store owner!</p>'; 
+$_['text_contact']   = 'ติดต่อ';
+$_['text_partner']   = 'มาเป็นพันธมิตรกับเรา';
+$_['text_address']   = 'ที่อยู่';
+$_['text_telephone'] = 'โทรศัพท์';
+$_['text_fax']       = 'โทรสาร';
+$_['text_detail']    = 'กรุณาฝากข้อมูลของคุณไว้ แล้วเราจะติดต่อคุณ!';
+$_['text_comment']   = 'ความคิดเห็น';
+$_['text_message']   = '<p>คำถามของคุณถูกส่งเรียบร้อยแล้ว!</p>'; 
 
 // Entry
-$_['entry_name']     = 'Contact Name';
-$_['entry_email']    = 'E-Mail Address';
-$_['entry_phone']    = 'Phone Number';
-$_['entry_company']  = 'Company Name';
-$_['entry_enquiry']  = 'Enquiry';
+$_['entry_name']     = 'ชื่อผู้ติดต่อ';
+$_['entry_email']    = 'ที่อยู่อีเมล';
+$_['entry_phone']    = 'หมายเลขโทรศัพท์';
+$_['entry_company']  = 'ชื่อบริษัท';
+$_['entry_enquiry']  = 'ความคิดเห็น';
 
 // Email
-$_['email_subject']  = 'Enquiry %s';
+$_['email_subject']  = 'ความคิดเห็น %s';
 
 // Errors
-$_['error_name']     = 'Name must be between 3 and 32 characters!';
-$_['error_email']    = 'E-Mail Address does not appear to be valid!';
-$_['error_reason']   = 'Reason must be selected!';
-$_['error_enquiry']  = 'Enquiry must be between 10 and 3000 characters!';
+$_['error_name']     = 'ชื่อต้องมีความยาวระหว่าง 3 ถึง 32 อักขระ!';
+$_['error_email']    = 'ที่อยู่อีเมลดูเหมือนจะไม่ถูกต้อง!';
+$_['error_enquiry']  = 'ความคิดเห็นต้องมีความยาวระหว่าง 10 ถึง 3,000 ตัวอักษร!';
+$_['button_submit']   = 'ส่ง';
