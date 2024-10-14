@@ -1,7 +1,7 @@
 <?php
 /* This file is under Git Control by KDSI. */
 // Heading
-$_['heading_title']  = 'Make A Report';
+$_['heading_title']  = 'How Can We Improve';
 
 // Text
 $_['text_detail']    = 'Have any information you would like to share with us?';
