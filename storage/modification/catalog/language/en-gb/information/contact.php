@@ -14,6 +14,7 @@ $_['text_open']      = 'Opening Times';
 $_['text_comment']   = 'Comments';
 $_['text_touch']     = 'Get In Touch';
 $_['text_message']   = '<p>Your enquiry has been successfully sent to the store owner!</p>'; 
+$_['contact_detail'] = 'Fill out this short form to get in contact with us.';
 
 // Entry
 $_['entry_name']     = 'Your Name';
