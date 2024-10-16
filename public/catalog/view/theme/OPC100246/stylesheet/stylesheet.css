@@ -14075,3 +14075,9 @@ select.form-control {
 .sitemap li {
 	list-style: none;
 }
+.csr-thumb {
+	float: left;
+}
+.csr-thumb img {
+	width: 50px;
+}
