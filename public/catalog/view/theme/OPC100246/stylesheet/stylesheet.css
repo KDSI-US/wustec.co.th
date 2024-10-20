@@ -8900,6 +8900,7 @@ select.select-your-service.form-box-input {
 .dreamit-service-area.style-two .service-button a:hover:before {
 	opacity: 1;
 	margin-right: 5px;
+	transition: 1s;
 }
 .dreamit-service-area.style-two
 	.dreamit-single-service-box:hover
