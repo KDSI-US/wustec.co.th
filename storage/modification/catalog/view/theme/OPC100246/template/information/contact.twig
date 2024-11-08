@@ -193,9 +193,9 @@
 						<a href="https://maps.google.com/?q={{ address }}" target="_blank">{{ address }}</a>
 					</span><br>
 					<span style="font-weight: bold;">
-						{% if telephone %}TEL:
+						{# {% if telephone %}TEL:
 							<a href="tel:+1{{ telephone|replace({'-':''}) }}">{{ telephone }}</a>&nbsp;
-						{% endif %}
+						{% endif %} #}
 						{% if fax %}FAX:
 							{{ fax }}&nbsp;
 						{% endif %}
