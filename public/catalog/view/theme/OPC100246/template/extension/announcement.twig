@@ -1,0 +1,62 @@
+{{ header }}
+<div>
+	<div class="row">
+		<ul class="breadcrumb">
+			{% for breadcrumb in breadcrumbs %}
+				<li>
+					<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		<div class="content">
+			{{ column_left }}
+			<h1 class="page-title">{{ heading_title }}</h1>
+			{% if column_left and column_right %}
+				{% set class = 'col-sm-6' %}
+			{% elseif column_left or column_right %}
+				{% set class = 'col-sm-9' %}
+			{% else %}
+				{% set class = 'col-sm-12' %}
+			{% endif %}
+			{{ content_top }}
+			<div class="dreamit-blog-area style-seven">
+				<div class="container">
+					<div class="dreamit-blog-area style-eight">
+						<div class="container">
+							<div class="row">
+								<div class="col-lg-12 col-md-12">
+									<div class="row">
+										<div class="col-lg-12 col-sm-12">
+											<div class="dreamit-blog-single-box">
+												<div class="blog-thumb">
+													<img src="{{ announcement.image }}" alt="">
+												</div>
+												<div class="blog-content">
+													<div class="blog-title">
+														<h2>{{ announcement.title }}</h2>
+													</div>
+													<div class="blog-meta">
+														<span>{{ announcement.date }}
+														</span>
+													</div>
+													<div class="blog-content-text">
+													{{ announcement.text }}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{ content_bottom }}
+	</div>
+	{# End: content_top + content-body + content-bottom #}
+	{{ column_right }}
+</div>
+{# End: column_left + content + column_right #}{# End of class: panel-body #}{# End of class: panel-default #}
+<div class="clear-fix"></div>{{ footer }}

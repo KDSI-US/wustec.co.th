@@ -249,14 +249,14 @@ span.hidden-md,
 span.hidden-lg {
 	display: inline;
 }
-.pagination > .active > a,
+/* .pagination > .active > a,
 .pagination > .active > span,
 .pagination > .active > a:hover,
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
 	color: #000;
-}
+} */
 .pagination > li > a,
 .pagination > li > span {
 	border-radius: 0% !important;
@@ -4090,13 +4090,6 @@ button.list-group-item:hover {
 .account-wishlist table .text-center img {
 	border: 1px solid #e5e5e5;
 }
-.pagination .active > span {
-	background: #333;
-	border: #333;
-	border-radius: 0% !important;
-	color: #fff !important;
-	text-align: center;
-}
 .product-layout.product-list .product-block:hover .wishlist {
 	position: relative;
 	top: 0;
@@ -7538,6 +7531,10 @@ h4:focus a {
 	vertical-align: top;
 	text-align: center;
 	margin-bottom: 30px;
+}
+.extension-announcement .content-top-breadcum,
+.extension-announcements .content-top-breadcum {
+	margin-bottom: 0px;
 }
 
 #blue-box {
@@ -12857,7 +12854,6 @@ span.tk {
 }
 /*itexpert blog list style seven*/
 .dreamit-blog-area.style-seven {
-	padding: 100px 0 100px;
 	background: #f6f6f6;
 }
 .dreamit-blog-area.style-seven .dreamit-blog-single-box {
@@ -12869,7 +12865,7 @@ span.tk {
 }
 /*itexpert blog list style eight*/
 .dreamit-blog-area.style-eight {
-	padding: 100px 0 60px;
+	padding: 80px 0 60px;
 }
 .dreamit-blog-area.style-eight .dreamit-blog-single-box {
 	background: #fff;
@@ -12937,25 +12933,26 @@ span.tk {
 	height: 8px;
 	width: 8px;
 }
-.page-number ul li {
+.pagination li {
 	display: inline-block;
 }
-.page-number ul li a {
+.pagination li a, .pagination li span {
 	height: 40px;
 	width: 40px;
-	line-height: 40px;
+	line-height: 30px;
 	text-align: center;
 	background: #fff;
+	color: #0C5ADB;
 	display: inline-block;
 	box-shadow: 0 0 5px rgb(0 0 0 / 20%);
 	margin-right: 6px;
 	transition: 0.5s;
 }
-.page-number ul li a:hover {
+.pagination li a:hover {
 	background: #426abb;
 	color: #fff;
 }
-.page-number ul li a.active {
+.pagination li span {
 	background: #426abb;
 	color: #fff;
 }

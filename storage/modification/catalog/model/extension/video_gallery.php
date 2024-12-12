@@ -16,6 +16,10 @@ class ModelExtensionVideoGallery extends Model
 				AND vgd.language_id = '" . (int)$this->config->get('config_language_id') . "' 
 		";
 
+		if (isset($data['id'])) {
+			$strSql .= " AND vg.video_gallery_id = '" . $data['id'] . "'";
+		}
+
 		if (isset($data['sort'])) {
 			$strSql .= " ORDER BY " . $data['sort'] . " ";
 		} else {
