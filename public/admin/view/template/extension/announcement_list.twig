@@ -50,9 +50,9 @@
 									<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);"/></td>
 									<td class="text-right">
 										{% if sort == 'a.announcement_id' %}
-											<a href="{{ sort_video_id }}" class="{{ order|lower }}">{{ column_video_id }}</a>
+											<a href="{{ sort_announcement_id }}" class="{{ order|lower }}">{{ column_announcement_id }}</a>
 										{% else %}
-											<a href="{{ sort_video_id }}">{{ column_video_id }}</a>
+											<a href="{{ sort_announcement_id }}">{{ column_announcement_id }}</a>
 										{% endif %}
 									</td>
 									<td class="text-left">
@@ -63,7 +63,6 @@
 										{% endif %}
 									</td>
 									<td class="text-left">{{ column_image }}</td>
-									<td class="text-left">{{ column_url }}</td>
 									<td class="text-left">{{ column_description }}</td>
 									<td class="text-right">{{ column_hit }}</td>
 									<td class="text-left">{{ column_added_by }}</td>
@@ -86,7 +85,6 @@
 											<td class="text-right">{{ announcement.announcement_id }}</td>
 											<td class="text-left">{{ announcement.title }}</td>
 											<td class="text-left"><img src="{{ announcement.image }}" width="100" /></td>
-											<td class="text-left"><a href="{{ announcement.url }}" target="_blank">{{ announcement.url }}</a></td>
 											<td class="text-left">{{ announcement.description }}</td>
 											<td class="text-right">{{ announcement.hit | number_format }}</td>
 											<td class="text-left">{{ announcement.added_by }}</td>

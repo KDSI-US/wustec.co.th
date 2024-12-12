@@ -119,6 +119,8 @@ class ControllerExtensionAnnouncements extends Controller
 
 	protected function getList()
 	{
+		$this->load->model('tool/image');
+
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -191,10 +193,10 @@ class ControllerExtensionAnnouncements extends Controller
 
 			$data['announcements'][] = array(
 				'announcement_id'   => $result['announcement_id'],
-				'image'             => $result['image'],
+				'image'             => $this->model_tool_image->resize($result['image']),
 				'url'         			=> $result['url'],
 				'title'       			=> $result['title'],
-				'text' 							=> strip_tags(html_entity_decode($result['text'], ENT_QUOTES, 'UTF-8')),
+				'description' 			=> substr(strip_tags(html_entity_decode($result['text'], ENT_QUOTES, 'UTF-8')), 0, 100) . "...",
 				'hit'               => $result['hit'],
 				'added_by'          => $result['user_id'],
 				'added_at'          => $result['added_at'],
@@ -281,6 +283,8 @@ class ControllerExtensionAnnouncements extends Controller
 
 	protected function getForm()
 	{
+		$this->load->model('tool/image');
+
 		$data['heading_title'] = $this->language->get('heading_title');
 		$data['text_form'] = !isset($this->request->get['announcement_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 		$data['text_default'] = $this->language->get('text_default');
@@ -377,12 +381,12 @@ class ControllerExtensionAnnouncements extends Controller
 
 		$data['languages'] = $this->model_localisation_language->getLanguages();
 
-		if (isset($this->request->post['announcement_description'])) {
-			$data['announcement_description'] = $this->request->post['announcement_description'];
+		if (isset($this->request->post['text'])) {
+			$data['announcement_text'] = $this->request->post['text'];
 		} elseif (isset($this->request->get['announcement_id'])) {
-			$data['announcement_description'] = $this->model_extension_announcements->getAnnouncementDescriptions($this->request->get['announcement_id']);
+			$data['announcement_text'] = $this->model_extension_announcements->getAnnouncementText($this->request->get['announcement_id']);
 		} else {
-			$data['announcement_description'] = array();
+			$data['announcement_text'] = array();
 		}
 
 		/* Announcement Categories */
@@ -406,14 +410,6 @@ class ControllerExtensionAnnouncements extends Controller
 					'title'       							=> $category['title']
 				);
 			}
-		}
-
-		if (isset($this->request->post['url'])) {
-			$data['url'] = $this->request->post['url'];
-		} elseif (!empty($announcement_info)) {
-			$data['url'] = $announcement_info['url'];
-		} else {
-			$data['url'] = '';
 		}
 
 		if (isset($this->request->post['keyword'])) {
@@ -471,13 +467,11 @@ class ControllerExtensionAnnouncements extends Controller
 		} else {
 			$data['image'] = '';
 		}
-
-		$this->load->model('tool/image');
-
+		
 		if (isset($this->request->post['image'])) {
 			$data['thumb'] = $this->request->post['image'];
 		} elseif (!empty($announcement_info) && $announcement_info['image']) {
-			$data['thumb'] = $announcement_info['image'];
+			$data['thumb'] = $this->model_tool_image->resize($announcement_info['image']);
 		} else {
 			$data['thumb'] = $this->model_tool_image->resize('no_image.png', 100, 100);
 		}
@@ -494,10 +488,6 @@ class ControllerExtensionAnnouncements extends Controller
 	{
 		if (!$this->user->hasPermission('modify', 'extension/announcements')) {
 			$this->error['warning'] = $this->language->get('error_permission');
-		}
-
-		if (empty($this->request->post['url'])) {
-			$this->error['url'] = $this->language->get('error_url');
 		}
 
 		if ($this->error && !isset($this->error['warning'])) {

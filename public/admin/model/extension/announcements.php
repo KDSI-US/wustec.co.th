@@ -173,8 +173,6 @@ class ModelExtensionAnnouncements extends Model
 		$strSql = "
 			UPDATE `" . DB_PREFIX . "announcement` 
 			SET 
-				`url` = '" . $this->db->escape($data['url']) . "', 
-				`text` = '" . $this->db->escape(html_entity_decode($data['text'], ENT_QUOTES, 'UTF-8')) . "' ,
 				`sort_order` = '" . (int)$data['sort_order'] . "', 
 				`status` = '" . (int)$data['status'] . "' 
 			WHERE 
@@ -208,7 +206,7 @@ class ModelExtensionAnnouncements extends Model
 					`announcement_id` = '" . (int)$announcement_id . "', 
 					`language_id` = '" . (int)$language_id . "', 
 					`title` = '" . $this->db->escape($value['title']) . "', 
-					`announcement_description` = '" . $this->db->escape($value['description']) . "' 
+					`text` = '" . $this->db->escape(html_entity_decode($value['text'], ENT_QUOTES, 'UTF-8')) . "'
 			";
 			$this->db->query($strSql);
 		}
@@ -397,6 +395,28 @@ class ModelExtensionAnnouncements extends Model
 		}
 
 		return $announcement_description_data;
+	}
+
+	public function getAnnouncementText($announcement_id)
+	{
+		$announcement_text_data = array();
+		$strSql = "
+			SELECT 
+				* 
+			FROM `" . DB_PREFIX . "announcement_description` 
+			WHERE 
+				`announcement_id` = '" . (int)$announcement_id . "' 
+		";
+		$query = $this->db->query($strSql);
+
+		foreach ($query->rows as $result) {
+			$announcement_text_data[$result['language_id']] = array(
+				'title'       => $result['title'],
+				'text'       => $result['text']
+			);
+		}
+
+		return $announcement_text_data;
 	}
 
 	public function getTotalAnnouncements($data)
