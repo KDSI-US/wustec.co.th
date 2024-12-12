@@ -221,11 +221,10 @@ class ControllerInformationInformation extends Controller
 				if (!empty($this->request->post['employee'])) {
 					$template->data['employee'] = $this->request->post['employee'];
 				}
-
 				if (!empty($this->request->post['phone'])) {
 					$template->data['phone'] = $this->request->post['phone'];
 				}
-				
+
 				if (!empty($this->request->post['company'])) {
 					$template->data['company'] = $this->request->post['company'];
 				}
@@ -238,20 +237,13 @@ class ControllerInformationInformation extends Controller
 					$template->data['text_ip'] = sprintf($template->data['text_ip'], $this->request->server['REMOTE_ADDR']);
 				}
 
-				if (!empty($customer_info)) {
-					$template->data['customer'] = $customer_info;
-				}
-
 				if (defined('HTTP_ADMIN')) {
 					$admin_url = HTTP_ADMIN;
 				} else {
 					$admin_url = HTTPS_SERVER . 'admin/';
 				}
 
-				if (!empty($customer_info['customer_id'])) {
-					$template->data['admin_customer_url'] = $admin_url . 'index.php?route=customer/customer/edit&customer_id=' . $customer_info['customer_id'];
-				}
-				// Prepared mail: information.contact
+				// Prepared mail: information.csr
 
 				$mail = new Mail($this->config->get('config_mail_engine'));
 				$mail->parameter = $this->config->get('config_mail_parameter');
@@ -262,7 +254,7 @@ class ControllerInformationInformation extends Controller
 				$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
 				$mail->setTo($this->config->get('config_email'));
-				$mail->setFrom($this->request->post['email']);
+				//$mail->setFrom($this->request->post['email']);
 
 				$mail->setFrom($this->config->get('config_email'));
 
@@ -270,7 +262,7 @@ class ControllerInformationInformation extends Controller
 				$mail->setSender(html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8'));
 				//$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
 				//$mail->setText($this->request->post['enquiry']);
-				// Send mail: information.contact
+				// Send mail: information.csr
 				if ($template && $template->check()) {
 					$mail->setReplyTo($template->data['email'], $template->data['name']);
 
@@ -283,6 +275,37 @@ class ControllerInformationInformation extends Controller
 				}
 			} 
 
+			// Prepare mail: information.csr
+			//$this->load->model('extension/module/emailtemplate');
+/*
+			$template_load = array(
+				'key' => 'information.csr'
+			);
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+			if ($template) {
+				$template->data['name'] = html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8');
+
+				if (!empty($this->request->post['enquiry'])) {
+					$template->data['enquiry'] = html_entity_decode(str_replace("\n", "<br />", $this->request->post['enquiry']), ENT_QUOTES, 'UTF-8');
+				}
+
+				if (!empty($customer_info)) {
+					$template->data['customer'] = $customer_info;
+				}
+				// Prepared mail: information.csr
+
+				// Send mail: information.csr
+				if ($template && $template->check()) {
+					$template->build();
+					$template->hook($mail);
+
+					// $mail->send();
+
+					$this->model_extension_module_emailtemplate->sent();
+				}
+			}*/
 			// Prepare mail: information.contact_customer
 
 			$template_load = array(
@@ -293,7 +316,6 @@ class ControllerInformationInformation extends Controller
 			$template = $this->model_extension_module_emailtemplate->load($template_load);
 
 			if ($template) {
-				//$template->addData($this->request->post);
 
 				$template->data['name'] = html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8');
 
@@ -303,9 +325,6 @@ class ControllerInformationInformation extends Controller
 					$template->data['enquiry'] = html_entity_decode(str_replace("\n", "<br />", $this->request->post['enquiry']), ENT_QUOTES, 'UTF-8');
 				}
 
-				if (!empty($customer_info)) {
-					$template->data['customer'] = $customer_info;
-				}
 				// Prepared mail: information.contact_customer
 
 				// Send mail: information.contact_customer
