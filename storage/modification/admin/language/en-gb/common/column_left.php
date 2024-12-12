@@ -11,10 +11,7 @@ $_['text_video_gallery']               = '예배영상 갤러리';
 $_['text_video_gallery_category']      = '예배영상 카테고리 추가';
 $_['text_add_video']                   = '예배영상 추가';
 
-$_['text_pastor_column']               = 'Pastor Column';
-$_['text_pastor_column']               = '담임목사 칼럼';
-$_['text_pastor_column_category']      = '담임목사 칼럼  카테고리 추가';
-$_['text_add_pastor_column']           = '담임목사 칼럼  추가';
+$_['text_add_announcements']           = 'Announcements';
 
 $_['text_nav_menu']                    = '네비케이션 메뉴';
 $_['text_nav_menu_setting']            = '네비게이션 메뉴 추가/수정';

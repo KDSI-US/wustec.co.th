@@ -248,59 +248,23 @@ class ControllerCommonColumnLeft extends Controller {
 			}
 			/* XML ENDS */
 
-			$pastor_columns = array();
-		
-			if ($this->user->hasPermission('access', 'extension/pastor_column_category')) {
-				$pastor_columns[] = array(
-					'name'	   => $this->language->get('text_pastor_column_category'),
-					'href'     => $this->url->link('extension/pastor_column_category', 'user_token=' . $this->session->data['user_token'], true),
+			$announcements = array();
+			
+			if ($this->user->hasPermission('access', 'extension/announcements')) {
+				$announcements[] = array(
+					'name'	   => $this->language->get('text_add_announcements'),
+					'href'     => $this->url->link('extension/announcements', 'user_token=' . $this->session->data['user_token'], true),
 					'children' => array()
 				);
 			}
 			
-			if ($this->user->hasPermission('access', 'extension/pastor_column')) {
-				$pastor_columns[] = array(
-					'name'	   => $this->language->get('text_add_pastor_column'),
-					'href'     => $this->url->link('extension/pastor_column', 'user_token=' . $this->session->data['user_token'], true),
-					'children' => array()
-				);
-			}
-			
-			if ($pastor_columns) {
+			if ($announcements) {
 				$data['menus'][] = array(
-					'id'       => 'menu-pastor-column',
+					'id'       => 'menu-announcements',
 					'icon'	   => 'fa fa-newspaper-o',
-					'name'	   => $this->language->get('text_pastor_column'),
+					'name'	   => $this->language->get('text_announcements'),
 					'href'     => '',
-					'children' => $pastor_columns
-				);
-			}
-
-			$video_galerys = array();
-		
-			if ($this->user->hasPermission('access', 'extension/video_gallery_category')) {
-				$video_galerys[] = array(
-					'name'	   => $this->language->get('text_video_gallery_category'),
-					'href'     => $this->url->link('extension/video_gallery_category', 'user_token=' . $this->session->data['user_token'], true),
-					'children' => array()
-				);
-			}
-			
-			if ($this->user->hasPermission('access', 'extension/video_gallery')) {
-				$video_galerys[] = array(
-					'name'	   => $this->language->get('text_add_video'),
-					'href'     => $this->url->link('extension/video_gallery', 'user_token=' . $this->session->data['user_token'], true),
-					'children' => array()
-				);
-			}
-			
-			if ($video_galerys) {
-				$data['menus'][] = array(
-					'id'       => 'menu-video-galery',
-					'icon'	   => 'fa fa-video-camera',
-					'name'	   => $this->language->get('text_video_gallery'),
-					'href'     => '',
-					'children' => $video_galerys
+					'children' => $announcements
 				);
 			}
 			// Extension
