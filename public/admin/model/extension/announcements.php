@@ -136,11 +136,12 @@ class ModelExtensionAnnouncements extends Model
 					`announcement_id` = '" . (int)$announcement_id . "', 
 					`language_id` = '" . (int)$language_id . "', 
 					`title` = '" . $this->db->escape($value['title']) . "', 
-					`announcement_description` = '" . $this->db->escape($value['description']) . "' 
+					`text` = '" . $this->db->escape($value['text']) . "' 
 			";
 			$this->db->query($strSql);
 		}
 
+		$data['announcement_categories'][] = '1';
 		if (isset($data['announcement_categories'])) {
 			foreach ($data['announcement_categories'] as $announcement_category_id) {
 				$strSql = "

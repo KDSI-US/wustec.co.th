@@ -19,6 +19,10 @@ class ModelExtensionAnnouncement extends Model
 		if (isset($data['id'])) {
 			$strSql .= " AND a.announcement_id = '" . $data['id'] . "'";
 		}
+		
+		if (isset($data['status'])) {
+			$strSql .= " AND a.status = '" . $data['status'] . "'";
+		}
 
 		if (isset($data['sort'])) {
 			$strSql .= " ORDER BY " . $data['sort'] . " ";

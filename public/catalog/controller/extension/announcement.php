@@ -4,8 +4,6 @@ class ControllerExtensionAnnouncement extends Controller
 {
 	public function index()
 	{
-		$this->language->load('extension/announcement_all');
-
 		$this->load->model('extension/announcement');
 
 		$this->load->model('tool/image');
@@ -27,7 +25,6 @@ class ControllerExtensionAnnouncement extends Controller
 		$announcement_category = $this->model_extension_announcement->getAnnouncementCategoryData($announcement_category_id);
 		$data['breadcrumbs'][] = array(
 			'text'      => $announcement_category['title'],
-			'href'      => $this->url->link('extension/announcements')
 
 		);
 		$data['heading_title'] = $announcement_category['title'];
@@ -42,7 +39,7 @@ class ControllerExtensionAnnouncement extends Controller
 		$time = strtotime($announcement[0]['added_at']);
 		$data['announcement'] = array(
 			'announcement_id'  => $announcement[0]['announcement_id'],
-			'image'       => $announcement[0]['image'],
+			'image'       => $this->model_tool_image->resize($announcement[0]['image']),
 			'title'       => trim(strip_tags(html_entity_decode($announcement[0]['title'], ENT_QUOTES, 'UTF-8'))),
 			'date'							=> date('F j, Y', $time),
 			'text'							=> html_entity_decode($announcement[0]['text'], ENT_QUOTES, 'UTF-8')
