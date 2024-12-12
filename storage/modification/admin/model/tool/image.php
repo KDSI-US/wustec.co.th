@@ -1,7 +1,7 @@
 <?php
 /* This file is under Git Control by KDSI. */
 class ModelToolImage extends Model {
-	public function resize($filename, $width, $height) {
+	public function resize($filename, $width = 0, $height = 0) {
 		if (!is_file(DIR_IMAGE . $filename) || substr(str_replace('\\', '/', DIR_IMAGE . $filename), 0, strlen(DIR_IMAGE)) != str_replace('\\', '/', DIR_IMAGE)) {
 			return;
 		}
@@ -30,7 +30,7 @@ class ModelToolImage extends Model {
 				}
 			}
 
-			if ($width_orig != $width || $height_orig != $height) {
+			if ($width != 0 && $height != 0 && ($width_orig != $width || $height_orig != $height)) {
 				$image = new Image(DIR_IMAGE . $image_old);
 				$image->resize($width, $height);
 				$image->save(DIR_IMAGE . $image_new);
