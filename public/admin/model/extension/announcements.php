@@ -392,7 +392,7 @@ class ModelExtensionAnnouncements extends Model
 		foreach ($query->rows as $result) {
 			$announcement_description_data[$result['language_id']] = array(
 				'title'       => $result['title'],
-				'announcement_description'       => $result['description']
+				'announcement_description'       => $result['announcement_description']
 			);
 		}
 

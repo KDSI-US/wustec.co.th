@@ -276,7 +276,7 @@ class ControllerExtensionAnnouncements extends Controller
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('extension/announcements_list', $data));
+		$this->response->setOutput($this->load->view('extension/announcement_list', $data));
 	}
 
 	protected function getForm()
@@ -439,30 +439,30 @@ class ControllerExtensionAnnouncements extends Controller
 		} else {
 			$data['sort_order'] = '';
 		}
-
+/* 
 		if (isset($this->request->post['chk_title'])) {
 			$data['chk_title'] = $this->request->post['chk_title'];
 		} elseif (!empty($announcement_info)) {
 			$data['chk_title'] = $announcement_info['chk_title'];
 		} else {
 			$data['chk_title'] = 1;
-		}
-
+		} */
+/* 
 		if (isset($this->request->post['chk_text'])) {
 			$data['chk_text'] = $this->request->post['chk_text'];
 		} elseif (!empty($announcement_info)) {
 			$data['chk_text'] = $announcement_info['chk_text'];
 		} else {
 			$data['chk_text'] = 1;
-		}
-
+		} */
+/* 
 		if (isset($this->request->post['chk_video_image'])) {
 			$data['chk_video_image'] = $this->request->post['chk_video_image'];
 		} elseif (!empty($announcement_info)) {
 			$data['chk_video_image'] = $announcement_info['chk_video_image'];
 		} else {
 			$data['chk_video_image'] = 1;
-		}
+		} */
 
 		if (isset($this->request->post['image'])) {
 			$data['image'] = $this->request->post['image'];
@@ -487,7 +487,7 @@ class ControllerExtensionAnnouncements extends Controller
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('extension/announcements_form', $data));
+		$this->response->setOutput($this->load->view('extension/announcement_form', $data));
 	}
 
 	protected function validateForm()
@@ -522,16 +522,5 @@ class ControllerExtensionAnnouncements extends Controller
 		} else {
 			return false;
 		}
-	}
-
-	public function getAnnouncementThumb()
-	{
-		$json = array();
-		if (isset($this->request->get['url'])) {
-			$url = $this->request->get['url'];
-			$data = $this->get_youtube_data($this->get_youtube_id($url));
-			$json = $data;
-		}
-		$this->response->setOutput(json_encode($json));
 	}
 }
