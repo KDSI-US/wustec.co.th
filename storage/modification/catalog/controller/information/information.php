@@ -194,16 +194,18 @@ class ControllerInformationInformation extends Controller
 	{
 		if($information_id == 34) {
 			$this->load->language('information/registration');
+			$key = 'information.supplier';
 		} else {
 			$this->load->language('information/report');
+			$key = 'information.csr';
 		}
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) { // Change subject with reason and to email based on form
-			// Prepare mail: information.contact
+			// Prepare mail: information.csr
 			$this->load->model('extension/module/emailtemplate');
 
 			$template_load = array(
-				'key' => 'information.contact',
+				'key' => $key,
 				'email' => $this->request->post['email']
 			);
 
@@ -216,10 +218,13 @@ class ControllerInformationInformation extends Controller
 
 				$template->data['email'] = $this->request->post['email'];
 
-				if (!empty($this->request->post['reason'])) {
-					$template->data['reason'] = $this->request->post['reason'];
+				if (!empty($this->request->post['employee'])) {
+					$template->data['employee'] = $this->request->post['employee'];
 				}
-				
+				if (!empty($this->request->post['phone'])) {
+                                        $template->data['phone'] = $this->request->post['phone'];
+                                }
+
 				if (!empty($this->request->post['company'])) {
 					$template->data['company'] = $this->request->post['company'];
 				}
@@ -232,20 +237,13 @@ class ControllerInformationInformation extends Controller
 					$template->data['text_ip'] = sprintf($template->data['text_ip'], $this->request->server['REMOTE_ADDR']);
 				}
 
-				if (!empty($customer_info)) {
-					$template->data['customer'] = $customer_info;
-				}
-
 				if (defined('HTTP_ADMIN')) {
 					$admin_url = HTTP_ADMIN;
 				} else {
 					$admin_url = HTTPS_SERVER . 'admin/';
 				}
 
-				if (!empty($customer_info['customer_id'])) {
-					$template->data['admin_customer_url'] = $admin_url . 'index.php?route=customer/customer/edit&customer_id=' . $customer_info['customer_id'];
-				}
-				// Prepared mail: information.contact
+				// Prepared mail: information.csr
 
 				$mail = new Mail($this->config->get('config_mail_engine'));
 				$mail->parameter = $this->config->get('config_mail_parameter');
@@ -256,15 +254,15 @@ class ControllerInformationInformation extends Controller
 				$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
 				$mail->setTo($this->config->get('config_email'));
-				$mail->setFrom($this->request->post['email']);
+				//$mail->setFrom($this->request->post['email']);
 
 				$mail->setFrom($this->config->get('config_email'));
 
 				$mail->setReplyTo($this->request->post['email']);
 				$mail->setSender(html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8'));
-				$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
-				$mail->setText($this->request->post['enquiry']);
-				// Send mail: information.contact
+				//$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
+				//$mail->setText($this->request->post['enquiry']);
+				// Send mail: information.csr
 				if ($template && $template->check()) {
 					$mail->setReplyTo($template->data['email'], $template->data['name']);
 
@@ -277,8 +275,38 @@ class ControllerInformationInformation extends Controller
 				}
 			}
 
+			// Prepare mail: information.csr
+			//$this->load->model('extension/module/emailtemplate');
+/*
+			$template_load = array(
+				'key' => 'information.csr'
+			);
+
+			$template = $this->model_extension_module_emailtemplate->load($template_load);
+
+			if ($template) {
+				$template->data['name'] = html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8');
+
+				if (!empty($this->request->post['enquiry'])) {
+					$template->data['enquiry'] = html_entity_decode(str_replace("\n", "<br />", $this->request->post['enquiry']), ENT_QUOTES, 'UTF-8');
+				}
+
+				if (!empty($customer_info)) {
+					$template->data['customer'] = $customer_info;
+				}
+				// Prepared mail: information.csr
+
+				// Send mail: information.csr
+				if ($template && $template->check()) {
+					$template->build();
+					$template->hook($mail);
+
+					// $mail->send();
+
+					$this->model_extension_module_emailtemplate->sent();
+				}
+			}*/
 			// Prepare mail: information.contact_customer
-			$this->load->model('extension/module/emailtemplate');
 
 			$template_load = array(
 				'key' => 'information.contact_customer',
@@ -288,7 +316,6 @@ class ControllerInformationInformation extends Controller
 			$template = $this->model_extension_module_emailtemplate->load($template_load);
 
 			if ($template) {
-				//$template->addData($this->request->post);
 
 				$template->data['name'] = html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8');
 
@@ -298,9 +325,6 @@ class ControllerInformationInformation extends Controller
 					$template->data['enquiry'] = html_entity_decode(str_replace("\n", "<br />", $this->request->post['enquiry']), ENT_QUOTES, 'UTF-8');
 				}
 
-				if (!empty($customer_info)) {
-					$template->data['customer'] = $customer_info;
-				}
 				// Prepared mail: information.contact_customer
 
 				// Send mail: information.contact_customer
@@ -372,10 +396,10 @@ class ControllerInformationInformation extends Controller
 				$data['error_email'] = '';
 			}
 			
-			if (isset($this->error['reason'])) {
-				$data['error_reason'] = $this->error['reason'];
+			if (isset($this->error['employee'])) {
+				$data['error_employee'] = $this->error['employee'];
 			} else {
-				$data['error_reason'] = '';
+				$data['error_employee'] = '';
 			}
 
 			if (isset($this->error['enquiry'])) {
@@ -478,9 +502,9 @@ class ControllerInformationInformation extends Controller
 			$this->error['email'] = $this->language->get('error_email');
 		}
 
-		if($this->request->post['reason']) {
-			if (!(((int)$this->request->post['reason'] == 1) || ((int)$this->request->post['reason'] == 2) || ((int)$this->request->post['reason'] == 3))) {
-				$this->error['reason'] = $this->language->get('error_reason');
+		if($this->request->post['employee']) {
+			if (!(((int)$this->request->post['employee'] == 'a wus employee') || ((int)$this->request->post['employee'] == 'not a wus employee') || ((int)$this->request->post['employee'] == 'other'))) {
+				$this->error['employee'] = $this->language->get('error_employee');
 			}
 		}
 
