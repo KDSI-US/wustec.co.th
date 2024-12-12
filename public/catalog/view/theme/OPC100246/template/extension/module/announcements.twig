@@ -1,0 +1,47 @@
+<div class="dreamit-blog-area style-two" id="blog">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="dreamit-section-title text-center">
+					<div class="dreamit-section-sub-title">
+						<h5>ARTICLES</h5>
+					</div>
+					<div class="dreamit-section-main-title">
+						<h2>Recent News and Announcements</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row pt-60">
+			<div class="blog_list owl-carousel">
+				{% for announcement in announcements %}
+				<div class="col-lg-12 col-md-12">
+					<div class="dreamit-blog-single-box">
+						<div class="blog-thumb">
+							<img src="{{ announcement.image }}" alt="">
+						</div>
+						<div class="blog-content">
+							<div class="blog-meta">
+								<span>{{ announcement.date }}</span>
+							</div>
+							<div class="blog-title">
+								<a href="{{ announcement.url }}">
+									<h2>{{ announcement.video_title }}</h2>
+								</a>
+							</div>
+							<div class="blog-content-text">
+								<p>{{ announcement.text }}</p>
+							</div>
+							<div class="blog-button">
+								<a href="{{ announcement.url }}">Read More
+									<i class="fa fa-angle-right"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

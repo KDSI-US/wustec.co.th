@@ -76,26 +76,19 @@ class ControllerExtensionModuleAnnouncements extends Controller
 
 		$video_total = $this->model_extension_video_gallery->getTotalVideoGalleries($filter_data);
 		$video_gallery_data = $this->model_extension_video_gallery->getVideoGalleryByCategory($filter_data);
-		foreach ($video_gallery_data as $video_gallery) {
-			$time = strtotime($video_gallery['added_at']);
-			$data['video_galleries'][] = array(
-				'id'  => $video_gallery['video_gallery_id'],
-				'image'       => $video_gallery['image'],
-				'url'								=> $this->url->link('extension/announcement') . "?id=" . $video_gallery['video_gallery_id'],
-				'video_title'       => trim(strip_tags(html_entity_decode($video_gallery['video_title'], ENT_QUOTES, 'UTF-8'))),
-				'video_description' => trim(html_entity_decode($video_gallery['video_description'], ENT_QUOTES, 'UTF-8')),
-				'date'							=> date('F j, Y', $time)
+		foreach ($video_gallery_data as $announcement) {
+			$time = strtotime($announcement['added_at']);
+			$data['announcements'][] = array(
+				'id'  => $announcement['video_gallery_id'],
+				'image'       => $announcement['image'],
+				'url'								=> $this->url->link('extension/announcement') . "?id=" . $announcement['video_gallery_id'],
+				'video_title'       => trim(strip_tags(html_entity_decode($announcement['video_title'], ENT_QUOTES, 'UTF-8'))),
+				'video_description' => trim(html_entity_decode($announcement['video_description'], ENT_QUOTES, 'UTF-8')),
+				'date'							=> date('F j, Y', $time),
+				'text'							=> substr(trim(html_entity_decode($announcement['text'], ENT_QUOTES, 'UTF-8')), 0, 250) . "..."
 			);
 		}
 
-		$pagination = new Pagination();
-		$pagination->total = $video_total;
-		$pagination->page = $page;
-		$pagination->limit = $limit;
-		$pagination->url = $this->url->link('extension/announcements', '=' .  $url . '&page={page}');
-
-		$data['pagination'] = $pagination->render();
-		$data['results'] = sprintf($this->language->get('text_pagination'), ($video_total) ? (($page - 1) * 5) + 1 : 0, ((($page - 1) * 5) > ($video_total - 5)) ? $video_total : ((($page - 1) * 5) + 5), $video_total, ceil($video_total / 5));
 		$data['continue'] = $this->url->link('common/home');
 
 		return $this->load->view('extension/module/announcements', $data);
