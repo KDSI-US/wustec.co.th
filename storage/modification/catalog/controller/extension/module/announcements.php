@@ -30,8 +30,8 @@ class ControllerExtensionModuleAnnouncements extends Controller
 			$url .= '&sort=' . $this->request->get['sort'];
 			$data['sort'] = $this->request->get['sort'];
 		} else {
-			$url .= '&sort=vg.added_at';
-			$data['sort'] = "vg.added_at";
+			$url .= '&sort=a.added_at';
+			$data['sort'] = "a.added_at";
 		}
 
 		if (isset($this->request->get['order'])) {
