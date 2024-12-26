@@ -4,10 +4,10 @@ class ControllerExtensionModuleAnnouncements extends Controller
 {
 	public function index()
 	{
-		$this->language->load('extension/video_gallery_all');
+		$this->language->load('extension/announcement');
 
-		$this->load->model('extension/video_gallery');
-		$this->load->model('extension/video_gallery_category');
+		$this->load->model('extension/announcement');
+		$this->load->model('extension/announcement_category');
 
 		$this->load->model('tool/image');
 
@@ -29,8 +29,8 @@ class ControllerExtensionModuleAnnouncements extends Controller
 
 		$url = '';
 
-		if (isset($this->request->get['video_gallery_category_id'])) {
-			$url .= '&video_gallery_category_id=' . $this->request->get['video_gallery_category_id'];
+		if (isset($this->request->get['announcement_category_id'])) {
+			$url .= '&announcement_category_id=' . $this->request->get['announcement_category_id'];
 		}
 
 		if (isset($this->request->get['sort'])) {
@@ -55,47 +55,46 @@ class ControllerExtensionModuleAnnouncements extends Controller
 
 		$data['text_empty'] = $this->language->get('text_empty');
 
-		$data['video_galleries'] = array();
+		$data['announcements'] = array();
 
-		$video_gallery_category_id = '1';
-		$this->request->get['video_gallery_category_id'] = '1';
+		$announcement_category_id = '1';
+		$this->request->get['announcement_category_id'] = '1';
 
-		$video_gallery_category = $this->model_extension_video_gallery->getVideoGalleryCategoryData($video_gallery_category_id);
+		$announcement_category = $this->model_extension_announcement->getVideoGalleryCategoryData($announcement_category_id);
 		$data['breadcrumbs'][] = array(
-			'text'      => $video_gallery_category['title'],
+			'text'      => $announcement_category['title'],
 			'href'      => $this->url->link('extension/announcements')
 		);
-		$data['heading_title'] = $video_gallery_category['title'];
-		$this->document->setTitle($video_gallery_category['title']);
+		$data['heading_title'] = $announcement_category['title'];
+		$this->document->setTitle($announcement_category['title']);
 
 		$filter_data = array(
-			'video_gallery_category_id' => $this->request->get['video_gallery_category_id'],
+			'announcement_category_id' => $this->request->get['announcement_category_id'],
 			'start'              => ($page - 1) * $limit,
 			'limit'              => $limit
 		);
 
-		$video_total = $this->model_extension_video_gallery->getTotalVideoGalleries($filter_data);
-		$video_gallery_data = $this->model_extension_video_gallery->getVideoGalleryByCategory($filter_data);
-		foreach ($video_gallery_data as $video_gallery) {
-			$time = strtotime($video_gallery['added_at']);
-			$data['video_galleries'][] = array(
-				'id'  => $video_gallery['video_gallery_id'],
-				'image'       => $video_gallery['image'],
-				'url'								=> $this->url->link('extension/announcement') . "?id=" . $video_gallery['video_gallery_id'],
-				'video_title'       => trim(strip_tags(html_entity_decode($video_gallery['video_title'], ENT_QUOTES, 'UTF-8'))),
-				'video_description' => trim(html_entity_decode($video_gallery['video_description'], ENT_QUOTES, 'UTF-8')),
-				'date'							=> date('F j, Y', $time)
+		$video_total = $this->model_extension_announcement->getTotalVideoGalleries($filter_data);
+		$announcement_data = $this->model_extension_announcement->getVideoGalleryByCategory($filter_data);
+		foreach ($announcement_data as $announcement) {
+			$time = strtotime($announcement['added_at']);
+			$data['announcements'][] = array(
+				'id' => $announcement['announcement_id'],
+				'image' => $announcement['image'],
+				'url' => $this->url->link('extension/announcement') . "&id=" . $announcement['announcement_id'],
+				'text' => trim(strip_tags(html_entity_decode($announcement['text'], ENT_QUOTES, 'UTF-8'))),
+				'date' => date('F j, Y', $time)
 			);
 		}
 
 		$pagination = new Pagination();
-		$pagination->total = $video_total;
+		$pagination->total = $announcement_total;
 		$pagination->page = $page;
 		$pagination->limit = $limit;
 		$pagination->url = $this->url->link('extension/announcements', '=' .  $url . '&page={page}');
 
 		$data['pagination'] = $pagination->render();
-		$data['results'] = sprintf($this->language->get('text_pagination'), ($video_total) ? (($page - 1) * 5) + 1 : 0, ((($page - 1) * 5) > ($video_total - 5)) ? $video_total : ((($page - 1) * 5) + 5), $video_total, ceil($video_total / 5));
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($video_total) ? (($page - 1) * 5) + 1 : 0, ((($page - 1) * 5) > ($video_total - 5)) ? $video_total : ((($page - 1) * 5) + 5), $announcement_total, ceil($announcement_total / 5));
 		$data['continue'] = $this->url->link('common/home');
 
 		return $this->load->view('extension/module/announcements', $data);
