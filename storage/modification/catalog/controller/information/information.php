@@ -269,7 +269,7 @@ class ControllerInformationInformation extends Controller
 					$template->build();
 					$template->hook($mail);
 
-					//$mail->send();
+					$mail->send();
 
 					$this->model_extension_module_emailtemplate->sent();
 				}
