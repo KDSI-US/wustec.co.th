@@ -19,7 +19,7 @@
 				{% set class = 'col-sm-12' %}
 			{% endif %}
 			{{ content_top }}
-			<div class="dreamit-blog-area style-seven">
+			<div class="dreamit-blog-area pb-0 style-seven">
 				<div class="container">
 					<div class="dreamit-blog-area style-eight">
 						<div class="container">
@@ -40,7 +40,7 @@
 														</span>
 													</div>
 													<div class="blog-content-text">
-													{{ announcement.text }}
+														{{ announcement.text }}
 													</div>
 												</div>
 											</div>
@@ -52,11 +52,50 @@
 					</div>
 				</div>
 			</div>
+			<div class="dreamit-blog-area pt-0 style-seven">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="dreamit-section-title text-center">
+								<div class="dreamit-section-main-title">
+									<h2>{{ text_news }}</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row pt-30">
+					{% for post in announcements %}
+						<div class="col-lg-4 col-md-6">
+							<div class="dreamit-blog-single-box">
+								<div class="blog-thumb">
+									<a href="{{ post.url }}"><img src="{{ post.image }}" alt=""></a>
+								</div>
+								<div class="blog-content">
+									<div class="blog-meta">
+										<span>{{ post.date }}</span>
+									</div>
+									<div class="blog-title">
+										<a href="{{ post.url }}">
+											<h2>{{ post.title }}</h2>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+					</div>
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ pagination }}</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		{{ content_bottom }}
 	</div>
 	{# End: content_top + content-body + content-bottom #}
 	{{ column_right }}
 </div>
-{# End: column_left + content + column_right #}{# End of class: panel-body #}{# End of class: panel-default #}
-<div class="clear-fix"></div>{{ footer }}
+{# End: column_left + content + column_right #}
+{# End of class: panel-body #}
+{# End of class: panel-default #}<div class="clear-fix"> </div>
+{{ footer }}

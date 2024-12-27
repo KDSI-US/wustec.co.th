@@ -53,8 +53,14 @@ class ModelExtensionAnnouncement extends Model
 	{
 		$strSql = "
 			SELECT count(*) AS total 
-			FROM `" . DB_PREFIX . "announcement` 
-		";
+			FROM `" . DB_PREFIX . "announcement` a
+			LEFT JOIN `" . DB_PREFIX . "announcement_to_category` a2c 
+			ON (a.announcement_id = a2c.announcement_id) 
+			WHERE a2c.announcement_category_id = '" . (int)$data['announcement_category_id'] . "'";
+		
+		if (isset($data['status'])) {
+			$strSql .= " AND a.status = '" . $data['status'] . "'";
+		}
 		$query = $this->db->query($strSql);
 		return $query->row['total'];
 	}

@@ -47,7 +47,42 @@ class ControllerExtensionAnnouncement extends Controller
 				'date'							=> date('F j, Y', $time),
 				'text'							=> html_entity_decode($announcement[0]['text'], ENT_QUOTES, 'UTF-8')
 			);
+			
+			if (isset($this->request->get['page'])) {
+				$page = $this->request->get['page'];
+			} else {
+				$page = 1;
+			}
 
+			$limit = 6;
+			$filter_data = array(
+				'announcement_category_id' => $announcement_category_id,
+				'start'              => ($page - 1) * $limit,
+				'limit'              => $limit,
+				'status'						=> '1'
+			);
+
+			$announcement_total = $this->model_extension_announcement->getTotalAnnouncements($filter_data);
+			$announcement_data = $this->model_extension_announcement->getAnnouncementByCategory($filter_data);
+			foreach ($announcement_data as $announcement) {
+				$time = strtotime($announcement['added_at']);
+				$data['announcements'][] = array(
+					'id'  							=> $announcement['announcement_id'],
+					'image'       			=> $this->model_tool_image->resize($announcement['image']),
+					'url'								=> $this->url->link('extension/announcement') . "?id=" . $announcement['announcement_id'],
+					'title'       			=> trim(strip_tags(html_entity_decode($announcement['title'], ENT_QUOTES, 'UTF-8'))),
+					'date'							=> date('F j, Y', $time),
+					'text'							=> substr(trim(html_entity_decode($announcement['text'], ENT_QUOTES, 'UTF-8')), 0, 250) . "..."
+				);
+			}
+
+			$pagination = new Pagination();
+			$pagination->total = $announcement_total;
+			$pagination->page = $page;
+			$pagination->limit = $limit;
+			$pagination->url = $this->url->link('extension/announcement', "=&id=" . $this->request->get['id'] . '&page={page}');
+
+			$data['pagination'] = $pagination->render();
 			$data['continue'] = $this->url->link('common/home');
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['column_right'] = $this->load->controller('common/column_right');
