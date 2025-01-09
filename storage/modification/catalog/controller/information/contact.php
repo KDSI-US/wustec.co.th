@@ -34,18 +34,10 @@ class ControllerInformationContact extends Controller {
                     $template->data['text_ip'] = sprintf($template->data['text_ip'], $this->request->server['REMOTE_ADDR']);
                 }
 
-				if (!empty($customer_info)) {
-				  $template->data['customer'] = $customer_info;
-				}
-
 				if (defined('HTTP_ADMIN')) {
 					$admin_url = HTTP_ADMIN;
 				} else {
 					$admin_url = HTTPS_SERVER . 'admin/';
-				}
-
-				if (!empty($customer_info['customer_id'])) {
-				  $template->data['admin_customer_url'] = $admin_url . 'index.php?route=customer/customer/edit&customer_id=' . $customer_info['customer_id'];
 				}
                 // Prepared mail: information.contact
     
@@ -104,6 +96,10 @@ class ControllerInformationContact extends Controller {
 					$template->data['customer'] = $customer_info;
 				}
 				// Prepared mail: information.contact_customer
+				$mail->setTo($this->request->post['email']);
+				$mail->setFrom($this->config->get('config_email'));
+				$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+				$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
 
 				// Send mail: information.contact_customer
                 if ($template && $template->check()) {

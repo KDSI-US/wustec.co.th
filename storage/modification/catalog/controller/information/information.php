@@ -253,15 +253,12 @@ class ControllerInformationInformation extends Controller
 				$mail->smtp_port = $this->config->get('config_mail_smtp_port');
 				$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
-				$mail->setTo($this->config->get('config_email'));
-				//$mail->setFrom($this->request->post['email']);
-
+				$mail->setTo($template->data['emailtemplate']['mail_to']);
 				$mail->setFrom($this->config->get('config_email'));
 
 				$mail->setReplyTo($this->request->post['email']);
 				$mail->setSender(html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8'));
-				//$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
-				//$mail->setText($this->request->post['enquiry']);
+				$mail->setSubject(html_entity_decode(sprintf($template->data['emailtemplate']['subject']), ENT_QUOTES, 'UTF-8'));
 				// Send mail: information.csr
 				if ($template && $template->check()) {
 					$mail->setReplyTo($template->data['email'], $template->data['name']);
@@ -327,6 +324,12 @@ class ControllerInformationInformation extends Controller
 
 				// Prepared mail: information.contact_customer
 
+				$mail->setTo($this->request->post['email']);
+				$mail->setFrom($this->config->get('config_email'));
+
+				$mail->setReplyTo($this->config->get('config_email'), $this->config->get('config_name'));
+				$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+				$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
 				// Send mail: information.contact_customer
 				if ($template && $template->check()) {
 					$template->build();
