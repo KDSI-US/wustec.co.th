@@ -268,6 +268,12 @@ class ControllerSettingSetting extends Controller {
 			$data['config_email'] = $this->config->get('config_email');
 		}
 
+		if (isset($this->request->post['config_contact_email'])) {
+			$data['config_contact_email'] = $this->request->post['config_contact_email'];
+		} else {
+			$data['config_contact_email'] = $this->config->get('config_contact_email');
+		}
+
 		if (isset($this->request->post['config_telephone'])) {
 			$data['config_telephone'] = $this->request->post['config_telephone'];
 		} else {
@@ -1052,6 +1058,10 @@ class ControllerSettingSetting extends Controller {
 		}
 
 		if ((utf8_strlen($this->request->post['config_email']) > 96) || !filter_var($this->request->post['config_email'], FILTER_VALIDATE_EMAIL)) {
+			$this->error['email'] = $this->language->get('error_email');
+		}
+		
+		if ((utf8_strlen($this->request->post['config_contact_email']) > 96) || !filter_var($this->request->post['config_contact_email'], FILTER_VALIDATE_EMAIL)) {
 			$this->error['email'] = $this->language->get('error_email');
 		}
 

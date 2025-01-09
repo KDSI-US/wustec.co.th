@@ -75,6 +75,7 @@ $_['entry_address']                  = 'Address';
 $_['entry_geocode']                  = 'Geocode';
 $_['entry_googlemap_embed_html']     = 'Googlemap Embed HTML';
 $_['entry_email']                    = 'E-Mail';
+$_['entry_contact_email']            = 'Contact Us E-Mail';
 $_['entry_telephone']                = 'Telephone';
 $_['entry_fax']                      = 'Fax';
 $_['entry_image']                    = 'Image';

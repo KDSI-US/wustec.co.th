@@ -49,7 +49,7 @@ class ControllerInformationContact extends Controller {
 			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
 			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
-			$mail->setTo($this->config->get('config_email'));
+			$mail->setTo($this->config->get('config_contact_email'));
 			$mail->setFrom($this->request->post['email']);
 
 		$mail->setFrom($this->config->get('config_email'));
