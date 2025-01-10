@@ -258,7 +258,7 @@ class ControllerInformationInformation extends Controller
 
 				$mail->setReplyTo($this->request->post['email']);
 				$mail->setSender(html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8'));
-				$mail->setSubject(html_entity_decode(sprintf($template->data['emailtemplate']['subject']), ENT_QUOTES, 'UTF-8'));
+				$mail->setSubject(html_entity_decode(sprintf($template->data['emailtemplate']['subject'] . $this->request->post['subject']), ENT_QUOTES, 'UTF-8'));
 				// Send mail: information.csr
 				if ($template && $template->check()) {
 					$mail->setReplyTo($template->data['email'], $template->data['name']);

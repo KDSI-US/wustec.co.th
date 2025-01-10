@@ -12,6 +12,7 @@ $_['text_message']   = '<p>Your enquiry has been successfully sent to the store 
 // Entry
 $_['entry_name']     = 'Your Name';
 $_['entry_email']    = 'E-Mail Address';
+$_['entry_subject']    = 'Subject';
 $_['entry_phone']    = 'Phone Number';
 $_['entry_enquiry']  = 'Description of Complaint:________&#10;
   * Name: __&#10;  * Title/Position:__ (Manager, engineer, etc.)&#10;  * Department:__ (ML, PD, SM, IL, etc.)&#10;  * Factory #:__ (Factory 1, Factory 2, etc.)';
